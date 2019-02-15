@@ -10,12 +10,12 @@ we are a group of Computer Engineering student at Bogazici University and united
 will be announced soon
 
 ## Team  members
-Bahadır Hocamoğlu|[Taha Eyüp Korkmaz]|[Gürkan Demir]|[Ege Başural]|[Elif Çalışkan]|[Emre Demircioğlu]|Baturalp Yörük|Muhammed Bera Kaya|[İbrahim Özgürcan Öztaş]|İsmail Levent Baş
+Bahadır Hocamoğlu|Baturalp Yörük|[Elif Çalışkan]|[Ege Başural]|[Emre Demircioğlu]|[Gürkan Demir]|[İbrahim Özgürcan Öztaş]|İsmail Levent Baş|Muhammed Bera Kaya|[Taha Eyüp Korkmaz]
 -- | - | - | - | -|-|-|-|-|-
 
-[Taha Eyüp Korkmaz]: ../../wiki/Taha-Korkmaz
-[Gürkan Demir]: ../../wiki/Gürkan-Demir
-[Ege Başural]: ../../wiki/Ege-Başural
 [Elif Çalışkan]: ../../wiki/Elif-Çalışkan
+[Ege Başural]: ../../wiki/Ege-Başural
 [Emre Demircioğlu]: ../../wiki/Emre-Demircioğlu
+[Gürkan Demir]: ../../wiki/Gürkan-Demir
 [İbrahim Özgürcan Öztaş]: ../../wiki/İbrahim-Özgürcan-Öztaş
+[Taha Eyüp Korkmaz]: ../../wiki/Taha-Korkmaz
