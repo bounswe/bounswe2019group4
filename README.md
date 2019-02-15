@@ -19,4 +19,4 @@ Bahadır Hocamoğlu|[Baturalp Yörük]|[Elif Çalışkan]|[Ege Başural]|[Emre D
 [Emre Demircioğlu]: ../../wiki/Emre-Demircioğlu
 [Gürkan Demir]: ../../wiki/Gürkan-Demir
 [İbrahim Özgürcan Öztaş]: ../../wiki/İbrahim-Özgürcan-Öztaş
-[Taha Eyüp Korkmaz]: ../../wiki/Taha-Korkmaz
+[Taha Eyup Korkmaz]: ../../wiki/Taha-Korkmaz
