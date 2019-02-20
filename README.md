@@ -1,7 +1,7 @@
 #  <div align="center">CmpE 352 Group 4 </div>
 
 
-## Who are we?
+## Who we are?
 
 We are a group of Computer Engineering student at Bogazici University and united for the purpose of developing new technologies which may become a corner stone in computer science. For more information look at our [wiki](../../wiki) page.
 
