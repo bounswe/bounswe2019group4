@@ -7,7 +7,7 @@ We are a group of Computer Engineering student at Bogazici University and united
 
 ## Project Description
 
-The Description has been announced. We're going to build a Traders Platform. You can reach it [here.](https://github.com/bounswe2019group4/CMPE352_Spring20182019_TradersPlatform.pdf)
+The Description has been announced. We're going to build a Traders Platform. You can reach it [here.](https://github.com/bounswe/bounswe2019group4/blob/master/CMPE352_Spring20182019_TradersPlatform.pdf)
 
 ## Team  members
 [Bahadır Hocamoğlu]|[Baturalp Yörük]|[Elif Çalışkan]|[Ege Başural]|[Emre Demircioğlu]|[Gürkan Demir]|[İbrahim Özgürcan Öztaş]|[İsmail Levent Baş]|[Muhammed Bera Kaya]|[Taha Eyup Korkmaz]
