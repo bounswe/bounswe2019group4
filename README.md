@@ -7,7 +7,7 @@ We're a group of Computer Engineering student at Bogazici University and united 
 
 ## Project Description
 
-This project is a social platform which people can track and trade indices, bonds, ETFs, funds, commodities, cryptocurrencies and stocks. It also gives people chance to share their ideas about investments, events and not only commenting but also rating predictions of other users. In addition, users can follow other users, make investments and predictions, search events that may have impact on prices and calculate profit/loss. The system also makes predictions and suggestions to users according to their historical data. You can reach it from [here.](https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/project-description-Spring20182019_TradersPlatform.pdf)
+This project is a social platform where people can track and trade indices, bonds, ETFs, funds, commodities, cryptocurrencies and stocks. It also gives people chance to share their ideas about investments, events and not only commenting but also rating predictions of other users. In addition, users can follow other users, make investments and predictions, search events that may have impact on prices and calculate profit/loss. The system also makes predictions and suggestions to users according to their historical data. You can reach full description from [here.](https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/project-description-Spring20182019_TradersPlatform.pdf)
 
 ## Team  members
 [Bahadır Hocamoğlu]|[Baturalp Yörük]|[Elif Çalışkan]|[Ege Başural]|[Emre Demircioğlu]|[Gürkan Demir]|[İbrahim Özgürcan Öztaş]|[İsmail Levent Baş]|[Muhammed Bera Kaya]|[Taha Eyup Korkmaz]
