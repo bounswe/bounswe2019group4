@@ -15,7 +15,6 @@ This project is a social platform where people can track and trade indices, bond
 [![f](https://avatars1.githubusercontent.com/u/36932896?s=400&v=4)][Gürkan Demir][Gürkan Demir]|[![g](https://avatars3.githubusercontent.com/u/38817347?s=400&v=4)][İbrahim Özgürcan Öztaş][İbrahim Özgürcan Öztaş]|[![h](https://avatars0.githubusercontent.com/u/17166724?s=400&v=4)][İsmail Levent Baş][İsmail Levent Baş]|[![i](https://avatars0.githubusercontent.com/u/32485096?s=400&v=4)][Muhammed Bera Kaya][Muhammed Bera Kaya]|[![j](https://avatars1.githubusercontent.com/u/33196763?s=400&v=4)][Taha Eyup Korkmaz][Taha Eyup Korkmaz]
 
 
-
 [Bahadır Hocamoğlu]: ../../wiki/Bahadır-Hocamoğlu
 [Baturalp Yörük]: ../../wiki/Baturalp-Yörük
 [Elif Çalışkan]: ../../wiki/Elif-Çalışkan
