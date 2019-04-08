@@ -3,7 +3,7 @@
 
 ## Who are we?
 
-We're a group of Computer Engineering student at Bogazici University and united for the purpose of developing new technologies which may become a corner stone in computer science. For more information look at our [wiki](../../wiki) page.
+We're a group of Computer Engineering students at Bogazici University and united for the purpose of developing new technologies which may become a corner stone in computer science. For more information look at our [wiki](../../wiki) page.
 
 ## Project Description
 
