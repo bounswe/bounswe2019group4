@@ -1,0 +1,32 @@
+{
+  "name": "practice-app-backend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bounswe/bounswe2019group4.git"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "restful",
+    "expressjs"
+  ],
+  "author": "boun-swe2019-group4",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bounswe/bounswe2019group4/issues"
+  },
+  "homepage": "https://github.com/bounswe/bounswe2019group4#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.11"
+  }
+}
