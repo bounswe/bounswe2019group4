@@ -3,3 +3,4 @@ node_modules
 .webstorm
 npm-debug.*
 *.lock
+*.secrets*
