@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-var {User} = require('./../models/user.js');
+let {User} = require('./../models/user.js');  // the connection to the User model in the database
 
 router.post('/signup', (request, response) => {
-    var user = new User({
+    // User instance to addto the database
+    let user = new User({
       name: request.body.name,
       surname: request.body.surname,
       email: request.body.email,
@@ -15,6 +16,7 @@ router.post('/signup', (request, response) => {
       tckn: request.body.tckn,
     });
 
+    // saves the instance into the database, returns any error occured
     user.save().then((doc) => {
       response.send(doc);
     }, (error) => {
@@ -22,6 +24,7 @@ router.post('/signup', (request, response) => {
     });
 })
 
+// responses a text sample message in a JSON format
 router.post('/login', (request, response, nextHandler) => {
     response.send({status: `You cannot login yet, since we haven't implemented that functionality.`})
 })

@@ -1,9 +1,10 @@
-const mongoose =  require('mongoose');
+const mongoose =  require('mongoose');  // the mongodb connector library
 
-const {dbCredentials} = require('../secrets.js')
+const {dbCredentials} = require('../secrets.js')  // database credentials, contact to the team for the actual file
 
 mongoose.connect(`mongodb://${dbCredentials['username']}:${dbCredentials['password']}@${dbCredentials['ip']}/admin`, {useNewUrlParser: true});
 
+// the User model in the database
 let User = mongoose.model('User', {
   name: {
     type: String,
