@@ -1,0 +1,24 @@
+{
+  "name": "practice-app-frontend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bounswe/bounswe2019group4.git"
+  },
+  "keywords": [
+    "frontend",
+    "react",
+    "api"
+  ],
+  "author": "boun-swe2019-group4",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bounswe/bounswe2019group4/issues"
+  },
+  "homepage": "https://github.com/bounswe/bounswe2019group4#readme"
+}
