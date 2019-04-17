@@ -1,8 +1,10 @@
 'use strict'
 
-const express = require('express')
-
+const express = require('express');
+const bodyParser = require('body-parser');
 const app = express()   // the express instance that's doing everything
+
+app.use(bodyParser.json());
 
 // a dummy endpoint that responds everything with a static JSON
 app.use('/', (request, response, nextHandler) => {
