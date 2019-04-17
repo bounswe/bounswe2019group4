@@ -1,10 +1,10 @@
 const mongoose =  require('mongoose');
 
-mongoose.connect('mongodb://mongoadmin:secret@18.219.229.31:27017/admin', {useNewUrlParser: true});
+const {dbCredentials} = require('../secrets.js')
 
-var userSchema = mongoose.Schema();
+mongoose.connect(`mongodb://${dbCredentials['username']}:${dbCredentials['password']}@${dbCredentials['ip']}/admin`, {useNewUrlParser: true});
 
-var User = mongoose.model('User', {
+let User = mongoose.model('User', {
   name: {
     type: String,
     required: true,
