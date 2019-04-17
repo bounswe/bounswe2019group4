@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-let {User} = require('./../models/user.js');  // the connection to the User model in the database
+let {User} = require('./../models/user.js');  // The connection to the User model in the database
 
+/*
+  Post method for signup.
+  Get user attributes from request.body and respondes accordingly.
+*/
 router.post('/signup', (request, response) => {
     // User instance to addto the database
     let user = new User({
