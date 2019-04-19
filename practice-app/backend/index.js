@@ -25,6 +25,6 @@ app.post('/*', (request, response, nextHandler) => {
     response.send({status: `Seems ok to me`})
 })
 
-const PORT = 8080   // TODO make it possible to accept the port to run on as argument
+const PORT = parseInt(process.argv[2]) || 8080  // optionally runs on the port given to the command 'yarn dev'
 console.log(`Listening on port ${PORT}`)
 app.listen(PORT)    // the app watches for incoming requests on given port
