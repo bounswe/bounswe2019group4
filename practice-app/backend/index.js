@@ -6,11 +6,11 @@ const app = express()   // the express instance that's doing everything
 
 app.use(bodyParser.json()); // parses request body and binds to the request argument, request.body
 
-app.use('/t-equipments', require('./routes/trading-equipments'))
+app.use('/t-equipments/', require('./routes/trading-equipments'))
 
 app.use('/events/', require('./routes/events'))
 
-app.use('/auth', require('./routes/login-signup'))  // includes login/signup endpoints to the main app
+app.use('/auth/', require('./routes/login-signup'))  // includes login/signup endpoints to the main app
 
 // catches all GET requests that arrive at this point
 app.use(/.*/, (request, response, nextHandler) => {
