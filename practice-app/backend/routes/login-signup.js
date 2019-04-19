@@ -9,16 +9,7 @@ let {User} = require('./../models/user.js');  // The connection to the User mode
 */
 router.post('/signup', (request, response) => {
     // User instance to addto the database
-    let user = new User({
-      name: request.body.name,
-      surname: request.body.surname,
-      email: request.body.email,
-      password: request.body.password,
-      location: request.body.location,
-      isTrader: request.body.isTrader,
-      iban: request.body.iban,
-      tckn: request.body.tckn,
-    });
+    let user = new User({...request.body});
 
     // saves the instance into the database, returns any error occured
     user.save().then((doc) => {
