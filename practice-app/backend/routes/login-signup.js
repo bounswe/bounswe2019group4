@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const router = express.Router();
 
 let {User} = require('./../models/user.js');  // The connection to the User model in the database
@@ -10,6 +11,8 @@ let {User} = require('./../models/user.js');  // The connection to the User mode
 router.post('/signup', (request, response) => {
     // User instance to addto the database
     let user = new User({...request.body});
+    // hashes the password
+    user.password = bcrypt.hashSync(request.body.password, 10);
 
     // saves the instance into the database, returns any error occured
     user.save().then((doc) => {
