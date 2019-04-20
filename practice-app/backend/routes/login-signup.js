@@ -27,8 +27,31 @@ router.post('/signup', (request, response) => {
 })
 
 // responses a text sample message in a JSON format
-router.post('/login', (request, response, nextHandler) => {
-    response.send({status: `You cannot login yet, since we haven't implemented that functionality.`})
+router.post('/login', async (request, response) => {
+  const {email, password} = request.body  //email and password fields in request body
+  
+  if (!email) {           // if there's no email field in the request, return status 400
+    response.status(400).send({errmsg:'email is required in the request body'})
+  } else if (!password) { // if there's no password field in the request, return status 400
+    response.status(400).send({errmsg:'password is required in the request body'})
+  }
+
+  try {
+    let userRegistered = await User.findOne({email})  // retrieve the user instance from database
+    if (!userRegistered) {  // if no instance is returned, credentials are invalid
+      throw Error('invalid credentials')
+    }
+
+    // if password hashed in the user instance doesn't match with the password in the request, credentials are invalid
+    if (bcrypt.compareSync(password, userRegistered['password'])) { 
+      // TODO the user credentials are correct, its instance is userRegistered, some cookie should be generated
+      response.send({status: 'You deserved some cookies!'})
+    } else {
+      throw Error('invalid credentials')
+    }
+  } catch (err) { // some error is thrown before, returns the error message
+      response.status(400).send({errmsg: err.message})
+  }
 })
 
 module.exports = router
