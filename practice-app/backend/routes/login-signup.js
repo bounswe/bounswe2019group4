@@ -42,7 +42,7 @@ router.post('/login', async (request, response) => {
   try {
     let userRegistered = await User.findOne({ email })  // Retrieve the user instance from database
     if (!userRegistered) {  // If no instance is returned, credentials are invalid
-      throw Error('Email not found!')
+      throw Error('Email not found or password does not match!')
     }
 
     // If password hashed in the user instance doesn't match with the password in the request, credentials are invalid
@@ -55,7 +55,7 @@ router.post('/login', async (request, response) => {
         isTrader, name, surname, email, location  // Send only the extracted keys
       })
     } else {
-      throw Error('Password does not match!')
+      throw Error('Email not found or password does not match!')
     }
 
   } catch (err) { // Some error is thrown before, returns the error message
