@@ -2,10 +2,19 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const session = require('express-session')
+
+const { sessionSecret } = require('./secrets')
+
 const app = express()   // the express instance that's doing everything
 
-app.use(cors())         // accepts CORS requests
+// cookie session middleware. Saves session ID's in cache, since we didn'te provide a store
+app.use(session({
+    name: 'arkenstone',
+    resave: false,
+    saveUninitialized: false,
+    secret: sessionSecret,
+}))
 app.use(bodyParser.json()); // parses request body and binds to the request argument, request.body
 
 app.use('/t-equipments/', require('./routes/trading-equipments'))
