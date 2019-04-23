@@ -4,7 +4,7 @@ import "./styles.css";
 
 export default class Login extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -12,6 +12,7 @@ export default class Login extends Component {
       email: '',
       password: '',
     };
+    this.submit = this.submit.bind(this)
   }
 
   updateEmail(value) {
@@ -26,53 +27,53 @@ export default class Login extends Component {
     });
   }
 
-  async submit(){
+  submit(event) {
+    event.preventDefault()
     this.setState({
       disabled: true,
     });
-
-    await axios.post('http://www.arkenstone.ml/auth/login', {
+    axios.post('http://api.dev.arkenstone.ml/auth/login', {
       email: this.state.email,
       password: this.state.password,
     })
-    .then(response => {
-      console.log(response, 'Logged in!');
-    })
-    .catch(err => {
-      console.log(err, 'Failure!');
-    });
+      .then(response => {
+        console.log(response, 'Logged in!');
+      })
+      .catch(err => {
+        console.log(err, 'Failure!');
+      });
   }
 
-    render() {
-      return (
-        <form>
-          <div>
-            <label>Email</label>
-            <input
-              disabled= {this.state.disabled}
-              type='email'
-              placeholder='Email'
-              onChange={(event) => {this.updateEmail(event.target.value)}}
-              value={this.state.email}
-            />
-          </div>
+  render() {
+    return (
+      <form onSubmit={this.submit}>
+        <div>
+          <label>Email</label>
+          <input
+            disabled={this.state.disabled}
+            type='email'
+            placeholder='Email'
+            onChange={(event) => { this.updateEmail(event.target.value) }}
+            value={this.state.email}
+          />
+        </div>
 
-          <div>
-            <label>Password</label>
-            <input
-              disabled= {this.state.disabled}
-              type='password'
-              placeholder='Password'
-              onChange={(event) => {this.updatePassword(event.target.value)}}
-              value={this.state.password}
-            />
-          </div>
-          <button
-            disabled= {this.state.disabled}
-            onClick={this.submit.bind(this)}>
-            Login
+        <div>
+          <label>Password</label>
+          <input
+            disabled={this.state.disabled}
+            type='password'
+            placeholder='Password'
+            onChange={(event) => { this.updatePassword(event.target.value) }}
+            value={this.state.password}
+          />
+        </div>
+        <button
+          disabled={this.state.disabled}
+          onClick={this.submit.bind(this)}>
+          Login
           </button>
-        </form>
-      )
+      </form>
+    )
   }
 }
