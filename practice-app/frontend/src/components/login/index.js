@@ -27,12 +27,14 @@ export default class Login extends Component {
     });
   }
 
-  submit(event) {
+  async submit(event) {
     event.preventDefault()
+    
     this.setState({
       disabled: true,
     });
-    axios.post('http://api.dev.arkenstone.ml/auth/login', {
+
+   await axios.post('http://api.dev.arkenstone.ml/auth/login', {
       email: this.state.email,
       password: this.state.password,
     })
@@ -42,6 +44,10 @@ export default class Login extends Component {
       .catch(err => {
         console.log(err, 'Failure!');
       });
+    
+    this.setState({
+      disabled: false,
+    });
   }
 
   render() {
