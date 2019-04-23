@@ -2,8 +2,10 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const app = express()   // the express instance that's doing everything
 
+app.use(cors())         // accepts CORS requests
 app.use(bodyParser.json()); // parses request body and binds to the request argument, request.body
 
 app.use('/t-equipments/', require('./routes/trading-equipments'))
@@ -14,7 +16,7 @@ app.use('/auth/', require('./routes/login-signup'))  // includes login/signup en
 
 // catches all GET requests that arrive at this point
 app.use(/.*/, (request, response, nextHandler) => {
-    response.status(400).send({ whatdidyoumean: `The request isn't supposed to enter that handler.`})
+    response.status(400).send({ whatdidyoumean: `The request isn't supposed to enter that handler.` })
 })
 
 const PORT = parseInt(process.argv[2]) || 8080  // optionally runs on the port given to the command 'yarn dev'
