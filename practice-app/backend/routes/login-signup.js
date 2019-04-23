@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const router = express.Router();
 
 let {User} = require('./../models/user.js');  // The connection to the User model in the database
@@ -8,21 +9,18 @@ let {User} = require('./../models/user.js');  // The connection to the User mode
   Get user attributes from request.body and respondes accordingly.
 */
 router.post('/signup', (request, response) => {
-    // User instance to addto the database
+    // User instance to add to the database
     let user = new User({
-      name: request.body.name,
-      surname: request.body.surname,
-      email: request.body.email,
-      password: request.body.password,
-      location: request.body.location,
-      isTrader: request.body.isTrader,
-      iban: request.body.iban,
-      tckn: request.body.tckn,
+      ...request.body,
+      // hashes the password
+      password: bcrypt.hashSync(request.body.password, 10),
     });
 
     // saves the instance into the database, returns any error occured
     user.save().then((doc) => {
-      response.send(doc);
+      // omit sensitive data
+      const { isTrader, name, surname, email, location } = doc  // extract certain keys from doc
+      response.send({ isTrader, name, surname, email, location });  // send only the extracted keys 
     }, (error) => {
       response.status(400).send(error);
     });
