@@ -23,7 +23,7 @@ app.use(bodyParser.json()); // parses request body and binds to the request argu
 
 app.use("/t-equipments/", require("./routes/trading-equipments"));
 
-app.use("/events/", require("./routes/events"));
+app.use("/events/", require("./routes/events").default);
 
 app.use("/auth/", require("./routes/login-signup")); // includes login/signup endpoints to the main app
 
