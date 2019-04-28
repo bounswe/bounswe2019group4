@@ -1,22 +1,23 @@
-const mongoose =  require('mongoose');  // The mongodb connector library
+const mongoose = require("mongoose"); // The mongodb connector library
 
-const {dbCredentials} = require('../secrets.js')  // Database credentials, contact to the team for the actual file
+const { dbCredentials } = require("../secrets.js"); // Database credentials, contact to the team for the actual file
 
 // it says ensureIndex is deprecated and createIndexes should be used instead
-mongoose.set('useCreateIndex', true)
+mongoose.set("useCreateIndex", true);
 // Connecting to database.
 mongoose.connect(
-  `mongodb://${dbCredentials['ip']}/admin`,
+  `mongodb://${dbCredentials["ip"]}/admin`,
   {
     useNewUrlParser: true,
-    user: dbCredentials['username'],
-    pass: dbCredentials['password'],
+    user: dbCredentials["username"],
+    pass: dbCredentials["password"]
   },
   err => {
-    if(err) {
-      console.log(err)
+    if (err) {
+      console.log(err);
     }
-  });
+  }
+);
 
 /*
   Model for user which has following attributes
@@ -28,50 +29,53 @@ mongoose.connect(
     isTrader,
     iban,
     tckn.
-*/let User = mongoose.model('User', {
-  name: {
-    type: String,
-    required: true,
-  },
-  
-  surname: {
-    type: String,
-    required: true,
-  },
+*/ let User = mongoose.model(
+  "User",
+  {
+    name: {
+      type: String,
+      required: true
+    },
 
-  email: { 
-    type: String,
-    required: true,
-    unique: true,
-  },
+    surname: {
+      type: String,
+      required: true
+    },
 
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
 
-  location: {
-    type: String,
-    required: true,
-  },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6
+    },
 
-  isTrader: {
-    type: Boolean,
-    default: false,
-  },
+    location: {
+      type: String,
+      required: true
+    },
 
-  iban: {
-    type: String,
-    default: null,
-  },
+    isTrader: {
+      type: Boolean,
+      default: false
+    },
 
-  tckn: {
-    type: String,
-    default: null,
-  },
-});
+    iban: {
+      type: String,
+      default: null
+    },
+
+    tckn: {
+      type: String,
+      default: null
+    }
+  }
+);
 
 module.exports = {
   User: User
-}
+};
