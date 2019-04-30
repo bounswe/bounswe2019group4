@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/bounswe/bounswe2019group4#readme",
   "dependencies": {
+    "alphavantage": "^1.2.5",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
