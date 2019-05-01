@@ -14,22 +14,22 @@ router.get("/:from-:to", (req, res) => {
     request(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${params.from}&to_currency=${params.to}&apikey=${secret.alphaKey.key}`, 
     { json: true }, (err, resp, body) => {
   
-        if (err) { 
+        if (err) { // if external api returns error
             res.send({
                 Error: "System is under maintanence."
             });
         }
-        else if (body.hasOwnProperty('Realtime Currency Exchange Rate')){    
+        else if (body.hasOwnProperty('Realtime Currency Exchange Rate')){//when everything is normal sends rate and its value as JSON
             res.send({
                 rate: `${params['from']}/${params['to']}`,
                 value: body['Realtime Currency Exchange Rate']['5. Exchange Rate']
             });
         }
-        else if (body.hasOwnProperty('Error Message')){
+        else if (body.hasOwnProperty('Error Message')){//when user gives wrong parameters
             res.status(400).send({
                 Error: "Invalid API call."
             })
-        }else{
+        }else{//when user makes excessive requests
             res.status(400).send({
                 Error: "More than 5 trials are not supported in one minute!"
             })
