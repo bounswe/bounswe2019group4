@@ -5,7 +5,7 @@ const GuestComponent= ()=>{
     return (  <div style={{display: "flex"}}>
 
         <MenuInput
-                placeholder="username"
+                placeholder="email"
             />
             <MenuInput
                 placeholder="password"
