@@ -14,8 +14,9 @@ router.get("/:from-:to", (req, res) => {
     let params = req.params
   
     alpha.forex.rate(req.params.from, req.params.to).then(data => {
-        
-        res.send(data['Realtime Currency Exchange Rate']['5. Exchange Rate']);
+        res.send({
+            rate: `${params['from']}/${params['to']}?`,
+            value: data['Realtime Currency Exchange Rate']['5. Exchange Rate']});
       });
 })
 
