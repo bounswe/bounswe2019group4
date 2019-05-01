@@ -1,7 +1,6 @@
 const express = require('express')
 const secret = require('../secrets')
 const request= require('request');
-const alpha = require('alphavantage')({key:secret.alphaKey.key})
 const router = express.Router()
 
 /* 
@@ -12,13 +11,32 @@ const router = express.Router()
  */ 
 router.get("/:from-:to", (req, res) => {
     let params = req.params
+    request(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${params.from}&to_currency=${params.to}&apikey=${secret.alphaKey.key}`, 
+    { json: true }, (err, resp, body) => {
   
-    alpha.forex.rate(req.params.from, req.params.to).then(data => {
-        res.send({
-            rate: `${params['from']}/${params['to']}`,
-            value: data['Realtime Currency Exchange Rate']['5. Exchange Rate']});
-      });
+        if (err) { 
+            res.send({
+                Error: "System is under maintanence."
+            });
+        }
+        else if (body.hasOwnProperty('Realtime Currency Exchange Rate')){    
+            res.send({
+                rate: `${params['from']}/${params['to']}`,
+                value: body['Realtime Currency Exchange Rate']['5. Exchange Rate']
+            });
+        }
+        else if (body.hasOwnProperty('Error Message')){
+            res.status(400).send({
+                Error: "Invalid API call."
+            })
+        }else{
+            res.status(400).send({
+                Error: "More than 5 trials are not supported in one minute!"
+            })
+        }
+    });
 })
+
 const getCurrencyLayerApiResponse  = (callback) => {
     _url_to_get_list_of_fx_data= `http://apilayer.net/api/live?access_key=${secret.currencyLayerKey.key}`;
     request(_url_to_get_list_of_fx_data, { json: true }, (err, res, body) => {
