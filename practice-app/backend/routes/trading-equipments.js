@@ -19,7 +19,7 @@ router.get("/:from-:to", (req, res) => {
                 Error: "System is under maintanence."
             });
         }
-        else if (body.hasOwnProperty('Realtime Currency Exchange Rate')){//when everything is normal sends rate and its value as JSON
+        else if (body.hasOwnProperty('Realtime Currency Exchange Rate')){//when everything is normal sends a rate and its value as JSON
             res.send({
                 rate: `${params['from']}/${params['to']}`,
                 value: body['Realtime Currency Exchange Rate']['5. Exchange Rate']
@@ -37,27 +37,26 @@ router.get("/:from-:to", (req, res) => {
     });
 })
 
-const getCurrencyLayerApiResponse  = (callback) => {
-    _url_to_get_list_of_fx_data= `http://apilayer.net/api/live?access_key=${secret.currencyLayerKey.key}`;
-    request(_url_to_get_list_of_fx_data, { json: true }, (err, res, body) => {
-    if (err) { 
-        return callback(err);
-     }
-    return callback(body);
-    });
-}
 // Retrieves all exchange rates the API can
+// uses currencylayer api
+// base currency is USD
 router.get("/$", (req, res) => {
-   getCurrencyLayerApiResponse(function(response){
-        if(response["success"]){
-            res.send(response["quotes"]);
-        }else{
-            res.send(response["error"]);
+    request(`http://apilayer.net/api/live?access_key=${secret.currencyLayerKey.key}`, { json: true }, (err, resp, body) => {
+        if(err){
+            res.send({// if external api returns error
+                Error: "System is under maintanence."
+            });
         }
-   });
-    
+        else if(body["success"]){//when everything is normal sends the list of rates with their values as JSON (base currency is USD)
+            res.send(body["quotes"]);
+        }
+        else{//when user makes excessive requests
+            res.status(400).send({
+                Error: "The monthly api request limit has been reached!"
+            })
+        }
+    });
 })
-
 
  
 module.exports = router
