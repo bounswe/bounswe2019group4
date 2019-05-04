@@ -13,7 +13,7 @@ router.get("/:from-:to", teControllers.exactRate)
 // Retrieves all exchange rates the API can
 // uses currencylayer api
 // base currency is USD
-router.get("/\\$", teControllers.dollarRates)
+router.get("/$", teControllers.dollarRates)
 
  
 module.exports = router
