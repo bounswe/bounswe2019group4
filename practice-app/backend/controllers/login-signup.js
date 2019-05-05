@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+let { User } = require('./../models/user.js');  // The connection to the User model in the database
 
 /*
   Post method for signup.
