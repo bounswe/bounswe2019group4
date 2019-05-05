@@ -1,0 +1,16 @@
+img{
+    height:50px;
+    width:150px;
+}
+.eventName{
+    font-size:40px;
+    color:red;
+}
+.name{
+    font-size:30px;
+}
+.noev{
+    font-size:30px;
+    color:red;
+
+}
