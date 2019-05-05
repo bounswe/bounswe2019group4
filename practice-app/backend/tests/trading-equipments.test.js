@@ -9,8 +9,7 @@ describe('GET /tradingEq/dollarRates', () => {
         let req = {}    // fake request object
         let res = {     // fake response object with send method
             send: async payload => {
-                response = payload  
-                console.log(Object.keys(payload))
+                response = payload
                 done()  // calls the next test case
             }
         }
@@ -36,7 +35,7 @@ describe('GET /tradingEq/dollarRates', () => {
                     break
                 }
             }
-            expect(anyerror).to.be.equal(false)  // checks if the anyerror is false
+            expect(anyerror).to.be.equal(false)  // checks if anyerror is false
             done()          // calls the next test case
         } catch (error) {   // if error occurs,
             done(error)     // delegates the error message and continues
