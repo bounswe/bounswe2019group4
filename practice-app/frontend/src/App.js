@@ -15,7 +15,7 @@ class App extends Component {
         <Route path="/auth/signup" component={Signup} exact></Route>
         <Route path="/auth/login" component={Login} exact></Route>
         <Route path="/t-equipments" component={TradingEq} exact></Route>
-        <Route path="/t-equipments/lol" component={CurrencyConverter} exact></Route>
+        <Route path="/t-equipments/converter" component={CurrencyConverter} exact></Route>
       </div>
     );
   }
