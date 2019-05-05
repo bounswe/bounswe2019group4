@@ -34,28 +34,28 @@ module.exports.login = async (request, response) => {
     response.status(400).send({ errmsg: 'Email is required in the request body' })
   } else if (!password) { // If there's no password field in the request, return status 400
     response.status(400).send({ errmsg: 'Password is required in the request body' })
-  }
+  } else{
+    try {
+      let userRegistered = await User.findOne({ email })  // Retrieve the user instance from database
+      if (!userRegistered) {  // If no instance is returned, credentials are invalid
+        throw Error('Email not found or password does not match!')
+      }
 
-  try {
-    let userRegistered = await User.findOne({ email })  // Retrieve the user instance from database
-    if (!userRegistered) {  // If no instance is returned, credentials are invalid
-      throw Error('Email not found or password does not match!')
+      // If password hashed in the user instance doesn't match with the password in the request, credentials are invalid
+      if (bcrypt.compareSync(password, userRegistered['password'])) {
+        // The user credentials are correct, its instance is userRegistered and added to the cookie
+        request.session['user'] = userRegistered
+        const { isTrader, name, surname, email, location } = userRegistered  // Extract certain keys from user
+        response.send({
+          msg: 'Successfully logged in.',
+          isTrader, name, surname, email, location  // Send only the extracted keys
+        })
+      } else {
+        throw Error('Email not found or password does not match!')
+      }
+
+    } catch (err) { // Some error is thrown before, returns the error message
+      response.status(400).send({ errmsg: err.message })
     }
-
-    // If password hashed in the user instance doesn't match with the password in the request, credentials are invalid
-    if (bcrypt.compareSync(password, userRegistered['password'])) {
-      // The user credentials are correct, its instance is userRegistered and added to the cookie
-      request.session['user'] = userRegistered
-      const { isTrader, name, surname, email, location } = userRegistered  // Extract certain keys from user
-      response.send({
-        msg: 'Successfully logged in.',
-        isTrader, name, surname, email, location  // Send only the extracted keys
-      })
-    } else {
-      throw Error('Email not found or password does not match!')
-    }
-
-  } catch (err) { // Some error is thrown before, returns the error message
-    response.status(400).send({ errmsg: err.message })
   }
 }
