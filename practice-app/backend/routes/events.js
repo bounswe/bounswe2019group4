@@ -13,7 +13,6 @@ router.get("/list", (req, res) => {
 
       events.forEach((event) => {
         var obj = {
-          id: event.CalendarId,
           date: event.Date,
           country: event.Country,
           eventName: event.Event,
