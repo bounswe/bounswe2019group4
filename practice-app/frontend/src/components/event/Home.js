@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-//import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 import './styles.css';
 import {List} from "semantic-ui-react"
 import OneStar from '../../onestar.png'
@@ -12,6 +13,9 @@ import ThreeStar from '../../threestar.png'
 class Home extends Component{ 
     state ={
         events: []
+        
+        
+        
     }
     componentDidMount(){
         
@@ -59,7 +63,9 @@ class Home extends Component{
                
                 <List.Content>
                     <List.Header as={"a"}>
-                        <span className="eventName">{event.eventName}</span>
+                       <Link to={'/'+event.eventName+"+"+event.country+"+"+event.date }>
+                            <span className="eventName">{event.eventName}</span>
+                        </Link> 
                     </List.Header>
                     <List.Description>
 
