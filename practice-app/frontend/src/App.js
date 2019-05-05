@@ -6,7 +6,7 @@ import Login from "./components/login"
 import Home from "./components/event/Home"
 import TradingEq from "./components/t-equipments"
 import CurrencyConverter from "./components/t-equipments/currency-converter"
-
+import Post from "./components/event/Post"
 import './App.css';
 
 class App extends Component {
@@ -18,6 +18,7 @@ class App extends Component {
         <Route path="/auth/login" component={Login} exact></Route>
         <Route path="/t-equipments" component={TradingEq} exact></Route>
         <Route path="/t-equipments/converter" component={CurrencyConverter} exact></Route>
+        <Route path='/:post_id' component={Post} />
       </div>
     );
   }
