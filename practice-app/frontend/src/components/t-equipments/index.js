@@ -31,17 +31,19 @@ class TradingEq extends Component {
     const {data} = this.state;
     return(
       <div>
+      <div className='title'>Exchange Rates</div>
         {
           Object.keys(data).map(key=>{
             var value = data[key];
             return(
                 <div className='row'>
-                  <div className= 'keys'>{key}</div>
-                  <div className= 'values'>{value}</div>
+                  <span className= 'keys'>{key} </span> 
+                  <span className= 'texts'> ratio is </span>
+                  <span className= 'values'>{value}</span>
+                  
                 </div>
               )
             })
-
         }
       </div>
     )
