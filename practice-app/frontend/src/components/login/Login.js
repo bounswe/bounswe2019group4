@@ -88,8 +88,9 @@ class Login extends Component {
         });
     }
 
-    signUpClick() {
-       history.push("/signup")
+    signUpClick(event) {
+        event.preventDefault()
+        history.push("/signup")
     }
 
     render() {
@@ -118,7 +119,7 @@ class Login extends Component {
                     <Button
                         basic
                         disabled={this.state.disabled}
-                        onClick={this.submit.bind(this)}
+                        onClick={this.submit}
                         content='Login'
                         style={{padding:1, circular:true}}>
 
@@ -127,7 +128,7 @@ class Login extends Component {
                     basic
                     content='Sign Up'
                     style={{padding:1, circular:true}}
-                    onClick={this.signUpClick.bind(this)}>
+                    onClick={this.signUpClick}>
 
                 </Button>
                 </div>
