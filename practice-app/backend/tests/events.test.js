@@ -39,7 +39,7 @@ describe('GET /events/list', () => {
         }
     })
     // test whether every object in the response has signifanceLevel key
-    it('should have signifanceLevel key in every item', done => {
+    it('should have significanceLevel key in every item', done => {
         // uses reducer when checking every item in the list
         const allContainsSignifanceLevel = response.reduce((acc, cur) => {
             // true if all items before cur and cur itself have the key signifanceLevel
@@ -52,4 +52,33 @@ describe('GET /events/list', () => {
             done(error)     // delegates the error message and continues
         }
     })
+    // test whether every object in the response has date
+    it('should have date key in every item', done => {
+        // uses reducer when checking every item in the list
+        const allContainsDate = response.reduce((acc, cur) => {
+            // true if all items before cur and cur itself have the key date
+            return acc && 'date' in cur  
+        }, true)
+        try {
+            expect(allContainsDate).to.be.equals(true)   // test check
+            done()          // calls next test
+        } catch (error) {   // when error occurs,
+            done(error)     // delegates the error message and continues
+        }
+    })
+    // test whether every object in the response has date
+    it('should have country key in every item', done => {
+        // uses reducer when checking every item in the list
+        const allContainsCountry = response.reduce((acc, cur) => {
+            // true if all items before cur and cur itself have the key country
+            return acc && 'country' in cur  
+        }, true)
+        try {
+            expect(allContainsCountry).to.be.equals(true)   // test check
+            done()          // calls next test
+        } catch (error) {   // when error occurs,
+            done(error)     // delegates the error message and continues
+        }
+    })
+
 })
