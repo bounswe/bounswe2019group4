@@ -16,6 +16,18 @@ class Header extends Component {
 		history.push("/")
 	}
 
+	onEventsClick() {
+		history.push("/events")
+	}
+
+	onTEClick() {
+		history.push("/t-equipments")
+	}
+
+	onConverterClick(){
+		history.push("/t-equipments/converter")
+	}
+
 	render() {
 		return (
 			<HeaderMenu>
@@ -25,12 +37,13 @@ class Header extends Component {
 					</MenuButton>
 				</MenuItem>
 				<MenuButton
-                    onClick={this.onClick.bind(this)}
+                    onClick={this.onEventsClick().bind(this)}
 					basic
 				>
 					Events
 				</MenuButton>
 				<MenuButton
+					onClick={this.onTEClick().bind(this)}
 				basic
 				>
 					Trading Equipments
