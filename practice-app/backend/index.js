@@ -27,7 +27,7 @@ app.use('/auth/', require('./routes/login-signup'))  // includes login/signup en
 
 // catches all GET requests that arrive at this point
 app.use(/.*/, (request, response, nextHandler) => {
-    response.status(400).send({ whatdidyoumean: `The request isn't supposed to enter that handler.` })
+    response.status(404).send({ whatdidyoumean: `The request isn't supposed to enter that handler.` })
 })
 
 const PORT = parseInt(process.argv[2]) || 8080  // optionally runs on the port given to the command 'yarn dev'
