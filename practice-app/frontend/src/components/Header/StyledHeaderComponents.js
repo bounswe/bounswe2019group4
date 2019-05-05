@@ -13,9 +13,12 @@ export const HeaderMenu = styled.div`
 `
 
 export const MenuItem = styled(Menu.Item)`
-  border-bottom: none !important;
+  border-style = solid;
+  border-width = 1px;
+  border-color = rgb(12,74,14) !important;
   height: 64px !important;
     flex-shrink: 1;
+    
 
 `
 
@@ -29,7 +32,7 @@ export const MenuButton = styled(Button)`
   float: right;
   color: rgb(12,74,14) !important;
   flex-shrink: 1;
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Corbel", Sans, serif;
 `
 
 export const MenuInput = styled(Input)`
@@ -42,5 +45,5 @@ export const MenuInput = styled(Input)`
   float: right;
   color: rgb(12,74,14) !important;
   flex-shrink: 1;
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Corbel", Sans, serif;
 `

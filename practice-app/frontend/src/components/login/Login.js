@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "./styles.css";
-import {Form} from "semantic-ui-react";
+import {Form, Button} from "semantic-ui-react";
 import styled from "styled-components"
 import history from "../core/history"
 
@@ -93,12 +93,12 @@ class Login extends Component {
     render() {
         return (
             <LoginForm onSubmit={this.submit}>
-                <div style={{display: "flex", flexDirection: "column", justifyContent: "flex-start", paddingRight: 5}}>
+                <div style={{display: "flex", flexDirection: "column-flow", justifyContent: "flex-start", padding: 5}}>
                     <LoginInput
                         disabled={this.state.disabled}
                         name="email"
                         type="email"
-                        placeholder= "email"
+                        placeholder= "Email"
                         onChange={this.handleChange }
                         value={this.state.email}
                     />
@@ -107,21 +107,27 @@ class Login extends Component {
                         disabled={this.state.disabled}
                         name="password"
                         type='password'
-                        placeholder='password'
+                        placeholder='Password'
                         onChange={(event) => { this.updatePassword(event.target.value) }}
                         value={this.state.password}
                     />
                 </div>
-                <div style={{display: "flex", flexDirection: "column", justifyContent: "flex-start", paddingRight: 5}}>
+                <div style={{display: "flex", flexDirection: "column", justifyContent: "flex-start", padding: 5}}>
+                    <Button
+                        basic
+                        disabled={this.state.disabled}
+                        onClick={this.submit.bind(this)}
+                        content='Login'
+                        style={{padding:1, circular:true}}>
 
-                <Form.Button
-                    disabled={this.state.disabled}
-                    onClick={this.submit.bind(this)}>
-                    Login
-                </Form.Button>
-                <Form.Button onClick={this.signUpClick.bind(this)}>
-                    Sign Up
-                </Form.Button>
+                    </Button>
+                <Button
+                    basic
+                    content='Sign Up'
+                    style={{padding:1, circular:true}}
+                    onClick={this.signUpClick.bind(this)}>
+
+                </Button>
                 </div>
             </LoginForm>
         )
