@@ -43,6 +43,7 @@ class Home extends Component{
             const sign1=event.signifanceLevel===1;
             const sign2=event.signifanceLevel===2;
             const sign3=event.signifanceLevel===3;
+            const forecastNotEx=event.forecast==="";
             return (
             <List.Item>
                 {sign1? (
@@ -67,7 +68,12 @@ class Home extends Component{
                         <div className="date">Date: {event.date}</div>
                         <div className="actual">Actual value: {event.actual}</div>
                         <div className="previous">Previous value: {event.previous}</div>
-                        <div className="forecast">Forecast: {event.forecast}</div>
+                        {forecastNotEx ? (
+                            <br></br>
+                        ):(
+                            <div className="forecast">Forecast: {event.forecast}</div>
+                        )}
+                       
                     </List.Description>
                 </List.Content>
             </List.Item>)
