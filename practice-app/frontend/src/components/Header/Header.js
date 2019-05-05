@@ -32,21 +32,18 @@ class Header extends Component {
 		return (
 			<HeaderMenu>
 				<MenuItem>
-					<MenuButton onClick={this.onHomeClick.bind(this)}>
-					<img style={{height: 64}} src="http://localhost:3000/logoarken.png"/>
+					<MenuButton onClick={this.onHomeClick}>
+					<img style={{height: 64}} src="/logoarken.png" alt='logo'/>
 					</MenuButton>
 				</MenuItem>
-				<MenuButton
-                    onClick={this.onEventsClick().bind(this)}
-					basic
-				>
+				<MenuButton onClick={this.onEventsClick} basic>
 					Events
 				</MenuButton>
-				<MenuButton
-					onClick={this.onTEClick().bind(this)}
-				basic
-				>
+				<MenuButton onClick={this.onTEClick} basic>
 					Trading Equipments
+				</MenuButton>
+				<MenuButton onClick={this.onConverterClick} basic>
+					Currency Converter
 				</MenuButton>
 				<div style={{flexGrow: "1"}}/>
 

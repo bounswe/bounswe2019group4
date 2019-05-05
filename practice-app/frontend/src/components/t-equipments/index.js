@@ -36,7 +36,7 @@ class TradingEq extends Component {
           Object.keys(data).map(key=>{
             var value = data[key];
             return(
-                <div className='row'>
+                <div className='row' key={key}>
                   <span className= 'keys'>{key} </span> 
                   <span className= 'texts'> ratio is </span>
                   <span className= 'values'>{value}</span>

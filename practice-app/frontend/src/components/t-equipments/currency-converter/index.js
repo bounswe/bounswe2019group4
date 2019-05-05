@@ -50,6 +50,8 @@ export default class CurrencyConverter extends Component {
         })
       })
       .catch(err => {
+        alert('Try again with currencies in use.')
+        console.log(err)
         this.setState({
           rate: 'Error',
           value: '',

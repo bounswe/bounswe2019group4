@@ -63,9 +63,11 @@ export default class SignUp extends Component {
     })
       .then(response => {
         console.log(response, 'Signed up!');
+        alert('Signed up! You can log in now.')
       })
       .catch(err => {
         console.log(err, 'Failure!');
+        alert('Failure! Try again with proper credentials.')
       });
 
     this.setState({
@@ -75,7 +77,7 @@ export default class SignUp extends Component {
 
     render() {
       return (
-        <form class="ui form" onSubmit={this.submit} font-family="">
+        <form className="ui form" onSubmit={this.submit}>
            <Grid id="layout-grid">
                <GridRow>
                   <GridColumn width={8}>
@@ -136,9 +138,9 @@ export default class SignUp extends Component {
                        type='password'
                        placeholder='Password'
                        onChange={(event) => {
-                         this.updateEmail(event.target.value)
+                         this.updatePassword(event.target.value)
                        }}
-                       value={this.state.email}
+                       value={this.state.password}
                    />
                  </GridColumn>
                </GridRow>
@@ -153,9 +155,9 @@ export default class SignUp extends Component {
                      type='text'
                      placeholder='Location'
                      onChange={(event) => {
-                       this.updateEmail(event.target.value)
+                       this.updateLocation(event.target.value)
                      }}
-                     value={this.state.email}
+                     value={this.state.location}
                  />
                </GridColumn>
              </GridRow>

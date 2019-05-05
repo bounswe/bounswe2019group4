@@ -76,9 +76,11 @@ class Login extends Component {
         })
             .then(response => {
                 console.log(response, 'Logged in!');
+                alert('Logged in!')
             })
             .catch(err => {
                 console.log(err, 'Failure!');
+                alert(err)
             });
 
         this.setState({
