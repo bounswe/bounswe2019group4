@@ -1,0 +1,13 @@
+.row {
+  flex-direction: row;
+}
+
+.keys {
+  color: red;
+  text-align: left;
+}
+
+.values {
+  color: blue;
+  text-align: right;
+}
