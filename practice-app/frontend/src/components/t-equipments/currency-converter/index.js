@@ -15,18 +15,22 @@ export default class CurrencyConverter extends Component {
     };
   }
 
+  // Updates first currency name
   updateFirst(value) {
     this.setState({
       first_cur: value,
     });
   }
 
+
+  // Updates second currency name
   updateSecond(value) {
     this.setState({
       second_cur: value,
     });
   }
 
+  // Request to our api for get the value of fiven currencies.
   async submit(event) {
     event.preventDefault()
     this.setState({
@@ -36,6 +40,7 @@ export default class CurrencyConverter extends Component {
     const {first_cur} =  this.state;
     const {second_cur} = this.state;
 
+    // Requests
     await axios.get('http://api.dev.arkenstone.ml/t-equipments/'+first_cur+'-'+second_cur)
       .then(response => {
         console.log(response);
@@ -56,6 +61,7 @@ export default class CurrencyConverter extends Component {
     });
   }
 
+  // Form which has input for first currency and second currency, submit button and fields for rate and value.
     render() {
       return (
         <form onSubmit={this.submit}>
