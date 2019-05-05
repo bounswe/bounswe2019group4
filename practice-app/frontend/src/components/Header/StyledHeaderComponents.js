@@ -24,6 +24,7 @@ export const MenuButton = styled(Button)`
   box-shadow: none !important;
   border: none !important;
   font-size: 16px !important;
+  padding: 5px;
   font-weight: bold !important;
   float: right;
   color: rgb(12,74,14) !important;
@@ -37,6 +38,7 @@ export const MenuInput = styled(Input)`
   border: none !important;
   font-size: 16px !important;
   font-weight: bold !important;
+  height: 32px !important;
   float: right;
   color: rgb(12,74,14) !important;
   flex-shrink: 1;

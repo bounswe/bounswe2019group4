@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import "./styles.css";
 
-export default class Signup extends Component {
+export default class SignUp extends Component {
 
   constructor(props){
     super(props);
