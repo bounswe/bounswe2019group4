@@ -36,9 +36,9 @@ class Home extends Component{
                         
                         <div className="event-content">
                             
-                            <Link to={'/'+event.id}>
+                            {/* <Link to={'/'+event.id}>
                                 <span className="event-title red-text" style={{zIndex:0}}>{event.eventName} </span>
-                            </Link>
+                            </Link> */}
                             <div className="country" style={{zIndex:0}}>Country: {event.country} </div>
                             <div className="significance" style={{zIndex:0}}>Significance Level: {event.signifanceLevel}</div>
                             <div className="date" style={{zIndex:0}}>Date: {event.date} </div>
