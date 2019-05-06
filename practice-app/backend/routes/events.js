@@ -1,9 +1,8 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+const eventsControllers = require('../controllers/events')
 
-// Retrieves some important events that happened recently
-router.get('/list', (req, res) => {
-    res.send({events: ['nothing special']})
-})
+// Retrieve events list endpoint. Check controller function for more detail
+router.get("/list", eventsControllers.list);
 
-module.exports = router
+module.exports = router;
