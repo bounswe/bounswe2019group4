@@ -5,6 +5,8 @@ import SignUp from "./signup/SignUp"
 import TradingEq from "./t-equipments";
 import Home from "./event";
 import CurrencyConverter from "./t-equipments/currency-converter";
+import Post from "./event/Post"
+
 class Routes extends Component {
     render() {
         return (
@@ -14,6 +16,7 @@ class Routes extends Component {
                 <Route path="/t-equipments/converter" render={() => { return <CurrencyConverter />; }} />
                 <Route path="/t-equipments" render={() => { return <TradingEq />; }} />
                 <Route path="/events" render={() => { return <Home />; }} />
+                <Route path='/:post_id' component={Post} />
                 <Route path="/" render={() => { return <Home />; }} />
             </Switch>
         </Router>

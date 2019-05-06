@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-//import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './styles.css';
 import {List} from "semantic-ui-react"
 import OneStar from '../../onestar.png'
