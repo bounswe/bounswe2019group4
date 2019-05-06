@@ -57,7 +57,9 @@ class Home extends Component{
                
                 <List.Content>
                     <List.Header as={"a"}>
+                    <Link to={'/'+event.eventName+"+"+event.country+"+"+event.date }>
                         <span className="eventName">{event.eventName}</span>
+                    </Link> 
                     </List.Header>
                     <List.Description>
 
