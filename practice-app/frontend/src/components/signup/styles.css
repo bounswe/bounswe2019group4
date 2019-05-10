@@ -1,3 +1,8 @@
 * {
     text-align: center;
 }
+
+#layout-grid {
+    color:black;
+    vertical-align: bottom;
+}
