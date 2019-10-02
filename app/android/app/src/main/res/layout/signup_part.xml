@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp"
+    android:background="@android:color/white"
+    android:animateLayoutChanges="true">
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:text="Name"
+        android:textSize="16sp"
+        android:id="@+id/nameTag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/nameEditText"
+        app:layout_constraintBottom_toBottomOf="@id/nameEditText"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        />
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="0dp"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/nameTag"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:text="Surname"
+        android:textSize="16sp"
+        android:id="@+id/surnameTag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/surnameEditText"
+        app:layout_constraintBottom_toBottomOf="@id/surnameEditText"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        />
+
+    <EditText
+        android:id="@+id/surnameEditText"
+        android:layout_width="0dp"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/surnameTag"
+        app:layout_constraintTop_toBottomOf="@id/nameEditText" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:text="E-mail"
+        android:textSize="16sp"
+        android:id="@+id/emailTag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/emailEditText"
+        app:layout_constraintBottom_toBottomOf="@id/emailEditText"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="0dp"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/emailTag"
+        app:layout_constraintTop_toBottomOf="@id/surnameEditText" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:text="Password"
+        android:textSize="16sp"
+        android:id="@+id/passwordTag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/passwordEditText"
+        app:layout_constraintBottom_toBottomOf="@id/passwordEditText"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="0dp"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/emailTag"
+        app:layout_constraintTop_toBottomOf="@id/emailEditText"
+        android:inputType="textPassword"/>
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:text="TC id"
+        android:textSize="16sp"
+        android:id="@+id/tcknTag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tcknEditText"
+        app:layout_constraintBottom_toBottomOf="@id/tcknEditText"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        />
+
+    <EditText
+        android:id="@+id/tcknEditText"
+        android:layout_width="0dp"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tcknTag"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
+        android:inputType="number"
+        android:visibility="gone"
+        />
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:text="IBAN"
+        android:textSize="16sp"
+        android:id="@+id/ibanTag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ibanEditText"
+        app:layout_constraintBottom_toBottomOf="@id/ibanEditText"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        />
+
+    <EditText
+        android:id="@+id/ibanEditText"
+        android:layout_width="0dp"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ibanTag"
+        app:layout_constraintTop_toBottomOf="@id/tcknEditText"
+        android:visibility="gone"
+        />
+    <ImageButton
+        android:id="@+id/locationButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ibanEditText"
+        android:src="@drawable/ic_location"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
+    </ImageButton>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Find your location"
+        android:id="@+id/locationTextView"
+        app:layout_constraintEnd_toEndOf="@id/locationButton"
+        app:layout_constraintStart_toStartOf="@id/locationButton"
+        app:layout_constraintTop_toBottomOf="@id/locationButton"
+        android:gravity="center_horizontal"/>
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/isTraderSwitch"
+        app:layout_constraintTop_toBottomOf="@id/ibanEditText"
+        app:layout_constraintBottom_toTopOf="@id/signupButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/locationButton"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Basic"
+        app:layout_constraintEnd_toStartOf="@id/isTraderSwitch"
+        app:layout_constraintTop_toTopOf="@+id/isTraderSwitch"
+        app:layout_constraintBottom_toBottomOf="@id/isTraderSwitch"
+        android:layout_margin="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trader"
+        app:layout_constraintStart_toEndOf="@id/isTraderSwitch"
+        app:layout_constraintTop_toTopOf="@+id/isTraderSwitch"
+        app:layout_constraintBottom_toBottomOf="@id/isTraderSwitch"
+        android:layout_margin="10dp"/>
+
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Sıgn Up"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/locationButton"
+        app:layout_constraintTop_toTopOf="@id/locationButton"
+        app:layout_constraintBottom_toBottomOf="@id/locationTextView"
+        android:id="@+id/signupButton">
+
+    </Button>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Google Account"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@android:color/holo_blue_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/locationButton"
+        app:layout_constraintTop_toBottomOf="@id/signupButton"
+        android:id="@+id/signupGoogleButton">
+
+    </TextView>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
