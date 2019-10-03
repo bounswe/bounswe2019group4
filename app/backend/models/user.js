@@ -46,6 +46,11 @@ let User = mongoose.model('User', {
     default: false,
   },
 
+  isPublic: {
+    type: Boolean,
+    default: true,
+  },
+
   iban: {
     type: String,
     default: null,
