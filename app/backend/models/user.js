@@ -10,26 +10,29 @@ const {mongoose} =  require('../db');  // The mongodb connector library
     isTrader,
     iban,
     tckn.
-*/let User = mongoose.model('User', {
+*/
+let User = mongoose.model('User', {
   name: {
     type: String,
-    required: true,
+    required: 'Name is required',
   },
   
   surname: {
     type: String,
-    required: true,
+    required: 'Surname is required',
   },
 
   email: { 
     type: String,
-    required: true,
+    required: 'Email is required',
     unique: true,
+    lowercase: true,
+    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
 
   password: {
     type: String,
-    required: true,
+    required: 'Password is required',
     minlength: 6,
   },
 
