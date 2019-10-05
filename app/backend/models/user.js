@@ -46,6 +46,15 @@ let User = mongoose.model('User', {
     default: false,
   },
 
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+
+  token: {
+    type: String
+  },
+
   iban: {
     type: String,
     default: null,

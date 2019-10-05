@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 let { User } = require('./../models/user.js');  // The connection to the User model in the database
+const { sendVerifyEmail } = require('./../emails/verifyEmail');
+const randomstring = require('randomstring')
 
 /*
   Post method for signup.
@@ -11,12 +13,14 @@ module.exports.signup = (request, response) => {
     ...request.body,
     // Hashes the password
     password: bcrypt.hashSync(request.body.password, 10),
+    token: randomstring.generate(),
   });
 
   // Saves the instance into the database, returns any error occured
   user.save().then((doc) => {
     // Omit sensitive data
     const { _id, isTrader, name, surname, email, location } = doc  // Extract certain keys from doc
+    sendVerifyEmail(email, user.token)
     response.send({ _id, isTrader, name, surname, email, location });  // Send only the extracted keys 
   }, (error) => {
     response.status(400).send(error);
@@ -39,6 +43,12 @@ module.exports.login = async (request, response) => {
       let userRegistered = await User.findOne({ email })  // Retrieve the user instance from database
       if (!userRegistered) {  // If no instance is returned, credentials are invalid
         throw Error('Email not found or password does not match!')
+        return
+      }
+
+      if(!userRegistered.isVerified){
+        throw Error('Email not verified!')
+        return
       }
 
       // If password hashed in the user instance doesn't match with the password in the request, credentials are invalid
@@ -58,4 +68,31 @@ module.exports.login = async (request, response) => {
       response.status(400).send({ errmsg: err.message })
     }
   }
+}
+
+/*
+  Get endpoint for verify email.
+*/
+module.exports.verify = async (request, response) => {
+  const token = request.query.token
+  try {
+      let userRegistered = await User.findOne({ token })  // Retrieve the user instance from database
+      if (!userRegistered) {  // If no instance is returned, credentials are invalid
+        throw Error('User not found.')
+      }
+
+      userRegistered.isVerified = true
+      userRegistered.token = ""
+
+      // Saves the instance into the database, returns any error occured
+      userRegistered.save().then(() => {
+        // Omit sensitive data
+        response.status(200).send();  // Send only the extracted keys 
+      }, (error) => {
+        response.status(400).send(error);
+      });
+
+    } catch (err) { // Some error is thrown before, returns the error message
+      response.status(400).send({ errmsg: err.message })
+    }
 }
