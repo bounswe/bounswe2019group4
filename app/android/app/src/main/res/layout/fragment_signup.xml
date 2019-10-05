@@ -15,11 +15,11 @@
         android:text="Sign Up"
         android:textColor="@android:color/white"
         android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="@id/signUpLayout"
-        app:layout_constraintStart_toStartOf="@id/line" />
+        app:layout_constraintBottom_toBottomOf="@id/signup_loginButton_layout"
+        app:layout_constraintStart_toStartOf="@id/signup_line" />
 
     <LinearLayout
-        android:id="@+id/signUpLayout"
+        android:id="@+id/signup_loginButton_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -32,7 +32,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@android:color/holo_blue_dark"
@@ -55,20 +54,20 @@
         android:layout_height="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signUpLayout"
+        app:layout_constraintTop_toBottomOf="@id/signup_loginButton_layout"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/white"
-        android:id="@+id/line"/>
+        android:id="@+id/signup_line"/>
 
-    <include  layout="@layout/signup_part" android:id="@+id/signUpCredentials"
-        app:layout_constraintTop_toBottomOf="@id/line"
+    <include  layout="@layout/signup_part" android:id="@+id/signup_credentials_layout"
+        app:layout_constraintTop_toBottomOf="@id/signup_line"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/guestButton"/>
+        app:layout_constraintBottom_toTopOf="@id/signup_guest_button" />
 
     <Button
         android:layout_width="wrap_content"
@@ -76,7 +75,7 @@
         android:text="Go on as a Guest"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        android:id="@+id/guestButton"
+        android:id="@+id/signup_guest_button"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="16dp"
         app:layout_constraintStart_toStartOf="parent"
