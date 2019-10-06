@@ -14,4 +14,14 @@ router.post('/signup', authControllers.signup)
 */
 router.post('/login', authControllers.login)
 
+/*
+  Get endpoint for forget passport.
+*/
+router.get('/forget-password', authControllers.forgetPassword)
+
+/*
+  Post endpoint to reset passport.
+*/
+router.post('/reset-password', authControllers.resetPassword)
+
 module.exports = router
