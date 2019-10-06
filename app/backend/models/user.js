@@ -46,6 +46,10 @@ let User = mongoose.model('User', {
     default: false,
   },
 
+  token: {
+    type: String
+  },
+
   iban: {
     type: String,
     default: null,
