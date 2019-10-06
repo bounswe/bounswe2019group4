@@ -14,7 +14,12 @@ public interface APIService {
             @Field("surname") String surname,
             @Field("email") String email,
             @Field("password") String password,
-            @Field("location") String location,
-            @Field("isTrader") Boolean isTrader
+            @Field("location") String location
+    );
+    @FormUrlEncoded
+    @POST("login")
+    Call<ResponseBody> login(
+            @Field("email") String email,
+            @Field("password") String password
     );
 }

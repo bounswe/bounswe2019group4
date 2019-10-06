@@ -110,18 +110,14 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             Boolean isTrader = isTraderSwitch.isChecked();
 
             Call<ResponseBody> call = RetroClient.getInstance().getAPIService().signup(name,
-                    surname, email, password, location, isTrader);
+                    surname, email, password, location);
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    try {
-                        String r = response.body().string();
-                        Toast.makeText(getContext(), r, Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if(response.isSuccessful()){
+                        Toast.makeText(getContext(), "You are registered!", Toast.LENGTH_SHORT).show();
                     }
-
                 }
 
                 @Override
