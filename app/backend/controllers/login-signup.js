@@ -7,13 +7,21 @@ const randomstring = require('randomstring')
   Post method for signup.
   Get user attributes from request.body and respondes accordingly.
 */
-module.exports.signup = (request, response) => {
+module.exports.signup = async (request, response) => {
+  // create a token for the user and make sure it's unique
+  let token = randomstring.generate()
+  let duplicateTokenOwners = await User.findOne({token})
+  while(duplicateTokenOwners) {
+    token = randomstring.generate()
+    duplicateTokenOwners = await User.findOne({token})
+  }
+  
   // User instance to add to the database
   let user = new User({
     ...request.body,
     // Hashes the password
     password: bcrypt.hashSync(request.body.password, 10),
-    token: randomstring.generate(),
+    token: token,
   });
 
   // Saves the instance into the database, returns any error occured
