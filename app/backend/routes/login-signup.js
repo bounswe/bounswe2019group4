@@ -17,7 +17,7 @@ router.post('/login', authControllers.login)
 /*
   Get endpoint for forget passport.
 */
-router.get('/forget-password', authControllers.forgetPassword)
+router.post('/forget-password', authControllers.forgetPassword)
 
 /*
   Post endpoint to reset passport.
