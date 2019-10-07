@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.arken.R;
+import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
 
 import java.io.IOException;
@@ -109,14 +110,16 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             String location = "Turkey";
             Boolean isTrader = isTraderSwitch.isChecked();
 
-            Call<ResponseBody> call = RetroClient.getInstance().getAPIService().signup(name,
-                    surname, email, password, location);
+            Call<ResponseBody> call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
+                    surname, email, password, location));
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if(response.isSuccessful()){
                         Toast.makeText(getContext(), "You are registered!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 

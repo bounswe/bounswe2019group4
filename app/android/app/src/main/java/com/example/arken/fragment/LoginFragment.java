@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.arken.R;
+import com.example.arken.model.LoginUser;
 import com.example.arken.util.RetroClient;
 
 import okhttp3.ResponseBody;
@@ -60,7 +60,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     .addToBackStack(null)
                     .commit();
         }
-        else if(view.getId() == R.id.signup_signup_button){
+        else if(view.getId() == R.id.login_login_button){
             if(emailEditText.getText().toString().trim().equals("")){
                 Toast.makeText(getContext(),"Please enter your email", Toast.LENGTH_SHORT).show();
                 return;
@@ -73,13 +73,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             String email = String.valueOf(emailEditText.getText());
             String password = String.valueOf(passwordEditText.getText());
 
-            Call<ResponseBody> call = RetroClient.getInstance().getAPIService().login(email, password);
+            Call<ResponseBody> call = RetroClient.getInstance().getAPIService().login(new LoginUser(email, password));
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "You are logged in!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 

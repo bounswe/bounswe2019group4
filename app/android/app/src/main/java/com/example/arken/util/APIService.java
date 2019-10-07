@@ -1,25 +1,26 @@
 package com.example.arken.util;
 
+import com.example.arken.model.LoginUser;
+import com.example.arken.model.SignupUser;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface APIService {
-    @FormUrlEncoded
+    @Headers({"Content-Type: application/json"})
     @POST("signup")
     Call<ResponseBody> signup(
-            @Field("name") String name,
-            @Field("surname") String surname,
-            @Field("email") String email,
-            @Field("password") String password,
-            @Field("location") String location
+            @Body SignupUser signupUser
     );
-    @FormUrlEncoded
+
+    @Headers({"Content-Type: application/json"})
     @POST("login")
     Call<ResponseBody> login(
-            @Field("email") String email,
-            @Field("password") String password
+            @Body LoginUser loginUser
     );
 }

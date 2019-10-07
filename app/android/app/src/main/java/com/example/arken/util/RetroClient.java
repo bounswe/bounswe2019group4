@@ -8,7 +8,7 @@ public class RetroClient {
     private Retrofit retrofit = null;
     private static RetroClient mInstance;
 
-    public RetroClient(){
+    private RetroClient(){
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -16,12 +16,14 @@ public class RetroClient {
                     .build();
         }
     }
+
     public static synchronized RetroClient getInstance(){
          if(mInstance == null){
              mInstance = new RetroClient();
          }
          return mInstance;
     }
+
     public APIService getAPIService(){
         return retrofit.create(APIService.class);
     }
