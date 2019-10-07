@@ -1,5 +1,4 @@
 const {mongoose} =  require('../db');  // The mongodb connector library
-
 /*
   Model for user which has following attributes
     name,
@@ -52,7 +51,8 @@ let User = mongoose.model('User', {
   },
 
   token: {
-    type: String
+    type: String,
+    unique: true,
   },
 
   iban: {
