@@ -107,7 +107,9 @@ module.exports.forgetPassword = async (request, response) => {
 module.exports.resetPassword = async (request, response) => {
   const recoverPassToken = request.body.token
   if (!recoverPassToken) {           // If there's no email field in the request, return status 400
-  response.status(400).send({ errmsg: 'Token is required in the request body' })
+    response.status(400).send({ errmsg: 'Token is required in the request body' })
+  } else if (!request.body.password) {
+    response.status(400).send({errmsg: 'New password is required in the request body'})
   } else {
     try {
       let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
