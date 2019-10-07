@@ -37,13 +37,16 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     EditText passwordEditText;
     Switch isTraderSwitch;
     Button signupButton;
+    EditText ibanEditText ;
+    EditText tcknEditText;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
-        final EditText ibanEditText = view.findViewById(R.id.signup_iban_editText);
-        final EditText tcknEditText = view.findViewById(R.id.signup_tckn_editText);
+         ibanEditText = view.findViewById(R.id.signup_iban_editText);
+         tcknEditText = view.findViewById(R.id.signup_tckn_editText);
         loginButton = view.findViewById(R.id.signup_loginButton_layout);
         loginButton.setOnClickListener(this);
         ConstraintLayout layout = view.findViewById(R.id.signup_background);
@@ -58,11 +61,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         isTraderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     ibanEditText.setVisibility(View.VISIBLE);
                     tcknEditText.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     ibanEditText.setVisibility(View.GONE);
                     tcknEditText.setVisibility(View.GONE);
                 }
@@ -70,37 +72,37 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         });
         return view;
     }
+
     @Override
     public void onClick(View view) {
-        if(view.getId()!=R.id.signup_email_editText && view.getId()!=R.id.signup_iban_editText &&
-                view.getId()!=R.id.signup_name_editText && view.getId()!=R.id.signup_password_editText &&
-                view.getId()!=R.id.signup_surname_editText && view.getId()!=R.id.signup_tckn_editText){
-            InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (view.getId() != R.id.signup_email_editText && view.getId() != R.id.signup_iban_editText &&
+                view.getId() != R.id.signup_name_editText && view.getId() != R.id.signup_password_editText &&
+                view.getId() != R.id.signup_surname_editText && view.getId() != R.id.signup_tckn_editText) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         }
-        if(view.getId() == R.id.signup_loginButton_layout){
-            LoginFragment nextFrag= new LoginFragment();
+        if (view.getId() == R.id.signup_loginButton_layout) {
+            LoginFragment nextFrag = new LoginFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .add(R.id.root_layout, nextFrag, "findThisFragment")
                     .addToBackStack(null)
                     .commit();
-        }
-        else if(view.getId() == R.id.signup_signup_button){
-            if(nameEditText.getText().toString().trim().equals("")){
-                Toast.makeText(getContext(),"Please enter your name", Toast.LENGTH_SHORT).show();
+        } else if (view.getId() == R.id.signup_signup_button) {
+            if (nameEditText.getText().toString().trim().equals("")) {
+                Toast.makeText(getContext(), "Please enter your name", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(surnameEditText.getText().toString().trim().equals("")){
-                Toast.makeText(getContext(),"Please enter your surname", Toast.LENGTH_SHORT).show();
+            if (surnameEditText.getText().toString().trim().equals("")) {
+                Toast.makeText(getContext(), "Please enter your surname", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(emailEditText.getText().toString().trim().equals("")){
-                Toast.makeText(getContext(),"Please enter your email", Toast.LENGTH_SHORT).show();
+            if (emailEditText.getText().toString().trim().equals("")) {
+                Toast.makeText(getContext(), "Please enter your email", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(passwordEditText.getText().toString().trim().equals("")){
-                Toast.makeText(getContext(),"Please enter your password", Toast.LENGTH_SHORT).show();
+            if (passwordEditText.getText().toString().trim().equals("")) {
+                Toast.makeText(getContext(), "Please enter your password", Toast.LENGTH_SHORT).show();
                 return;
             }
             String name = String.valueOf(nameEditText.getText());
@@ -109,23 +111,43 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             String password = String.valueOf(passwordEditText.getText());
             String location = "Turkey";
             Boolean isTrader = isTraderSwitch.isChecked();
+            if (isTrader){
+                if (tcknEditText.getText().toString().trim().equals("")) {
+                    Toast.makeText(getContext(), "Please enter your TC", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (ibanEditText.getText().toString().trim().equals("")) {
+                    Toast.makeText(getContext(), "Please enter your iban", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
 
-            Call<ResponseBody> call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
-                    surname, email, password, location));
+
+                Call<ResponseBody> call;
+            if (isTrader) {
+                String tckn=String.valueOf(tcknEditText.getText());
+                String iban=String.valueOf(ibanEditText.getText());
+                call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
+                        surname, email, password, location,isTrader,tckn,iban));
+            } else {
+                call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
+                        surname, email, password, location));
+            }
+
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "You are registered!", Toast.LENGTH_SHORT).show();
-                    }else{
+                    } else {
                         Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getContext(),t.getMessage(), Toast.LENGTH_SHORT ).show();
+                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

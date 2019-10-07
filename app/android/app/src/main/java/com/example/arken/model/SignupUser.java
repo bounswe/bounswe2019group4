@@ -8,6 +8,33 @@ public class SignupUser {
     private String email;
     private String password;
     private String location;
+    private boolean isTrader;
+    private String tckn;
+    private String iban;
+
+    public boolean isTrader() {
+        return isTrader;
+    }
+
+    public void setTrader(boolean trader) {
+        isTrader = trader;
+    }
+
+    public String getTckn() {
+        return tckn;
+    }
+
+    public void setTckn(String tckn) {
+        this.tckn = tckn;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
 
     public SignupUser(String name, String surname, String email, String password, String location) {
         this.name = name;
@@ -15,6 +42,17 @@ public class SignupUser {
         this.email = email;
         this.password = password;
         this.location = location;
+    }
+
+    public SignupUser(String name, String surname, String email, String password, String location, boolean isTrader, String tckn, String iban) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.location = location;
+        this.isTrader = isTrader;
+        this.tckn = tckn;
+        this.iban = iban;
     }
 
     public String getName() {
