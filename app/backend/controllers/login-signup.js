@@ -117,7 +117,7 @@ module.exports.resetPassword = async (request, response) => {
         throw Error('User not found.')
       }
 
-      userRegistered.recoverPassToken = ""
+      userRegistered.recoverPassToken = null
       userRegistered.password = bcrypt.hashSync(request.body.password, 10)
 
       userRegistered.save().then(() => {
