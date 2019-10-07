@@ -67,25 +67,25 @@ module.exports.login = async (request, response) => {
 */
 module.exports.forgetPassword = async (request, response) => {
   const email = request.body.email
-  console.log(email)
+  // console.log(email)
 
-    if (!email) {           // If there's no email field in the request, return status 400
-    response.status(400).send({ errmsg: 'Email is required in the request body' })
-  } else{
+  if (!email) {           // If there's no email field in the request, return status 400
+  response.status(400).send({ errmsg: 'Email is required in the request body' })
+  } else {
     try {
       let userRegistered = await User.findOne({ email })  // Retrieve the user instance from database
       if (!userRegistered) {  // If no instance is returned, credentials are invalid
         throw Error('User not found.')
       }
-
+      // TODO: make sure the token is unique
       token = randomstring.generate()
       sendForgetPassword(email, token)
-      userRegistered.token = token
-      console.log(userRegistered)
+      userRegistered.recoverPassToken = token
+      // console.log(userRegistered)
 
       userRegistered.save().then(() => {
         // Omit sensitive data
-        response.send("Email sent.");  // Send only the extracted keys 
+        response.sendStatus(204);  // Send only the extracted keys 
       }, (error) => {
         response.status(400).send(error);
       });
@@ -101,27 +101,27 @@ module.exports.forgetPassword = async (request, response) => {
 */  
 module.exports.resetPassword = async (request, response) => {
   const token = request.body.token
-    if (!token) {           // If there's no email field in the request, return status 400
-    response.status(400).send({ errmsg: 'Token is required in the request body' })
-    } else{
-      try {
-        let userRegistered = await User.findOne({ token })  // Retrieve the user instance from database
-        if (!userRegistered) {  // If no instance is returned, credentials are invalid
-          throw Error('User not found.')
-        }
+  if (!token) {           // If there's no email field in the request, return status 400
+  response.status(400).send({ errmsg: 'Token is required in the request body' })
+  } else {
+    try {
+      let userRegistered = await User.findOne({ token })  // Retrieve the user instance from database
+      if (!userRegistered) {  // If no instance is returned, credentials are invalid
+        throw Error('User not found.')
+      }
 
-        userRegistered.token = ""
-        userRegistered.password = bcrypt.hashSync(request.body.password, 10)
+      userRegistered.token = ""
+      userRegistered.password = bcrypt.hashSync(request.body.password, 10)
 
-        userRegistered.save().then(() => {
-          // Omit sensitive data
-          response.send("Password changed.");  // Send only the extracted keys 
-        }, (error) => {
-          response.status(400).send(error);
-        });
+      userRegistered.save().then(() => {
+        // Omit sensitive data
+        response.send("Password changed.");  // Send only the extracted keys 
+      }, (error) => {
+        response.status(400).send(error);
+      });
 
-      } catch (err) { // Some error is thrown before, returns the error message
-          response.status(400).send({ errmsg: err.message })
-        }
+    } catch (err) { // Some error is thrown before, returns the error message
+        response.status(400).send({ errmsg: err.message })
+    }
   }
 }
