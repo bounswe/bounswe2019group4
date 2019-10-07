@@ -45,6 +45,11 @@ let User = mongoose.model('User', {
     default: false,
   },
 
+  isPublic: {
+    type: Boolean,
+    default: true,
+  },
+  
   isVerified: {
     type: Boolean,
     default: false,

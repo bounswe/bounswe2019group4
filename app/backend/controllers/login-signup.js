@@ -65,10 +65,10 @@ module.exports.login = async (request, response) => {
       if (bcrypt.compareSync(password, userRegistered['password'])) {
         // The user credentials are correct, its instance is userRegistered and added to the cookie
         request.session['user'] = userRegistered
-        const { _id, isTrader, name, surname, email, location } = userRegistered  // Extract certain keys from user
+        const { _id, isTrader, isPublic, name, surname, email, location } = userRegistered  // Extract certain keys from user
         response.send({
           msg: 'Successfully logged in.',
-          _id, isTrader, name, surname, email, location  // Send only the extracted keys
+          _id, isTrader, isPublic, name, surname, email, location  // Send only the extracted keys
         })
       } else {
         throw Error('Email not found or password does not match!')
