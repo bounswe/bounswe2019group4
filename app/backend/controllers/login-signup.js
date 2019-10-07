@@ -17,12 +17,13 @@ module.exports.signup = (request, response) => {
   });
 
   // Saves the instance into the database, returns any error occured
-  user.save().then((doc) => {
+  user.save()
+    .then(doc => {
     // Omit sensitive data
     const { _id, isTrader, name, surname, email, location } = doc  // Extract certain keys from doc
     sendVerifyEmail(email, user.token)
     response.send({ _id, isTrader, name, surname, email, location });  // Send only the extracted keys 
-  }, (error) => {
+  }).catch(error => {
     response.status(400).send(error);
   });
 }
@@ -75,24 +76,28 @@ module.exports.login = async (request, response) => {
 */
 module.exports.verify = async (request, response) => {
   const token = request.query.token
-  try {
-      let userRegistered = await User.findOne({ token })  // Retrieve the user instance from database
-      if (!userRegistered) {  // If no instance is returned, credentials are invalid
-        throw Error('User not found.')
-      }
-
-      userRegistered.isVerified = true
-      userRegistered.token = ""
-
-      // Saves the instance into the database, returns any error occured
-      userRegistered.save().then(() => {
-        // Omit sensitive data
-        response.status(200).send();  // Send only the extracted keys 
-      }, (error) => {
-        response.status(400).send(error);
-      });
-
-    } catch (err) { // Some error is thrown before, returns the error message
-      response.status(400).send({ errmsg: err.message })
-    }
+  if(!token) {
+    response.status(400).send({
+      errmsg: "Verification token should be supplied in the query string"
+    })
+  } else {
+    User.findOne({ token })     // Retrieve the user instance from database
+      .then(user => {
+        if(user.isVerified) {
+          response.sendStatus(204)
+        } else {
+          user.isVerified = true
+          user.save()
+            .then(data => {
+              response.sendStatus(204)
+            })
+            .catch(error => {
+              response.status(400).send({errmsg: error})
+            })
+        }
+      })
+      .catch(error => {
+        response.status(400).send({errmsg: "invalid verification token"})
+      })
+  }
 }
