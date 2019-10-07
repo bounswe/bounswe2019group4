@@ -121,10 +121,9 @@ module.exports.resetPassword = async (request, response) => {
       userRegistered.password = bcrypt.hashSync(request.body.password, 10)
 
       userRegistered.save().then(() => {
-        // Omit sensitive data
-        response.send("Password changed.");  // Send only the extracted keys 
+        response.sendStatus(204);
       }, (error) => {
-        response.status(400).send(error);
+        response.status(400).send({error});
       });
 
     } catch (err) { // Some error is thrown before, returns the error message
