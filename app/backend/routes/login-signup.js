@@ -14,4 +14,9 @@ router.post('/signup', authControllers.signup)
 */
 router.post('/login', authControllers.login)
 
+/*
+  Get method in order to verify email.
+*/
+router.get('/verify', authControllers.verify)
+
 module.exports = router
