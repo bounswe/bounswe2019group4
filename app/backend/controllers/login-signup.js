@@ -63,11 +63,10 @@ module.exports.login = async (request, response) => {
 }
 
 /*
-  Get method for forget password, it sends email to user in order reset their password.
+  Post method for forget password, it sends email to user in order reset their password.
 */
 module.exports.forgetPassword = async (request, response) => {
   const email = request.body.email
-  // console.log(email)
 
   if (!email) {           // If there's no email field in the request, return status 400
   response.status(400).send({ errmsg: 'Email is required in the request body' })
@@ -79,13 +78,11 @@ module.exports.forgetPassword = async (request, response) => {
       }
       // TODO: make sure the token is unique
       token = randomstring.generate()
-      sendForgetPassword(email, token)
       userRegistered.recoverPassToken = token
-      // console.log(userRegistered)
 
       userRegistered.save().then(() => {
-        // Omit sensitive data
-        response.sendStatus(204);  // Send only the extracted keys 
+        sendForgetPassword(email, token) // Send email to reset password.
+        response.sendStatus(204);   
       }, (error) => {
         response.status(400).send(error);
       });
@@ -100,17 +97,17 @@ module.exports.forgetPassword = async (request, response) => {
   Post method for reset password. It gets new password and saves it.
 */  
 module.exports.resetPassword = async (request, response) => {
-  const token = request.body.token
-  if (!token) {           // If there's no email field in the request, return status 400
+  const recoverPassToken = request.body.token
+  if (!recoverPassToken) {           // If there's no email field in the request, return status 400
   response.status(400).send({ errmsg: 'Token is required in the request body' })
   } else {
     try {
-      let userRegistered = await User.findOne({ token })  // Retrieve the user instance from database
+      let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
       if (!userRegistered) {  // If no instance is returned, credentials are invalid
         throw Error('User not found.')
       }
 
-      userRegistered.token = ""
+      userRegistered.recoverPassToken = ""
       userRegistered.password = bcrypt.hashSync(request.body.password, 10)
 
       userRegistered.save().then(() => {
