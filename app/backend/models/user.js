@@ -64,6 +64,11 @@ let User = mongoose.model('User', {
     type: String,
     default: null,
   },
+  
+  recoverPassToken: {
+    type: String,
+    default: null,
+  }
 });
 
 module.exports = {

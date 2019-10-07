@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 let { User } = require('./../models/user.js');  // The connection to the User model in the database
+const { sendForgetPassword } = require('./../emails/forgetPassword');
 const { sendVerifyEmail } = require('./../emails/verifyEmail');
 const randomstring = require('randomstring')
 
@@ -75,6 +76,76 @@ module.exports.login = async (request, response) => {
 
     } catch (err) { // Some error is thrown before, returns the error message
       response.status(400).send({ errmsg: err.message })
+    }
+  }
+}
+
+/*
+  Post method for forget password, it sends email to user in order reset their password.
+*/
+module.exports.forgetPassword = async (request, response) => {
+  
+  recoverPassToken = randomstring.generate()
+
+  let duplicateTokenOwners = await User.findOne({recoverPassToken})
+  while(duplicateTokenOwners) {
+    recoverPassToken = randomstring.generate()
+    duplicateTokenOwners = await User.findOne({recoverPassToken})
+  }
+
+  const email = request.body.email
+
+  if (!email) {           // If there's no email field in the request, return status 400
+  response.status(400).send({ errmsg: 'Email is required in the request body' })
+  } else {
+    try {
+      let userRegistered = await User.findOne({ email })  // Retrieve the user instance from database
+      if (!userRegistered) {  // If no instance is returned, credentials are invalid
+        throw Error('User not found.')
+      }
+
+      userRegistered.recoverPassToken = recoverPassToken
+
+      userRegistered.save().then(() => {
+        sendForgetPassword(email, recoverPassToken) // Send email to reset password.
+        response.sendStatus(204);   
+      }, (error) => {
+        response.status(400).send(error);
+      });
+
+    } catch (err) { // Some error is thrown before, returns the error message
+      response.status(400).send({ errmsg: err.message })
+    }
+  }
+}
+
+/*
+  Post method for reset password. It gets new password and saves it.
+*/  
+module.exports.resetPassword = async (request, response) => {
+  const recoverPassToken = request.body.token
+  if (!recoverPassToken) {           // If there's no email field in the request, return status 400
+    response.status(400).send({ errmsg: 'Token is required in the request body' })
+  } else if (!request.body.password) {
+    response.status(400).send({errmsg: 'New password is required in the request body'})
+  } else {
+    try {
+      let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
+      if (!userRegistered) {  // If no instance is returned, credentials are invalid
+        throw Error('User not found.')
+      }
+
+      userRegistered.recoverPassToken = null
+      userRegistered.password = bcrypt.hashSync(request.body.password, 10)
+
+      userRegistered.save().then(() => {
+        response.sendStatus(204);
+      }, (error) => {
+        response.status(400).send({error});
+      });
+
+    } catch (err) { // Some error is thrown before, returns the error message
+        response.status(400).send({ errmsg: err.message })
     }
   }
 }
