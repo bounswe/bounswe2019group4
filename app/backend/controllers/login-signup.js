@@ -66,6 +66,15 @@ module.exports.login = async (request, response) => {
   Post method for forget password, it sends email to user in order reset their password.
 */
 module.exports.forgetPassword = async (request, response) => {
+  
+  recoverPassToken = randomstring.generate()
+
+  let duplicateTokenOwners = await User.findOne({recoverPassToken})
+  while(duplicateTokenOwners) {
+    recoverPassToken = randomstring.generate()
+    duplicateTokenOwners = await User.findOne({recoverPassToken})
+  }
+
   const email = request.body.email
 
   if (!email) {           // If there's no email field in the request, return status 400
@@ -76,12 +85,11 @@ module.exports.forgetPassword = async (request, response) => {
       if (!userRegistered) {  // If no instance is returned, credentials are invalid
         throw Error('User not found.')
       }
-      // TODO: make sure the token is unique
-      token = randomstring.generate()
-      userRegistered.recoverPassToken = token
+
+      userRegistered.recoverPassToken = recoverPassToken
 
       userRegistered.save().then(() => {
-        sendForgetPassword(email, token) // Send email to reset password.
+        sendForgetPassword(email, recoverPassToken) // Send email to reset password.
         response.sendStatus(204);   
       }, (error) => {
         response.status(400).send(error);
