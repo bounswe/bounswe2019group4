@@ -31,8 +31,12 @@ let User = mongoose.model('User', {
 
   password: {
     type: String,
-    required: 'Password is required',
-    minlength: 6,
+    minlength: 6
+  },
+
+  googleId: {
+    type: String,
+    default: null
   },
 
   location: {
