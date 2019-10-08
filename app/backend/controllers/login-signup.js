@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 let { User } = require('./../models/user.js');  // The connection to the User model in the database
+const passport = require('passport');
+const passportSetup = require('./../passport-setup');
 
 /*
   Post method for signup.
@@ -59,3 +61,12 @@ module.exports.login = async (request, response) => {
     }
   }
 }
+
+/*
+  Post method for signup.
+  Get user attributes from request.body and respondes accordingly.
+*/
+module.exports.google = passport.authenticate('google', {
+    session: false,
+    scope: ['profile', 'email']
+})

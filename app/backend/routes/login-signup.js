@@ -14,4 +14,6 @@ router.post('/signup', authControllers.signup)
 */
 router.post('/login', authControllers.login)
 
+router.get('/google', authControllers.google)
+
 module.exports = router
