@@ -12,9 +12,7 @@ module.exports.signup = async (request, response) => {
   // create a token for the user and make sure it's unique
 
   // check whether password is valid or not.
-  if(request.body.password.length < 6){
-    response.status(400).send({errmsg: 'Password length must be at least 6.'});
-  }
+  checkPasswordLength(request.body.password, response)
 
   let token = randomstring.generate()
   let duplicateTokenOwners = await User.findOne({token})
@@ -134,27 +132,27 @@ module.exports.resetPassword = async (request, response) => {
     response.status(400).send({ errmsg: 'Token is required in the request body' })
   } else if (!request.body.password) {
     response.status(400).send({errmsg: 'New password is required in the request body'})
-  } else if(request.body.password.length < 6){
-    response.status(400).send({errmsg: 'Password length must be at least 6.'});
-  } else {
-    try {
-      let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
-      if (!userRegistered) {  // If no instance is returned, credentials are invalid
-        throw Error('User not found.')
-      }
+  }
 
-      userRegistered.recoverPassToken = null
-      userRegistered.password = bcrypt.hashSync(request.body.password, 10)
+  checkPasswordLength(request.body.password, response)
 
-      userRegistered.save().then(() => {
-        response.sendStatus(204);
-      }, (error) => {
-        response.status(400).send({error});
-      });
-
-    } catch (err) { // Some error is thrown before, returns the error message
-        response.status(400).send({ errmsg: err.message })
+  try {
+    let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
+    if (!userRegistered) {  // If no instance is returned, credentials are invalid
+      throw Error('User not found.')
     }
+
+    userRegistered.recoverPassToken = null
+    userRegistered.password = bcrypt.hashSync(request.body.password, 10)
+
+    userRegistered.save().then(() => {
+      response.sendStatus(204);
+    }, (error) => {
+      response.status(400).send({error});
+    });
+
+  } catch (err) { // Some error is thrown before, returns the error message
+      response.status(400).send({ errmsg: err.message })
   }
 }
 
@@ -186,5 +184,11 @@ module.exports.verify = async (request, response) => {
       .catch(error => {
         response.status(400).send({errmsg: "invalid verification token"})
       })
+  }
+}
+
+function checkPasswordLength(password, response){
+  if(password.length < 6){
+    response.status(400).send({ errmsg: 'Password length must be at least 6.' })
   }
 }
