@@ -33,9 +33,9 @@ module.exports.signup = async (request, response) => {
   user.save()
     .then(doc => {
     // Omit sensitive data
-    const { _id, isTrader, name, surname, email, location } = doc  // Extract certain keys from doc
+    const { _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified } = doc  // Extract certain keys from doc
     sendVerifyEmail(email, user.token)
-    response.send({ _id, isTrader, name, surname, email, location });  // Send only the extracted keys 
+    response.send({ _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified });  // Send only the extracted keys 
   }).catch(error => {
     response.status(400).send(error);
   });
@@ -69,10 +69,10 @@ module.exports.login = async (request, response) => {
       if (bcrypt.compareSync(password, userRegistered['password'])) {
         // The user credentials are correct, its instance is userRegistered and added to the cookie
         request.session['user'] = userRegistered
-        const { _id, isTrader, isPublic, name, surname, email, location } = userRegistered  // Extract certain keys from user
+        const { _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified } = userRegistered  // Extract certain keys from user
         response.send({
           msg: 'Successfully logged in.',
-          _id, isTrader, isPublic, name, surname, email, location  // Send only the extracted keys
+          _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified  // Send only the extracted keys
         })
       } else {
         throw Error('Email not found or password does not match!')
