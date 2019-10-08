@@ -30,6 +30,8 @@
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "mongoose": "^5.5.2",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^2.0.0",
     "request": "^2.88.0",
     "saslprep": "^1.0.3"
   },
