@@ -3,6 +3,7 @@ let { User } = require('./../models/user.js');  // The connection to the User mo
 const { sendForgetPassword } = require('./../emails/forgetPassword');
 const { sendVerifyEmail } = require('./../emails/verifyEmail');
 const randomstring = require('randomstring')
+const { checkPasswordLength } = require('../utils')
 
 /*
   Post method for signup.
@@ -11,10 +12,10 @@ const randomstring = require('randomstring')
 module.exports.signup = async (request, response) => {
   // create a token for the user and make sure it's unique
 
+  let token = randomstring.generate()
   // check whether password is valid or not.
   checkPasswordLength(request.body.password, response)
 
-  let token = randomstring.generate()
   let duplicateTokenOwners = await User.findOne({token})
   while(duplicateTokenOwners) {
     token = randomstring.generate()
@@ -184,11 +185,5 @@ module.exports.verify = async (request, response) => {
       .catch(error => {
         response.status(400).send({errmsg: "invalid verification token"})
       })
-  }
-}
-
-function checkPasswordLength(password, response){
-  if(password.length < 6){
-    response.status(400).send({ errmsg: 'Password length must be at least 6.' })
   }
 }
