@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs');
-let { User } = require('./../models/user.js');  // The connection to the User model in the database
 const { sendForgetPassword } = require('./../emails/forgetPassword');
 const { sendVerifyEmail } = require('./../emails/verifyEmail');
 const randomstring = require('randomstring')
@@ -10,12 +9,13 @@ const { checkPasswordLength } = require('../utils')
   Get user attributes from request.body and respondes accordingly.
 */
 module.exports.signup = async (request, response) => {
-  // create a token for the user and make sure it's unique
-
-  let token = randomstring.generate()
+  let User = request.models['User']
+  
   // check whether password is valid or not.
   checkPasswordLength(request.body.password, response)
-
+  
+  // create a token for the user and make sure it's unique
+  let token = randomstring.generate()
   let duplicateTokenOwners = await User.findOne({token})
   while(duplicateTokenOwners) {
     token = randomstring.generate()
@@ -47,6 +47,7 @@ module.exports.signup = async (request, response) => {
   Get user attributes from request.body and respondes accordingly.
 */
 module.exports.login = async (request, response) => {
+  let User = request.models['User']
   const { email, password } = request.body  //Email and password fields in request body
 
   if (!email) {           // If there's no email field in the request, return status 400
@@ -89,7 +90,7 @@ module.exports.login = async (request, response) => {
   Post method for forget password, it sends email to user in order reset their password.
 */
 module.exports.forgetPassword = async (request, response) => {
-  
+  let User = request.models['User']
   recoverPassToken = randomstring.generate()
 
   let duplicateTokenOwners = await User.findOne({recoverPassToken})
@@ -128,6 +129,7 @@ module.exports.forgetPassword = async (request, response) => {
   Post method for reset password. It gets new password and saves it.
 */  
 module.exports.resetPassword = async (request, response) => {
+  let User = request.models['User']
   const recoverPassToken = request.body.token
   if (!recoverPassToken) {           // If there's no email field in the request, return status 400
     response.status(400).send({ errmsg: 'Token is required in the request body' })
@@ -161,6 +163,7 @@ module.exports.resetPassword = async (request, response) => {
   Get endpoint for verify email.
 */
 module.exports.verify = async (request, response) => {
+  let User = request.models.User
   const token = request.query.token
   if(!token) {
     response.status(400).send({
