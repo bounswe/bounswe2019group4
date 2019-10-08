@@ -31,7 +31,11 @@ module.exports.signup = async (request, response) => {
       response.status(400).send({ errmsg: 'Password is required in the request body' })
 
     // check whether password is valid or not.
-    checkPasswordLength(request.body.password, response)
+    if(checkPasswordLength(request.body.password, response)){
+      response.status(400).send({ errmsg: 'Password length must be at least 6.' })
+      return
+    } 
+
     // Hashes the password
     user.password = bcrypt.hashSync(request.body.password, 10)
   }
@@ -177,8 +181,11 @@ module.exports.resetPassword = async (request, response) => {
     response.status(400).send({errmsg: 'New password is required in the request body'})
   }
 
-  checkPasswordLength(request.body.password, response)
-
+  if(checkPasswordLength(request.body.password, response)){
+    response.status(400).send({ errmsg: 'Password length must be at least 6.' })
+    return
+  } 
+  
   try {
     let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
     if (!userRegistered) {  // If no instance is returned, credentials are invalid
