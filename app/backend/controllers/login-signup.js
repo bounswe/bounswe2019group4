@@ -10,6 +10,12 @@ const randomstring = require('randomstring')
 */
 module.exports.signup = async (request, response) => {
   // create a token for the user and make sure it's unique
+
+  // check whether password is valid or not.
+  if(request.body.password.length < 6){
+    response.status(400).send({errmsg: 'Password length must be at least 6.'});
+  }
+
   let token = randomstring.generate()
   let duplicateTokenOwners = await User.findOne({token})
   while(duplicateTokenOwners) {
