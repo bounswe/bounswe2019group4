@@ -6,6 +6,7 @@ let { User } = require('./../models/user.js');  // The connection to the User mo
   Get user id from parameter and responses accordingly.
 */
 module.exports.getDetails = async (request, response) => {
+  let User = request.models['User']
   // TODO: followers should be able to see the details of the user they follow
   const id = request.params['id']
   const currentUser = request.session['user']
