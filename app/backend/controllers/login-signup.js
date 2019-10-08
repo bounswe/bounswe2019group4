@@ -134,6 +134,8 @@ module.exports.resetPassword = async (request, response) => {
     response.status(400).send({ errmsg: 'Token is required in the request body' })
   } else if (!request.body.password) {
     response.status(400).send({errmsg: 'New password is required in the request body'})
+  } else if(request.body.password.length < 6){
+    response.status(400).send({errmsg: 'Password length must be at least 6.'});
   } else {
     try {
       let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
