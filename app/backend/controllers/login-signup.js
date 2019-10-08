@@ -1,7 +1,5 @@
 const bcrypt = require('bcryptjs');
 let { User } = require('./../models/user.js');  // The connection to the User model in the database
-const passport = require('passport');
-const passportSetup = require('./../passport-setup');
 
 /*
   Post method for signup.
@@ -66,7 +64,31 @@ module.exports.login = async (request, response) => {
   Post method for signup.
   Get user attributes from request.body and respondes accordingly.
 */
-module.exports.google = passport.authenticate('google', {
-    session: false,
-    scope: ['profile', 'email']
-})
+module.exports.google = async (request, response) => {
+  const { email, password } = request.body  //Email and password fields in request body
+
+    try {
+      let userRegistered = await User.findOne({ email })  // Retrieve the user instance from database
+      if (!userRegistered) {  // If no instance is returned, the user must be registered.
+        response.status(400).send({
+          errmsg: 'User must be signed up'
+        })
+      }
+      else{
+        // If password hashed in the user instance doesn't match with the password in the request, credentials are invalid
+        if (bcrypt.compareSync(password, userRegistered['password'])) {
+          // The user credentials are correct, its instance is userRegistered and added to the cookie
+          request.session['user'] = userRegistered
+          const { _id, isTrader, isPublic, name, surname, email, location } = userRegistered  // Extract certain keys from user
+          response.send({
+            msg: 'Successfully logged in.',
+            _id, isTrader, isPublic, name, surname, email, location  // Send only the extracted keys
+          })
+        } else {
+          throw Error('Email not found or password does not match!')
+        }
+      }
+    } catch (err) { // Some error is thrown before, returns the error message
+      response.status(400).send({ errmsg: err.message })
+    }
+  }

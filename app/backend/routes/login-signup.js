@@ -14,6 +14,10 @@ router.post('/signup', authControllers.signup)
 */
 router.post('/login', authControllers.login)
 
-router.get('/google', authControllers.google)
+/*
+  Post endpoint for google authentication.
+  Check controller function for more detail
+*/
+router.post('/google', authControllers.google)
 
 module.exports = router
