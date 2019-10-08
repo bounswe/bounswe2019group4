@@ -20,4 +20,19 @@ router.post('/login', authControllers.login)
 */
 router.post('/google', authControllers.google)
 
+/*
+  Get endpoint for forget passport.
+*/
+router.post('/forget-password', authControllers.forgetPassword)
+
+/*
+  Post endpoint to reset passport.
+*/
+router.post('/reset-password', authControllers.resetPassword)
+
+/*
+  Get method in order to verify email.
+*/
+router.get('/verify', authControllers.verify)
+
 module.exports = router
