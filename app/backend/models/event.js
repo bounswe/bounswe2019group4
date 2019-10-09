@@ -15,7 +15,7 @@ let Event = mongoose.model('Event', {
 
   source: {
     type: String
-  }
+  },
 
   country: {
     type: String
