@@ -10,10 +10,7 @@ const { checkPasswordLength } = require('../utils')
 */
 module.exports.signup = async (request, response) => {
   let User = request.models['User']
-  
-  // check whether password is valid or not.
-  checkPasswordLength(request.body.password, response)
-  
+
   // create a token for the user and make sure it's unique
   let token = randomstring.generate()
   let duplicateTokenOwners = await User.findOne({token})
@@ -25,18 +22,38 @@ module.exports.signup = async (request, response) => {
   // User instance to add to the database
   let user = new User({
     ...request.body,
-    // Hashes the password
-    password: bcrypt.hashSync(request.body.password, 10),
     token: token,
   });
 
+
+  if(!request.body.googleId){
+
+    if(!request.body.password)
+      response.status(400).send({ errmsg: 'Password is required in the request body' })
+
+    // check whether password is valid or not.
+    if(checkPasswordLength(request.body.password, response)){
+      response.status(400).send({ errmsg: 'Password length must be at least 6.' })
+      return
+    } 
+
+    // Hashes the password
+    user.password = bcrypt.hashSync(request.body.password, 10)
+  }
+  else{
+    user.isVerified = true
+  }
+  
   // Saves the instance into the database, returns any error occured
   user.save()
     .then(doc => {
     // Omit sensitive data
-    const { _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified } = doc  // Extract certain keys from doc
-    sendVerifyEmail(email, user.token)
-    response.send({ _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified });  // Send only the extracted keys 
+    const { _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified, googleId } = doc  // Extract certain keys from doc
+    
+    if(!user.googleId)
+      sendVerifyEmail(email, user.token)
+
+    response.send({ _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified, googleId });  // Send only the extracted keys 
   }).catch(error => {
     response.status(400).send(error);
   });
@@ -86,6 +103,31 @@ module.exports.login = async (request, response) => {
   }
 }
 
+module.exports.google = async (request, response) => {
+  let User = request.models['User']
+  const googleId = request.body.googleId  //Email and password fields in request body
+
+  if (!googleId) {           // If there's no email field in the request, return status 400
+    response.status(400).send({ errmsg: 'Google ID required' })
+  } else{
+    try {
+      let userRegistered = await User.findOne({googleId})  // Retrieve the user instance from database
+      if (!userRegistered) {  // If no instance is returned, credentials are invalid
+        response.status(400).send({ errmsg: 'User must be signed up' })
+      }else{
+        request.session['user'] = userRegistered
+        const { _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified, googleId} = userRegistered  // Extract certain keys from user
+        response.send({
+          msg: 'Successfully logged in.',
+          _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified, googleId // Send only the extracted keys
+        })
+      }
+    } catch (err) { // Some error is thrown before, returns the error message
+      response.status(400).send({ errmsg: err.message })
+    }
+  }
+}
+
 /*
   Post method for forget password, it sends email to user in order reset their password.
 */
@@ -108,6 +150,10 @@ module.exports.forgetPassword = async (request, response) => {
       let userRegistered = await User.findOne({ email })  // Retrieve the user instance from database
       if (!userRegistered) {  // If no instance is returned, credentials are invalid
         throw Error('User not found.')
+      }
+
+      if(userRegistered.googleId){   // if user registered via Google, he/she cannot change password
+        throw Error('User registered via Google.')
       }
 
       userRegistered.recoverPassToken = recoverPassToken
@@ -137,25 +183,31 @@ module.exports.resetPassword = async (request, response) => {
     response.status(400).send({errmsg: 'New password is required in the request body'})
   }
 
-  checkPasswordLength(request.body.password, response)
+  if(checkPasswordLength(request.body.password, response)){
+    response.status(400).send({ errmsg: 'Password length must be at least 6.' })
+  } else{
+    try {
+      let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
+      if (!userRegistered) {  // If no instance is returned, credentials are invalid
+        throw Error('User not found.')
+      }
 
-  try {
-    let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
-    if (!userRegistered) {  // If no instance is returned, credentials are invalid
-      throw Error('User not found.')
+      if(userRegistered.googleId){
+        throw Error('User registered via Google')  // if user registered via Google, he/she cannot change password
+      }
+
+      userRegistered.recoverPassToken = null
+      userRegistered.password = bcrypt.hashSync(request.body.password, 10)
+
+      userRegistered.save().then(() => {
+        response.sendStatus(204);
+      }, (error) => {
+        response.status(400).send({error});
+      });
+
+    } catch (err) { // Some error is thrown before, returns the error message
+        response.status(400).send({ errmsg: err.message })
     }
-
-    userRegistered.recoverPassToken = null
-    userRegistered.password = bcrypt.hashSync(request.body.password, 10)
-
-    userRegistered.save().then(() => {
-      response.sendStatus(204);
-    }, (error) => {
-      response.status(400).send({error});
-    });
-
-  } catch (err) { // Some error is thrown before, returns the error message
-      response.status(400).send({ errmsg: err.message })
   }
 }
 

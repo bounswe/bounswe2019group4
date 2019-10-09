@@ -17,6 +17,12 @@ router.post('/signup', modelBinder(User, 'User'), authControllers.signup)
 router.post('/login', modelBinder(User, 'User'), authControllers.login)
 
 /*
+  Post endpoint for google authentication.
+  Check controller function for more detail
+*/
+router.post('/google', modelBinder(User, 'User'), authControllers.google)
+
+/*
   Get endpoint for forget passport.
 */
 router.post('/forget-password', modelBinder(User, 'User'), authControllers.forgetPassword)
