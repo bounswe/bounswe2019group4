@@ -1,41 +1,46 @@
 const {mongoose} =  require('../db');  // The mongodb connector library
 
 let Event = mongoose.model('Event', {
-  calendarId: {
-    type: String
+  CalendarId: {
+    type: String,
+    unique: true,
   },
 
-  event: {
-    type: String
-  },
-
-  date: {
+  Date: {
     type: Date
   },
 
-  source: {
+  Country: {
     type: String
   },
 
-  country: {
+  Catogory: {
+    type: String,
+  },
+
+  Event: {
     type: String
   },
 
-  importance: {
-    type: Number
+  Source: {
+    type: String
   },
 
-  actual: {
-    type: Number
+  Actual: {
+    type: String
   },
 
-  previous: {
-    type: Number
+  Previous: {
+    type: String
   },
 
-  forecast: {
-    type: Number
+  Forecast: {
+    type: String
   },
+
+  Importance: {
+    type: Number
+  }
 });
 
 module.exports = {
