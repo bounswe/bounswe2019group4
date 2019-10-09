@@ -32,3 +32,21 @@ module.exports.getEvents = async (req, res) => {
     res.status(204).send();
   })
 }
+
+/*
+  Get method for specific event.
+*/
+module.exports.getEvent = (request, response) => {
+  let Event = request.models['Event']
+  const CalendarId = request.params['id']
+  
+  Event.findOne({ CalendarId })     // Retrieve the event instance from database
+    .then(event => {            // when the user's data is public 
+      response.send(event)  // Send only the extracted keys
+    })
+    .catch(error => {   // when it's the case an error occurs accessing the database
+      response.status(404).send({
+      errmsg: "No such event."
+    })
+  })
+}

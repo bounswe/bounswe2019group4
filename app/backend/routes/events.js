@@ -9,4 +9,10 @@ const { Event } = require('../models/event')
 */
 router.get('/', modelBinder(Event, 'Event'), eventController.getEvents)
 
+/*
+  Get endpoint for specific event page.
+  Check controller function for more detail
+*/
+router.get('/:id', modelBinder(Event, 'Event'), eventController.getEvent)
+
 module.exports = router
