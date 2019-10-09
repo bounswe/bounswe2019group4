@@ -36,17 +36,21 @@ module.exports.getEvents = async (req, res) => {
 /*
   Get method for specific event.
 */
-module.exports.getEvent = (request, response) => {
+module.exports.getEvent = async (request, response) => {
   let Event = request.models['Event']
   const CalendarId = request.params['id']
   
-  Event.findOne({ CalendarId })     // Retrieve the event instance from database
-    .then(event => {            // when the user's data is public 
+  try{
+    event = await Event.findOne({ CalendarId })
+
+    if (!event) {  // If no instance is returned, credentials are invalid
+      throw Error('No such event!')
+    } else{
       response.send(event)  // Send only the extracted keys
+    }
+  } catch(error){
+    response.status(404).send({
+      errmsg: error.message
     })
-    .catch(error => {   // when it's the case an error occurs accessing the database
-      response.status(404).send({
-      errmsg: "No such event."
-    })
-  })
+  }
 }
