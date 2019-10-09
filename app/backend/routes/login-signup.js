@@ -25,9 +25,17 @@ router.post('/forget-password', modelBinder(User, 'User'), authControllers.forge
   Post endpoint to reset passport.
 */
 router.post('/reset-password', modelBinder(User, 'User'), authControllers.resetPassword)
+
+/*
+  Post endpoint to logout.
+*/
+router.post('/logout', modelBinder(User, 'User'), authControllers.logout)
+
 /*
   Get method in order to verify email.
 */
 router.get('/verify', modelBinder(User, 'User'), authControllers.verify)
+
+
 
 module.exports = router
