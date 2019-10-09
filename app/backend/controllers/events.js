@@ -5,7 +5,7 @@ const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest
   Get method for events.
   Using 3rd party API, it saves events to database.
 */
-module.exports.getEvents = async (req, res) => {
+module.exports.getEventsFromAPI = async (req, res) => {
   let Event = req.models['Event']
 
   request(url, (error, response, body) => {
@@ -31,6 +31,17 @@ module.exports.getEvents = async (req, res) => {
 
     res.status(204).send();
   })
+}
+
+/*
+  Get method for events.
+  It returns events from database.
+*/
+module.exports.getEvents = async (request, response) => {
+  let Event = request.models['Event']
+  events = await Event.find({})
+
+  response.send({events}); 
 }
 
 /*

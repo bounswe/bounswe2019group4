@@ -7,6 +7,12 @@ const { Event } = require('../models/event')
   Get endpoint for events page.
   Check controller function for more detail
 */
+router.get('/fromAPI', modelBinder(Event, 'Event'), eventController.getEventsFromAPI)
+
+/*
+  Get endpoint for events page.
+  Check controller function for more detail
+*/
 router.get('/', modelBinder(Event, 'Event'), eventController.getEvents)
 
 /*
