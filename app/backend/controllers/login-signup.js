@@ -25,6 +25,7 @@ module.exports.signup = async (request, response) => {
     token: token,
   });
 
+
   if(!request.body.googleId){
 
     if(!request.body.password)
@@ -151,8 +152,9 @@ module.exports.forgetPassword = async (request, response) => {
         throw Error('User not found.')
       }
 
-      if(userRegistered.googleId)   // if user registered via Google, he/she cannot change password
+      if(userRegistered.googleId){   // if user registered via Google, he/she cannot change password
         throw Error('User registered via Google.')
+      }
 
       userRegistered.recoverPassToken = recoverPassToken
 
@@ -183,29 +185,29 @@ module.exports.resetPassword = async (request, response) => {
 
   if(checkPasswordLength(request.body.password, response)){
     response.status(400).send({ errmsg: 'Password length must be at least 6.' })
-    return
-  } 
-  
-  try {
-    let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
-    if (!userRegistered) {  // If no instance is returned, credentials are invalid
-      throw Error('User not found.')
+  } else{
+    try {
+      let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
+      if (!userRegistered) {  // If no instance is returned, credentials are invalid
+        throw Error('User not found.')
+      }
+
+      if(userRegistered.googleId){
+        throw Error('User registered via Google')  // if user registered via Google, he/she cannot change password
+      }
+
+      userRegistered.recoverPassToken = null
+      userRegistered.password = bcrypt.hashSync(request.body.password, 10)
+
+      userRegistered.save().then(() => {
+        response.sendStatus(204);
+      }, (error) => {
+        response.status(400).send({error});
+      });
+
+    } catch (err) { // Some error is thrown before, returns the error message
+        response.status(400).send({ errmsg: err.message })
     }
-
-    if(userRegistered.googleId)
-      throw Error('User registered via Google')  // if user registered via Google, he/she cannot change password
-
-    userRegistered.recoverPassToken = null
-    userRegistered.password = bcrypt.hashSync(request.body.password, 10)
-
-    userRegistered.save().then(() => {
-      response.sendStatus(204);
-    }, (error) => {
-      response.status(400).send({error});
-    });
-
-  } catch (err) { // Some error is thrown before, returns the error message
-      response.status(400).send({ errmsg: err.message })
   }
 }
 
