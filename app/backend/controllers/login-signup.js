@@ -194,7 +194,7 @@ module.exports.verify = async (request, response) => {
 /*
   Get endpoint for verify email.
 */
-module.exports.logout = async (request, response) => {
+module.exports.logout = (request, response) => {
     request.session['user'] = null
     response.status(204).send()
 }
