@@ -61,13 +61,17 @@
         android:background="@android:color/white"
         android:id="@+id/signup_line"/>
 
-    <include  layout="@layout/signup_part" android:id="@+id/signup_credentials_layout"
-        app:layout_constraintTop_toBottomOf="@id/signup_line"
+    <include
+        android:id="@+id/signup_credentials_layout"
+        layout="@layout/signup_part"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/signup_guest_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/signup_guest_button" />
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_line"
+        app:layout_constraintVertical_bias="0.501" />
 
     <Button
         android:layout_width="wrap_content"
