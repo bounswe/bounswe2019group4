@@ -25,7 +25,11 @@ module.exports.getEventsFromAPI = async (req, res) => {
           ...ev
         });
 
-        event.save();
+        event.save().then(doc => {
+          console.log(doc);
+        }).catch(err => {
+          console.log(err);
+        });
       });
     }
 
@@ -41,7 +45,10 @@ module.exports.getEvents = async (request, response) => {
   let Event = request.models['Event']
   events = await Event.find({})
 
-  response.send({events}); 
+  response.send({
+    totalNumberOfEvents: events.length,
+    events
+  }); 
 }
 
 /*
