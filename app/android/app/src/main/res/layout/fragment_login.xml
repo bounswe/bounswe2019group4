@@ -119,8 +119,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/login_passwordTag_textView"
             app:layout_constraintTop_toBottomOf="@id/login_email_editText"
-            android:inputType="textPassword"
-            android:drawableRight="@drawable/ic_eye" />
+            android:inputType="textPassword"/>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_eye"
+            app:layout_constraintEnd_toEndOf="@id/login_password_editText"
+            app:layout_constraintTop_toBottomOf="@id/login_email_editText"
+            android:layout_marginRight="10dp"
+            android:id="@+id/login_password_eye_image"/>
 
         <Button
             android:layout_width="150dp"
