@@ -43,7 +43,18 @@ module.exports.getEventsFromAPI = async (req, res) => {
 */
 module.exports.getEvents = async (request, response) => {
   let Event = request.models['Event']
-  events = await Event.find({})
+  let Country = request.query.country
+  let Importance = request.query.importance
+
+  if(Country && Importance){
+    events = await Event.find({ Country, Importance })
+  } else if(Country && !Importance){
+    events = await Event.find({ Country })
+  } else if(!Country && Importance){
+    events = await Event.find({ Importance })
+  } else {
+    events = await Event.find({ })
+  }
 
   response.send({
     totalNumberOfEvents: events.length,
