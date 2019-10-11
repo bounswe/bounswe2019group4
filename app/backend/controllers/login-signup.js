@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { sendForgetPassword } = require('./../emails/forgetPassword');
 const { sendVerifyEmail } = require('./../emails/verifyEmail');
 const randomstring = require('randomstring')
-const { checkPasswordLength, checkIBAN } = require('../utils')
+const { checkPasswordLength, checkIBAN, checkTCKN } = require('../utils')
 
 /*
   Post method for signup.
@@ -52,8 +52,18 @@ module.exports.signup = async (request, response) => {
       return
     } 
 
+    if(!request.body.tckn){
+      response.status(400).send({ errmsg: 'TCKN is required in the request body' }) 
+      return
+    } 
+
     if(!checkIBAN(request.body.iban)){
       response.status(400).send({ errmsg: 'Enter valid IBAN.' })
+      return
+    }
+
+    if(!checkTCKN(request.body.tckn)){
+      response.status(400).send({ errmsg: 'Enter valid TCKN.' })
       return
     }
   }
