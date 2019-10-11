@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { sendForgetPassword } = require('./../emails/forgetPassword');
 const { sendVerifyEmail } = require('./../emails/verifyEmail');
 const randomstring = require('randomstring')
-const { checkPasswordLength } = require('../utils')
+const { checkPassword, checkIBAN, checkTCKN } = require('../utils')
 
 /*
   Post method for signup.
@@ -27,13 +27,14 @@ module.exports.signup = async (request, response) => {
 
 
   if(!request.body.googleId){
-
-    if(!request.body.password)
+    if(!request.body.password){
       response.status(400).send({ errmsg: 'Password is required in the request body' })
+      return
+    }
 
     // check whether password is valid or not.
-    if(checkPasswordLength(request.body.password, response)){
-      response.status(400).send({ errmsg: 'Password length must be at least 6.' })
+    if(!checkPassword(request.body.password)){
+      response.status(400).send({ errmsg: 'Enter valid password. Your password either is less than 6 characters or is easy to guess.' })
       return
     } 
 
@@ -42,6 +43,28 @@ module.exports.signup = async (request, response) => {
   }
   else{
     user.isVerified = true
+  }
+
+  if(request.body.isTrader == true){
+    if(!request.body.iban){
+      response.status(400).send({ errmsg: 'IBAN is required in the request body' }) 
+      return
+    } 
+
+    if(!request.body.tckn){
+      response.status(400).send({ errmsg: 'TCKN is required in the request body' }) 
+      return
+    } 
+
+    if(!checkIBAN(request.body.iban)){
+      response.status(400).send({ errmsg: 'Enter valid IBAN.' })
+      return
+    }
+
+    if(!checkTCKN(request.body.tckn)){
+      response.status(400).send({ errmsg: 'Enter valid TCKN.' })
+      return
+    }
   }
   
   // Saves the instance into the database, returns any error occured
@@ -183,8 +206,9 @@ module.exports.resetPassword = async (request, response) => {
     response.status(400).send({errmsg: 'New password is required in the request body'})
   }
 
-  if(checkPasswordLength(request.body.password, response)){
-    response.status(400).send({ errmsg: 'Password length must be at least 6.' })
+  // check whether password is valid or not.
+  if(!checkPassword(request.body.password)){
+    response.status(400).send({ errmsg: 'Enter valid password. Your password either is less than 6 characters or is easy to guess.' })
   } else{
     try {
       let userRegistered = await User.findOne({ recoverPassToken })  // Retrieve the user instance from database
