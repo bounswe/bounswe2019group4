@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { sendForgetPassword } = require('./../emails/forgetPassword');
 const { sendVerifyEmail } = require('./../emails/verifyEmail');
 const randomstring = require('randomstring')
-const { checkPasswordLength, checkIBAN, checkTCKN } = require('../utils')
+const { checkPassword, checkIBAN, checkTCKN } = require('../utils')
 
 /*
   Post method for signup.
@@ -27,15 +27,14 @@ module.exports.signup = async (request, response) => {
 
 
   if(!request.body.googleId){
-
     if(!request.body.password){
       response.status(400).send({ errmsg: 'Password is required in the request body' })
       return
     }
 
     // check whether password is valid or not.
-    if(checkPasswordLength(request.body.password, response)){
-      response.status(400).send({ errmsg: 'Password length must be at least 6.' })
+    if(!checkPassword(request.body.password)){
+      response.status(400).send({ errmsg: 'Enter valid password. Your password either is less than 6 characters or is easy to guess.' })
       return
     } 
 

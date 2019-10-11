@@ -1,7 +1,11 @@
 const IBAN = require('iban');
+const commonPassword = require('common-password');
 
-module.exports.checkPasswordLength = function (password, response){
-  return (password.length < 6)
+module.exports.checkPassword = function (password){
+  if(password.length < 6)
+    return false;
+
+  return !(commonPassword(password))
 }
 
 module.exports.checkIBAN = function(iban){
