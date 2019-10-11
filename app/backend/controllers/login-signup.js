@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { sendForgetPassword } = require('./../emails/forgetPassword');
 const { sendVerifyEmail } = require('./../emails/verifyEmail');
 const randomstring = require('randomstring')
-const { checkPasswordLength } = require('../utils')
+const { checkPasswordLength, checkIBAN } = require('../utils')
 
 /*
   Post method for signup.
@@ -28,8 +28,10 @@ module.exports.signup = async (request, response) => {
 
   if(!request.body.googleId){
 
-    if(!request.body.password)
+    if(!request.body.password){
       response.status(400).send({ errmsg: 'Password is required in the request body' })
+      return
+    }
 
     // check whether password is valid or not.
     if(checkPasswordLength(request.body.password, response)){
@@ -42,6 +44,18 @@ module.exports.signup = async (request, response) => {
   }
   else{
     user.isVerified = true
+  }
+
+  if(request.body.isTrader == true){
+    if(!request.body.iban){
+      response.status(400).send({ errmsg: 'IBAN is required in the request body' }) 
+      return
+    } 
+
+    if(!checkIBAN(request.body.iban)){
+      response.status(400).send({ errmsg: 'Enter valid IBAN.' })
+      return
+    }
   }
   
   // Saves the instance into the database, returns any error occured

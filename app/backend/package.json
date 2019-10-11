@@ -30,6 +30,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
+    "iban": "0.0.12",
     "mongoose": "^5.5.2",
     "randomstring": "^1.1.5",
     "request": "^2.88.0",
