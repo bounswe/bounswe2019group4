@@ -43,6 +43,12 @@ module.exports.getEventsFromAPI = async (req, res) => {
 */
 module.exports.getEvents = async (request, response) => {
   let Event = request.models['Event']
+
+  /*
+    Country and importance is used for filtering.
+    Events can be filtered by country and importance
+    TODO: FILTER BY DATE MUST BE ADDED!
+  */
   let Country = request.query.country
   let Importance = request.query.importance
 
