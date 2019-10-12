@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 
@@ -30,18 +31,10 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.start_login_button){
-            LoginFragment nextFrag= new LoginFragment();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.root_layout, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
+            Navigation.findNavController(view).navigate(R.id.action_startFragment_to_loginFragment);
         }
         else if(view.getId() == R.id.start_signup_button){
-            SignupFragment nextFrag= new SignupFragment();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.root_layout, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
+            Navigation.findNavController(view).navigate(R.id.action_startFragment_to_signupFragment);
         }
     }
 }

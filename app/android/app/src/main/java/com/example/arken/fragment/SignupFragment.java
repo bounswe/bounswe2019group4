@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -22,22 +21,19 @@ import com.example.arken.R;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
 
-import java.io.IOException;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignupFragment extends Fragment implements View.OnClickListener {
-    LinearLayout loginButton;
     EditText nameEditText;
     EditText surnameEditText;
     EditText emailEditText;
     EditText passwordEditText;
     Switch isTraderSwitch;
     Button signupButton;
-    EditText ibanEditText ;
+    EditText ibanEditText;
     EditText tcknEditText;
 
     @Nullable
@@ -45,10 +41,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
-         ibanEditText = view.findViewById(R.id.signup_iban_editText);
-         tcknEditText = view.findViewById(R.id.signup_tckn_editText);
-        loginButton = view.findViewById(R.id.signup_loginButton_layout);
-        loginButton.setOnClickListener(this);
+        ibanEditText = view.findViewById(R.id.signup_iban_editText);
+        tcknEditText = view.findViewById(R.id.signup_tckn_editText);
         ConstraintLayout layout = view.findViewById(R.id.signup_background);
         layout.setOnClickListener(this);
         nameEditText = view.findViewById(R.id.signup_name_editText);
@@ -82,13 +76,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         }
-        if (view.getId() == R.id.signup_loginButton_layout) {
-            LoginFragment nextFrag = new LoginFragment();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.root_layout, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
-        } else if (view.getId() == R.id.signup_signup_button) {
+        if (view.getId() == R.id.signup_signup_button) {
             if (nameEditText.getText().toString().trim().equals("")) {
                 Toast.makeText(getContext(), "Please enter your name", Toast.LENGTH_SHORT).show();
                 return;
@@ -111,7 +99,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             String password = String.valueOf(passwordEditText.getText());
             String location = "Turkey";
             Boolean isTrader = isTraderSwitch.isChecked();
-            if (isTrader){
+            if (isTrader) {
                 if (tcknEditText.getText().toString().trim().equals("")) {
                     Toast.makeText(getContext(), "Please enter your TC", Toast.LENGTH_SHORT).show();
                     return;
@@ -123,12 +111,12 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             }
 
 
-                Call<ResponseBody> call;
+            Call<ResponseBody> call;
             if (isTrader) {
-                String tckn=String.valueOf(tcknEditText.getText());
-                String iban=String.valueOf(ibanEditText.getText());
+                String tckn = String.valueOf(tcknEditText.getText());
+                String iban = String.valueOf(ibanEditText.getText());
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
-                        surname, email, password, location,isTrader,tckn,iban));
+                        surname, email, password, location, isTrader, tckn, iban));
             } else {
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
                         surname, email, password, location));

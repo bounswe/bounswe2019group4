@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.model.LoginUser;
@@ -54,11 +55,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         }
         if(view.getId() == R.id.login_signupButton_layout){
-            SignupFragment nextFrag= new SignupFragment();
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signupFragment);
+           /* SignupFragment nextFrag= new SignupFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .add(R.id.root_layout, nextFrag, "findThisFragment")
                     .addToBackStack(null)
-                    .commit();
+                    .commit();*/
         }
         else if(view.getId() == R.id.login_login_button){
             if(emailEditText.getText().toString().trim().equals("")){

@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Login"
+        android:text="@string/login"
         android:textColor="@android:color/white"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="@id/login_signupButton_layout"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/holo_blue_dark"
             android:paddingBottom="5dp"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             android:textAlignment="center"
             android:textColor="@android:color/white" />
     </LinearLayout>
@@ -76,7 +76,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="0dp"
-            android:text="E-mail"
+            android:layout_marginStart="16dp"
             android:textSize="12sp"
             android:id="@+id/login_emailTag_textView"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,22 +84,24 @@
             app:layout_constraintBottom_toBottomOf="@id/login_email_editText"
             android:gravity="center_vertical"
             android:layout_marginLeft="16dp"
-            />
+            android:text="@string/e_mail" />
 
         <EditText
             android:id="@+id/login_email_editText"
             android:layout_width="0dp"
-            android:textSize="12sp"
             android:layout_height="@dimen/height_edit_text"
             android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/login_emailTag_textView"
+            android:textSize="12sp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="100dp"
             android:layout_height="0dp"
-            android:text="Password"
+            android:layout_marginStart="16dp"
             android:textSize="12sp"
             android:id="@+id/login_passwordTag_textView"
             app:layout_constraintStart_toStartOf="parent"
@@ -107,25 +109,28 @@
             app:layout_constraintBottom_toBottomOf="@id/login_password_editText"
             android:gravity="center_vertical"
             android:layout_marginLeft="16dp"
-            />
+            android:text="@string/password" />
 
         <EditText
             android:id="@+id/login_password_editText"
             android:layout_width="0dp"
-            android:textSize="12sp"
             android:layout_height="@dimen/height_edit_text"
             android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:drawableEnd="@drawable/ic_eye"
             android:paddingRight="10dp"
+            android:drawableRight="@drawable/ic_eye"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/login_passwordTag_textView"
             app:layout_constraintTop_toBottomOf="@id/login_email_editText"
             android:inputType="textPassword"
-            android:drawableRight="@drawable/ic_eye" />
+            android:paddingEnd="10dp"
+            android:textSize="12sp" />
 
         <Button
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="Login"
+            android:text="@string/login"
             android:textAllCaps="false"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
@@ -138,7 +143,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Use Google Account"
+            android:text="@string/use_google_account"
             android:textSize="12sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
@@ -155,7 +160,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go on as a Guest"
+        android:text="@string/go_on_as_a_guest"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:id="@+id/signup_guest_button"
