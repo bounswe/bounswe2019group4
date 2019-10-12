@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.model.SignupUser;
@@ -35,12 +36,13 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     Button signupButton;
     EditText ibanEditText;
     EditText tcknEditText;
-
+    Button guestButton;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
-
+        guestButton = view.findViewById(R.id.signup_guest_button);
+        guestButton.setOnClickListener(this);
         ibanEditText = view.findViewById(R.id.signup_iban_editText);
         tcknEditText = view.findViewById(R.id.signup_tckn_editText);
         ConstraintLayout layout = view.findViewById(R.id.signup_background);
@@ -138,6 +140,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        } else if (view.getId() == R.id.signup_guest_button) {
+            Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_listEventFragment);
         }
     }
 }
