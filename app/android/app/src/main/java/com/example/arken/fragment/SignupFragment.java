@@ -41,11 +41,13 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     EditText surnameEditText;
     EditText emailEditText;
     EditText passwordEditText;
+    EditText passwordEditText2;
     Switch isTraderSwitch;
     Button signupButton;
     EditText ibanEditText ;
     EditText tcknEditText;
     ImageView passwordEyeImage;
+    ImageView passwordEyeImage2;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -63,6 +65,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         surnameEditText = view.findViewById(R.id.signup_surname_editText);
         emailEditText = view.findViewById(R.id.signup_email_editText);
         passwordEditText = view.findViewById(R.id.signup_password_editText);
+        passwordEditText2 = view.findViewById(R.id.signup_password_editText2);
         signupButton = view.findViewById(R.id.signup_signup_button);
         signupButton.setOnClickListener(this);
         isTraderSwitch = view.findViewById(R.id.signup_isTrader_switch);
@@ -88,6 +91,23 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                         return true;
                     case MotionEvent.ACTION_UP:
                         passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                        return true;
+                    default:
+                        return false;
+
+                }
+            }
+        });
+        passwordEyeImage2 = view.findViewById(R.id.signup_password_eye_image2);
+        passwordEyeImage2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        passwordEditText2.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        passwordEditText2.setTransformationMethod(PasswordTransformationMethod.getInstance());
                         return true;
                     default:
                         return false;
@@ -128,6 +148,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             }
             if (passwordEditText.getText().toString().trim().equals("")) {
                 passwordEditText.setError("Please enter your password");
+                return;
+            }
+            if (!passwordEditText.getText().toString().trim().equals(passwordEditText2.getText().toString().trim())) {
+                passwordEditText2.setError("Passwords did not match");
                 return;
             }
             String name = String.valueOf(nameEditText.getText());
