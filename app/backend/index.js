@@ -23,6 +23,8 @@ app.use('/auth/', require('./routes/login-signup'))  // includes login/signup en
 
 app.use('/profile/', require('./routes/profile')) // includes profile page endpoints to the main app
 
+app.use('/events/', require('./routes/events')) // includes events endpoints to the main app
+
 // catches all GET requests that arrive at this point
 app.use(/.*/, (request, response, nextHandler) => {
     response.status(404).send({ whatdidyoumean: `The request isn't supposed to enter that handler.` })
