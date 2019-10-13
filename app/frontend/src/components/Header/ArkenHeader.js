@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
 import {Menu} from 'semantic-ui-react';
 import history from '../../_core/history';
+import {connect} from 'react-redux';
 
 import GuestHeaderComponent from './GuestHeaderComponent';
+import UserHeaderComponent from './UserHeaderComponent';
+
+import authService from "../../factories/authFactory";
 
 
 class ArkenHeader extends Component {
@@ -13,6 +17,14 @@ class ArkenHeader extends Component {
 
     navigate(e, { name }) {
       history.push(name);
+    }
+
+    renderRightMenu() {
+        if(authService.isUserLoggedIn()) {
+            return <UserHeaderComponent/>
+        } else {
+            return <GuestHeaderComponent/>
+        }
     }
 
 
@@ -50,11 +62,17 @@ class ArkenHeader extends Component {
                     </Menu.Item>
                 </Menu.Menu>
 
-                <GuestHeaderComponent/>
+                {this.renderRightMenu()}
             </Menu>
         )
     }
 
 }
 
-export default ArkenHeader;
+const stateToProps = state => {
+    return {
+        user: state.user
+    };
+};
+
+export default connect(stateToProps, null)(ArkenHeader);

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
-import { Button, Icon, Modal } from "semantic-ui-react";
+import { Button, Icon, Message } from "semantic-ui-react";
 
 import * as alertActions from "../actions/alertActions";
 
@@ -20,25 +19,20 @@ class Alert extends Component {
             actionTitle2,
             title = "Error"
         } = this.props;
+
         return (
-            <Modal size="tiny" open={showAlert} onClose={this.close.bind(this)}>
-                <Modal.Header>{title === "Error" ? <FormattedMessage id="ERROR" /> : title}</Modal.Header>
-                <Modal.Content>
-                    <Modal.Description>
-                        {actionFunc && (
-                            <Icon style={{ color: colors.MH_GREEN }} size="huge" name="check circle outline" />
-                        )}
-                        {body}
-                    </Modal.Description>
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button onClick={this.close.bind(this)}>
-                        <FormattedMessage id="CLOSE" />
-                    </Button>
-                    )}
-                </Modal.Actions>
-            </Modal>
+            <Message
+                style={{ position: "fixed", right: 15, top: 15, zIndex: 1001 }}
+                onDismiss={this.close.bind(this)}
+                header={title}
+                content={body}
+                floating
+                negative
+                visible={showAlert}
+                hidden={!showAlert}
+            />
         );
+
     }
 }
 

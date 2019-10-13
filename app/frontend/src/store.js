@@ -1,22 +1,24 @@
-import { applyMiddleware, compose, createStore } from "redux";
-import promiseMiddleware from "redux-promise-middleware";
-import thunkMiddleware from "redux-thunk";
+import rootReducer from './reducers/rootReducer';
 
-import { devTools } from "../_core/devTools";
+
+import { applyMiddleware, compose, createStore } from "redux";
+import promise from "redux-promise-middleware";
+import thunk from "redux-thunk";
+
+import { devTools}  from "./_core/devTools";
 import { loadState } from "./_core/localStorage";
 import requestMiddleware from "./_core/requestMiddleware";
-import reducers from "./reducers/rootReducer";
 
 const composeEnhancers = devTools || compose;
-const promiseTypeSuffixes = ["LOADING", "SUCCESS", "ERROR"];
 
 const middleWare = applyMiddleware(
-    thunkMiddleware,
-    promiseMiddleware({ promiseTypeSuffixes }),
-    requestMiddleware()
+    thunk,
+    promise,
+    requestMiddleware
 );
 
 const persistedState = loadState();
-const store = createStore(reducers, persistedState, composeEnhancers(middleWare));
+
+const store = createStore(rootReducer, persistedState, composeEnhancers(middleWare));
 
 export default store;

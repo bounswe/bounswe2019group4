@@ -1,41 +1,58 @@
 import React, {Component} from 'react';
 import {Modal, Form, Button} from 'semantic-ui-react';
+import {connect} from 'react-redux';
+
+import * as userActions from '../../actions/userActions';
 
 
 class SignInModal extends Component {
     constructor(props) {
         super(props);
-        this.state= {openModal: false};
+        this.state= {openModal: false, email: "", password: ""};
     }
 
     componentWillReceiveProps(props) {
         this.setState({openModal: props.openModal});
     }
 
+    signIn() {
+        const {email, password} = this.state;
+        this.props.signIn({email, password}).then(result => {
+            this.props.handleClose();
+        });
+    }
+
+    handleChange(e, { name, value }) {
+        this.setState({[name]: value});
+    }
+
     render() {
+        const {email, password} = this.state;
         return (
             <Modal open={this.state.openModal}
                    onClose={this.props.handleClose}
                    size="tiny"
                    centered={false}
-                   dimmer="blurring"
             >
                 <Modal.Header>
                     Sign In
                 </Modal.Header>
                 <Modal.Content>
-                    <Form>
-                        <Form.Field>
-                            <Form.Field>
-                                <label>Username</label>
-                                <input placeholder='username' />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Password</label>
-                                <input placeholder='password' type='password' />
-                            </Form.Field>
-                        </Form.Field>
-                        <Button style={{float: "right", margin: "7px"}} type='submit'>Sign In</Button>
+                    <Form onSubmit={this.signIn.bind(this)}>
+                        <Form.Input
+                            placeholder='email'
+                            name='email'
+                            value={email}
+                            onChange={this.handleChange.bind(this)}
+                        />
+                        <Form.Input
+                            placeholder='password'
+                            name='password'
+                            type='password'
+                            value={password}
+                            onChange={this.handleChange.bind(this)}
+                        />
+                        <Form.Button content='Sign In' />
 
                     </Form>
                 </Modal.Content>
@@ -44,4 +61,11 @@ class SignInModal extends Component {
     }
 }
 
-export default SignInModal;
+
+const dispatchToProps = dispatch => {
+    return {
+        signIn: params => dispatch(userActions.login(params)),
+    };
+};
+
+export default connect(null, dispatchToProps)(SignInModal);

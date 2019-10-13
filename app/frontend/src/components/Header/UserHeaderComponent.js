@@ -1,5 +1,7 @@
 import React, {Component} from "react";
-import {Menu} from "semantic-ui-react";
+import {Menu, Dropdown} from "semantic-ui-react";
+import * as userActions from "../../actions/userActions";
+import connect from "react-redux/es/connect/connect";
 
 class UserHeaderComponent extends Component {
 
@@ -18,9 +20,24 @@ class UserHeaderComponent extends Component {
                     name="settings"
                     onClick={this.navigate}
                 >
-                    <i className="fas fa-cog" style={{ margin: 10}} />
+                    <Dropdown trigger={<i className="fas fa-cog" style={{ margin: 10}} />} icon={null}>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={this.props.logout}>Logout</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Menu.Item>
             </Menu.Menu>
         )
     }
 }
+
+const dispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch(userActions.logout())
+    };
+};
+
+export default connect(
+    null,
+    dispatchToProps
+)(UserHeaderComponent);

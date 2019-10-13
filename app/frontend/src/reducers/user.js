@@ -1,17 +1,16 @@
 const user = (state = null, action) => {
     switch (action.type) {
-        case "LOGIN_SUCCESS":
+        case "LOGIN_FULFILLED":
             return {
-                ...action.payload.data.user,
-                loggedIn: true,
-                sessionToken: action.payload.data.sessionToken
+                ...action.payload,
+                loggedIn: true
             };
-        case "LOGOUT_SUCCESS":
-            return { loggedIn: false, sessionToken: undefined };
-        case "LOGOUT_ERROR":
-            return { loggedIn: false, sessionToken: undefined };
+        case "LOGOUT":
+            return { loggedIn: false } ;
+        case "LOGOUT_REJECTED":
+            return  { loggedIn: false } ;
         case "RESET_USER":
-            return { loggedIn: false, sessionToken: undefined };
+            return  { loggedIn: false } ;
         default:
             return state;
     }
