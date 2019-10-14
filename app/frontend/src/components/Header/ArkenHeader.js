@@ -8,6 +8,8 @@ import UserHeaderComponent from './UserHeaderComponent';
 
 import authService from "../../factories/authFactory";
 
+import arkenLogo from "../../assets/arken_logo.png";
+
 
 class ArkenHeader extends Component {
     constructor(props) {
@@ -32,9 +34,8 @@ class ArkenHeader extends Component {
         return (
             <Menu
                 size="small"
-                color="brown"
                 inverted
-                style={{margin: "0px !important", height: "40px"}}
+                style={{margin: "0px !important", height: "40px", background: "#396D7C"}}
             >
                 <Menu.Header
                     style={{display: "flex", alignItems: "center"}}
@@ -44,7 +45,7 @@ class ArkenHeader extends Component {
                         name="/"
                         onClick={this.navigate}
                     >
-                    <img src="../../assets/arken_logo.png" style={{height: "30px", marginLeft: 10}} />
+                    <img src={arkenLogo} style={{height: "30px", marginLeft: 10}} />
                     </Menu.Item>
                 </Menu.Header>
                 <Menu.Menu position="center">
