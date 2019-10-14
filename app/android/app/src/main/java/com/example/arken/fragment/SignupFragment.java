@@ -46,6 +46,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     EditText passwordEditText;
     EditText passwordEditText2;
     Switch isTraderSwitch;
+    Switch isPublicSwitch;
     Button signupButton;
     EditText ibanEditText ;
     EditText tcknEditText;
@@ -85,6 +86,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         signupButton = view.findViewById(R.id.signup_signup_button);
         signupButton.setOnClickListener(this);
         isTraderSwitch = view.findViewById(R.id.signup_isTrader_switch);
+        isPublicSwitch = view.findViewById(R.id.signup_isPublic_switch);
         isTraderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -174,7 +176,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             String surname = String.valueOf(surnameEditText.getText());
             String email = String.valueOf(emailEditText.getText());
             String password = String.valueOf(passwordEditText.getText());
+            boolean isPublic = !isPublicSwitch.isChecked();
             String location = "Turkey";
+
             Boolean isTrader = isTraderSwitch.isChecked();
             if (isTrader){
                 if (tcknEditText.getText().toString().trim().equals("")) {
@@ -193,10 +197,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 String tckn=String.valueOf(tcknEditText.getText());
                 String iban=String.valueOf(ibanEditText.getText());
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
-                        surname, email, password, location,isTrader,tckn,iban));
+                        surname, email, password, location,isTrader, isPublic,tckn,iban));
             } else {
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
-                        surname, email, password, location));
+                        surname, email, password, location, isPublic));
             }
 
 
