@@ -2,6 +2,7 @@ package com.example.arken.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
@@ -14,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -25,6 +27,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.arken.R;
+import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
 
@@ -48,6 +51,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     EditText tcknEditText;
     ImageView passwordEyeImage;
     ImageView passwordEyeImage2;
+    ImageButton imageButton;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -66,6 +71,17 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         emailEditText = view.findViewById(R.id.signup_email_editText);
         passwordEditText = view.findViewById(R.id.signup_password_editText);
         passwordEditText2 = view.findViewById(R.id.signup_password_editText2);
+        imageButton = view.findViewById(R.id.signup_location_button);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         signupButton = view.findViewById(R.id.signup_signup_button);
         signupButton.setOnClickListener(this);
         isTraderSwitch = view.findViewById(R.id.signup_isTrader_switch);
