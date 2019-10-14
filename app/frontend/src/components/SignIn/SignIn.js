@@ -3,6 +3,7 @@ import {Modal, Form, Button} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 
 import * as userActions from '../../actions/userActions';
+import history from "../../_core/history";
 
 
 class SignInModal extends Component {
@@ -18,6 +19,7 @@ class SignInModal extends Component {
     signIn() {
         const {email, password} = this.state;
         this.props.signIn({email, password}).then(result => {
+            history.push("/");
             this.props.handleClose();
         });
     }
