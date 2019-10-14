@@ -4,6 +4,8 @@ import EmptyPage from "../EmptyPage";
 import history from "../_core/history";
 
 import SignUp from "../components/SignUp/SignUp";
+import SignUpComplete from "../components/SignUp/SignUpComplete";
+import VerifyEmail from "../components/SignUp/VerifyEmail";
 
 
 class Routes extends Component {
@@ -11,6 +13,8 @@ class Routes extends Component {
         return (
             <Router history={history}>
                 <Switch>
+                    <Route path="/verify/:token" render={(props) => {return <VerifyEmail {...props} />; }} />
+                    <Route path="/sign_up_complete" render={() => { return <SignUpComplete />; }} />
                     <Route path="/sign_up" render={() => { return <SignUp />; }} />
                     <Route path="/" render={() => { return <EmptyPage />; }} />
                 </Switch>

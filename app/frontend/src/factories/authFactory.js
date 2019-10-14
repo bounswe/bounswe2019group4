@@ -13,6 +13,7 @@ function authFactory() {
         });
     };
     this.logout = () => baseRequest.post("/logout");
+    this.verify = params => baseRequest.get("/auth/verify?token=" + params.token);
 }
 
 export default new authFactory();
