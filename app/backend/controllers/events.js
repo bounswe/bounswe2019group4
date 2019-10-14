@@ -11,7 +11,7 @@ module.exports.getEventsFromAPI = async (req, res) => {
   request(url, (error, response, body) => {
     // If there is an error
     if(error){
-      res.status(400).send({
+      return res.status(400).send({
         errmsg: error,
       });
     }
@@ -33,7 +33,7 @@ module.exports.getEventsFromAPI = async (req, res) => {
       });
     }
 
-    res.status(204).send();
+    return res.status(204).send();
   })
 }
 
@@ -62,7 +62,7 @@ module.exports.getEvents = async (request, response) => {
     events = await Event.find({ })
   }
 
-  response.send({
+  return response.send({
     totalNumberOfEvents: events.length,
     events
   }); 
@@ -81,10 +81,10 @@ module.exports.getEvent = async (request, response) => {
     if (!event) {  // If no instance is returned, credentials are invalid
       throw Error('No such event!')
     } else{
-      response.send(event)  // Send only the extracted keys
+      return response.send(event)  // Send only the extracted keys
     }
   } catch(error){
-    response.status(404).send({
+    return response.status(404).send({
       errmsg: error.message
     })
   }
