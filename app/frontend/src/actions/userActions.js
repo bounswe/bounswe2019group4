@@ -14,6 +14,13 @@ export function logout() {
     };
 }
 
+export function verify(params) {
+    return {
+        type: "VERIFY",
+        payload: authService.verify(params)
+    }
+}
+
 export function resetUser() {
     return {
         type: "RESET_USER"
