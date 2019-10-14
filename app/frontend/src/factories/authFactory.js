@@ -6,9 +6,9 @@ function authFactory() {
     this.isUserLoggedIn = () => !!(loadState().user && loadState().user.loggedIn);
     this.isAdmin = () => !!(loadState().user && loadState().user.admin);
     this.login = params => {
-        const token = btoa(params.username + ":" + params.password);
+        const token = btoa(params.email + ":" + params.password);
         baseRequest.addHeader("Basic " + token);
-        return baseRequest.post("/login").then(result => {
+        return baseRequest.post("/auth/login", params).then(result => {
             return result;
         });
     };

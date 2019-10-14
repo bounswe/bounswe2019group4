@@ -7,7 +7,7 @@ const isUserLoggedIn = () => !!(loadState().user && loadState().user.loggedIn);
 
 const baseRequest = {};
 
-const baseUrl = config.getBasePublicUrl() + "api";
+const baseUrl = config.getBasePublicUrl();
 
 axios.defaults.baseURL = baseUrl;
 baseRequest.addHeader = token => {
