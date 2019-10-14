@@ -201,11 +201,12 @@ module.exports.resetPassword = async (request, response) => {
   let User = request.models['User']
   const recoverPassToken = request.body.token
   if (!recoverPassToken) {           // If there's no email field in the request, return status 400
-    response.status(400).send({ errmsg: 'Token is required in the request body' })
-  } else if (!request.body.password) {
-    response.status(400).send({errmsg: 'New password is required in the request body'})
+    return response.status(400).send({ errmsg: 'Token is required in the request body' })
+  } 
+  
+  if (!request.body.password) {
+    return response.status(400).send({errmsg: 'New password is required in the request body'})
   }
-
   // check whether password is valid or not.
   if(!checkPassword(request.body.password)){
     response.status(400).send({ errmsg: 'Enter valid password. Your password either is less than 6 characters or is easy to guess.' })
@@ -224,13 +225,13 @@ module.exports.resetPassword = async (request, response) => {
       userRegistered.password = bcrypt.hashSync(request.body.password, 10)
 
       userRegistered.save().then(() => {
-        response.sendStatus(204);
+        return response.sendStatus(204);
       }, (error) => {
-        response.status(400).send({error});
+        return response.status(400).send({error});
       });
 
     } catch (err) { // Some error is thrown before, returns the error message
-        response.status(400).send({ errmsg: err.message })
+        return response.status(400).send({ errmsg: err.message })
     }
   }
 }
