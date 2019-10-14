@@ -147,7 +147,7 @@ class SignUp extends Component {
                     <Grid.Column>
                 <Form.Group grouped>
                     <Form.Field control={Checkbox} name="isPublic" checked={isPublic} onChange={this.handleChange.bind(this)} label="Want your profile to be seen by other users?" />
-                    <Form.Button content="Sign Up" />
+                    <Form.Button content="Sign Up" disabled={!password || password !== confirmedPassword} />
                 </Form.Group>
                     </Grid.Column>
                 </Grid.Row>
