@@ -49,10 +49,25 @@
             android:id="@+id/action_startFragment_to_listEventFragment"
             app:destination="@id/listEventFragment"
             app:popUpTo="@+id/startFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_googleSignupFragment"
+            app:destination="@id/googleSignupFragment" />
     </fragment>
     <fragment
         android:id="@+id/listEventFragment"
         android:name="com.example.arken.fragment.ListEventFragment"
         android:label="ListEventFragment"
         tools:layout="@layout/fragment_listevent" />
+    <fragment
+        android:id="@+id/googleSignupFragment"
+        android:name="com.example.arken.fragment.ListEventFragment"
+        android:label="ListEventFragment"
+        tools:layout="@layout/fragment_signup_google" >
+        <action
+            android:id="@+id/action_googleSignupFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_googleSignupFragment_to_listEventFragment"
+            app:destination="@id/listEventFragment" />
+    </fragment>
 </navigation>

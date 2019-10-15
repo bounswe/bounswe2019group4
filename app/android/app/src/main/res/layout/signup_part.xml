@@ -263,19 +263,5 @@
         android:id="@+id/signup_signup_button">
 
     </Button>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Use Google Account"
-        android:textSize="12sp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textColor="@android:color/holo_blue_dark"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/signup_location_button"
-        app:layout_constraintTop_toBottomOf="@id/signup_signup_button"
-        android:id="@+id/signupGoogleButton">
-
-    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

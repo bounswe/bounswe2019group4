@@ -1,12 +1,14 @@
 package com.example.arken.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,32 +28,41 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.arken.R;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignupFragment extends Fragment implements View.OnClickListener {
-    EditText nameEditText;
-    EditText surnameEditText;
-    EditText emailEditText;
-    EditText passwordEditText;
-    EditText passwordEditText2;
-    Switch isTraderSwitch;
-    Button signupButton;
-    EditText ibanEditText;
-    EditText tcknEditText;
-    Button guestButton;
-    ImageView passwordEyeImage;
-    ImageView passwordEyeImage2;
-    ImageButton imageButton;
+import static android.content.ContentValues.TAG;
 
+public class SignupFragment extends Fragment implements View.OnClickListener {
+    private EditText nameEditText;
+    private EditText surnameEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private EditText passwordEditText2;
+    private Switch isTraderSwitch;
+    private Button signupButton;
+    private EditText ibanEditText;
+    private EditText tcknEditText;
+    private Button guestButton;
+    private ImageView passwordEyeImage;
+    private ImageView passwordEyeImage2;
+    private ImageButton imageButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -70,7 +81,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         passwordEditText = view.findViewById(R.id.signup_password_editText);
         passwordEditText2 = view.findViewById(R.id.signup_password_editText2);
         imageButton = view.findViewById(R.id.signup_location_button);
-
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +177,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             String email = String.valueOf(emailEditText.getText());
             String password = String.valueOf(passwordEditText.getText());
             String location = "Turkey";
-            Boolean isTrader = isTraderSwitch.isChecked();
+            boolean isTrader = isTraderSwitch.isChecked();
             if (isTrader) {
                 if (tcknEditText.getText().toString().trim().equals("")) {
                     tcknEditText.setError("Please enter your TC");
@@ -211,4 +221,5 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_listEventFragment);
         }
     }
+
 }
