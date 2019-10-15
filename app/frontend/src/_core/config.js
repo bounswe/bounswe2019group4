@@ -1,12 +1,12 @@
 const config = {};
 let baseUrl;
 config.getBasePublicUrl = () => {
-    if (process.env.NODE_ENV === "development") {
+    if (window.location.origin === "http://dev.arkenstone.ml") {
         baseUrl = "http://api.dev.arkenstone.ml/";
-    } else if (process.env.NODE_ENV === "production") {
+    } else if (window.location.origin === "http://arkenstone.ml" || window.location.origin === "http://www.arkenstone.ml") {
         baseUrl = "http://api.arkenstone.ml/";
     } else {
-        baseUrl = "http://dev.api.arkenstone.ml/";
+        baseUrl = "http://api.dev.arkenstone.ml/";
     }
     return baseUrl;
 };
