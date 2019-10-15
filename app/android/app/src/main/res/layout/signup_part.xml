@@ -101,8 +101,54 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/signup_passwordTag_textView"
         app:layout_constraintTop_toBottomOf="@id/signup_email_editText"
-        android:inputType="textPassword"
-        android:drawableRight="@drawable/ic_eye" />
+        android:inputType="textPassword"/>
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:text="Password 2"
+        android:textSize="12sp"
+        android:id="@+id/signup_passwordTag_textView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_password_editText2"
+        app:layout_constraintBottom_toBottomOf="@id/signup_password_editText2"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        />
+
+    <EditText
+        android:id="@+id/signup_password_editText2"
+        android:layout_width="0dp"
+        android:textSize="12sp"
+        android:layout_height="@dimen/height_edit_text"
+        android:layout_marginRight="16dp"
+        android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/signup_passwordTag_textView2"
+        app:layout_constraintTop_toBottomOf="@id/signup_password_editText"
+        android:inputType="textPassword"/>
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_eye"
+        app:layout_constraintEnd_toEndOf="@id/signup_password_editText"
+        app:layout_constraintTop_toBottomOf="@id/signup_email_editText"
+        android:layout_marginRight="10dp"
+        android:id="@+id/signup_password_eye_image">
+
+    </ImageView>
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_eye"
+        app:layout_constraintEnd_toEndOf="@id/signup_password_editText2"
+        app:layout_constraintTop_toBottomOf="@id/signup_password_editText"
+        android:layout_marginRight="10dp"
+        android:id="@+id/signup_password_eye_image2">
+
+    </ImageView>
+
     <TextView
         android:layout_width="100dp"
         android:layout_height="0dp"
@@ -124,7 +170,7 @@
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/signup_tcknTag_textView"
-        app:layout_constraintTop_toBottomOf="@id/signup_password_editText"
+        app:layout_constraintTop_toBottomOf="@id/signup_password_editText2"
         android:inputType="number"
         android:visibility="gone"
         />

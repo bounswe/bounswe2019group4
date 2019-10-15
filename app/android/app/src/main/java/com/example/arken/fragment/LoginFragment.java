@@ -1,13 +1,19 @@
 package com.example.arken.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -32,6 +38,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     EditText passwordEditText;
     Button loginButton;
     Button guestButton;
+    ImageView passwordEyeImage;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,6 +55,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         passwordEditText = view.findViewById(R.id.login_password_editText);
         ConstraintLayout layout = view.findViewById(R.id.login_background);
         layout.setOnClickListener(this);
+        passwordEyeImage = view.findViewById(R.id.login_password_eye_image);
+        passwordEyeImage.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+                        return true;
+                    default:
+                        return false;
+
+                }
+            }
+        });
         return view;
     }
 
@@ -65,11 +92,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
         else if(view.getId() == R.id.login_login_button){
             if(emailEditText.getText().toString().trim().equals("")){
-                Toast.makeText(getContext(),"Please enter your email", Toast.LENGTH_SHORT).show();
+                emailEditText.setError("Please enter your email");
                 return;
             }
             if(passwordEditText.getText().toString().trim().equals("")){
-                Toast.makeText(getContext(),"Please enter your password", Toast.LENGTH_SHORT).show();
+                passwordEditText.setError("Please enter your password");
                 return;
             }
 
