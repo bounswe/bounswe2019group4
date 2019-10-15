@@ -4,8 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session')
 const cors = require('cors')
-
 const { sessionSecret } = require('./secrets')
+const { getEventsFromAPI } = require('./utils')
 
 const app = express()   // the express instance that's doing everything
 
@@ -29,6 +29,15 @@ app.use('/events/', require('./routes/events')) // includes events endpoints to 
 app.use(/.*/, (request, response, nextHandler) => {
     response.status(404).send({ whatdidyoumean: `The request isn't supposed to enter that handler.` })
 })
+
+/*
+  Get method for events in every 30 minutes
+*/
+getEventsFromAPI()
+
+setInterval( () => {
+    getEventsFromAPI()
+}, 30*60*1000);
 
 const PORT = parseInt(process.argv[2]) || 8080  // optionally runs on the port given to the command 'yarn dev'
 console.log(`Listening on port ${PORT}`)
