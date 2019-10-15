@@ -8,7 +8,7 @@ const sendVerifyEmail = (email, token) => {
     to: email,
     from: 'noreply@arkenstone.ml',
     subject: 'Arkenstone Email Verification',
-    text: `Enter this to verify your email: ${website}/auth/verify?token=${token}`,
+    text: `Enter this to verify your email: ${website}/verify/${token}`,
   })
 }
 module.exports = {
