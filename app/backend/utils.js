@@ -1,5 +1,8 @@
 const IBAN = require('iban');
 const commonPassword = require('common-password');
+const {Event} = require('./models/event');
+const request = require('request');
+const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest";
 
 /*
   Method in order to check whether password is valid or not.
@@ -52,3 +55,37 @@ module.exports.checkTCKN = function(value) {
   
   return isEleven && lastDigitSatisfied && tenthDigitSatisfied;
 };
+
+/*
+  Get method for events.
+  Using 3rd party API, it saves events to database.
+*/
+module.exports.getEventsFromAPI = function() {
+  //let Event = req.models['Event']
+
+  request(url, (error, response, body) => {
+    // If there is an error
+    if(error){
+      return console.log(error)
+    }
+
+    // If there is no error, returns event lists 
+    else{
+      const events = JSON.parse(body);
+            
+      events.forEach((ev) => {
+        let event = new Event({
+          ...ev
+        });
+
+        event.save().then(doc => {
+          //console.log(doc);
+        }).catch(err => {
+          console.log(err);
+        });
+      });
+    }
+
+    return console.log("DONE");
+  })
+}
