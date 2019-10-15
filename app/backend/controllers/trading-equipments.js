@@ -1,5 +1,5 @@
 /*
-  Get method for specific event.
+  Post method for following specific trading equipment.
 */
 module.exports.followTradingEq = async (request, response) => {
   let TradingEqFollow = request.models['TradingEquipmentFollow']
@@ -31,4 +31,24 @@ module.exports.followTradingEq = async (request, response) => {
       errmsg: error.message
     })
   }
+}
+
+/*
+  Post method for unfollowing specific trading equipment.
+*/
+module.exports.unfollowTradingEq = async (request, response) => {
+  let TradingEqFollow = request.models['TradingEquipmentFollow']
+
+  const UserId = request.body.userId
+  const TradingEq = request.query.tEq
+
+  TradingEqFollow.deleteOne({ UserId, TradingEq }, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+
+    return response.send(204);
+  });
 }

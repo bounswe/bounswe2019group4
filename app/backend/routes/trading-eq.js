@@ -10,4 +10,10 @@ const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
 */
 router.post('/follow', modelBinder(TradingEquipmentFollow, 'TradingEquipmentFollow'), tradingEquipmentController.followTradingEq)
 
+/*
+  Post endpoint for unfollowing specific trading equipment.
+  Check controller function for more detail
+*/
+router.post('/unfollow', modelBinder(TradingEquipmentFollow, 'TradingEquipmentFollow'), tradingEquipmentController.unfollowTradingEq)
+
 module.exports = router
