@@ -18,6 +18,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
+import com.example.arken.model.GoogleUser;
+import com.example.arken.model.SignupUser;
+import com.example.arken.util.RetroClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -25,6 +28,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
@@ -86,8 +94,25 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         }
     }
     private void onLoggedIn(GoogleSignInAccount googleSignInAccount) {
-        NavHostFragment.findNavController(this).navigate(R.id.action_signupFragment_to_listEventFragment);
-        Toast.makeText(getContext(), "Register page", Toast.LENGTH_SHORT).show();
+        Call<ResponseBody> call;
+
+        call = RetroClient.getInstance().getAPIService().google(new GoogleUser( googleSignInAccount.getId()));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    NavHostFragment.findNavController(StartFragment.this).navigate(R.id.action_signupFragment_to_listEventFragment);
+                } else {
+                    NavHostFragment.findNavController(StartFragment.this).navigate(R.id.action_startFragment_to_googleSignupFragment);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     @Override
     public void onStart() {

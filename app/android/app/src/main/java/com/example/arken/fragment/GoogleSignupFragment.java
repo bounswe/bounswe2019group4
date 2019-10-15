@@ -151,7 +151,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                 password2EditText.setError("The passwords are not equal");
                 return;
             }
-            //TODO: add map fragment
+
             String location = "Turkey";
             Boolean isTrader = isTraderSwitch.isChecked();
             if (isTrader){
@@ -168,7 +168,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
             if (isTrader) {
                 String tckn=String.valueOf(tcknEditText.getText());
                 String iban=String.valueOf(ibanEditText.getText());
-                //TODO: token id will be sent to backend
+
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(userName,
                         userSurname, userEmail, password1, location,isTrader,tckn,iban));
             } else {

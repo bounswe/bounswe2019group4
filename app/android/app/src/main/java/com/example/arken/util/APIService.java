@@ -1,6 +1,7 @@
 package com.example.arken.util;
 
 import com.example.arken.model.Event;
+import com.example.arken.model.GoogleUser;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.SignupUser;
@@ -25,6 +26,12 @@ public interface APIService {
     @POST("auth/login")
     Call<ResponseBody> login(
             @Body LoginUser loginUser
+    );
+
+    @Headers({"Content-Type: application/json"})
+    @POST("auth/google")
+    Call<ResponseBody> google(
+            @Body GoogleUser googleUser
     );
 
     @Headers({"Content-Type: application/json"})

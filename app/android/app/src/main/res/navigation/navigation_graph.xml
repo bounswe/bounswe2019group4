@@ -57,7 +57,11 @@
         android:id="@+id/listEventFragment"
         android:name="com.example.arken.fragment.ListEventFragment"
         android:label="ListEventFragment"
-        tools:layout="@layout/fragment_listevent" />
+        tools:layout="@layout/fragment_listevent" >
+        <action
+            android:id="@+id/action_listEventFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
     <fragment
         android:id="@+id/googleSignupFragment"
         android:name="com.example.arken.fragment.ListEventFragment"
