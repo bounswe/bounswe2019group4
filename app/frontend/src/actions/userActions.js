@@ -33,3 +33,16 @@ export function signUp(params) {
         payload: userService.signUp(params)
     };
 }
+
+export function forgetPassword(params) {
+    return {
+        type: "FORGET_PASSWORD",
+        payload: userService.forgetPassword(params)
+    };
+}
+export function resetPassword(params) {
+    return {
+        type: "RESET_PASSWORD",
+        payload: userService.resetPassword(params)
+    };
+}

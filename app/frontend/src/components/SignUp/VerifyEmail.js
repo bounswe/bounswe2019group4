@@ -24,7 +24,7 @@ class VerifyEmail extends Component {
     render() {
         const {loading, verified} = this.state;
         return (
-            <Segment>
+            <Segment raised>
                 {loading && <Loader/>}
                 {!loading && verified &&
                 (

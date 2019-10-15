@@ -14,7 +14,7 @@ class SignUpComplete extends Component {
 
     render() {
         return (
-            <Segment>
+            <Segment raised>
                 <Container>
                     <Header>Sign Up Complete!</Header>
                     <p>Now is the time for you to check your email for verification and start earning as soon as possible!</p>

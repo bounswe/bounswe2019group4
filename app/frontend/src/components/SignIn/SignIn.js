@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, Form, Button} from 'semantic-ui-react';
+import {Modal, Form, Container} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 
 import * as userActions from '../../actions/userActions';
@@ -9,18 +9,23 @@ import history from "../../_core/history";
 class SignInModal extends Component {
     constructor(props) {
         super(props);
-        this.state= {openModal: false, email: "", password: ""};
+        this.state= {openModal: false, email: "", password: "", forgetEmail: "", forget: false, forgetSuccessful: false};
     }
 
     componentWillReceiveProps(props) {
-        this.setState({openModal: props.openModal});
+
+        if(!this.props.openModal) {
+            this.resetFields(() => { this.setState({openModal: props.openModal}) });
+        } else {
+            this.setState({openModal: props.openModal});
+        }
     }
 
     signIn() {
         const {email, password} = this.state;
         this.props.signIn({email, password}).then(result => {
             history.push("/");
-            this.props.handleClose();
+            this.resetFields(this.props.handleClose);
         });
     }
 
@@ -28,7 +33,21 @@ class SignInModal extends Component {
         this.setState({[name]: value});
     }
 
-    render() {
+    forgetClicked() {
+        this.resetFields(() => {this.setState({forget: true})});
+    }
+
+    resetFields(callback) {
+        this.setState({email: "", password: "", forgetEmail: "", forget: false, forgetSuccessful: false},()=> {callback()});
+    }
+
+    forgetPassword() {
+        this.props.forgetPassword({email: this.state.forgetEmail}).then(result => {
+            this.setState({forgetSuccessful: true});
+        })
+    }
+
+    renderSignIn() {
         const {email, password} = this.state;
         return (
             <Modal open={this.state.openModal}
@@ -54,12 +73,75 @@ class SignInModal extends Component {
                             value={password}
                             onChange={this.handleChange.bind(this)}
                         />
-                        <Form.Button content='Sign In' />
-
+                        <Form.Group inline>
+                            <Form.Button content='Sign In' />
+                            <Form.Field style={{float: "right"}}>
+                                <a onClick={this.forgetClicked.bind(this)}>Forgot password?</a>
+                            </Form.Field>
+                        </Form.Group>
                     </Form>
                 </Modal.Content>
             </Modal>
         )
+    }
+
+    renderForgetPasswordSuccessful() {
+        const {forgetEmail} = this.state;
+        return (
+            <Modal open={this.state.openModal}
+                   onClose={this.props.handleClose}
+                   size="tiny"
+                   centered={false}
+            >
+                <Modal.Header>
+                    Email Sent
+                </Modal.Header>
+                <Modal.Content>
+                    <Container>
+                        <p>We sent an email to <b>{forgetEmail}</b> for further steps. Please check your email.</p>
+                    </Container>
+                </Modal.Content>
+            </Modal>
+        )
+    }
+
+    renderForgetPassword() {
+        const {forgetEmail} = this.state;
+        return (
+            <Modal open={this.state.openModal}
+                   onClose={this.props.handleClose}
+                   size="tiny"
+                   centered={false}
+            >
+                <Modal.Header>
+                    Reset Password
+                </Modal.Header>
+                <Modal.Content>
+                    <Form onSubmit={this.forgetPassword.bind(this)}>
+                        <Form.Input
+                            placeholder='email'
+                            name='forgetEmail'
+                            value={forgetEmail}
+                            onChange={this.handleChange.bind(this)}
+                        />
+                        <Form.Button content='Reset Password' />
+                    </Form>
+                </Modal.Content>
+            </Modal>
+        )
+    }
+
+    render() {
+        const {forget, forgetSuccessful} = this.state;
+
+        if(forgetSuccessful) {
+            return this.renderForgetPasswordSuccessful();
+        } else if(forget) {
+            return this.renderForgetPassword();
+        } else {
+            return this.renderSignIn();
+        }
+
     }
 }
 
@@ -67,6 +149,7 @@ class SignInModal extends Component {
 const dispatchToProps = dispatch => {
     return {
         signIn: params => dispatch(userActions.login(params)),
+        forgetPassword: params => dispatch(userActions.forgetPassword(params)),
     };
 };
 
