@@ -8,7 +8,7 @@ const sendForgetPassword = (email, token) => {
     to: email,
     from: 'noreply@arkenstone.ml',
     subject: 'Arkenstone Change Password',
-    text: `Enter this to change your password: ${frontend}/auth/reset-password?token=${token}`
+    text: `Enter this to change your password: ${frontend}/reset-password/${token}`
   })
 }
 
