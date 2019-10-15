@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.model.LoginUser;
@@ -36,6 +37,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     EditText emailEditText;
     EditText passwordEditText;
     Button loginButton;
+    Button guestButton;
     ImageView passwordEyeImage;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -43,6 +45,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        guestButton = view.findViewById(R.id.signup_guest_button);
+        guestButton.setOnClickListener(this);
         signupButton = view.findViewById(R.id.login_signupButton_layout);
         signupButton.setOnClickListener(this);
         loginButton = view.findViewById(R.id.login_login_button);
@@ -81,11 +85,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         }
         if(view.getId() == R.id.login_signupButton_layout){
-            SignupFragment nextFrag= new SignupFragment();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.root_layout, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signupFragment);
+
+        } else if (view.getId() == R.id.signup_guest_button) {
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_listEventFragment2);
         }
         else if(view.getId() == R.id.login_login_button){
             if(emailEditText.getText().toString().trim().equals("")){

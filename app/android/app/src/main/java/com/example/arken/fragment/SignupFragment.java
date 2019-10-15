@@ -25,13 +25,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
-
-import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -39,7 +38,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignupFragment extends Fragment implements View.OnClickListener {
-    LinearLayout loginButton;
     EditText nameEditText;
     EditText surnameEditText;
     EditText emailEditText;
@@ -47,8 +45,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     EditText passwordEditText2;
     Switch isTraderSwitch;
     Button signupButton;
-    EditText ibanEditText ;
+    EditText ibanEditText;
     EditText tcknEditText;
+    Button guestButton;
     ImageView passwordEyeImage;
     ImageView passwordEyeImage2;
     ImageButton imageButton;
@@ -59,11 +58,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
-
+        guestButton = view.findViewById(R.id.signup_guest_button);
+        guestButton.setOnClickListener(this);
         ibanEditText = view.findViewById(R.id.signup_iban_editText);
         tcknEditText = view.findViewById(R.id.signup_tckn_editText);
-        loginButton = view.findViewById(R.id.signup_loginButton_layout);
-        loginButton.setOnClickListener(this);
         ConstraintLayout layout = view.findViewById(R.id.signup_background);
         layout.setOnClickListener(this);
         nameEditText = view.findViewById(R.id.signup_name_editText);
@@ -143,13 +141,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         }
-        if (view.getId() == R.id.signup_loginButton_layout) {
-            LoginFragment nextFrag = new LoginFragment();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.root_layout, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
-        } else if (view.getId() == R.id.signup_signup_button) {
+        if (view.getId() == R.id.signup_signup_button) {
             if (nameEditText.getText().toString().trim().equals("")) {
                 nameEditText.setError("Please enter your name");
                 return;
@@ -176,7 +168,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             String password = String.valueOf(passwordEditText.getText());
             String location = "Turkey";
             Boolean isTrader = isTraderSwitch.isChecked();
-            if (isTrader){
+            if (isTrader) {
                 if (tcknEditText.getText().toString().trim().equals("")) {
                     tcknEditText.setError("Please enter your TC");
                     return;
@@ -188,12 +180,12 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             }
 
 
-                Call<ResponseBody> call;
+            Call<ResponseBody> call;
             if (isTrader) {
-                String tckn=String.valueOf(tcknEditText.getText());
-                String iban=String.valueOf(ibanEditText.getText());
+                String tckn = String.valueOf(tcknEditText.getText());
+                String iban = String.valueOf(ibanEditText.getText());
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
-                        surname, email, password, location,isTrader,tckn,iban));
+                        surname, email, password, location, isTrader, tckn, iban));
             } else {
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
                         surname, email, password, location));
@@ -215,6 +207,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        } else if (view.getId() == R.id.signup_guest_button) {
+            Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_listEventFragment);
         }
     }
 }
