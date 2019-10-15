@@ -1,5 +1,7 @@
 package com.example.arken.util;
 
+import com.example.arken.model.Event;
+import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.SignupUser;
 
@@ -27,9 +29,13 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("events")
-    Call<ResponseBody> getEvents(@Query("country") String s, @Query("importance") int k);
+    Call<ListEvent> getEvents(@Query("country") String s, @Query("importance") Integer k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("events")
+    Call<ListEvent> getEventsAll();
 
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")
-    Call<ResponseBody> getEvent(@Path("id") long k);
+    Call<Event> getEvent(@Path("id") long k);
 }

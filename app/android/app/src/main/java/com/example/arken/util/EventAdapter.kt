@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Event
 
-class EventAdapter(private val dataSet: List<Event>) :
+class EventAdapter(var dataSet: List<Event>) :
     RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     /**
@@ -44,9 +44,9 @@ class EventAdapter(private val dataSet: List<Event>) :
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.textView.text = dataSet[position].event
-        viewHolder.country.text = dataSet[position].country
-        viewHolder.importance.text = dataSet[position].importance
+        viewHolder.textView.text = dataSet[position].Event
+        viewHolder.country.text = dataSet[position].Country
+        viewHolder.importance.text = dataSet[position].Importance
     }
 
     // Return the size of your dataset (invoked by the layout manager)

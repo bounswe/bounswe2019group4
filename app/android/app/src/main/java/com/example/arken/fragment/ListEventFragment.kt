@@ -4,26 +4,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Event
+import com.example.arken.model.ListEvent
 import com.example.arken.util.EventAdapter
+import com.example.arken.util.RetroClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
 
 class ListEventFragment : Fragment() {
     private lateinit var currentLayoutManagerType: LayoutManagerType
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var dataset: List<Event>
+    private lateinit var eventAdapter: EventAdapter
 
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize dataset, this data would usually come from a local content provider or
-        // remote server.
+
         initDataset()
     }
 
@@ -39,22 +46,22 @@ class ListEventFragment : Fragment() {
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
 
-        // LinearLayoutManager is used here, this will layout the elements in a similar fashion
-        // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
-        // elements are laid out.
+
         layoutManager = LinearLayoutManager(activity)
 
         currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
         if (savedInstanceState != null) {
-            // Restore saved layout manager type.
+
             currentLayoutManagerType = savedInstanceState
                 .getSerializable(KEY_LAYOUT_MANAGER) as LayoutManagerType
         }
         setRecyclerViewLayoutManager(currentLayoutManagerType)
 
-        // Set CustomAdapter as the adapter for RecyclerView.
-        recyclerView.adapter = EventAdapter(dataset)
+
+
+        eventAdapter = EventAdapter(dataset)
+        recyclerView.adapter = eventAdapter
 
         setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER)
 
@@ -62,11 +69,7 @@ class ListEventFragment : Fragment() {
         return rootView
     }
 
-    /**
-     * Set RecyclerView's LayoutManager to the one given.
-     *
-     * @param layoutManagerType Type of layout manager to switch to.
-     */
+
     private fun setRecyclerViewLayoutManager(layoutManagerType: LayoutManagerType) {
         var scrollPosition = 0
 
@@ -89,23 +92,46 @@ class ListEventFragment : Fragment() {
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
 
-        // Save currently selected layout manager.
+
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, currentLayoutManagerType)
         super.onSaveInstanceState(savedInstanceState)
     }
 
-    /**
-     * Generates Strings for RecyclerView's adapter. This data would usually come
-     * from a local content provider or remote server.
-     */
+
     private fun initDataset() {
-        dataset = listOf()
+
+        val call: Call<ListEvent> = RetroClient.getInstance().apiService.eventsAll
+        dataset = listOf(
+            Event(
+                "l", "k", "ş"
+                , Date(), "i", "i", ",", "l", "i", "i", ","
+            )
+        )
+        call.enqueue(object : Callback<ListEvent> {
+            override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
+                if (response.isSuccessful) {
+                    val listEvent: ListEvent? = response.body()
+                    // dataset=listEvent!!.events
+                    eventAdapter.dataSet = listEvent!!.events!!
+                    eventAdapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ListEvent>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     companion object {
         private val TAG = "RecyclerViewFragment"
         private val KEY_LAYOUT_MANAGER = "layoutManager"
-        private val SPAN_COUNT = 2
-        private val DATASET_COUNT = 60
+
     }
 }
+
+
+

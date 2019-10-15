@@ -4,14 +4,14 @@ import java.util.*
 
 class Event(
     val _id: String?,
-    val calendarId: String?,
-    val country: String?,
-    val date: Date?,
-    val event: String?,
-    val source: String?,
-    val actual: String?,
-    val previous: String?,
-    val forecast: String?,
-    val importance: String?,
+    val CalendarId: String?,
+    val Country: String?,
+    val Date: Date?,
+    val Event: String?,
+    val Source: String?,
+    val Actual: String?,
+    val Previous: String?,
+    val Forecast: String?,
+    val Importance: String?,
     val __v: String?
 )
