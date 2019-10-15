@@ -5,7 +5,7 @@ module.exports.followTradingEq = async (request, response) => {
   let TradingEqFollow = request.models['TradingEquipmentFollow']
 
   const UserId = request.body.userId
-  const TradingEq = request.query.tEq
+  const TradingEq = request.query.tEq.toUpperCase()
 
   try{
     row = await TradingEqFollow.findOne({ UserId, TradingEq })
@@ -40,7 +40,7 @@ module.exports.unfollowTradingEq = async (request, response) => {
   let TradingEqFollow = request.models['TradingEquipmentFollow']
 
   const UserId = request.body.userId
-  const TradingEq = request.query.tEq
+  const TradingEq = request.query.tEq.toUpperCase()
 
   TradingEqFollow.deleteOne({ UserId, TradingEq }, (err, results) => {
     if(err){
