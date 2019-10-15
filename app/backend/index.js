@@ -33,8 +33,9 @@ app.use(/.*/, (request, response, nextHandler) => {
 /*
   Get method for events in every 30 minutes
 */
+getEventsFromAPI()
+
 setInterval( () => {
-    console.log(new Date())
     getEventsFromAPI()
 }, 30*60*1000);
 

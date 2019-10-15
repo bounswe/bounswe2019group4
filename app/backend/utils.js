@@ -61,12 +61,11 @@ module.exports.checkTCKN = function(value) {
   Using 3rd party API, it saves events to database.
 */
 module.exports.getEventsFromAPI = function() {
-  //let Event = req.models['Event']
 
   request(url, (error, response, body) => {
     // If there is an error
     if(error){
-      return console.log(error)
+      return
     }
 
     // If there is no error, returns event lists 
@@ -79,13 +78,12 @@ module.exports.getEventsFromAPI = function() {
         });
 
         event.save().then(doc => {
-          //console.log(doc);
+          
         }).catch(err => {
-          console.log(err);
+          
         });
       });
     }
 
-    return console.log("DONE");
   })
 }
