@@ -23,71 +23,6 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="0dp"
-            android:text="Password"
-            android:textSize="12sp"
-            android:id="@+id/signup_google_passwordTag1_textView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/signup_google_password1_editText"
-            app:layout_constraintBottom_toBottomOf="@id/signup_google_password1_editText"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="16dp"
-            />
-
-        <EditText
-            android:id="@+id/signup_google_password1_editText"
-            android:layout_width="0dp"
-            android:textSize="12sp"
-            android:layout_height="@dimen/height_edit_text"
-            android:layout_marginRight="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/signup_google_passwordTag1_textView"
-            app:layout_constraintTop_toTopOf="parent"
-            android:inputType="textPassword"/>
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_eye"
-            app:layout_constraintEnd_toEndOf="@id/signup_google_password1_editText"
-            app:layout_constraintBottom_toBottomOf="@id/signup_google_password1_editText"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/signup_google_password1_eye_image"/>
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="0dp"
-            android:text="Password 2"
-            android:textSize="12sp"
-            android:id="@+id/signup_google_passwordTag2_textView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/signup_google_password2_editText"
-            app:layout_constraintBottom_toBottomOf="@id/signup_google_password2_editText"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="16dp"
-            />
-
-        <EditText
-            android:id="@+id/signup_google_password2_editText"
-            android:layout_width="0dp"
-            android:textSize="12sp"
-            android:layout_height="@dimen/height_edit_text"
-            android:layout_marginRight="16dp"
-            android:paddingRight="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/signup_google_passwordTag2_textView"
-            app:layout_constraintTop_toBottomOf="@id/signup_google_passwordTag1_textView"
-            android:inputType="textPassword"/>
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_eye"
-            app:layout_constraintEnd_toEndOf="@id/signup_google_password2_editText"
-            app:layout_constraintTop_toBottomOf="@id/signup_google_passwordTag1_textView"
-            android:layout_marginRight="10dp"
-            android:id="@+id/lsignup_google_password2_eye_image"/>
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="0dp"
             android:text="TC id"
             android:textSize="12sp"
             android:id="@+id/signup_google_tcknTag_textView"
@@ -106,7 +41,7 @@
             android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/signup_google_tcknTag_textView"
-            app:layout_constraintTop_toBottomOf="@id/signup_google_passwordTag2_textView"
+            app:layout_constraintTop_toTopOf="parent"
             android:inputType="number"
             android:visibility="gone"
             />

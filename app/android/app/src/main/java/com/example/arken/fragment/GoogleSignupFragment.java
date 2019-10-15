@@ -27,12 +27,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.arken.R;
+import com.example.arken.activity.MainActivity;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -43,24 +47,11 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
     private String userName;
     private String userSurname;
     private String userEmail;
-    private EditText password1EditText;
-    private EditText password2EditText;
+    private String googleId;
     private Switch isTraderSwitch;
     private Button submitButton;
     private EditText ibanEditText;
     private EditText tcknEditText;
-    private ImageView password1EyeImage;
-    private ImageView password2EyeImage;
-    public static GoogleSignupFragment newInstance(String name, String surname, String email) {
-        GoogleSignupFragment f = new GoogleSignupFragment();
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putString("name", name);
-        args.putString("surname", surname);
-        args.putString("email", email);
-        f.setArguments(args);
-        return f;
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -71,12 +62,11 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
         userName = alreadyloggedAccount.getGivenName();
         userSurname = alreadyloggedAccount.getFamilyName();
         userEmail = alreadyloggedAccount.getEmail();
+        googleId = alreadyloggedAccount.getId();
         ibanEditText = view.findViewById(R.id.signup_google_iban_editText);
         tcknEditText = view.findViewById(R.id.signup_google_tckn_editText);
         ConstraintLayout layout = view.findViewById(R.id.signup_google_background);
         layout.setOnClickListener(this);
-        password1EditText = view.findViewById(R.id.signup_google_password1_editText);
-        password2EditText = view.findViewById(R.id.signup_google_password2_editText);
         submitButton = view.findViewById(R.id.signup_google_submit_button);
         submitButton.setOnClickListener(this);
         isTraderSwitch = view.findViewById(R.id.signup_google_isTrader_switch);
@@ -92,67 +82,18 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                 }
             }
         });
-        password1EyeImage = view.findViewById(R.id.signup_google_password1_eye_image);
-        password2EyeImage = view.findViewById(R.id.lsignup_google_password2_eye_image);
-        password1EyeImage.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch(motionEvent.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        password1EditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        password1EditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        return true;
-                    default:
-                        return false;
 
-                }
-            }
-        });
-        password2EyeImage.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch(motionEvent.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        password2EditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        password2EditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        return true;
-                    default:
-                        return false;
-
-                }
-            }
-        });
         return view;
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != R.id.signup_google_iban_editText && view.getId() != R.id.signup_google_password1_editText &&
-                view.getId() != R.id.signup_google_password2_editText && view.getId() != R.id.signup_google_tckn_editText){
+        if (view.getId() != R.id.signup_google_iban_editText && view.getId() != R.id.signup_google_tckn_editText){
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         }
         if (view.getId() == R.id.signup_google_submit_button) {
-            if (password1EditText.getText().toString().trim().equals("")) {
-                password1EditText.setError("Please enter your password");
-                return;
-            }
-            if (password2EditText.getText().toString().trim().equals("")) {
-                password2EditText.setError("Please validate your password");
-                return;
-            }
-
-            String password1 = String.valueOf(password1EditText.getText());
-            String password2 = String.valueOf(password2EditText.getText());
-            if(!password1.equals(password2)){
-                password2EditText.setError("The passwords are not equal");
-                return;
-            }
 
             String location = "Turkey";
             Boolean isTrader = isTraderSwitch.isChecked();
@@ -172,10 +113,10 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                 String iban=String.valueOf(ibanEditText.getText());
 
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(userName,
-                        userSurname, userEmail, password1, location,isTrader,tckn,iban));
+                        userSurname, userEmail, googleId, location,isTrader,tckn,iban));
             } else {
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(userName,
-                        userSurname, userEmail, password1, location));
+                        userSurname, userEmail, googleId, location));
             }
 
             call.enqueue(new Callback<ResponseBody>() {
@@ -194,5 +135,21 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                 }
             });
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MainActivity.getClient().revokeAccess()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(Navigation.findNavController(ibanEditText).getCurrentDestination().getId() == R.id.listEventFragment)
+                            Navigation.findNavController(ibanEditText)
+                                    .navigate(R.id.action_listEventFragment_to_startFragment);
+                    }
+                });
+
+
     }
 }
