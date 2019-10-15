@@ -79,6 +79,7 @@ class ListEventFragment : Fragment() {
             activity?.let { it1 ->
                 MainActivity.getClient().revokeAccess()
                     .addOnCompleteListener(it1, OnCompleteListener<Void> {
+                        if(Navigation.findNavController(view).currentDestination?.id == R.id.listEventFragment)
                         Navigation.findNavController(view)
                             .navigate(R.id.action_listEventFragment_to_startFragment)
                     })

@@ -31,6 +31,8 @@ import androidx.fragment.app.Fragment;
 import com.example.arken.R;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -65,10 +67,10 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup_google, container, false);
-        Bundle args = getArguments();
-        userName = args.getString("name","");
-        userSurname = args.getString("surname", "");
-        userEmail = args.getString("email","");
+        GoogleSignInAccount alreadyloggedAccount = GoogleSignIn.getLastSignedInAccount(getContext());
+        userName = alreadyloggedAccount.getGivenName();
+        userSurname = alreadyloggedAccount.getFamilyName();
+        userEmail = alreadyloggedAccount.getEmail();
         ibanEditText = view.findViewById(R.id.signup_google_iban_editText);
         tcknEditText = view.findViewById(R.id.signup_google_tckn_editText);
         ConstraintLayout layout = view.findViewById(R.id.signup_google_background);

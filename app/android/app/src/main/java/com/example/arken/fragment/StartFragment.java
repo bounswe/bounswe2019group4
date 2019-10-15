@@ -102,6 +102,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    //google login fragment???
                     NavHostFragment.findNavController(StartFragment.this).navigate(R.id.action_signupFragment_to_listEventFragment);
                 } else {
                     NavHostFragment.findNavController(StartFragment.this).navigate(R.id.action_startFragment_to_googleSignupFragment);

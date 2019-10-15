@@ -64,8 +64,8 @@
     </fragment>
     <fragment
         android:id="@+id/googleSignupFragment"
-        android:name="com.example.arken.fragment.ListEventFragment"
-        android:label="ListEventFragment"
+        android:name="com.example.arken.fragment.GoogleSignupFragment"
+        android:label="GoogleSignupFragment"
         tools:layout="@layout/fragment_signup_google" >
         <action
             android:id="@+id/action_googleSignupFragment_to_loginFragment"
