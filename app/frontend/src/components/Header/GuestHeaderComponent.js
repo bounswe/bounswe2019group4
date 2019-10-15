@@ -11,7 +11,7 @@ class GuestHeaderComponent extends Component {
     }
 
     navigate(e, {name}) {
-        history.push(name);
+        history.push("/" + name);
     }
 
     openSignInModal() {
