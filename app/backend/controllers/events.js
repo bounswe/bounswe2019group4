@@ -17,13 +17,13 @@ module.exports.getEvents = async (request, response) => {
   // undefined variables are the projections over the collection
   try {
     if(Country && Importance){
-      events = await Event.find({ Country, Importance }, undefined, {skip, limit})
+      events = await Event.find({ Country, Importance }, undefined, {skip, limit}).sort({Date: -1})
     } else if(Country && !Importance){
-      events = await Event.find({ Country }, undefined, {skip, limit})
+      events = await Event.find({ Country }, undefined, {skip, limit}).sort({Date: -1})
     } else if(!Country && Importance){
-      events = await Event.find({ Importance }, undefined, {skip, limit})
+      events = await Event.find({ Importance }, undefined, {skip, limit}).sort({Date: -1})
     } else {
-      events = await Event.find({ }, undefined, {skip, limit})
+      events = await Event.find({ }, undefined, {skip, limit}).sort({Date: -1})
     }
     const totalNumberOfEvents = await Event.countDocuments({})
     return response.send({
