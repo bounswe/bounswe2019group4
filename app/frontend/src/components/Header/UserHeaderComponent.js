@@ -2,8 +2,13 @@ import React, {Component} from "react";
 import {Menu, Dropdown} from "semantic-ui-react";
 import * as userActions from "../../actions/userActions";
 import connect from "react-redux/es/connect/connect";
+import history from "../../_core/history";
 
 class UserHeaderComponent extends Component {
+
+    navigate(e, {name}) {
+        history.push("/" + name);
+    }
 
     render() {
         return (
@@ -13,6 +18,7 @@ class UserHeaderComponent extends Component {
                     name="profile"
                     onClick={this.navigate}
                 >
+
                     <i className="fas fa-user-circle fa-2x" style={{ margin: 10}} />
                 </Menu.Item>
                 <Menu.Item

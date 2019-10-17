@@ -7,6 +7,7 @@ import SignUp from "../components/SignUp/SignUp";
 import SignUpComplete from "../components/SignUp/SignUpComplete";
 import VerifyEmail from "../components/SignUp/VerifyEmail";
 import ResetPassword from "../components/SignIn/ResetPassword";
+import Profile from "./Profile/Profile";
 
 
 class Routes extends Component {
@@ -18,6 +19,7 @@ class Routes extends Component {
                     <Route path="/verify/:token" render={(props) => {return <VerifyEmail {...props} />; }} />
                     <Route path="/sign_up_complete" render={() => { return <SignUpComplete />; }} />
                     <Route path="/sign_up" render={() => { return <SignUp />; }} />
+                    <Route path="/profile" render={() => { return <Profile />; }} />
                     <Route path="/" render={() => { return <EmptyPage />; }} />
                 </Switch>
             </Router>
