@@ -7,6 +7,10 @@ module.exports.followTradingEq = async (request, response) => {
   const UserId = request.body.userId
   const TradingEq = request.query.tEq.toUpperCase()
 
+  if(!request.session['user']){
+    return response.status(401).send();
+  }
+
   try{
     row = await TradingEqFollow.findOne({ UserId, TradingEq })
 
@@ -42,6 +46,10 @@ module.exports.unfollowTradingEq = async (request, response) => {
   const UserId = request.body.userId
   const TradingEq = request.query.tEq.toUpperCase()
 
+  if(!request.session['user']){
+    return response.status(401).send();
+  }
+  
   TradingEqFollow.deleteOne({ UserId, TradingEq }, (err, results) => {
     if(err){
       return response.status(404).send({
