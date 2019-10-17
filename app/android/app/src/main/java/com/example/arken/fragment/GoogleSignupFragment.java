@@ -141,16 +141,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MainActivity.getClient().revokeAccess()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(Navigation.findNavController(ibanEditText).getCurrentDestination().getId() == R.id.googleSignupFragment)
-                            Navigation.findNavController(ibanEditText)
-                                    .navigate(R.id.action_googleSignupFragment_to_startFragment);
-                    }
-                });
-
+        MainActivity.getClient().revokeAccess();
 
     }
 }

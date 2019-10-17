@@ -85,7 +85,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
                         // a listener.
                         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                         GoogleSignInAccount account = task.getResult(ApiException.class);
-                        onLoggedIn(account);
+                        onLoggedIn(account, false);
                     } catch (ApiException e) {
                         // The ApiException status code indicates the detailed failure reason.
                         Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
@@ -94,7 +94,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
-    private void onLoggedIn(GoogleSignInAccount googleSignInAccount) {
+    private void onLoggedIn(GoogleSignInAccount googleSignInAccount, final boolean onStart) {
         Call<ResponseBody> call;
 
         call = RetroClient.getInstance().getAPIService().google(new GoogleId( googleSignInAccount.getId()));
@@ -105,8 +105,9 @@ public class StartFragment extends Fragment implements View.OnClickListener {
                 if (response.isSuccessful()) {
                     //google login fragment???
                     Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_listEventFragment);
-                } else {
-                    Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_googleSignupFragment);                }
+                } else if(!onStart){
+                    Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_googleSignupFragment);
+                }
             }
 
             @Override
@@ -120,8 +121,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         super.onStart();
         GoogleSignInAccount alreadyloggedAccount = GoogleSignIn.getLastSignedInAccount(getContext());
         if (alreadyloggedAccount != null) {
-            onLoggedIn(alreadyloggedAccount);
-            Toast.makeText(getContext(), "Already Logged In", Toast.LENGTH_SHORT).show();
+            onLoggedIn(alreadyloggedAccount, true);
         } else {
             Log.d(TAG, "Not logged in");
         }
