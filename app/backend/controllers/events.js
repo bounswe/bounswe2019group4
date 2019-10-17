@@ -12,22 +12,23 @@ module.exports.getEvents = async (request, response) => {
   */
   let Country = request.query.country
   let Importance = request.query.importance
-  const skip = (parseInt(request.query.page || '1') - 1) * 10
+  const limit = parseInt(request.query.limit || 10)
+  const skip = (parseInt(request.query.page || 1) - 1) * limit
   // undefined variables are the projections over the collection
   try {
     if(Country && Importance){
-      events = await Event.find({ Country, Importance }, undefined, {skip, limit: 10})
+      events = await Event.find({ Country, Importance }, undefined, {skip, limit})
     } else if(Country && !Importance){
-      events = await Event.find({ Country }, undefined, {skip, limit: 10})
+      events = await Event.find({ Country }, undefined, {skip, limit})
     } else if(!Country && Importance){
-      events = await Event.find({ Importance }, undefined, {skip, limit: 10})
+      events = await Event.find({ Importance }, undefined, {skip, limit})
     } else {
-      events = await Event.find({ }, undefined, {skip, limit: 10})
+      events = await Event.find({ }, undefined, {skip, limit})
     }
     const totalNumberOfEvents = await Event.countDocuments({})
     return response.send({
       totalNumberOfEvents,
-      totalNumberOfPages: Math.ceil(totalNumberOfEvents / 10),
+      totalNumberOfPages: Math.ceil(totalNumberOfEvents / limit),
       eventsInPage: events.length,
       events
     }); 
