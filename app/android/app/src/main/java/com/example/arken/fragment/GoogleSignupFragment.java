@@ -31,6 +31,7 @@ import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
+import com.example.arken.model.GoogleUser;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -112,10 +113,10 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                 String tckn=String.valueOf(tcknEditText.getText());
                 String iban=String.valueOf(ibanEditText.getText());
 
-                call = RetroClient.getInstance().getAPIService().signup(new SignupUser(userName,
+                call = RetroClient.getInstance().getAPIService().signupGoogle(new GoogleUser(userName,
                         userSurname, userEmail, googleId, location,isTrader,tckn,iban));
             } else {
-                call = RetroClient.getInstance().getAPIService().signup(new SignupUser(userName,
+                call = RetroClient.getInstance().getAPIService().signupGoogle(new GoogleUser(userName,
                         userSurname, userEmail, googleId, location));
             }
 
@@ -144,9 +145,9 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(Navigation.findNavController(ibanEditText).getCurrentDestination().getId() == R.id.listEventFragment)
+                        if(Navigation.findNavController(ibanEditText).getCurrentDestination().getId() == R.id.googleSignupFragment)
                             Navigation.findNavController(ibanEditText)
-                                    .navigate(R.id.action_listEventFragment_to_startFragment);
+                                    .navigate(R.id.action_googleSignupFragment_to_startFragment);
                     }
                 });
 

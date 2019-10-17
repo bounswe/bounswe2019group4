@@ -73,5 +73,8 @@
         <action
             android:id="@+id/action_googleSignupFragment_to_listEventFragment"
             app:destination="@id/listEventFragment" />
+        <action
+            android:id="@+id/action_googleSignupFragment_to_startFragment"
+            app:destination="@id/startFragment" />
     </fragment>
 </navigation>

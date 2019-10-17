@@ -18,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
+import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
@@ -96,7 +97,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     private void onLoggedIn(GoogleSignInAccount googleSignInAccount) {
         Call<ResponseBody> call;
 
-        call = RetroClient.getInstance().getAPIService().google(new GoogleUser( googleSignInAccount.getId()));
+        call = RetroClient.getInstance().getAPIService().google(new GoogleId( googleSignInAccount.getId()));
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
