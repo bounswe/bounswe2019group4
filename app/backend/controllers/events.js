@@ -12,21 +12,28 @@ module.exports.getEvents = async (request, response) => {
   */
   let Country = request.query.country
   let Importance = request.query.importance
-
-  if(Country && Importance){
-    events = await Event.find({ Country, Importance })
-  } else if(Country && !Importance){
-    events = await Event.find({ Country })
-  } else if(!Country && Importance){
-    events = await Event.find({ Importance })
-  } else {
-    events = await Event.find({ })
+  const skip = (parseInt(request.query.page || '1') - 1) * 10
+  // undefined variables are the projections over the collection
+  try {
+    if(Country && Importance){
+      events = await Event.find({ Country, Importance }, undefined, {skip, limit: 10})
+    } else if(Country && !Importance){
+      events = await Event.find({ Country }, undefined, {skip, limit: 10})
+    } else if(!Country && Importance){
+      events = await Event.find({ Importance }, undefined, {skip, limit: 10})
+    } else {
+      events = await Event.find({ }, undefined, {skip, limit: 10})
+    }
+    const totalNumberOfEvents = await Event.countDocuments({})
+    return response.send({
+      totalNumberOfEvents,
+      totalNumberOfPages: Math.ceil(totalNumberOfEvents / 10),
+      eventsInPage: events.length,
+      events
+    }); 
+  } catch(e) {
+    console.log(e)
   }
-
-  return response.send({
-    totalNumberOfEvents: events.length,
-    events
-  }); 
 }
 
 /*
