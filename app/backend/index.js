@@ -4,6 +4,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session')
 const cors = require('cors')
+const MongoStore = require('connect-mongo')(session)
+
+const { mongoose } = require('./db')
 const { sessionSecret } = require('./secrets')
 const { getEventsFromAPI } = require('./utils')
 
@@ -16,6 +19,10 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     secret: sessionSecret,
+    store: new MongoStore({mongooseConnection: mongoose.connection}),
+    cookie: {
+        maxAge: 7 * 24 * 60 * 60 * 1000,     // one week
+    },
 }))
 app.use(bodyParser.json()); // parses request body and binds to the request argument, request.body
 
