@@ -35,23 +35,20 @@ class Profile extends Component {
                 {user.name} {user.surname}
             </Header>
                 <ul >
-                    <li><strong>Name</strong></li>
-                    <li>{user.name}</li>
-                    <li><strong>Surname</strong></li>
-                    <li>{user.surname}</li>
-                    <li><strong>E-Mail</strong></li>
-                    <li>{user.email}</li>
-                    <li><strong>Account Type</strong></li>
-                    <li>{user.isTrader ? 'Trader' : 'Public'}</li>
+                    <li><strong>Name        :{user.name}</strong></li>
+                    <li><strong>Surname     :{user.surname}</strong></li>
+
+                    <li><strong>E-Mail      :{user.email}</strong></li>
+                    <li><strong>Account Type:{user.isTrader ? 'Trader' : 'Public'}</strong></li>
                     {user.isTrader && <span>
-                        <li><strong>IBAN</strong></li>
-                        <li>{user.iban}</li>
-                        <li><strong>TCKN</strong></li>
-                        <li>{user.tckn}</li>
+                        <li><strong>IBAN     :{user.iban}</strong></li>
+
+                        <li><strong>TCKN      :{user.tckn}</strong></li>
+
 
                     </span>}
-                    <li><strong>Location</strong></li>
-                    <li>{user.location}</li>
+                    <li><strong>Location:{user.location}</strong></li>
+
 
 
                 </ul>
