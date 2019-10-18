@@ -28,6 +28,12 @@ public interface APIService {
     );
 
     @Headers({"Content-Type: application/json"})
+    @POST("auth/forget-password")
+    Call<ResponseBody> forgetPassword(
+            @Body String email
+    );
+
+    @Headers({"Content-Type: application/json"})
     @GET("events")
     Call<ListEvent> getEvents(@Query("country") String s, @Query("importance") Integer k);
 
