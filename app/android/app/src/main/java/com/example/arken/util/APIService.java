@@ -4,6 +4,7 @@ import com.example.arken.model.Event;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.SignupUser;
+import com.example.arken.model.Email;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -30,7 +31,7 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @POST("auth/forget-password")
     Call<ResponseBody> forgetPassword(
-            @Body String email
+            @Body Email email
     );
 
     @Headers({"Content-Type: application/json"})

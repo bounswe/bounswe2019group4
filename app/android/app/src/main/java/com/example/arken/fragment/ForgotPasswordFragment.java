@@ -24,7 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.arken.R;
-import com.example.arken.model.LoginUser;
+import com.example.arken.model.Email;
 import com.example.arken.util.RetroClient;
 
 import okhttp3.ResponseBody;
@@ -60,7 +60,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
 
         }
 
-        else if(view.getId() == R.id.send_email_button){
+        if(view.getId() == R.id.send_email_button){
             if(emailEditText.getText().toString().trim().equals("")){
                 emailEditText.setError("Please enter your email");
                 return;
@@ -69,7 +69,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
 
             String email = String.valueOf(emailEditText.getText());
 
-            Call<ResponseBody> call = RetroClient.getInstance().getAPIService().forgetPassword((email));
+            Call<ResponseBody> call = RetroClient.getInstance().getAPIService().forgetPassword(new Email(email));
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
