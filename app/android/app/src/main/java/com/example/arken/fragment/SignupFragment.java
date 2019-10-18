@@ -45,6 +45,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     EditText emailEditText;
     EditText passwordEditText;
     EditText passwordEditText2;
+    EditText locationEditText;
     Switch isTraderSwitch;
     Switch isPublicSwitch;
     Button signupButton;
@@ -61,6 +62,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
+
+
         ibanEditText = view.findViewById(R.id.signup_iban_editText);
         tcknEditText = view.findViewById(R.id.signup_tckn_editText);
         loginButton = view.findViewById(R.id.signup_loginButton_layout);
@@ -72,12 +75,35 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         emailEditText = view.findViewById(R.id.signup_email_editText);
         passwordEditText = view.findViewById(R.id.signup_password_editText);
         passwordEditText2 = view.findViewById(R.id.signup_password_editText2);
+        locationEditText = view.findViewById(R.id.signup_location_editText);
         imageButton = view.findViewById(R.id.signup_location_button);
+
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                String name = String.valueOf(nameEditText.getText());
+                String surname = String.valueOf(surnameEditText.getText());
+                String email = String.valueOf(emailEditText.getText());
+                String password = String.valueOf(passwordEditText.getText());
+
+                boolean isPublic = !isPublicSwitch.isChecked();
+
+
+                Bundle extras = new Bundle();
+
+                extras.putString("surname", surname);
+                extras.putString("name", name);
+                extras.putString("email", email);
+                extras.putString("password", password);
+
+                extras.putBoolean("isPublic", isPublic);
+
+
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
+                intent.putExtras(extras);
                 startActivity(intent);
             }
         });
@@ -103,7 +129,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         passwordEyeImage.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch(motionEvent.getAction()){
+                switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                         return true;
@@ -120,7 +146,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         passwordEyeImage2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch(motionEvent.getAction()){
+                switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         passwordEditText2.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                         return true;
@@ -133,8 +159,25 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
+        if(getArguments()!=null) {
+
+            Bundle bund = getArguments();
+            nameEditText.setText(bund.getString("name"));
+            surnameEditText.setText(bund.getString("surname"));
+            emailEditText.setText(bund.getString("email"));
+            passwordEditText.setText(bund.getString("password"));
+            passwordEditText2.setText(bund.getString("password"));
+            isPublicSwitch.setChecked(!bund.getBoolean("isPublic"));
+            locationEditText.setText(bund.getString("location"));
+
+
+        }
+
         return view;
     }
+
+
 
     @Override
     public void onClick(View view) {
@@ -177,7 +220,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             String email = String.valueOf(emailEditText.getText());
             String password = String.valueOf(passwordEditText.getText());
             boolean isPublic = !isPublicSwitch.isChecked();
-            String location = "Turkey";
+            String location = String.valueOf(locationEditText.getText());
 
             Boolean isTrader = isTraderSwitch.isChecked();
             if (isTrader){
@@ -191,7 +234,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 }
             }
 
-
+          /*  if(view.getId()==R.id.signup_location_button) {
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                startActivity(intent);
+            }*/
                 Call<ResponseBody> call;
             if (isTrader) {
                 String tckn=String.valueOf(tcknEditText.getText());
@@ -221,4 +267,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             });
         }
     }
+
+
+
 }
+

@@ -1,9 +1,13 @@
 package com.example.arken.activity;
 
 import android.Manifest;
-import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,16 +22,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.arken.R;
 import com.example.arken.fragment.SignupFragment;
+import com.example.arken.fragment.StartFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -41,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     double longitude;
     double latitude;
+    String city;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -79,10 +90,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         myLocation.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
 
-                String message = latitude + ", " + longitude;
 
-                Toast.makeText(getApplicationContext(),
-                        message, Toast.LENGTH_LONG).show();
+                Intent intent = getIntent();
+
+                Bundle extras = intent.getExtras();
+
+                String name = extras.getString("name");
+                String surname = extras.getString("surname");
+                String password = extras.getString("password");
+                String email = extras.getString("email");
+                boolean isPublic = extras.getBoolean("isPublic");
+
+                Bundle frag_bundle = new Bundle();
+                frag_bundle.putString("name", name);
+                frag_bundle.putString("surname", surname);
+                frag_bundle.putString("email", email);
+                frag_bundle.putString("password", password);
+                frag_bundle.putBoolean("isPublic", isPublic);
+                frag_bundle.putString("location", city);
+
+
+                SignupFragment signupFragment= new SignupFragment();
+                signupFragment.setArguments(frag_bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mapFrame, signupFragment, "findThisFragment")
+                        .commit();
+
 
             }
         });
@@ -164,6 +197,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 longitude = lastKnownLocation.getLongitude();
                 latitude = lastKnownLocation.getLatitude();
+
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+                try {
+                    List<Address> listAdresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
+
+                    if(listAdresses != null && listAdresses.size() > 0) {
+
+                        city = listAdresses.get(0).getSubLocality() + ", " + listAdresses.get(0).getAdminArea();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
 
