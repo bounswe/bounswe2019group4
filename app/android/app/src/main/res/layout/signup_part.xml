@@ -1,280 +1,308 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="4dp"
-    android:paddingTop="4dp"
+    android:animateLayoutChanges="true"
     android:background="@android:color/white"
-    android:animateLayoutChanges="true">
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
 
     <TextView
+        android:id="@+id/signup_nameTag_textView"
         android:layout_width="100dp"
         android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
         android:text="Name"
         android:textSize="12sp"
-        android:id="@+id/signup_nameTag_textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/signup_name_editText"
         app:layout_constraintBottom_toBottomOf="@id/signup_name_editText"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_name_editText" />
 
     <EditText
         android:id="@+id/signup_name_editText"
         android:layout_width="0dp"
-        android:textSize="12sp"
         android:layout_height="@dimen/height_edit_text"
         android:layout_marginRight="16dp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/signup_nameTag_textView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/signup_surnameTag_textView"
         android:layout_width="100dp"
         android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
         android:text="Surname"
         android:textSize="12sp"
-        android:id="@+id/signup_surnameTag_textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/signup_surname_editText"
         app:layout_constraintBottom_toBottomOf="@id/signup_surname_editText"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_surname_editText" />
 
     <EditText
         android:id="@+id/signup_surname_editText"
         android:layout_width="0dp"
-        android:textSize="12sp"
         android:layout_height="@dimen/height_edit_text"
         android:layout_marginRight="16dp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/signup_surnameTag_textView"
         app:layout_constraintTop_toBottomOf="@id/signup_name_editText" />
 
     <TextView
+        android:id="@+id/signup_emailTag_textView"
         android:layout_width="100dp"
         android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
         android:text="E-mail"
         android:textSize="12sp"
-        android:id="@+id/signup_emailTag_textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/signup_email_editText"
         app:layout_constraintBottom_toBottomOf="@id/signup_email_editText"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_email_editText" />
 
     <EditText
         android:id="@+id/signup_email_editText"
         android:layout_width="0dp"
-        android:textSize="12sp"
         android:layout_height="@dimen/height_edit_text"
         android:layout_marginRight="16dp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/signup_emailTag_textView"
         app:layout_constraintTop_toBottomOf="@id/signup_surname_editText" />
 
     <TextView
+        android:id="@+id/signup_passwordTag_textView"
         android:layout_width="100dp"
         android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
         android:text="Password"
         android:textSize="12sp"
-        android:id="@+id/signup_passwordTag_textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/signup_password_editText"
         app:layout_constraintBottom_toBottomOf="@id/signup_password_editText"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_password_editText" />
 
     <EditText
         android:id="@+id/signup_password_editText"
         android:layout_width="0dp"
-        android:textSize="12sp"
         android:layout_height="@dimen/height_edit_text"
         android:layout_marginRight="16dp"
+        android:inputType="textPassword"
         android:paddingRight="10dp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/signup_passwordTag_textView"
-        app:layout_constraintTop_toBottomOf="@id/signup_email_editText"
-        android:inputType="textPassword"/>
+        app:layout_constraintTop_toBottomOf="@id/signup_email_editText" />
+
     <TextView
+        android:id="@+id/signup_passwordTag_textView2"
         android:layout_width="100dp"
         android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
         android:text="Password 2"
         android:textSize="12sp"
-        android:id="@+id/signup_passwordTag_textView2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/signup_password_editText2"
         app:layout_constraintBottom_toBottomOf="@id/signup_password_editText2"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_password_editText2" />
 
     <EditText
         android:id="@+id/signup_password_editText2"
         android:layout_width="0dp"
-        android:textSize="12sp"
         android:layout_height="@dimen/height_edit_text"
         android:layout_marginRight="16dp"
+        android:inputType="textPassword"
         android:paddingRight="10dp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/signup_passwordTag_textView2"
-        app:layout_constraintTop_toBottomOf="@id/signup_password_editText"
-        android:inputType="textPassword"/>
+        app:layout_constraintTop_toBottomOf="@id/signup_password_editText" />
 
     <ImageView
+        android:id="@+id/signup_password_eye_image"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layout_marginRight="10dp"
         android:src="@drawable/ic_eye"
         app:layout_constraintEnd_toEndOf="@id/signup_password_editText"
-        app:layout_constraintTop_toBottomOf="@id/signup_email_editText"
-        android:layout_marginRight="10dp"
-        android:id="@+id/signup_password_eye_image">
+        app:layout_constraintTop_toBottomOf="@id/signup_email_editText">
 
     </ImageView>
 
     <ImageView
+        android:id="@+id/signup_password_eye_image2"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layout_marginRight="10dp"
         android:src="@drawable/ic_eye"
         app:layout_constraintEnd_toEndOf="@id/signup_password_editText2"
-        app:layout_constraintTop_toBottomOf="@id/signup_password_editText"
-        android:layout_marginRight="10dp"
-        android:id="@+id/signup_password_eye_image2">
+        app:layout_constraintTop_toBottomOf="@id/signup_password_editText">
 
     </ImageView>
 
     <TextView
+        android:id="@+id/signup_tcknTag_textView"
         android:layout_width="100dp"
         android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
         android:text="TC id"
         android:textSize="12sp"
-        android:id="@+id/signup_tcknTag_textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/signup_tckn_editText"
         app:layout_constraintBottom_toBottomOf="@id/signup_tckn_editText"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_tckn_editText" />
 
     <EditText
         android:id="@+id/signup_tckn_editText"
         android:layout_width="0dp"
-        android:textSize="12sp"
         android:layout_height="@dimen/height_edit_text"
         android:layout_marginRight="16dp"
+        android:inputType="number"
+        android:textSize="12sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/signup_tcknTag_textView"
-        app:layout_constraintTop_toBottomOf="@id/signup_password_editText2"
-        android:inputType="number"
-        android:visibility="gone"
-        />
+        app:layout_constraintTop_toBottomOf="@id/signup_password_editText2" />
+
     <TextView
+        android:id="@+id/signup_ibanTag_textView"
         android:layout_width="100dp"
         android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
         android:text="IBAN"
         android:textSize="12sp"
-        android:id="@+id/signup_ibanTag_textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/signup_iban_editText"
         app:layout_constraintBottom_toBottomOf="@id/signup_iban_editText"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_iban_editText" />
 
     <EditText
         android:id="@+id/signup_iban_editText"
         android:layout_width="0dp"
-        android:textSize="12sp"
         android:layout_height="@dimen/height_edit_text"
         android:layout_marginRight="16dp"
+        android:textSize="12sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/signup_ibanTag_textView"
-        app:layout_constraintTop_toBottomOf="@id/signup_tckn_editText"
-        android:visibility="gone"
-        />
+        app:layout_constraintTop_toBottomOf="@id/signup_tckn_editText" />
+
     <ImageButton
         android:id="@+id/signup_location_button"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText"
-        android:src="@drawable/ic_location"
-        android:scaleType="fitCenter"
+        android:layout_width="51dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="56dp"
         android:background="@android:color/transparent"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp">
-    </ImageButton>
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText"></ImageButton>
+
     <TextView
+        android:id="@+id/locationTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="Find your location"
         android:textSize="12sp"
-        android:id="@+id/locationTextView"
         app:layout_constraintEnd_toEndOf="@id/signup_location_button"
         app:layout_constraintStart_toStartOf="@id/signup_location_button"
-        app:layout_constraintTop_toBottomOf="@id/signup_location_button"
-        android:gravity="center_horizontal"/>
+        app:layout_constraintTop_toBottomOf="@id/signup_location_button" />
+
     <Switch
+        android:id="@+id/signup_isTrader_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/signup_isTrader_switch"
-        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText"
         app:layout_constraintBottom_toTopOf="@id/signup_signup_button"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/signup_location_button"
-        />
+        app:layout_constraintHorizontal_bias="0.433"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText"
+        app:layout_constraintVertical_bias="0.456" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="Basic"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@id/signup_isTrader_switch"
-        app:layout_constraintTop_toTopOf="@+id/signup_isTrader_switch"
         app:layout_constraintBottom_toBottomOf="@id/signup_isTrader_switch"
-        android:layout_margin="10dp"/>
+        app:layout_constraintEnd_toStartOf="@id/signup_isTrader_switch"
+        app:layout_constraintTop_toTopOf="@+id/signup_isTrader_switch" />
+
+
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginEnd="28dp"
         android:text="Trader"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@id/signup_isTrader_switch"
-        app:layout_constraintTop_toTopOf="@+id/signup_isTrader_switch"
         app:layout_constraintBottom_toBottomOf="@id/signup_isTrader_switch"
-        android:layout_margin="10dp"/>
 
+        app:layout_constraintStart_toEndOf="@+id/signup_isTrader_switch"
+        app:layout_constraintTop_toTopOf="@+id/signup_isTrader_switch"
+        app:layout_constraintVertical_bias="0.454" />
 
-    <Button
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:textAllCaps="false"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/signup_location_button"
-        app:layout_constraintTop_toTopOf="@id/signup_location_button"
-        app:layout_constraintBottom_toBottomOf="@id/locationTextView"
-        android:id="@+id/signup_signup_button">
-
-    </Button>
-    <TextView
+    <Switch
+        android:id="@+id/signup_isPublic_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Use Google Account"
+        android:layout_marginStart="192dp"
+        app:layout_constraintBottom_toTopOf="@id/signup_signup_button"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText"
+        app:layout_constraintVertical_bias="0.456" />
+
+    <TextView
+        android:id="@+id/private_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginEnd="28dp"
+        android:text="Private"
         android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/signup_isTrader_switch"
+
+        app:layout_constraintStart_toEndOf="@+id/signup_isPublic_switch"
+        app:layout_constraintTop_toTopOf="@+id/signup_isTrader_switch"
+        app:layout_constraintVertical_bias="0.454" />
+
+    <Button
+        android:id="@+id/signup_signup_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:text="Sign Up"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="@id/locationTextView"
+        app:layout_constraintEnd_toStartOf="@id/signup_location_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_location_button">
+
+    </Button>
+
+    <TextView
+        android:id="@+id/signupGoogleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:text="Use Google Account"
         android:textColor="@android:color/holo_blue_dark"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@id/signup_location_button"
-        app:layout_constraintTop_toBottomOf="@id/signup_signup_button"
-        android:id="@+id/signupGoogleButton">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_signup_button">
 
     </TextView>
 
