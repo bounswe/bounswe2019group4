@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Arken</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="go_on_as_a_guest">Go on as a Guest</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="use_google_account">Use Google Account</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="arken_stone">Arken Stone</string>
     <string name="title_activity_maps">Map</string>
 </resources>
