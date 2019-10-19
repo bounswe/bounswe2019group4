@@ -63,6 +63,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     private ImageView passwordEyeImage;
     private ImageView passwordEyeImage2;
     private ImageButton imageButton;
+    private Switch isPublicSwitch;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
