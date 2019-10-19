@@ -44,7 +44,7 @@ setInterval( () => {
 getTradingEquipmentsFromAPI()
 setInterval( () => {
     getTradingEquipmentsFromAPI()
-}, 30*60*1000);
+}, 24*60*60*1000);
 
 const PORT = parseInt(process.argv[2]) || 8080  // optionally runs on the port given to the command 'yarn dev'
 console.log(`Listening on port ${PORT}`)

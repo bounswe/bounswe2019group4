@@ -8,7 +8,9 @@ let trading_eq_url_base = "https://www.alphavantage.co/query?";
 const { tradingEquipmentKey } = require('./secrets');
 var fs = require("fs");
 const readline = require('readline');
-const until_day = "2019-07-01";
+const until_day = "2019-07-19";
+const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
+
 
 /*
   Method in order to check whether password is valid or not.
@@ -104,85 +106,88 @@ module.exports.getTradingEquipmentsFromAPI = function() {
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
     let currencies = contents.split('\n'); // form an array consist of currencies
     func = "FX_DAILY"
-
-    // make a request for each currency
-    currencies.forEach((currency) => {
-
-      from_symbol = currency.split(',')[0]    // currency code
-      name = currency.split(',')[1]           // currency name
-
-      if(!from_symbol)
-       return
-
-      // Take the USD value for every currency except USD. Take EUR value for USD.
-      if(from_symbol == 'USD')
-        to_symbol = 'EUR'
-      else
-        to_symbol = 'USD'
-
-      // form the request url
-      let trading_eq_url = trading_eq_url_base + "function=" + func + "&from_symbol="+from_symbol+"&to_symbol="+to_symbol+"&apikey="+tradingEquipmentKey;
+    const start = async () => {
+      await asyncForEach(currencies, async (currency) => {
+        await waitFor(12*1000)                  // wait 12 second to complete. Because the limis is 5 request per minute
+        from_symbol = currency.split(',')[0]    // currency code
+        name = currency.split(',')[1]           // currency name
+        if(!from_symbol)
+         return
+  
+        // Take the USD value for every currency except USD. Take EUR value for USD.
+        if(from_symbol == 'USD')
+          to_symbol = 'EUR'
+        else
+          to_symbol = 'USD'
+  
+        // form the request url
+        let trading_eq_url = trading_eq_url_base + "function=" + func + "&from_symbol="+from_symbol+"&to_symbol="+to_symbol+"&apikey="+tradingEquipmentKey;
+        
+        // make the request
+        await request(trading_eq_url, (error, response, body) => {
+          // If there is an error
+          if(error){
+            console.log(error)
+            return
+          }
       
-      // make the request
-      request(trading_eq_url, (error, response, body) => {
-        // If there is an error
-        if(error){
-          console.log(error)
-          return
-        }
-    
-        else{
-          const obj = JSON.parse(body);
-          
-          // get te time series from the json
-          let time_series = obj["Time Series FX (Daily)"];
-
-          var currentDay = new Date();
-          var day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
-
-          // save all the days until until_day
-          while(day_format > until_day){
-
-            let temp = time_series[day_format];
-
-            // if there is no info for the currency day, continue with the previous day
-            if(!temp){
+          else{
+            const obj = JSON.parse(body);
+            
+            // get te time series from the json
+            let time_series = obj["Time Series FX (Daily)"];
+  
+            var currentDay = new Date();
+            var day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
+  
+            // save all the days until until_day
+            while(day_format >= until_day){
+  
+              let temp = time_series[day_format];
+  
+              // if there is no info for the currency day, continue with the previous day
+              if(!temp){
+                currentDay.setDate(currentDay.getDate()-1);
+                day_format = currentDay.toISOString().slice(0,10);
+                continue;
+              }
+              
+              // construct the equipment
+              let trading_eq = new TradingEquipment({
+                _id: {code: from_symbol, Date: day_format},
+                code : from_symbol,
+                name : name,
+                open : temp["1. open"],
+                high : temp["2. high"],
+                low : temp["3. low"],
+                close : temp["4. close"],
+                Date : day_format
+              });
+                        
+              // set current day as previous day
               currentDay.setDate(currentDay.getDate()-1);
               day_format = currentDay.toISOString().slice(0,10);
-              continue;
+  
+              // save the equipment
+              trading_eq.save().then(doc => {
+                
+              }).catch(err => {
+                //console.log(err);
+              });
+      
             }
-            
-            // construct the equipment
-            let trading_eq = new TradingEquipment({
-              _id: {code: from_symbol, Date: day_format},
-              code : from_symbol,
-              name : name,
-              open : temp["1. open"],
-              high : temp["2. high"],
-              low : temp["3. low"],
-              close : temp["4. close"],
-              Date : day_format
-            });
-                      
-            // set current day as previous day
-            currentDay.setDate(currentDay.getDate()-1);
-            day_format = currentDay.toISOString().slice(0,10);
-
-            // save the equipment
-            trading_eq.save().then(doc => {
-              
-            }).catch(err => {
-              //console.log(err);
-            });
-    
           }
-        }
+        });
       });
-
-      console.log("currency: "+name+" DONE")
-
-    });
+    }
+    start();
   })
   
-  
+}
+
+// async for each funtion
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 }
