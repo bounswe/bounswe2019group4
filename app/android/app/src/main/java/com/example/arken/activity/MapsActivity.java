@@ -113,7 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 SignupFragment signupFragment= new SignupFragment();
                 signupFragment.setArguments(frag_bundle);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mapFrame, signupFragment, "findThisFragment")
+                        .add(R.id.mapFrame, signupFragment, "findThisFragment")
                         .commit();
 
 

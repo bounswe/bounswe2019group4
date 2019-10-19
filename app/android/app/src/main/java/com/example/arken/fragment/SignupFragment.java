@@ -189,11 +189,18 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
         }
         if (view.getId() == R.id.signup_loginButton_layout) {
-            LoginFragment nextFrag = new LoginFragment();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.root_layout, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
+
+          //  if(getArguments()!=null) {
+
+           // }
+
+           // else {
+                LoginFragment nextFrag = new LoginFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.root_layout, nextFrag, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
+            //}
         } else if (view.getId() == R.id.signup_signup_button) {
             if (nameEditText.getText().toString().trim().equals("")) {
                 nameEditText.setError("Please enter your name");
@@ -234,10 +241,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 }
             }
 
-          /*  if(view.getId()==R.id.signup_location_button) {
-                Intent intent = new Intent(getActivity(), MapsActivity.class);
-                startActivity(intent);
-            }*/
                 Call<ResponseBody> call;
             if (isTrader) {
                 String tckn=String.valueOf(tcknEditText.getText());
@@ -256,6 +259,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "You are registered!", Toast.LENGTH_SHORT).show();
                     } else {
+
+
                         Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -267,8 +272,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             });
         }
     }
-
-
 
 }
 
