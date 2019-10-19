@@ -1,31 +1,23 @@
 package com.example.arken.model;
 
-public class SignupUser {
+public class GoogleUser {
 
 
     private String name;
     private String surname;
     private String email;
-    private String password;
+    private String googleId;
     private String location;
     private boolean isTrader;
-    private boolean isPublic;
     private String tckn;
     private String iban;
 
     public boolean isTrader() {
         return isTrader;
     }
-    public boolean isPublic() {
-        return isPublic;
-    }
 
     public void setTrader(boolean trader) {
         isTrader = trader;
-    }
-
-    public void setIsPublic(boolean ispublic) {
-        isPublic = ispublic;
     }
 
     public String getTckn() {
@@ -44,23 +36,21 @@ public class SignupUser {
         this.iban = iban;
     }
 
-    public SignupUser(String name, String surname, String email, String password, String location, boolean isPublic) {
+    public GoogleUser(String name, String surname, String email, String googleId, String location) {
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.password = password;
+        this.googleId = googleId;
         this.location = location;
-        this.isPublic = isPublic;
     }
 
-    public SignupUser(String name, String surname, String email, String password, String location, boolean isTrader, boolean isPublic, String tckn, String iban) {
+    public GoogleUser(String name, String surname, String email, String googleId, String location, boolean isTrader, String tckn, String iban) {
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.password = password;
+        this.googleId = googleId;
         this.location = location;
         this.isTrader = isTrader;
-        this.isPublic = isPublic;
         this.tckn = tckn;
         this.iban = iban;
     }
@@ -90,11 +80,11 @@ public class SignupUser {
     }
 
     public String getPassword() {
-        return password;
+        return googleId;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String googleId) {
+        this.googleId = googleId;
     }
 
     public String getLocation() {
