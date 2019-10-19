@@ -32,7 +32,6 @@ class ListEventFragment : Fragment() {
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var dataset: List<Event>
     private lateinit var eventAdapter: EventAdapter
-    private lateinit var signOutButton: Button
 
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
 
@@ -74,17 +73,6 @@ class ListEventFragment : Fragment() {
 
         setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER)
 
-        signOutButton = rootView.findViewById(R.id.events_signOut)
-        signOutButton.setOnClickListener {view ->
-            activity?.let { it1 ->
-                MainActivity.getClient().revokeAccess()
-                    .addOnCompleteListener(it1, OnCompleteListener<Void> {
-                        if(Navigation.findNavController(view).currentDestination?.id == R.id.listEventFragment)
-                        Navigation.findNavController(view)
-                            .navigate(R.id.action_listEventFragment_to_startFragment)
-                    })
-            }
-        }
         return rootView
     }
 

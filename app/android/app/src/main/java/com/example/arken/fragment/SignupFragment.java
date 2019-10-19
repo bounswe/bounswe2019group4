@@ -222,7 +222,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 }
             });
         } else if (view.getId() == R.id.signup_guest_button) {
-            Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_listEventFragment);
+            Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_baseFragment);
         }
     }
 

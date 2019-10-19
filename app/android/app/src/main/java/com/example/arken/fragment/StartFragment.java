@@ -65,7 +65,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         } else if(view.getId() == R.id.start_signup_button){
             Navigation.findNavController(view).navigate(R.id.action_startFragment_to_signupFragment);
         } else if (view.getId() == R.id.signup_guest_button) {
-            Navigation.findNavController(view).navigate(R.id.action_startFragment_to_listEventFragment);
+            Navigation.findNavController(view).navigate(R.id.action_startFragment_to_baseFragment);
         } else if (view.getId() == R.id.signin_google_button){
             signIn();
         }
@@ -104,7 +104,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     //google login fragment???
-                    Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_listEventFragment);
+                    Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_baseFragment);
                 } else if(!onStart){
                     Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_googleSignupFragment);
                 }

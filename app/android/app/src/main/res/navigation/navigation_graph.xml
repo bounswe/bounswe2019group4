@@ -20,7 +20,7 @@
             app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_loginFragment_to_listEventFragment2"
-            app:destination="@id/listEventFragment"
+            app:destination="@id/baseFragment"
             app:popUpTo="@+id/startFragment" />
     </fragment>
     <fragment
@@ -28,8 +28,8 @@
         android:name="com.example.arken.fragment.SignupFragment"
         android:label="fragment_signup">
         <action
-            android:id="@+id/action_signupFragment_to_listEventFragment"
-            app:destination="@id/listEventFragment"
+            android:id="@+id/action_signupFragment_to_baseFragment"
+            app:destination="@id/baseFragment"
             app:popUpTo="@+id/startFragment" />
     </fragment>
     <fragment
@@ -46,20 +46,20 @@
             app:destination="@id/signupFragment"
             app:popUpTo="@+id/startFragment" />
         <action
-            android:id="@+id/action_startFragment_to_listEventFragment"
-            app:destination="@id/listEventFragment"
+            android:id="@+id/action_startFragment_to_baseFragment"
+            app:destination="@id/baseFragment"
             app:popUpTo="@+id/startFragment" />
         <action
             android:id="@+id/action_startFragment_to_googleSignupFragment"
             app:destination="@id/googleSignupFragment" />
     </fragment>
     <fragment
-        android:id="@+id/listEventFragment"
-        android:name="com.example.arken.fragment.ListEventFragment"
-        android:label="ListEventFragment"
-        tools:layout="@layout/fragment_listevent" >
+        android:id="@+id/baseFragment"
+        android:name="com.example.arken.fragment.BaseFragment"
+        android:label="BaseFragment"
+        tools:layout="@layout/fragment_base" >
         <action
-            android:id="@+id/action_listEventFragment_to_startFragment"
+            android:id="@+id/action_baseFragment_to_startFragment"
             app:destination="@id/startFragment" />
     </fragment>
     <fragment
@@ -71,8 +71,8 @@
             android:id="@+id/action_googleSignupFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
-            android:id="@+id/action_googleSignupFragment_to_listEventFragment"
-            app:destination="@id/listEventFragment" />
+            android:id="@+id/action_googleSignupFragment_to_baseFragment"
+            app:destination="@id/baseFragment" />
         <action
             android:id="@+id/action_googleSignupFragment_to_startFragment"
             app:destination="@id/startFragment" />
