@@ -1,4 +1,38 @@
 /*
+  Get method for information of specific trading equipment.
+*/
+module.exports.getTradingEquipment = async (request, response) => {
+  let TradingEquipment = request.models['TradingEquipment']
+  let TradingEqFollow = request.models['TradingEquipmentFollow']
+  let TradingEq = request.params['code'].toUpperCase()
+  let following = false
+
+  // If user is logged in, control whether user follows that equipment or not.
+  if(request.session['user']){
+    UserId = request.session['user']._id
+    result = await TradingEqFollow.findOne({UserId , TradingEq})
+
+    if(result){
+      following = true
+    }
+  }
+
+  // Returns all values of given currency
+  values = await TradingEquipment.find({ code: TradingEq }).sort({ Date: -1})
+
+  if(values.length == 0){
+    return response.status(400).send({
+      errmsg: "No such currency."
+    })
+  }
+
+  return response.send({
+    following,
+    values
+  }); 
+}
+
+/*
   Post method for following specific trading equipment.
 */
 module.exports.followTradingEq = async (request, response) => {
