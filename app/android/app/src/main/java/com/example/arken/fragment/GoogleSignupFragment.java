@@ -123,8 +123,8 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "You are registered!", Toast.LENGTH_SHORT).show();
+                    if (response.isSuccessful()) { //events
+                        Navigation.findNavController(submitButton).navigate(R.id.action_googleSignupFragment_to_listEventFragment);
                     } else {
                         Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }
