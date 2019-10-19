@@ -1,0 +1,4 @@
+TRY,Turkish Lira
+USD,United States Dollar
+EUR,Euro
+CAD,Canadian Dollar
