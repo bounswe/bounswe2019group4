@@ -7,7 +7,7 @@ const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest
 let trading_eq_url_base = "https://www.alphavantage.co/query?";
 const { tradingEquipmentKey } = require('./secrets');
 var fs = require("fs");
-const until_day = "2019-07-01";
+const until_day = "2019-01-01";
 const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
 
 
@@ -120,7 +120,7 @@ module.exports.getTradingEquipmentsFromAPI = function(isOnlyToday) {
           to_symbol = 'EUR'
   
         // form the request url
-        let trading_eq_url = trading_eq_url_base + "function=" + func + "&from_symbol="+from_symbol+"&to_symbol="+to_symbol+"&apikey="+tradingEquipmentKey;
+        let trading_eq_url = trading_eq_url_base + "function=" + func + "&from_symbol="+from_symbol+"&to_symbol="+to_symbol+"&outputsize=full&apikey="+tradingEquipmentKey;
         
         // make the request
         await request(trading_eq_url, (error, response, body) => {
@@ -132,9 +132,9 @@ module.exports.getTradingEquipmentsFromAPI = function(isOnlyToday) {
       
           else{
             const obj = JSON.parse(body);
-            
             // get te time series from the json
             let time_series = obj["Time Series FX (Daily)"];
+
             var currentDay = new Date();
             var day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
   

@@ -13,10 +13,6 @@ let TradingEquipment = mongoose.model('TradingEquipment', {
   name: {
     type: String
   },
-  
-  information: {
-    type: String
-  },
 
   value: {
     type: String
@@ -25,18 +21,19 @@ let TradingEquipment = mongoose.model('TradingEquipment', {
   open: {
     type: String
   },
+
   high: {
     type: String
   },
+
   low: {
     type: String
   },
+
   close: {
     type: String
   },
-  volume: {
-    type: String
-  },
+
   Date:{
     type: String
   }
