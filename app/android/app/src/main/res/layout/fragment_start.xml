@@ -14,22 +14,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="120dp"
-        android:background="@android:color/white"
+        android:layout_marginTop="80dp"
+        android:background="@android:color/transparent"
         android:gravity="center_horizontal"
         android:padding="20dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Welcome to"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white"
             android:textSize="30sp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Arken Stone"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white"
             android:textSize="50sp" />
 
     </LinearLayout>
@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/start_welcome_layout"
         android:id="@+id/start_login_button"
-        android:layout_marginTop="80dp">
+        android:layout_marginTop="50dp">
 
     </Button>
     <View
@@ -75,6 +75,15 @@
         android:id="@+id/start_signup_button"
         android:layout_marginTop="30dp">
     </Button>
+
+    <com.google.android.gms.common.SignInButton
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/start_signup_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="40dp"
+        android:id="@+id/signin_google_button"/>
 
     <Button
         android:layout_width="wrap_content"

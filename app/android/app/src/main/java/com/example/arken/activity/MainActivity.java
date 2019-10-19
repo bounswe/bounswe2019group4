@@ -5,16 +5,22 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.arken.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class MainActivity extends FragmentActivity {
+    private static GoogleSignInClient mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //    StartFragment nextFrag= new StartFragment();
-        //    getSupportFragmentManager().beginTransaction()
-        //            .replace(R.id.root_layout, nextFrag, "findThisFragment")
-        //            .commit();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
-
+    public static GoogleSignInClient getClient(){
+        return mGoogleSignInClient;
+    }
 }
