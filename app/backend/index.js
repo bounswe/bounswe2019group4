@@ -7,6 +7,7 @@ const cors = require('cors')
 const { sessionSecret } = require('./secrets')
 const { getEventsFromAPI } = require('./utils')
 const { getTradingEquipmentsFromAPI } = require('./utils')
+var isOnlyToday = false;
 
 
 const app = express()   // the express instance that's doing everything
@@ -41,9 +42,10 @@ setInterval( () => {
     getEventsFromAPI()
 }, 30*60*1000);
 
-getTradingEquipmentsFromAPI()
+getTradingEquipmentsFromAPI(isOnlyToday)
+isOnlyToday = true;
 setInterval( () => {
-    getTradingEquipmentsFromAPI()
+    getTradingEquipmentsFromAPI(isOnlyToday)
 }, 24*60*60*1000);
 
 const PORT = parseInt(process.argv[2]) || 8080  // optionally runs on the port given to the command 'yarn dev'

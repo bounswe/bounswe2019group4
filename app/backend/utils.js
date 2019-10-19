@@ -7,8 +7,7 @@ const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest
 let trading_eq_url_base = "https://www.alphavantage.co/query?";
 const { tradingEquipmentKey } = require('./secrets');
 var fs = require("fs");
-const readline = require('readline');
-const until_day = "2019-07-19";
+const until_day = "2019-07-01";
 const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
 
 
@@ -100,7 +99,7 @@ module.exports.getEventsFromAPI = function() {
   Get method for Trading Equipments.
   Using 3rd party API, it saves trading equipments to database.
 */
-module.exports.getTradingEquipmentsFromAPI = function() {
+module.exports.getTradingEquipmentsFromAPI = function(isOnlyToday) {
 
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
@@ -108,17 +107,17 @@ module.exports.getTradingEquipmentsFromAPI = function() {
     func = "FX_DAILY"
     const start = async () => {
       await asyncForEach(currencies, async (currency) => {
-        await waitFor(12*1000)                  // wait 12 second to complete. Because the limis is 5 request per minute
+        await waitFor(13*1000)                  // wait 13 second to complete. Because the limit is 5 request per minute
         from_symbol = currency.split(',')[0]    // currency code
         name = currency.split(',')[1]           // currency name
         if(!from_symbol)
          return
   
         // Take the USD value for every currency except USD. Take EUR value for USD.
-        if(from_symbol == 'USD')
-          to_symbol = 'EUR'
-        else
+        if(from_symbol == 'EUR')
           to_symbol = 'USD'
+        else
+          to_symbol = 'EUR'
   
         // form the request url
         let trading_eq_url = trading_eq_url_base + "function=" + func + "&from_symbol="+from_symbol+"&to_symbol="+to_symbol+"&apikey="+tradingEquipmentKey;
@@ -136,12 +135,11 @@ module.exports.getTradingEquipmentsFromAPI = function() {
             
             // get te time series from the json
             let time_series = obj["Time Series FX (Daily)"];
-  
             var currentDay = new Date();
             var day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
   
             // save all the days until until_day
-            while(day_format >= until_day){
+            while(time_series && day_format >= until_day){
   
               let temp = time_series[day_format];
   
@@ -161,6 +159,7 @@ module.exports.getTradingEquipmentsFromAPI = function() {
                 high : temp["2. high"],
                 low : temp["3. low"],
                 close : temp["4. close"],
+                value : to_symbol,
                 Date : day_format
               });
                         
@@ -174,7 +173,9 @@ module.exports.getTradingEquipmentsFromAPI = function() {
               }).catch(err => {
                 //console.log(err);
               });
-      
+
+              if(isOnlyToday)
+                break;
             }
           }
         });
