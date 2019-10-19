@@ -9,6 +9,9 @@ const MongoStore = require('connect-mongo')(session)
 const { mongoose } = require('./db')
 const { sessionSecret } = require('./secrets')
 const { getEventsFromAPI } = require('./utils')
+const { getTradingEquipmentsFromAPI } = require('./utils')
+var isOnlyToday = false;
+
 
 const app = express()   // the express instance that's doing everything
 
@@ -47,6 +50,12 @@ getEventsFromAPI()
 setInterval( () => {
     getEventsFromAPI()
 }, 30*60*1000);
+
+getTradingEquipmentsFromAPI(isOnlyToday)
+isOnlyToday = true;
+setInterval( () => {
+    getTradingEquipmentsFromAPI(isOnlyToday)
+}, 24*60*60*1000);
 
 const PORT = parseInt(process.argv[2]) || 8080  // optionally runs on the port given to the command 'yarn dev'
 console.log(`Listening on port ${PORT}`)
