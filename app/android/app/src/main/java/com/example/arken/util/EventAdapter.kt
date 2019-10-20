@@ -32,10 +32,7 @@ class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnIte
 
         init {
             // Define click listener for the ViewHolder's View.
-            v.setOnClickListener {
-                System.out.println("abbab")
-                Log.d(TAG, "Element $adapterPosition clicked.")
-            }
+
             textView = v.findViewById(R.id.textView)
             importanceStar1 = v.findViewById(R.id.event_star1_imageView)
             importanceStar2 = v.findViewById(R.id.event_star2_imageView)
