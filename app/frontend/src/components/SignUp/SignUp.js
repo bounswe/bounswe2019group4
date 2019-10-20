@@ -33,8 +33,11 @@ class SignUp extends Component {
     }
 
     handleLocationChange ({ position, address, places }) {
-        console.log(places);
-        this.setState({ position, address });
+        if(places.length === 1) {
+            this.setState({location: places[0]["formatted_address"]});
+        } else {
+            this.setState({location: places[places.length-2]["formatted_address"].split(",")[0]});
+        }
     }
 
     signUp() {
