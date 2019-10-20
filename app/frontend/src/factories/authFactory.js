@@ -8,11 +8,18 @@ function authFactory() {
     this.login = params => {
         const token = btoa(params.email + ":" + params.password);
         baseRequest.addHeader("Basic " + token);
-        return baseRequest.post("/auth/login", params).then(result => {
-            return result;
-        });
+        if(params.googleId) {
+            return baseRequest.post("/auth/google", params).then(result => {
+                return result;
+            });
+        } else {
+            return baseRequest.post("/auth/login", params).then(result => {
+                return result;
+            });
+        }
+
     };
-    this.logout = () => baseRequest.post("/logout");
+    this.logout = () => baseRequest.post("auth/logout");
     this.verify = params => baseRequest.get("/auth/verify?token=" + params.token);
 }
 
