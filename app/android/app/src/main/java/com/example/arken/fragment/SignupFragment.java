@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -30,8 +29,6 @@ import com.example.arken.R;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
-
-import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -83,31 +80,24 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
-
                 String name = String.valueOf(nameEditText.getText());
                 String surname = String.valueOf(surnameEditText.getText());
                 String email = String.valueOf(emailEditText.getText());
                 String password = String.valueOf(passwordEditText.getText());
-
                 boolean isPublic = !isPublicSwitch.isChecked();
 
-
                 Bundle extras = new Bundle();
-
                 extras.putString("surname", surname);
                 extras.putString("name", name);
                 extras.putString("email", email);
                 extras.putString("password", password);
-
                 extras.putBoolean("isPublic", isPublic);
-
 
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
                 intent.putExtras(extras);
                 startActivity(intent);
             }
         });
-
 
         signupButton = view.findViewById(R.id.signup_signup_button);
         signupButton.setOnClickListener(this);
@@ -171,7 +161,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             isPublicSwitch.setChecked(!bund.getBoolean("isPublic"));
             locationEditText.setText(bund.getString("location"));
 
-
         }
 
         return view;
@@ -188,20 +177,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         }
-        if (view.getId() == R.id.signup_loginButton_layout) {
 
-          //  if(getArguments()!=null) {
-
-           // }
-
-           // else {
-                LoginFragment nextFrag = new LoginFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(R.id.root_layout, nextFrag, "findThisFragment")
-                        .addToBackStack(null)
-                        .commit();
-            //}
-        } else if (view.getId() == R.id.signup_signup_button) {
+        else if (view.getId() == R.id.signup_signup_button) {
             if (nameEditText.getText().toString().trim().equals("")) {
                 nameEditText.setError("Please enter your name");
                 return;
