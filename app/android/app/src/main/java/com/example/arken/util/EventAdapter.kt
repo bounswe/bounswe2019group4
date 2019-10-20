@@ -49,17 +49,17 @@ class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnIte
             country.text = event.Country
 
             when {
-                (event.Importance).equals("1") -> {
+                (event.Importance) == 1 -> {
                     importanceStar1.setImageResource(R.drawable.ic_star_full)
                     importanceStar2.setImageResource(R.drawable.ic_star_empty)
                     importanceStar3.setImageResource(R.drawable.ic_star_empty)
                 }
-                (event.Importance).equals("2") -> {
+                (event.Importance) == 2 -> {
                     importanceStar1.setImageResource(R.drawable.ic_star_full)
                     importanceStar2.setImageResource(R.drawable.ic_star_full)
                     importanceStar3.setImageResource(R.drawable.ic_star_empty)
                 }
-                (event.Importance).equals("3") -> {
+                (event.Importance) == 3 -> {
                     importanceStar1.setImageResource(R.drawable.ic_star_full)
                     importanceStar2.setImageResource(R.drawable.ic_star_full)
                     importanceStar3.setImageResource(R.drawable.ic_star_full)

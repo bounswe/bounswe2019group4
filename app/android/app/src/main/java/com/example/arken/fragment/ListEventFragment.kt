@@ -79,7 +79,7 @@ class ListEventFragment : Fragment(), OnItemClickListener {
             activity?.let { it1 ->
                 MainActivity.getClient().revokeAccess()
                     .addOnCompleteListener(it1, OnCompleteListener<Void> {
-                        if(Navigation.findNavController(view).currentDestination?.id == R.id.listEventFragment)
+                        if (Navigation.findNavController(view).currentDestination?.id == R.id.listEventFragment)
                             Navigation.findNavController(view)
                                 .navigate(R.id.action_listEventFragment_to_startFragment)
                     })
@@ -122,8 +122,32 @@ class ListEventFragment : Fragment(), OnItemClickListener {
         val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(1, 10)
         dataset = mutableListOf(
             Event(
-                "l", "k", "ş"
-                , Date(), "i", "i", ",", "l", "i", "i", ","
+                "l", "k", "China"
+                , Date(), "House Price Index YoY", "i", ",", "l", "i", 2, ","
+            ),
+            Event(
+                "l", "k", "China"
+                , Date(), "Loan Prime Rate 5Y", "i", ",", "l", "i", 2, ","
+            ),
+            Event(
+                "l", "k", "China"
+                , Date(), "Loan Prime Rate 1Y", "i", ",", "l", "i", 3, ","
+            ),
+            Event(
+                "l", "k", "Canada"
+                , Date(), "Federal Election", "i", ",", "l", "i", 3, ","
+            ),
+            Event(
+                "l", "k", "Japan"
+                , Date(), "Balance of Trade", "i", ",", "l", "i", 3, ","
+            ),
+            Event(
+                "l", "k", "Japan"
+                , Date(), "Exports YoY", "i", ",", "l", "i", 2, ","
+            ),
+            Event(
+                "l", "k", "Japan"
+                , Date(), "Imports YoY", "i", ",", "l", "i", 1, ","
             )
         )
         call.enqueue(object : Callback<ListEvent> {
