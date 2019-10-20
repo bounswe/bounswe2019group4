@@ -1,5 +1,6 @@
 package com.example.arken.model
 
+import java.io.Serializable
 import java.util.*
 
 class Event(
@@ -14,4 +15,4 @@ class Event(
     val Forecast: String?,
     val Importance: String?,
     val __v: String?
-)
+) : Serializable
