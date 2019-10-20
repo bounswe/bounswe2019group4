@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import * as userActions from '../../actions/userActions';
 import history from "../../_core/history";
 
+import GoogleLogin from "react-google-login";
+
 
 class SignInModal extends Component {
     constructor(props) {
@@ -19,6 +21,22 @@ class SignInModal extends Component {
         } else {
             this.setState({openModal: props.openModal});
         }
+    }
+
+    googleSignIn(googleUser) {
+        const profile = googleUser.getBasicProfile();
+        this.props.signIn({googleId: profile.getId()}).then( result => {
+            history.push("/");
+        }).catch(result => {
+            const googleUserCredentials = {
+                googleId: profile.getId(),
+                name: profile.getGivenName(),
+                surname: profile.getFamilyName(),
+                email: profile.getEmail()
+            };
+            history.push({pathname: "/sign_up_google", state: googleUserCredentials});
+        });
+        this.resetFields(this.props.handleClose);
     }
 
     signIn() {
@@ -79,7 +97,15 @@ class SignInModal extends Component {
                                 <a onClick={this.forgetClicked.bind(this)}>Forgot password?</a>
                             </Form.Field>
                         </Form.Group>
+                        <GoogleLogin
+                            style={{float: "right"}}
+                            clientId="826170904423-vk4ihhnoh5ba9n0veus79gupca4nfnq1.apps.googleusercontent.com"
+                            onSuccess={this.googleSignIn.bind(this)}
+                            onFailure={this.googleSignIn.bind(this)}
+                            cookiePolicy={'single_host_origin'}
+                        />
                     </Form>
+
                 </Modal.Content>
             </Modal>
         )

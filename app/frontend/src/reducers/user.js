@@ -5,7 +5,7 @@ const user = (state = null, action) => {
                 ...action.payload,
                 loggedIn: true
             };
-        case "LOGOUT":
+        case "LOGOUT_FULFILLED":
             return { loggedIn: false } ;
         case "LOGOUT_REJECTED":
             return  { loggedIn: false } ;

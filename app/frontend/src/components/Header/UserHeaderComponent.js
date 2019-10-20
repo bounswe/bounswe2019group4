@@ -10,6 +10,12 @@ class UserHeaderComponent extends Component {
         history.push("/" + name);
     }
 
+    logout() {
+        this.props.logout().then(result => {
+            history.push("/");
+        })
+    }
+
     render() {
         return (
             <Menu.Menu position="right">
@@ -28,7 +34,7 @@ class UserHeaderComponent extends Component {
                 >
                     <Dropdown trigger={<i className="fas fa-cog" style={{ margin: 10}} />} icon={null}>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={this.props.logout}>Logout</Dropdown.Item>
+                            <Dropdown.Item onClick={this.logout.bind(this)}>Logout</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Item>
