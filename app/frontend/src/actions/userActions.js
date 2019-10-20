@@ -45,4 +45,12 @@ export function resetPassword(params) {
         type: "RESET_PASSWORD",
         payload: userService.resetPassword(params)
     };
+
+
+}
+export function events(params) {
+    return {
+
+        payload: userService.events(params)
+    };
 }
