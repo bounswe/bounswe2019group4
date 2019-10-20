@@ -8,7 +8,7 @@ import SignUpComplete from "../components/SignUp/SignUpComplete";
 import VerifyEmail from "../components/SignUp/VerifyEmail";
 import ResetPassword from "../components/SignIn/ResetPassword";
 import Profile from "./Profile/Profile";
-
+import Events from "./Events/Events";
 
 class Routes extends Component {
     render() {
@@ -20,7 +20,9 @@ class Routes extends Component {
                     <Route path="/sign_up_complete" render={() => { return <SignUpComplete />; }} />
                     <Route path="/sign_up" render={() => { return <SignUp />; }} />
                     <Route path="/profile" render={() => { return <Profile />; }} />
+                    <Route path="/events" render={() => { return <Events />; }} />
                     <Route path="/" render={() => { return <EmptyPage />; }} />
+
                 </Switch>
             </Router>
         )

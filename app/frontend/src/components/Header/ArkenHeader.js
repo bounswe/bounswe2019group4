@@ -50,10 +50,10 @@ class ArkenHeader extends Component {
                 </Menu.Header>
                 <Menu.Menu position="center">
                     <Menu.Item
-                        name="item1"
+                        name="events"
                         onClick={this.navigate}
                     >
-                        Menu Item 1
+                        Events
                     </Menu.Item>
                     <Menu.Item
                         name="item2"
