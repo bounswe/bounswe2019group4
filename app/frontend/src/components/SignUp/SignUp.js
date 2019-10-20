@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Checkbox, Grid, Segment, Header, Container, List, Divider} from 'semantic-ui-react';
 import {connect} from 'react-redux';
+import LocationPicker from 'react-location-picker';
 
 import history from '../../_core/history';
 import * as userActions from '../../actions/userActions';
@@ -29,6 +30,11 @@ class SignUp extends Component {
         } else {
             this.setState({[name]: value});
         }
+    }
+
+    handleLocationChange ({ position, address, places }) {
+        console.log(places);
+        this.setState({ position, address });
     }
 
     signUp() {
@@ -72,11 +78,11 @@ class SignUp extends Component {
                     </Form.Field>
                     <Form.Field width={16}>
                         <label>Location:</label>
-                        <Form.Input
-                            placeholder='location'
-                            name='location'
-                            value={location}
-                            onChange={this.handleChange.bind(this)}
+                        <LocationPicker
+                            containerElement={ <div style={ {height: '100%'} } /> }
+                            mapElement={ <div style={ {height: '400px'} } /> }
+                            defaultPosition={{lat: 41.0082, lng: 28.9784}}
+                            onChange={this.handleLocationChange.bind(this)}
                         />
                     </Form.Field>
                 </Form.Group>
