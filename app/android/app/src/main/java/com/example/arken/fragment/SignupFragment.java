@@ -18,18 +18,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
 import com.example.arken.R;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
-
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,7 +60,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         guestButton.setOnClickListener(this);
         ibanEditText = view.findViewById(R.id.signup_iban_editText);
         tcknEditText = view.findViewById(R.id.signup_tckn_editText);
-
         ConstraintLayout layout = view.findViewById(R.id.signup_background);
         layout.setOnClickListener(this);
         nameEditText = view.findViewById(R.id.signup_name_editText);
@@ -70,6 +69,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         passwordEditText2 = view.findViewById(R.id.signup_password_editText2);
         locationEditText = view.findViewById(R.id.signup_location_editText);
         imageButton = view.findViewById(R.id.signup_location_button);
+
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +162,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+
     @Override
     public void onClick(View view) {
         if (view.getId() != R.id.signup_email_editText && view.getId() != R.id.signup_iban_editText &&
@@ -226,10 +227,30 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "You are registered!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
+
+                        String errorMessage = null;
+                        try {
+                            String responseMessage = response.errorBody().string();
+
+
+                            JSONObject jsonObject = new JSONObject(responseMessage);
+
+                            errorMessage = jsonObject.getString("errmsg");
+
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                            if(errorMessage!=null) {
+                                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+
+                            else{
+                                Toast.makeText(getContext(), "Invalid input. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
                     }
                 }
 
@@ -244,3 +265,4 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     }
 
 }
+
