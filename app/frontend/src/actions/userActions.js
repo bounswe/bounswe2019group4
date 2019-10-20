@@ -50,7 +50,7 @@ export function resetPassword(params) {
 }
 export function events(params) {
     return {
-
+        type:"EVENTS",
         payload: userService.events(params)
     };
 }
