@@ -16,7 +16,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -24,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.activity.MapsActivity;
@@ -36,35 +36,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignupFragment extends Fragment implements View.OnClickListener {
-    LinearLayout loginButton;
-    EditText nameEditText;
-    EditText surnameEditText;
-    EditText emailEditText;
-    EditText passwordEditText;
-    EditText passwordEditText2;
-    EditText locationEditText;
-    Switch isTraderSwitch;
-    Switch isPublicSwitch;
-    Button signupButton;
-    EditText ibanEditText ;
-    EditText tcknEditText;
-    ImageView passwordEyeImage;
-    ImageView passwordEyeImage2;
-    ImageButton imageButton;
-
-
+    private EditText nameEditText;
+    private EditText surnameEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private EditText passwordEditText2;
+    private Switch isTraderSwitch;
+    private Button signupButton;
+    private EditText ibanEditText;
+    private EditText tcknEditText;
+    private Button guestButton;
+    private ImageView passwordEyeImage;
+    private ImageView passwordEyeImage2;
+    private ImageButton imageButton;
+    private Switch isPublicSwitch;
+    private EditText locationEditText;
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
-
-
-
+        guestButton = view.findViewById(R.id.signup_guest_button);
+        guestButton.setOnClickListener(this);
         ibanEditText = view.findViewById(R.id.signup_iban_editText);
         tcknEditText = view.findViewById(R.id.signup_tckn_editText);
-        loginButton = view.findViewById(R.id.signup_loginButton_layout);
-        loginButton.setOnClickListener(this);
+
         ConstraintLayout layout = view.findViewById(R.id.signup_background);
         layout.setOnClickListener(this);
         nameEditText = view.findViewById(R.id.signup_name_editText);
@@ -74,7 +70,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         passwordEditText2 = view.findViewById(R.id.signup_password_editText2);
         locationEditText = view.findViewById(R.id.signup_location_editText);
         imageButton = view.findViewById(R.id.signup_location_button);
-
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +94,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+
         signupButton = view.findViewById(R.id.signup_signup_button);
         signupButton.setOnClickListener(this);
         isTraderSwitch = view.findViewById(R.id.signup_isTrader_switch);
@@ -119,7 +115,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         passwordEyeImage.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
+                switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
                         passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                         return true;
@@ -136,7 +132,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         passwordEyeImage2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
+                switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
                         passwordEditText2.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                         return true;
@@ -166,8 +162,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-
-
     @Override
     public void onClick(View view) {
         if (view.getId() != R.id.signup_email_editText && view.getId() != R.id.signup_iban_editText &&
@@ -177,8 +171,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         }
-
-        else if (view.getId() == R.id.signup_signup_button) {
+        if (view.getId() == R.id.signup_signup_button) {
             if (nameEditText.getText().toString().trim().equals("")) {
                 nameEditText.setError("Please enter your name");
                 return;
@@ -205,9 +198,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             String password = String.valueOf(passwordEditText.getText());
             boolean isPublic = !isPublicSwitch.isChecked();
             String location = String.valueOf(locationEditText.getText());
-
-            Boolean isTrader = isTraderSwitch.isChecked();
-            if (isTrader){
+            boolean isTrader = isTraderSwitch.isChecked();
+            if (isTrader) {
                 if (tcknEditText.getText().toString().trim().equals("")) {
                     tcknEditText.setError("Please enter your TC");
                     return;
@@ -220,10 +212,11 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
                 Call<ResponseBody> call;
             if (isTrader) {
-                String tckn=String.valueOf(tcknEditText.getText());
-                String iban=String.valueOf(ibanEditText.getText());
+                String tckn = String.valueOf(tcknEditText.getText());
+                String iban = String.valueOf(ibanEditText.getText());
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
                         surname, email, password, location,isTrader, isPublic,tckn,iban));
+
             } else {
                 call = RetroClient.getInstance().getAPIService().signup(new SignupUser(name,
                         surname, email, password, location, isPublic));
@@ -236,8 +229,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "You are registered!", Toast.LENGTH_SHORT).show();
                     } else {
-
-
                         Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -247,8 +238,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        } else if (view.getId() == R.id.signup_guest_button) {
+            Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_listEventFragment);
         }
     }
 
 }
-
