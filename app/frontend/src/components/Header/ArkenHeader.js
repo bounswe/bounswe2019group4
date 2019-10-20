@@ -42,7 +42,7 @@ class ArkenHeader extends Component {
 
                 >
                     <Menu.Item
-                        name="/"
+                        name=""
                         onClick={this.navigate}
                     >
                     <img src={arkenLogo} style={{height: "30px", marginLeft: 10}} />

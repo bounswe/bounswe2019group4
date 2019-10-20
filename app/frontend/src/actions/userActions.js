@@ -10,7 +10,8 @@ export function login(params) {
 
 export function logout() {
     return {
-        type: "LOGOUT"
+        type: "LOGOUT",
+        payload: authService.logout()
     };
 }
 
