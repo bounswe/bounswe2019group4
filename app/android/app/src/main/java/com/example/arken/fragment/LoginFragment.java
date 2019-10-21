@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -28,6 +27,11 @@ import androidx.navigation.Navigation;
 import com.example.arken.R;
 import com.example.arken.model.LoginUser;
 import com.example.arken.util.RetroClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -125,7 +129,26 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         editor.apply();
                         Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
                     } else {
-                        Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
+
+                        String errorMessage = null;
+                        try {
+                            String responseMessage = response.errorBody().string();
+
+
+                            JSONObject jsonObject = new JSONObject(responseMessage);
+
+                            errorMessage = jsonObject.getString("errmsg");
+
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if(errorMessage!=null) {
+                            Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+
+                        else{
+                            Toast.makeText(getContext(), "Invalid input. Please try again.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
 

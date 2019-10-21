@@ -5,10 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,35 +17,24 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-
 import com.example.arken.R;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
-
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
 
 public class SignupFragment extends Fragment implements View.OnClickListener {
     private EditText nameEditText;
@@ -64,7 +51,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     private ImageView passwordEyeImage2;
     private ImageButton imageButton;
     private Switch isPublicSwitch;
-
+    private EditText locationEditText;
+    private final int MAPS_ACTIVITY = 3;
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
@@ -81,12 +69,16 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         emailEditText = view.findViewById(R.id.signup_email_editText);
         passwordEditText = view.findViewById(R.id.signup_password_editText);
         passwordEditText2 = view.findViewById(R.id.signup_password_editText2);
+        locationEditText = view.findViewById(R.id.signup_location_editText);
         imageButton = view.findViewById(R.id.signup_location_button);
+
+
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, MAPS_ACTIVITY);
             }
         });
 
@@ -141,8 +133,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
         return view;
     }
+
 
     @Override
     public void onClick(View view) {
@@ -179,7 +173,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             String email = String.valueOf(emailEditText.getText());
             String password = String.valueOf(passwordEditText.getText());
             boolean isPublic = !isPublicSwitch.isChecked();
-            String location = "Turkey";
+            String location = String.valueOf(locationEditText.getText());
             boolean isTrader = isTraderSwitch.isChecked();
             if (isTrader) {
                 if (tcknEditText.getText().toString().trim().equals("")) {
@@ -192,8 +186,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 }
             }
 
-
-            Call<ResponseBody> call;
+                Call<ResponseBody> call;
             if (isTrader) {
                 String tckn = String.valueOf(tcknEditText.getText());
                 String iban = String.valueOf(ibanEditText.getText());
@@ -209,11 +202,31 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
                     if (response.isSuccessful()) {
                         Navigation.findNavController(signupButton).navigate(R.id.action_signupFragment_to_loginFragment);
                         Toast.makeText(getContext(), "You are registered!, Please verify your email", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
+
+                        String errorMessage = null;
+                        try {
+                            String responseMessage = response.errorBody().string();
+
+
+                            JSONObject jsonObject = new JSONObject(responseMessage);
+
+                            errorMessage = jsonObject.getString("errmsg");
+
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                            if(errorMessage!=null) {
+                                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+
+                            else{
+                                Toast.makeText(getContext(), "Invalid input. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
                     }
                 }
 
@@ -227,4 +240,15 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == MAPS_ACTIVITY){
+                String location = data.getExtras().getString("location");
+                Toast.makeText(getContext(), location, Toast.LENGTH_SHORT ).show();
+                locationEditText.setText(location);
+            }
+        }
+    }
 }
+
