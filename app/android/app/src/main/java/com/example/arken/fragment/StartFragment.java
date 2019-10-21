@@ -1,6 +1,7 @@
 package com.example.arken.fragment;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -38,6 +41,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
+import static androidx.navigation.fragment.NavHostFragment.findNavController;
 import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
 
 public class StartFragment extends Fragment implements View.OnClickListener {
@@ -58,6 +62,13 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         signUpButton.setOnClickListener(this);
         signupGoogle = view.findViewById(R.id.signin_google_button);
         signupGoogle.setOnClickListener(this);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
+            @Override
+            public void handleOnBackPressed() {
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
         return view;
     }
 
