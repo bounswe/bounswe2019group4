@@ -47,7 +47,7 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("events")
-    Call<ListEvent> getEventsAll();
+    Call<ListEvent> getEventsAll(@Query("page") Integer s, @Query("limit") Integer k);
 
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")

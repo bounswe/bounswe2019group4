@@ -13,10 +13,6 @@
     android:gravity="center_vertical"
     android:id="@+id/event_row_background">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/cardview_shadow_end_color" />
 
     <TextView
         android:id="@+id/textView"

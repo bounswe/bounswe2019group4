@@ -1,6 +1,5 @@
 package com.example.arken.util
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Event
+import com.example.arken.model.ListEvent
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class EventAdapter(var dataSet: List<Event>) :
+class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<EventAdapter.ViewHolder>() {
-
+    var totalPages: Int = 1
+    var page: Int = 1
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
@@ -28,7 +32,7 @@ class EventAdapter(var dataSet: List<Event>) :
 
         init {
             // Define click listener for the ViewHolder's View.
-            v.setOnClickListener { Log.d(TAG, "Element $adapterPosition clicked.") }
+
             textView = v.findViewById(R.id.textView)
             importanceStar1 = v.findViewById(R.id.event_star1_imageView)
             importanceStar2 = v.findViewById(R.id.event_star2_imageView)
@@ -36,6 +40,33 @@ class EventAdapter(var dataSet: List<Event>) :
             country = v.findViewById(R.id.country)
             background = v.findViewById(R.id.event_row_background)
         }
+
+        fun bind(event: Event, clickListener: OnItemClickListener) {
+            textView.text = event.Event
+            country.text = event.Country
+
+            when {
+                (event.Importance) == 1 -> {
+                    importanceStar1.setImageResource(R.drawable.ic_star_full)
+                    importanceStar2.setImageResource(R.drawable.ic_star_empty)
+                    importanceStar3.setImageResource(R.drawable.ic_star_empty)
+                }
+                (event.Importance) == 2 -> {
+                    importanceStar1.setImageResource(R.drawable.ic_star_full)
+                    importanceStar2.setImageResource(R.drawable.ic_star_full)
+                    importanceStar3.setImageResource(R.drawable.ic_star_empty)
+                }
+                (event.Importance) == 3 -> {
+                    importanceStar1.setImageResource(R.drawable.ic_star_full)
+                    importanceStar2.setImageResource(R.drawable.ic_star_full)
+                    importanceStar3.setImageResource(R.drawable.ic_star_full)
+                }
+            }
+            itemView.setOnClickListener {
+                clickListener.onItemClicked(event)
+            }
+        }
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -47,14 +78,34 @@ class EventAdapter(var dataSet: List<Event>) :
         return ViewHolder(v)
     }
 
+    fun newPage() {
+        page += 1
+        if (page <= totalPages) {
+            val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(page, 10)
+            call.enqueue(object : Callback<ListEvent> {
+                override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
+                    if (response.isSuccessful) {
+                        val listEvent: ListEvent? = response.body()
+                        if (listEvent?.events != null) {
+                            dataSet.addAll(listEvent.events!!)
+                            notifyDataSetChanged()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ListEvent>, t: Throwable) {
+                }
+            })
+        }
+    }
+
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.textView.text = dataSet[position].Event
-        viewHolder.country.text = dataSet[position].Country
-        when{
+        val event = dataSet[position]
+        when {
             (position % 3 == 0) -> {
                 viewHolder.background.setBackgroundResource(R.color.colorPriBlue)
             }
@@ -65,23 +116,11 @@ class EventAdapter(var dataSet: List<Event>) :
                 viewHolder.background.setBackgroundResource(R.color.colorDarkBlue)
             }
         }
-        when {
-            (dataSet[position].Importance).equals("1") -> {
-                viewHolder.importanceStar1.setImageResource(R.drawable.ic_star_full)
-                viewHolder.importanceStar2.setImageResource(R.drawable.ic_star_empty)
-                viewHolder.importanceStar3.setImageResource(R.drawable.ic_star_empty)
-            }
-            (dataSet[position].Importance).equals("2") -> {
-                viewHolder.importanceStar1.setImageResource(R.drawable.ic_star_full)
-                viewHolder.importanceStar2.setImageResource(R.drawable.ic_star_full)
-                viewHolder.importanceStar3.setImageResource(R.drawable.ic_star_empty)
-            }
-            (dataSet[position].Importance).equals("3") -> {
-                viewHolder.importanceStar1.setImageResource(R.drawable.ic_star_full)
-                viewHolder.importanceStar2.setImageResource(R.drawable.ic_star_full)
-                viewHolder.importanceStar3.setImageResource(R.drawable.ic_star_full)
-            }
+        viewHolder.bind(event, itemClickListener)
+        if (position == dataSet.size - 1) {
+            newPage()
         }
+
 
     }
 
@@ -90,5 +129,11 @@ class EventAdapter(var dataSet: List<Event>) :
 
     companion object {
         private val TAG = "CustomAdapter"
+
+
     }
+}
+
+interface OnItemClickListener {
+    fun onItemClicked(event: Event)
 }
