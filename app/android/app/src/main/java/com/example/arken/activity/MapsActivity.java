@@ -1,6 +1,7 @@
 package com.example.arken.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -83,33 +84,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         myLocation.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
 
-
                 Intent intent = getIntent();
+                intent.putExtra("location",city);
 
-                Bundle extras = intent.getExtras();
-
-                String name = extras.getString("name");
-                String surname = extras.getString("surname");
-                String password = extras.getString("password");
-                String email = extras.getString("email");
-                boolean isPublic = extras.getBoolean("isPublic");
-
-                Bundle frag_bundle = new Bundle();
-                frag_bundle.putString("name", name);
-                frag_bundle.putString("surname", surname);
-                frag_bundle.putString("email", email);
-                frag_bundle.putString("password", password);
-                frag_bundle.putBoolean("isPublic", isPublic);
-                frag_bundle.putString("location", city);
-
-
-                SignupFragment signupFragment= new SignupFragment();
-                signupFragment.setArguments(frag_bundle);
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.mapFrame, signupFragment, "findThisFragment")
-                        .commit();
-
-
+                setResult(Activity.RESULT_OK, intent);
+                onBackPressed();
             }
         });
 

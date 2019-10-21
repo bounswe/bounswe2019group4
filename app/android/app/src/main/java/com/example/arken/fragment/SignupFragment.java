@@ -1,6 +1,7 @@
 package com.example.arken.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     private ImageButton imageButton;
     private Switch isPublicSwitch;
     private EditText locationEditText;
+    private final int MAPS_ACTIVITY = 3;
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
@@ -75,21 +77,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
-                String name = String.valueOf(nameEditText.getText());
-                String surname = String.valueOf(surnameEditText.getText());
-                String email = String.valueOf(emailEditText.getText());
-                String password = String.valueOf(passwordEditText.getText());
-                boolean isPublic = !isPublicSwitch.isChecked();
-
-                Bundle extras = new Bundle();
-                extras.putString("surname", surname);
-                extras.putString("name", name);
-                extras.putString("email", email);
-                extras.putString("password", password);
-                extras.putBoolean("isPublic", isPublic);
-
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
-                intent.putExtras(extras);
                 startActivity(intent);
             }
         });
@@ -145,19 +133,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-
-        if(getArguments()!=null) {
-
-            Bundle bund = getArguments();
-            nameEditText.setText(bund.getString("name"));
-            surnameEditText.setText(bund.getString("surname"));
-            emailEditText.setText(bund.getString("email"));
-            passwordEditText.setText(bund.getString("password"));
-            passwordEditText2.setText(bund.getString("password"));
-            isPublicSwitch.setChecked(!bund.getBoolean("isPublic"));
-            locationEditText.setText(bund.getString("location"));
-
-        }
 
         return view;
     }
@@ -264,5 +239,14 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == MAPS_ACTIVITY){
+                String location = data.getExtras().getString("location");
+                locationEditText.setText(location);
+            }
+        }
+    }
 }
 
