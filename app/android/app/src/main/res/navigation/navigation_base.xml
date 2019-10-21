@@ -13,6 +13,22 @@
         <action
             android:id="@+id/action_eventListFragment_self"
             app:destination="@id/eventListFragment"/>
+        <action
+            android:id="@+id/action_eventListFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="com.example.arken.fragment.EventFragment"
+        android:label="EventFragment">
+        <argument
+            android:name="eventToShow"
+            android:defaultValue="@null"
+            app:argType="com.example.arken.model.Event"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_eventFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
     </fragment>
 
 </navigation>

@@ -61,10 +61,6 @@
         <action
             android:id="@+id/action_baseFragment_to_startFragment"
             app:destination="@id/startFragment" />
-        <action
-            android:id="@+id/action_listEventFragment_to_eventFragment"
-            app:destination="@id/eventFragment"
-            app:popUpTo="@+id/listEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/googleSignupFragment"
@@ -81,14 +77,5 @@
             android:id="@+id/action_googleSignupFragment_to_startFragment"
             app:destination="@id/startFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/eventFragment"
-        android:name="com.example.arken.fragment.EventFragment"
-        android:label="EventFragment">
-        <argument
-            android:name="eventToShow"
-            android:defaultValue="@null"
-            app:argType="com.example.arken.model.Event"
-            app:nullable="true" />
-    </fragment>
+
 </navigation>
