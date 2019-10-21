@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.arken.R;
@@ -25,7 +27,8 @@ public class BaseFragment extends Fragment {
     private Fragment fragment;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_base, container, false);
-        fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_base_fragment);
+        FragmentManager f = getChildFragmentManager();
+        fragment = f.findFragmentById(R.id.nav_host_base_fragment);
         eventPage = view.findViewById(R.id.menu_event);
         eventPage.setOnClickListener(new View.OnClickListener() {
             @Override

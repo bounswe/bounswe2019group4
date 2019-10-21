@@ -7,4 +7,5 @@
     <color name="colorlightBlue">#5e92f3</color>
     <color name="colorDarkBlue">#003c8f</color>
     <color name="darkBlueStar">#ffffff</color>
+    <color name="grayBackground">#cfd8dc</color>
 </resources>
