@@ -220,10 +220,10 @@
 
     <ImageButton
         android:id="@+id/signup_location_button"
-        android:layout_width="51dp"
-        android:layout_height="37dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="30dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_location"

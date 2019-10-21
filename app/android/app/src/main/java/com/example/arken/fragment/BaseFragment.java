@@ -1,6 +1,8 @@
 package com.example.arken.fragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
+import com.example.arken.activity.MapsActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,6 +42,7 @@ public class BaseFragment extends Fragment {
     private TextView signOutText;
     private Fragment fragment;
     private boolean isLogged = true;
+    private ImageButton imageButton;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_base, container, false);
         FragmentManager f = getChildFragmentManager();
@@ -112,7 +117,6 @@ public class BaseFragment extends Fragment {
                 //else go to trading eq page
             }
         });
-
         return view;
     }
     private void signOut(){
