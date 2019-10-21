@@ -14,11 +14,33 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/navigation_base" />
-    <fragment
-        android:id="@+id/submenu"
-        android:layout_width="match_parent"
+        app:navGraph="@navigation/navigation_base"/>
+
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:background="#01579b"
+        android:id="@+id/submenu"
+        android:layout_alignParentBottom="true">
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_event"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:id="@+id/menu_event"/>
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_logout"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:id="@+id/menu_logout"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

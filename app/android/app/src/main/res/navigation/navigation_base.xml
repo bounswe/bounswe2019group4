@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/eventListFragment"
         android:name="com.example.arken.fragment.ListEventFragment"
-        android:label="fragment_event_list">
+        android:label="fragment_event_list"
+        tools:layout="@layout/fragment_listevent">
         <action
             android:id="@+id/action_eventListFragment_self"
             app:destination="@id/eventListFragment" />
