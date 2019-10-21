@@ -2,6 +2,7 @@ package com.example.arken.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
 
 public class StartFragment extends Fragment implements View.OnClickListener {
     private Button loginButton;
@@ -123,7 +126,11 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         if (alreadyloggedAccount != null) {
             onLoggedIn(alreadyloggedAccount, true);
         } else {
-            Log.d(TAG, "Not logged in");
+            final SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+            String email = prefs.getString("email", "default");//"No name defined" is the default value.
+            if(!email.equals("default")){
+                Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_baseFragment);
+            }
         }
     }
 }

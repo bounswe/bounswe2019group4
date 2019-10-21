@@ -1,5 +1,6 @@
 package com.example.arken.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
+import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
 
 public class BaseFragment extends Fragment {
     private ImageButton eventPage;
@@ -42,7 +45,9 @@ public class BaseFragment extends Fragment {
             }
         });
         signOut = view.findViewById(R.id.menu_logout);
-        if(GoogleSignIn.getLastSignedInAccount(getContext()) == null){
+        final SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String email = prefs.getString("email", "default");//"No name defined" is the default value.
+        if(GoogleSignIn.getLastSignedInAccount(getContext()) == null && email.equals("default")){
             signOut.setVisibility(View.GONE);
         }
         signOut.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +56,9 @@ public class BaseFragment extends Fragment {
                 MainActivity.getClient().signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.clear();
+                        editor.apply();
                         if(Navigation.findNavController(signOut).getCurrentDestination().getId() == R.id.baseFragment)
                             Navigation.findNavController(signOut).navigate(R.id.action_baseFragment_to_startFragment);
 

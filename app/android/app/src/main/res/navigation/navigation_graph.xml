@@ -19,7 +19,7 @@
             app:popUpTo="@+id/loginFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_loginFragment_to_listEventFragment2"
+            android:id="@+id/action_loginFragment_to_baseFragment"
             app:destination="@id/baseFragment"
             app:popUpTo="@+id/startFragment" />
     </fragment>

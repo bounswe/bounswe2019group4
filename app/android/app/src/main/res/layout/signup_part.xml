@@ -105,7 +105,7 @@
         android:layout_height="0dp"
         android:layout_marginLeft="16dp"
         android:gravity="center_vertical"
-        android:text="Password 2"
+        android:text="Password validation"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/signup_password_editText2"
         app:layout_constraintStart_toStartOf="parent"
