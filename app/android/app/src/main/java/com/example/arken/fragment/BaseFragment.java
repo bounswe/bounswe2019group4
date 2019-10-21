@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
@@ -78,7 +79,8 @@ public class BaseFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment){
-                    findNavController(fragment).navigate(R.id.action_eventListFragment_self);
+                    RecyclerView recyclerView = fragment.getView().findViewById(R.id.recyclerView);
+                    recyclerView.smoothScrollToPosition(0);
                 }else if(findNavController(fragment).getCurrentDestination().getId() == R.id.eventFragment){
                     findNavController(fragment).navigate(R.id.action_eventFragment_to_eventListFragment);
                 }

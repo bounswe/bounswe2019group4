@@ -11,9 +11,6 @@
         android:label="fragment_event_list"
         tools:layout="@layout/fragment_listevent">
         <action
-            android:id="@+id/action_eventListFragment_self"
-            app:destination="@id/eventListFragment" />
-        <action
             android:id="@+id/action_eventListFragment_to_eventFragment"
             app:destination="@id/eventFragment"
             app:popUpTo="@id/eventListFragment"
