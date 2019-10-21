@@ -29,6 +29,7 @@
         android:layout_marginRight="16dp"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/signup_nameTag_textView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -141,13 +142,12 @@
         android:id="@+id/signup_location_editText"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_text"
-        android:layout_marginTop="196dp"
         android:layout_marginRight="16dp"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.937"
         app:layout_constraintStart_toEndOf="@id/signup_locationTag_textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText"/>
 
     <ImageView
         android:id="@+id/signup_password_eye_image"
