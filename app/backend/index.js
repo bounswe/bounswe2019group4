@@ -8,7 +8,10 @@ const MongoStore = require('connect-mongo')(session)
 
 const { mongoose } = require('./db')
 const { sessionSecret } = require('./secrets')
+
+const { requireJSON } = require('./controllers/middleware')
 const { getEventsFromAPI, getTradingEquipmentsFromAPI, getCurrentTradingEquipmentsFromAPI } = require('./utils')
+
 var isOnlyToday = false;
 
 
@@ -26,6 +29,9 @@ app.use(session({
         maxAge: 7 * 24 * 60 * 60 * 1000,     // one week
     },
 }))
+
+app.use(requireJSON)        // responds with an error message when POST requests aren't JSON
+
 app.use(bodyParser.json()); // parses request body and binds to the request argument, request.body
 
 app.use('/auth/', require('./routes/login-signup'))  // includes login/signup endpoints to the main app

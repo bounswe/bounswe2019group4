@@ -24,3 +24,11 @@ module.exports.validateBody = (spec) => {
         next()
     }
 }
+
+module.exports.requireJSON = (req, res, next) => {
+    // when the method is POST and its body isn't JSON data, responds with an error message
+    if(req.method == 'POST' && req.headers['content-type'] != 'application/json') {
+        return res.status(400).send({errmsg: 'This is a Rest API. Use it properly and send data as JSON.'})
+    }
+    next()
+}
