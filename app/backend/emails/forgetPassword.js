@@ -1,14 +1,14 @@
 const sgMail = require('@sendgrid/mail')
-const { sendgridAPIKey, frontend }= require('./../secrets')
+const { senderEmail, sendgridAPIKey, frontend }= require('./../secrets')
 
 sgMail.setApiKey(sendgridAPIKey)
 
 const sendForgetPassword = (email, token) => {
   sgMail.send({
     to: email,
-    from: 'noreply@arkenstone.ml',
+    from: senderEmail,
     subject: 'Arkenstone Change Password',
-    text: `Enter this to change your password: ${frontend}/auth/reset-password?token=${token}`
+    text: `Enter this to change your password: ${frontend}/reset-password/${token}`
   })
 }
 

@@ -1,0 +1,17 @@
+TRY,Turkish Lira
+USD,United States Dollar
+EUR,Euro
+CAD,Canadian Dollar
+AUD,Australian Dollar
+CHF,Swiss Franc
+CNY,Chinese Yuan
+DKK,Danish Krone
+HKD,Hong Kong Dollar
+IDR,Indonesian Rupiah
+INR,Indian Rupee
+JPY,Japanese Yen
+KRW,South Korean Won
+KWD,Kuwaiti Dinar
+NOK,Norwegian Krone
+AED,United Arab Emirates Dirham
+MXN,Mexican Peso
