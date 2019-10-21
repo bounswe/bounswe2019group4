@@ -34,6 +34,7 @@ import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
 public class BaseFragment extends Fragment {
     private ImageButton eventPage;
     private ImageButton signOut;
+    private ImageButton tradingEq;
     private TextView signOutText;
     private Fragment fragment;
     private boolean isLogged = true;
@@ -90,8 +91,9 @@ public class BaseFragment extends Fragment {
         });
         signOut = view.findViewById(R.id.menu_logout);
         signOutText = view.findViewById(R.id.base_signout_text);
+        tradingEq = view.findViewById(R.id.menu_trading_eq);
         final SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String email = prefs.getString("email", "default");//"No name defined" is the default value.
+        String email = prefs.getString("email", "default");
         if(GoogleSignIn.getLastSignedInAccount(getContext()) == null && email.equals("default")){
             signOut.setVisibility(View.GONE);
             signOutText.setVisibility(View.GONE);
@@ -101,6 +103,13 @@ public class BaseFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 signOut();
+            }
+        });
+        tradingEq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if nav is already at trading eq page, then scroll to position 0
+                //else go to trading eq page
             }
         });
 
