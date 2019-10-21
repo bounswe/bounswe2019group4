@@ -32,7 +32,6 @@ class ListEventFragment : Fragment(), OnItemClickListener {
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var dataset: MutableList<Event>
     private lateinit var eventAdapter: EventAdapter
-    private lateinit var signOutButton: Button
 
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
 
@@ -74,17 +73,6 @@ class ListEventFragment : Fragment(), OnItemClickListener {
 
         setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER)
 
-        signOutButton = rootView.findViewById(R.id.events_signOut)
-        signOutButton.setOnClickListener { view ->
-            activity?.let { it1 ->
-                MainActivity.getClient().revokeAccess()
-                    .addOnCompleteListener(it1, OnCompleteListener<Void> {
-                        if (Navigation.findNavController(view).currentDestination?.id == R.id.listEventFragment)
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_listEventFragment_to_startFragment)
-                    })
-            }
-        }
         return rootView
     }
 
@@ -172,7 +160,7 @@ class ListEventFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClicked(event: Event) {
-        val action = ListEventFragmentDirections.actionListEventFragmentToEventFragment()
+        val action = ListEventFragmentDirections.actionEventListFragmentToEventFragment()
         action.eventToShow = event
         Navigation.findNavController(recyclerView).navigate(action)
     }

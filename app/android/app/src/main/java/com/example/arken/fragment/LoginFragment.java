@@ -2,6 +2,7 @@ package com.example.arken.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
@@ -33,6 +34,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class LoginFragment extends Fragment implements View.OnClickListener {
     LinearLayout signupButton;
     EditText emailEditText;
@@ -40,6 +43,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     Button loginButton;
     Button guestButton;
     ImageView passwordEyeImage;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
     TextView forgotPasswordButton;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -92,7 +96,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signupFragment);
 
         } else if (view.getId() == R.id.signup_guest_button) {
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_listEventFragment2);
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_baseFragment);
         }
         else if (view.getId() == R.id.forgotPasswordButton){
             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment);
@@ -107,7 +111,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 return;
             }
 
-            String email = String.valueOf(emailEditText.getText());
+            final String email = String.valueOf(emailEditText.getText());
             String password = String.valueOf(passwordEditText.getText());
 
             Call<ResponseBody> call = RetroClient.getInstance().getAPIService().login(new LoginUser(email, password));
@@ -116,7 +120,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "You are logged in!", Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.putString("email", email);
+                        editor.apply();
+                        Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
                     } else {
                         Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }

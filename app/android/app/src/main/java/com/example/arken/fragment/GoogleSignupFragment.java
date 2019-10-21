@@ -3,14 +3,8 @@ package com.example.arken.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -36,8 +30,6 @@ import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -124,7 +116,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) { //events
-                        Navigation.findNavController(submitButton).navigate(R.id.action_googleSignupFragment_to_listEventFragment);
+                        Navigation.findNavController(submitButton).navigate(R.id.action_googleSignupFragment_to_baseFragment);
                     } else {
                         Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }
