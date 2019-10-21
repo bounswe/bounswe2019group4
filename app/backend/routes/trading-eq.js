@@ -11,7 +11,7 @@ const { CurrentTradingEquipment } = require('../models/current-trading-eq')
   Get endpoint for information of specific trading equipment.
   Check controller function for more detail
 */
-router.get('/:code', [modelBinder(TradingEquipment, 'TradingEquipment'), modelBinder(TradingEquipmentFollow, 'TradingEquipmentFollow')], tradingEquipmentController.getTradingEquipment)
+router.get('/:code', [modelBinder(TradingEquipment, 'TradingEquipment'), modelBinder(TradingEquipmentFollow, 'TradingEquipmentFollow'), modelBinder(CurrentTradingEquipment, 'CurrentTradingEquipment')], tradingEquipmentController.getTradingEquipment)
 
 /*
   Get endpoint for information of all trading equipment's current values.
