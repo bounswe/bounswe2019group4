@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     Button guestButton;
     ImageView passwordEyeImage;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
+    TextView forgotPasswordButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -55,6 +57,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         signupButton.setOnClickListener(this);
         loginButton = view.findViewById(R.id.login_login_button);
         loginButton.setOnClickListener(this);
+        forgotPasswordButton = view.findViewById(R.id.forgotPasswordButton);
+        forgotPasswordButton.setOnClickListener(this);
         emailEditText = view.findViewById(R.id.login_email_editText);
         passwordEditText = view.findViewById(R.id.login_password_editText);
         ConstraintLayout layout = view.findViewById(R.id.login_background);
@@ -93,6 +97,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         } else if (view.getId() == R.id.signup_guest_button) {
             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_baseFragment);
+        }
+        else if (view.getId() == R.id.forgotPasswordButton){
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment);
         }
         else if(view.getId() == R.id.login_login_button){
             if(emailEditText.getText().toString().trim().equals("")){
