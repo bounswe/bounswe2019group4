@@ -1,12 +1,13 @@
 package com.example.arken.util;
 
+import com.example.arken.model.Email;
 import com.example.arken.model.Event;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.SignupUser;
-import com.example.arken.model.Email;
+import com.example.arken.model.tradingEquipment.ListCurrency;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -55,6 +56,10 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @GET("events")
     Call<ListEvent> getEventsAll(@Query("page") Integer s, @Query("limit") Integer k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("trading-equipments")
+    Call<ListCurrency> getCurrentCurrencyValues();
 
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")
