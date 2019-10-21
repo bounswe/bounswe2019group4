@@ -7,30 +7,30 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
+import com.example.arken.activity.MainActivity
 import com.example.arken.model.Event
 import com.example.arken.model.ListEvent
 import com.example.arken.util.EventAdapter
+import com.example.arken.util.OnItemClickListener
 import com.example.arken.util.RetroClient
+import com.google.android.gms.tasks.OnCompleteListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import com.google.android.gms.tasks.Task
-import androidx.annotation.NonNull
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import com.google.android.gms.tasks.OnCompleteListener
-import com.example.arken.activity.MainActivity
 
 
-class ListEventFragment : Fragment() {
+class ListEventFragment : Fragment(), OnItemClickListener {
+
+
     private lateinit var currentLayoutManagerType: LayoutManagerType
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: RecyclerView.LayoutManager
-    private lateinit var dataset: List<Event>
+    private lateinit var dataset: MutableList<Event>
     private lateinit var eventAdapter: EventAdapter
 
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
@@ -68,7 +68,7 @@ class ListEventFragment : Fragment() {
 
 
 
-        eventAdapter = EventAdapter(dataset)
+        eventAdapter = EventAdapter(dataset, this)
         recyclerView.adapter = eventAdapter
 
         setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER)
@@ -107,11 +107,35 @@ class ListEventFragment : Fragment() {
 
     private fun initDataset() {
 
-        val call: Call<ListEvent> = RetroClient.getInstance().apiService.eventsAll
-        dataset = listOf(
+        val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(1, 10)
+        dataset = mutableListOf(
             Event(
-                "l", "k", "ş"
-                , Date(), "i", "i", ",", "l", "i", "i", ","
+                "l", "k", "China"
+                , Date(), "House Price Index YoY", "i", ",", "l", "i", 2, ","
+            ),
+            Event(
+                "l", "k", "China"
+                , Date(), "Loan Prime Rate 5Y", "i", ",", "l", "i", 2, ","
+            ),
+            Event(
+                "l", "k", "China"
+                , Date(), "Loan Prime Rate 1Y", "i", ",", "l", "i", 3, ","
+            ),
+            Event(
+                "l", "k", "Canada"
+                , Date(), "Federal Election", "i", ",", "l", "i", 3, ","
+            ),
+            Event(
+                "l", "k", "Japan"
+                , Date(), "Balance of Trade", "i", ",", "l", "i", 3, ","
+            ),
+            Event(
+                "l", "k", "Japan"
+                , Date(), "Exports YoY", "i", ",", "l", "i", 2, ","
+            ),
+            Event(
+                "l", "k", "Japan"
+                , Date(), "Imports YoY", "i", ",", "l", "i", 1, ","
             )
         )
         call.enqueue(object : Callback<ListEvent> {
@@ -120,6 +144,8 @@ class ListEventFragment : Fragment() {
                     val listEvent: ListEvent? = response.body()
                     // dataset=listEvent!!.events
                     eventAdapter.dataSet = listEvent!!.events!!
+                    eventAdapter.totalPages = listEvent.totalNumberOfPages!!
+                    eventAdapter.page = 1
                     eventAdapter.notifyDataSetChanged()
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
@@ -131,6 +157,34 @@ class ListEventFragment : Fragment() {
             }
         })
 
+    }
+
+    override fun onItemClicked(event: Event) {
+        val action = ListEventFragmentDirections.actionListEventFragmentToEventFragment()
+        action.eventToShow = event
+        Navigation.findNavController(recyclerView).navigate(action)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(1, 10)
+        call.enqueue(object : Callback<ListEvent> {
+            override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
+                if (response.isSuccessful) {
+                    val listEvent: ListEvent? = response.body()
+                    eventAdapter.dataSet = listEvent!!.events!!
+                    eventAdapter.totalPages = listEvent.totalNumberOfPages!!
+                    eventAdapter.page = 1
+                    eventAdapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ListEvent>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     companion object {

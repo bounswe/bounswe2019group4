@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class ListEvent(
     @SerializedName("events")
-    var events: List<Event>?,
+    var events: MutableList<Event>?,
     @SerializedName("totalNumberOfEvents")
-    var totalNumberOfEvents: Int?
+    var totalNumberOfEvents: Int?,
+    @SerializedName("totalNumberOfPages")
+    var totalNumberOfPages: Int?
 )
