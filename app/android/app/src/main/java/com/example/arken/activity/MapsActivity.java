@@ -21,7 +21,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.arken.R;
-import com.example.arken.fragment.SignupFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -84,12 +83,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         myLocation.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
 
-                Intent intent = getIntent();
+             //   Toast.makeText(MapsActivity.this, city, Toast.LENGTH_SHORT).show();
+             Intent intent = getIntent();
                 intent.putExtra("location",city);
 
                 setResult(Activity.RESULT_OK, intent);
                 onBackPressed();
             }
+
+
+
         });
 
     }

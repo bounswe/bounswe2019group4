@@ -78,7 +78,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, MAPS_ACTIVITY);
             }
         });
 
@@ -244,6 +244,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         if(resultCode == Activity.RESULT_OK){
             if(requestCode == MAPS_ACTIVITY){
                 String location = data.getExtras().getString("location");
+                Toast.makeText(getContext(), location, Toast.LENGTH_SHORT ).show();
                 locationEditText.setText(location);
             }
         }
