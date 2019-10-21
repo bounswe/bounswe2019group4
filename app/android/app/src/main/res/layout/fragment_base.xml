@@ -63,7 +63,8 @@
             app:layout_constraintStart_toStartOf="@id/menu_event"
             app:layout_constraintEnd_toEndOf="@id/menu_event"
             app:layout_constraintTop_toBottomOf="@id/menu_event"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:textSize="12sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,7 +74,8 @@
             app:layout_constraintEnd_toEndOf="@id/menu_trading_eq"
             app:layout_constraintTop_toBottomOf="@id/menu_trading_eq"
             android:textColor="@android:color/white"
-            android:id="@+id/base_trading_eq_text"/>
+            android:id="@+id/base_trading_eq_text"
+            android:textSize="12sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,7 +85,8 @@
             app:layout_constraintEnd_toEndOf="@id/menu_logout"
             app:layout_constraintTop_toBottomOf="@id/menu_logout"
             android:textColor="@android:color/white"
-            android:id="@+id/base_signout_text"/>
+            android:id="@+id/base_signout_text"
+            android:textSize="12sp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
