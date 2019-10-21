@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -35,11 +36,15 @@ public class BaseFragment extends Fragment {
             public void onClick(View view) {
                 if(findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment){
                     findNavController(fragment).navigate(R.id.action_eventListFragment_self);
-
+                }else if(findNavController(fragment).getCurrentDestination().getId() == R.id.eventFragment){
+                    findNavController(fragment).navigate(R.id.action_eventFragment_to_eventListFragment);
                 }
             }
         });
         signOut = view.findViewById(R.id.menu_logout);
+        if(GoogleSignIn.getLastSignedInAccount(getContext()) == null){
+            signOut.setVisibility(View.GONE);
+        }
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -160,7 +160,7 @@ class ListEventFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClicked(event: Event) {
-        val action = ListEventFragmentDirections.actionListEventFragmentToEventFragment()
+        val action = ListEventFragmentDirections.actionEventListFragmentToEventFragment()
         action.eventToShow = event
         Navigation.findNavController(recyclerView).navigate(action)
     }
