@@ -33,6 +33,20 @@ module.exports.getTradingEquipment = async (request, response) => {
 }
 
 /*
+  Get method for information of specific trading equipment.
+*/
+module.exports.getCurrentValues = async (request, response) => {
+  let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
+
+  // Returns current values of all currency
+  currencies = await CurrentTradingEquipment.find()
+
+  return response.send({
+    currencies
+  }); 
+}
+
+/*
   Post method for following specific trading equipment.
 */
 module.exports.followTradingEq = async (request, response) => {

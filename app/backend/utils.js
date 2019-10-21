@@ -226,7 +226,7 @@ module.exports.getCurrentTradingEquipmentsFromAPI = async function() {
             if(result){
               await CurrentTradingEquipment.findOne({ from : from_symbol}, function(err, teq){
                 if(!teq){
-                  let teq = new TradingEquipment({
+                  teq = new CurrentTradingEquipment({
                     from : from_symbol,
                     to : to_symbol
                   });
