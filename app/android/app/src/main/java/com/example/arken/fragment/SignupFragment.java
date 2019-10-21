@@ -210,7 +210,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "You are registered!", Toast.LENGTH_SHORT).show();
+                        Navigation.findNavController(signupButton).navigate(R.id.action_signupFragment_to_loginFragment);
+                        Toast.makeText(getContext(), "You are registered!, Please verify your email", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }

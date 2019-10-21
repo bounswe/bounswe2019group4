@@ -31,6 +31,10 @@
             android:id="@+id/action_signupFragment_to_baseFragment"
             app:destination="@id/baseFragment"
             app:popUpTo="@+id/startFragment" />
+        <action
+            android:id="@+id/action_signupFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/startFragment"/>
     </fragment>
     <fragment
         android:id="@+id/startFragment"
