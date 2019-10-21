@@ -25,10 +25,6 @@
             android:defaultValue="@null"
             app:argType="com.example.arken.model.Event"
             app:nullable="true" />
-        <action
-            android:id="@+id/action_eventFragment_to_eventListFragment"
-            app:destination="@id/eventListFragment"
-            />
     </fragment>
 
 </navigation>

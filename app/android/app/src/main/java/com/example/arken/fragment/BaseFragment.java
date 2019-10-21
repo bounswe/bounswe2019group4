@@ -68,7 +68,7 @@ public class BaseFragment extends Fragment {
                 }
                 else{
                     if(Navigation.findNavController(signOut).getCurrentDestination().getId() == R.id.baseFragment)
-                        Navigation.findNavController(signOut).navigate(R.id.action_baseFragment_to_startFragment);
+                        Navigation.findNavController(signOut).popBackStack();
                 }
             }
         };
@@ -82,7 +82,7 @@ public class BaseFragment extends Fragment {
                     RecyclerView recyclerView = fragment.getView().findViewById(R.id.recyclerView);
                     recyclerView.smoothScrollToPosition(0);
                 }else if(findNavController(fragment).getCurrentDestination().getId() == R.id.eventFragment){
-                    findNavController(fragment).navigate(R.id.action_eventFragment_to_eventListFragment);
+                    findNavController(fragment).popBackStack();
                 }
             }
         });
@@ -110,7 +110,7 @@ public class BaseFragment extends Fragment {
                 editor.clear();
                 editor.apply();
                 if(Navigation.findNavController(signOut).getCurrentDestination().getId() == R.id.baseFragment)
-                    Navigation.findNavController(signOut).navigate(R.id.action_baseFragment_to_startFragment);
+                    Navigation.findNavController(signOut).popBackStack();
 
             }
         });

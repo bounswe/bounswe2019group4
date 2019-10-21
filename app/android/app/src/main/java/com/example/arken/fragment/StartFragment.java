@@ -65,7 +65,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
             public void handleOnBackPressed() {
-
+                getActivity().finish();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);

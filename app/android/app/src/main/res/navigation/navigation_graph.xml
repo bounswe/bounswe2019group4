@@ -61,11 +61,7 @@
         android:id="@+id/baseFragment"
         android:name="com.example.arken.fragment.BaseFragment"
         android:label="BaseFragment"
-        tools:layout="@layout/fragment_base" >
-        <action
-            android:id="@+id/action_baseFragment_to_startFragment"
-            app:destination="@id/startFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_base" />
     <fragment
         android:id="@+id/googleSignupFragment"
         android:name="com.example.arken.fragment.GoogleSignupFragment"
@@ -76,7 +72,8 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_googleSignupFragment_to_baseFragment"
-            app:destination="@id/baseFragment" />
+            app:destination="@id/baseFragment"
+            app:popUpTo="@+id/startFragment"/>
         <action
             android:id="@+id/action_googleSignupFragment_to_startFragment"
             app:destination="@id/startFragment" />
