@@ -22,6 +22,14 @@
             android:id="@+id/action_loginFragment_to_listEventFragment2"
             app:destination="@id/listEventFragment"
             app:popUpTo="@+id/startFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
@@ -58,7 +66,7 @@
         android:name="com.example.arken.fragment.ListEventFragment"
         android:label="ListEventFragment"
         tools:layout="@layout/fragment_listevent" >
-        <action
+      <action
             android:id="@+id/action_listEventFragment_to_startFragment"
             app:destination="@id/startFragment" />
         <action
@@ -66,6 +74,10 @@
             app:destination="@id/eventFragment"
             app:popUpTo="@+id/listEventFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.arken.fragment.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment" />
     <fragment
         android:id="@+id/googleSignupFragment"
         android:name="com.example.arken.fragment.GoogleSignupFragment"
