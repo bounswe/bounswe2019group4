@@ -3,6 +3,7 @@ package com.example.arken.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -25,6 +27,7 @@ import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
+import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.GoogleUser;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
@@ -45,7 +48,10 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
     private Button submitButton;
     private EditText ibanEditText;
     private EditText tcknEditText;
-
+    private Switch isPrivateSwitch;
+    private ImageButton locationButton;
+    private final int MAPS_ACTIVITY = 3;
+    private EditText locationEditText;
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
@@ -63,6 +69,17 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
         submitButton = view.findViewById(R.id.signup_google_submit_button);
         submitButton.setOnClickListener(this);
         isTraderSwitch = view.findViewById(R.id.signup_google_isTrader_switch);
+        locationButton = view.findViewById(R.id.signup_google_location_button);
+        locationEditText = view.findViewById(R.id.google_location_editText);
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                startActivityForResult(intent, MAPS_ACTIVITY);
+            }
+        });
+        isPrivateSwitch = view.findViewById(R.id.google_isPublic_switch);
         isTraderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -135,5 +152,14 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
         super.onDestroy();
         MainActivity.getClient().revokeAccess();
 
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == MAPS_ACTIVITY){
+                String location = data.getExtras().getString("location");
+                locationEditText.setText(location);
+            }
+        }
     }
 }
