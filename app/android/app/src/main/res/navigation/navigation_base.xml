@@ -15,7 +15,9 @@
             app:destination="@id/eventListFragment"/>
         <action
             android:id="@+id/action_eventListFragment_to_eventFragment"
-            app:destination="@id/eventFragment" />
+            app:destination="@id/eventFragment"
+            app:popUpTo="@id/eventListFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -28,7 +30,8 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_eventFragment_to_eventListFragment"
-            app:destination="@id/eventListFragment" />
+            app:destination="@id/eventListFragment"
+            />
     </fragment>
 
 </navigation>
