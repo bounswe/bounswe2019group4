@@ -13,10 +13,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,7 +26,6 @@ import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.GoogleUser;
-import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -52,6 +48,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
     private ImageButton locationButton;
     private final int MAPS_ACTIVITY = 3;
     private EditText locationEditText;
+
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
@@ -98,16 +95,16 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != R.id.signup_google_iban_editText && view.getId() != R.id.signup_google_tckn_editText){
+        if (view.getId() != R.id.signup_google_iban_editText && view.getId() != R.id.signup_google_tckn_editText) {
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         }
         if (view.getId() == R.id.signup_google_submit_button) {
 
-            String location = "Turkey";
+            String location = String.valueOf(locationEditText.getText());
             Boolean isTrader = isTraderSwitch.isChecked();
-            if (isTrader){
+            if (isTrader) {
                 if (tcknEditText.getText().toString().trim().equals("")) {
                     tcknEditText.setError("Please enter your TC");
                     return;
@@ -117,16 +114,17 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                     return;
                 }
             }
+            boolean isPrivate = isPrivateSwitch.isChecked();
             Call<ResponseBody> call;
             if (isTrader) {
-                String tckn=String.valueOf(tcknEditText.getText());
-                String iban=String.valueOf(ibanEditText.getText());
+                String tckn = String.valueOf(tcknEditText.getText());
+                String iban = String.valueOf(ibanEditText.getText());
 
                 call = RetroClient.getInstance().getAPIService().signupGoogle(new GoogleUser(userName,
-                        userSurname, userEmail, googleId, location,isTrader,tckn,iban));
+                        userSurname, userEmail, googleId, location, isTrader, tckn, iban, isPrivate));
             } else {
                 call = RetroClient.getInstance().getAPIService().signupGoogle(new GoogleUser(userName,
-                        userSurname, userEmail, googleId, location));
+                        userSurname, userEmail, googleId, location, isPrivate));
             }
 
             call.enqueue(new Callback<ResponseBody>() {
@@ -153,10 +151,11 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
         MainActivity.getClient().revokeAccess();
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode == Activity.RESULT_OK){
-            if(requestCode == MAPS_ACTIVITY){
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == MAPS_ACTIVITY) {
                 String location = data.getExtras().getString("location");
                 locationEditText.setText(location);
             }

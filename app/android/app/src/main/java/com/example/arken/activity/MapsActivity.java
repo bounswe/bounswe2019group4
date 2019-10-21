@@ -78,7 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        myLocation = (Button) findViewById(R.id.myLocation_button);
+        myLocation = findViewById(R.id.myLocation_button);
 
         myLocation.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
@@ -116,11 +116,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onLocationChanged(Location location) {
 
-               LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+              /* LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));*/
 
 
             }
@@ -180,7 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     if(listAdresses != null && listAdresses.size() > 0) {
 
-                        city = listAdresses.get(0).getSubLocality() + ", " + listAdresses.get(0).getAdminArea();
+                        city = listAdresses.get(0).getLocality() + ", " + listAdresses.get(0).getAdminArea();
                     }
 
                 } catch (IOException e) {
