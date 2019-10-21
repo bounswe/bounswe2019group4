@@ -2,6 +2,7 @@ const IBAN = require('iban');
 const commonPassword = require('common-password');
 const {Event} = require('./models/event');
 const {TradingEquipment} = require('./models/trading-eq');
+const {CurrentTradingEquipment} = require('./models/current-trading-eq');
 const request = require('request');
 const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest";
 let trading_eq_url_base = "https://www.alphavantage.co/query?";
@@ -184,6 +185,69 @@ module.exports.getTradingEquipmentsFromAPI = function(isOnlyToday) {
     start();
   })
   
+}
+
+
+/*
+  Get method for Trading Equipments.
+  Using 3rd party API, it saves current trading equipments values to database.
+*/
+module.exports.getCurrentTradingEquipmentsFromAPI = async function() {
+  // read currencies from file
+  fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
+    let currencies = contents.split('\n'); // form an array consist of currencies
+    func = "CURRENCY_EXCHANGE_RATE"
+    const start = async () => {
+      await asyncForEach(currencies, async (currency) => {
+        await waitFor(13*1000)                  // wait 13 second to complete. Because the limit is 5 request per minute
+        from_symbol = currency.split(',')[0]    // currency code
+
+        if(!from_symbol)
+         return
+  
+        // Take the USD value for every currency except USD. Take EUR value for USD.
+        if(from_symbol == 'EUR')
+          to_symbol = 'USD'
+        else
+          to_symbol = 'EUR'
+  
+        // form the request url
+        let trading_eq_url = trading_eq_url_base + "function=" + func + "&from_currency="+from_symbol+"&to_currency="+to_symbol+"&apikey="+tradingEquipmentKey;
+        // make the request
+        await request(trading_eq_url, async (error, response, body) => {
+          // If there is an error
+          if(error){
+            console.log(error)
+            return
+          }
+          else{
+            const obj = JSON.parse(body);
+            let result = obj["Realtime Currency Exchange Rate"];
+            if(result){
+              await CurrentTradingEquipment.findOne({ from : from_symbol}, function(err, teq){
+                if(!teq){
+                  teq = new CurrentTradingEquipment({
+                    from : from_symbol,
+                    to : to_symbol
+                  });
+                }
+
+                teq.rate = result['5. Exchange Rate'];
+                teq.Date = result['6. Last Refreshed'];
+
+                teq.save().then(doc => {
+                  
+                }).catch(err => {
+                  //console.log(err);
+                });
+              });
+            }
+          }
+        });
+      });
+    }
+    start();
+  })
 }
 
 // async for each funtion
