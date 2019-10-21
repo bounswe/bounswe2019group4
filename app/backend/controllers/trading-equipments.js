@@ -4,6 +4,7 @@
 module.exports.getTradingEquipment = async (request, response) => {
   let TradingEquipment = request.models['TradingEquipment']
   let TradingEqFollow = request.models['TradingEquipmentFollow']
+  let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
   let TradingEq = request.params['code'].toUpperCase()
   let following = false
 
@@ -17,6 +18,8 @@ module.exports.getTradingEquipment = async (request, response) => {
     }
   }
 
+  current = await CurrentTradingEquipment.find({ from : TradingEq});
+
   // Returns all values of given currency
   values = await TradingEquipment.find({ code: TradingEq }).sort({ Date: -1})
 
@@ -28,7 +31,22 @@ module.exports.getTradingEquipment = async (request, response) => {
 
   return response.send({
     following,
+    current,
     values
+  }); 
+}
+
+/*
+  Get method for information of specific trading equipment.
+*/
+module.exports.getCurrentValues = async (request, response) => {
+  let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
+
+  // Returns current values of all currency
+  currencies = await CurrentTradingEquipment.find()
+
+  return response.send({
+    currencies
   }); 
 }
 
