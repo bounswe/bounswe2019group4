@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
 public class BaseFragment extends Fragment {
     private ImageButton eventPage;
     private ImageButton signOut;
+    private TextView signOutText;
     private Fragment fragment;
     private boolean isLogged = true;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class BaseFragment extends Fragment {
             public void handleOnBackPressed() {
                 if(findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment && isLogged){
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                    builder1.setMessage("You are about to log out! Do you want to go on with this action?");
+                    builder1.setMessage(R.string.log_out_warning);
                     builder1.setCancelable(true);
 
                     builder1.setPositiveButton(
@@ -87,10 +89,12 @@ public class BaseFragment extends Fragment {
             }
         });
         signOut = view.findViewById(R.id.menu_logout);
+        signOutText = view.findViewById(R.id.base_signout_text);
         final SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         String email = prefs.getString("email", "default");//"No name defined" is the default value.
         if(GoogleSignIn.getLastSignedInAccount(getContext()) == null && email.equals("default")){
             signOut.setVisibility(View.GONE);
+            signOutText.setVisibility(View.GONE);
             isLogged = false;
         }
         signOut.setOnClickListener(new View.OnClickListener() {

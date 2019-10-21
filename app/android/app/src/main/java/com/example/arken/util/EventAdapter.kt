@@ -105,17 +105,6 @@ class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnIte
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         val event = dataSet[position]
-        when {
-            (position % 3 == 0) -> {
-                viewHolder.background.setBackgroundResource(R.color.colorPriBlue)
-            }
-            (position % 3 == 1) -> {
-                viewHolder.background.setBackgroundResource(R.color.colorlightBlue)
-            }
-            (position % 3 == 2) -> {
-                viewHolder.background.setBackgroundResource(R.color.colorDarkBlue)
-            }
-        }
         viewHolder.bind(event, itemClickListener)
         if (position == dataSet.size - 1) {
             newPage()
