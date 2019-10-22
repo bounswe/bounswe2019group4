@@ -1,0 +1,46 @@
+{
+  "name": "practice-app-backend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "mocha tests --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bounswe/bounswe2019group4.git"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "restful",
+    "expressjs"
+  ],
+  "author": "boun-swe2019-group4",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bounswe/bounswe2019group4/issues"
+  },
+  "homepage": "https://github.com/bounswe/bounswe2019group4#readme",
+  "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "common-password": "^0.1.2",
+    "connect-mongo": "^3.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "iban": "0.0.12",
+    "mongoose": "^5.5.2",
+    "randomstring": "^1.1.5",
+    "request": "^2.88.0",
+    "saslprep": "^1.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.18.11"
+  }
+}
