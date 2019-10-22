@@ -13,7 +13,7 @@ class SignUp extends Component {
         this.state = {
             name: "",
             surname: "",
-            location: "",
+            location: "İstanbul",
             email: "",
             password: "",
             confirmedPassword: "",
