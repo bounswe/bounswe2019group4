@@ -1,6 +1,7 @@
 node_modules
 .vscode
 .webstorm
+.idea
 npm-debug.*
 *.lock
 *secrets*
