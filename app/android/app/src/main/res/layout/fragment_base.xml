@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <fragment
+        android:id="@+id/nav_host_base_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        android:layout_above="@id/submenu"
+        app:navGraph="@navigation/navigation_base"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorDarkBlue"
+        android:id="@+id/submenu"
+        android:layout_alignParentBottom="true"
+        android:padding="5dp">
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_event"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:id="@+id/menu_event"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/menu_trading_eq"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_logout"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:id="@+id/menu_logout"
+            app:layout_constraintStart_toEndOf="@id/menu_trading_eq"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_trading_eq"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:id="@+id/menu_trading_eq"
+            app:layout_constraintStart_toEndOf="@id/menu_event"
+            app:layout_constraintEnd_toStartOf="@id/menu_logout"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Events"
+            app:layout_constraintStart_toStartOf="@id/menu_event"
+            app:layout_constraintEnd_toEndOf="@id/menu_event"
+            app:layout_constraintTop_toBottomOf="@id/menu_event"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trading Equipment"
+            app:layout_constraintStart_toStartOf="@id/menu_trading_eq"
+            app:layout_constraintEnd_toEndOf="@id/menu_trading_eq"
+            app:layout_constraintTop_toBottomOf="@id/menu_trading_eq"
+            android:textColor="@android:color/white"
+            android:id="@+id/base_trading_eq_text"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log Out"
+            app:layout_constraintStart_toStartOf="@id/menu_logout"
+            app:layout_constraintEnd_toEndOf="@id/menu_logout"
+            app:layout_constraintTop_toBottomOf="@id/menu_logout"
+            android:textColor="@android:color/white"
+            android:id="@+id/base_signout_text"
+            android:textSize="12sp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

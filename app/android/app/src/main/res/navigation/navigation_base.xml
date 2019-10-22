@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_base"
+    app:startDestination="@id/eventListFragment">
+
+    <fragment
+        android:id="@+id/eventListFragment"
+        android:name="com.example.arken.fragment.ListEventFragment"
+        android:label="fragment_event_list"
+        tools:layout="@layout/fragment_listevent">
+        <action
+            android:id="@+id/action_eventListFragment_to_eventFragment"
+            app:destination="@id/eventFragment"
+            app:popUpTo="@id/eventListFragment"
+            />
+        <action
+            android:id="@+id/action_eventListFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment"
+            app:popUpTo="@+id/eventListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="com.example.arken.fragment.EventFragment"
+        android:label="EventFragment">
+        <argument
+            android:name="eventToShow"
+            android:defaultValue="@null"
+            app:argType="com.example.arken.model.Event"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/listCurrentFragment"
+        android:name="com.example.arken.fragment.ListCurrentFragment"
+        android:label="ListCurrentFragment" />
+
+</navigation>
