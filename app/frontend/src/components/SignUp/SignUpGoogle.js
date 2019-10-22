@@ -5,6 +5,9 @@ import {connect} from 'react-redux';
 import history from '../../_core/history';
 import * as userActions from '../../actions/userActions';
 
+import LocationPicker from 'react-location-picker';
+
+
 class SignUpGoogle extends Component {
 
     constructor(props) {
@@ -12,7 +15,7 @@ class SignUpGoogle extends Component {
         this.state = {
             name: "",
             surname: "",
-            location: "",
+            location: "İstanbul",
             email: "",
             isTrader: false,
             iban: null,
@@ -25,6 +28,14 @@ class SignUpGoogle extends Component {
         const googleUser = this.props.location.state;
         this.setState(googleUser);
 
+    }
+
+    handleLocationChange ({ position, address, places }) {
+        if(places.length === 1) {
+            this.setState({location: places[0]["formatted_address"]});
+        } else {
+            this.setState({location: places[places.length-2]["formatted_address"].split(",")[0]});
+        }
     }
 
     handleChange(e, { name, value }) {
@@ -94,11 +105,11 @@ class SignUpGoogle extends Component {
                                                 </Form.Field>
                                                 <Form.Field width={16}>
                                                     <label>Location:</label>
-                                                    <Form.Input
-                                                        placeholder='location'
-                                                        name='location'
-                                                        value={location}
-                                                        onChange={this.handleChange.bind(this)}
+                                                    <LocationPicker
+                                                        containerElement={ <div style={ {height: '100%'} } /> }
+                                                        mapElement={ <div style={ {height: '400px'} } /> }
+                                                        defaultPosition={{lat: 41.0082, lng: 28.9784}}
+                                                        onChange={this.handleLocationChange.bind(this)}
                                                     />
                                                 </Form.Field>
                                             </Form.Group>
