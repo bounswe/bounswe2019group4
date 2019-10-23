@@ -73,10 +73,22 @@ module.exports.followUser = async (request, response) => {
 }
 
 /*
-  Post method for following user.
+  Post method for unfollowing user.
 */
 module.exports.unfollowUser = async (request, response) => {
   let UserFollow = request.models['UserFollow']
 
+  const followingId = request.session['user']._id
+  const followedId = request.params['id']
+  
+  UserFollow.deleteOne({ FollowingId : followingId, FollowedId : followedId }, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+
+    return response.send(204);
+  });
 }
 
