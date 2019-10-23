@@ -11,7 +11,7 @@ const { UserRequestedFollow } = require('../models/user-requested-follow')
   Get endpoint for profile page.
   Check controller function for more detail
 */
-router.get('/:id', modelBinder(User, 'User'), profileController.getDetails)
+router.get('/:id', [modelBinder(User, 'User'), modelBinder(UserFollow, 'UserFollow'), modelBinder(UserRequestedFollow, 'UserRequestedFollow')], profileController.getDetails)
 
 /*
   Post endpoint for following user.

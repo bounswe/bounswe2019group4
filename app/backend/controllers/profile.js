@@ -6,30 +6,66 @@ let { User } = require('./../models/user.js');  // The connection to the User mo
   Get user id from parameter and responses accordingly.
 */
 module.exports.getDetails = async (request, response) => {
+  let UserFollow = request.models['UserFollow']
+  let UserRequestedFollow = request.models['UserRequestedFollow']
   let User = request.models['User']
-  // TODO: followers should be able to see the details of the user they follow
+  
   const id = request.params['id']
   const currentUser = request.session['user']
 
   if(currentUser && currentUser._id == id) {  // when the user asks for his own details
-    return response.send(currentUser)
+    followings = await UserFollow.find({ FollowingId: id })
+    followers = await UserFollow.find({ FollowedId: id })
+    followRequests = await UserRequestedFollow.find({ FollowedId: id})
+
+    return response.send({
+      currentUser,
+      followings,
+      followers,
+      followRequests
+    })
   } else {
-    User.findOne({ _id : id})     // Retrieve the user instance from database
-      .then(user => {             // when the user with given ID exists
-        if(user.isPublic) {       // when the user's data is public 
-          const { _id, isTrader, isPublic, name, surname, email, location } = user    // Extract certain keys from doc
-          return response.send({ _id, isTrader, isPublic, name, surname, email, location })  // Send only the extracted keys
-        } else {    // when user's data is private
-          return response.status(400).send({
-            errmsg: "User has private profile."
-          })
-        }
-      })
-      .catch(error => {   // when it's the case an error occurs accessing the database
-        return response.status(404).send({
-          errmsg: "No such user."
+    user = await User.findOne({ _id : id })
+    if(user){ // if such user exists
+      if(user.isPublic){ // if user is public return directly
+        const { _id, isTrader, isPublic, name, surname, email, location } = user    // Extract certain keys from doc
+        followings = await UserFollow.find({ FollowingId: id })
+        followers = await UserFollow.find({ FollowedId: id })
+        
+        return response.send({
+          _id, isTrader, isPublic, name, surname, email, location,
+          followings,
+          followers
         })
+      } else { // if user is private check for following condition
+        if(currentUser){
+          status = await UserFollow.findOne({ FollowingId : currentUser._id, FollowedId : user._id })
+          if(status){
+            const { _id, isTrader, isPublic, name, surname, email, location } = user    // Extract certain keys from doc
+            followings = await UserFollow.find({ FollowingId: id })
+            followers = await UserFollow.find({ FollowedId: id })
+        
+            return response.send({
+              _id, isTrader, isPublic, name, surname, email, location,
+              followings,
+              followers
+            })
+          } else{
+            return response.status(400).send({
+              errmsg: "Profile is private."
+            })  
+          }
+        } else {
+          return response.status(400).send({
+            errmsg: "Profile is private."
+          }) 
+        }
+      }
+    } else{
+      return response.status(400).send({
+        errmsg: "No such user."
       })
+    }
   }
 }
 
@@ -54,6 +90,8 @@ module.exports.followUser = async (request, response) => {
       if(follower.isPublic){ // If user is public
         follow = new UserFollow({
           FollowingId: followingId,
+          FollowingName: request.session['user'].name,
+          FollowingSurname: request.session['user'].surname,
           FollowedId: followedId,
           FollowedName: follower.name,
           FollowedSurname: follower.surname
@@ -61,6 +99,8 @@ module.exports.followUser = async (request, response) => {
       } else {
         follow = new UserRequestedFollow({
           FollowingId: followingId,
+          FollowingName: request.session['user'].name,
+          FollowingSurname: request.session['user'].surname,
           FollowedId: followedId,
           FollowedName: follower.name,
           FollowedSurname: follower.surname
@@ -121,6 +161,8 @@ module.exports.acceptRequest = async (request, response) => {
   if(req){ 
     let follow = new UserFollow({
           FollowingId: req.FollowingId,
+          FollowingName: req.FollowingName,
+          FollowingSurname: req.FollowingSurname,
           FollowedId: req.FollowedId,
           FollowedName: req.FollowedName,
           FollowedSurname: req.FollowedSurname

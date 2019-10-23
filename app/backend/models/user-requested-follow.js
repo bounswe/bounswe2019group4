@@ -5,6 +5,16 @@ let UserRequestedFollow = mongoose.model('UserRequestedFollow', {
     type: String,
     require: true
   },
+  
+  FollowingName: {
+    type: String,
+    require: true    
+  },
+
+  FollowingSurname: {
+    type: String,
+    require: true    
+  },
 
   FollowedId: {
     type: String,
