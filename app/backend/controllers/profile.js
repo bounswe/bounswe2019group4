@@ -33,3 +33,19 @@ module.exports.getDetails = async (request, response) => {
   }
 }
 
+/*
+  Post method for following user.
+*/
+module.exports.followUser = async (request, response) => {
+  let UserFollow = request.models['UserFollow']
+
+}
+
+/*
+  Post method for following user.
+*/
+module.exports.unfollowUser = async (request, response) => {
+  let UserFollow = request.models['UserFollow']
+
+}
+
