@@ -7,7 +7,6 @@ let { User } = require('./../models/user.js');  // The connection to the User mo
 */
 module.exports.getDetails = async (request, response) => {
   let UserFollow = request.models['UserFollow']
-  let UserRequestedFollow = request.models['UserRequestedFollow']
   let User = request.models['User']
   
   const requestedUserId = request.params['id']
@@ -15,9 +14,9 @@ module.exports.getDetails = async (request, response) => {
 
   if(currentUser && currentUser._id == requestedUserId) {  // when the user asks for his own details
     // retrieves the details about the people he follows and his followers
-    followings = await UserFollow.find({ FollowingId: requestedUserId })
-    followers = await UserFollow.find({ FollowedId: requestedUserId })
-    followRequests = await UserRequestedFollow.find({ FollowedId: requestedUserId})
+    followings = await UserFollow.find({ FollowingId: requestedUserId, status: true })
+    followers = await UserFollow.find({ FollowedId: requestedUserId, status: true })
+    followRequests = await UserFollow.find({ FollowedId: requestedUserId, status: false})
 
     return response.send({
       currentUser,
@@ -30,8 +29,8 @@ module.exports.getDetails = async (request, response) => {
     if(requestedUser){ // if such user exists
       if(requestedUser.isPublic){ // if user's profile is public, returns it directly
         const { _id, isTrader, isPublic, name, surname, email, location } = requestedUser    // Extract certain keys from doc
-        followings = await UserFollow.find({ FollowingId: requestedUserId })
-        followers = await UserFollow.find({ FollowedId: requestedUserId })
+        followings = await UserFollow.find({ FollowingId: requestedUserId, status: true })
+        followers = await UserFollow.find({ FollowedId: requestedUserId, status: true })
         
         return response.send({
           _id, isTrader, isPublic, name, surname, email, location,
@@ -41,11 +40,11 @@ module.exports.getDetails = async (request, response) => {
       } else { // when user's profile is private, checks if the logged-in user has privilege to view it
         if(currentUser){  // when the request came from another user logged in
           // following status between users
-          const status = await UserFollow.findOne({ FollowingId : currentUser._id, FollowedId : user._id })
+          const status = await UserFollow.findOne({ FollowingId : currentUser._id, FollowedId : requestedUser._id, status: true })
           if(status){   // when currently logged-in user is following the user whose details are requested
             const { _id, isTrader, isPublic, name, surname, email, location } = requestedUser    // Extract certain keys from doc
-            followings = await UserFollow.find({ FollowingId: requestedUserId })
-            followers = await UserFollow.find({ FollowedId: requestedUserId })
+            followings = await UserFollow.find({ FollowingId: requestedUserId, status: true })
+            followers = await UserFollow.find({ FollowedId: requestedUserId, status: true })
         
             return response.send({
               _id, isTrader, isPublic, name, surname, email, location,
@@ -76,7 +75,6 @@ module.exports.getDetails = async (request, response) => {
 */
 module.exports.followUser = async (request, response) => {
   const UserFollow = request.models['UserFollow']
-  const UserRequestedFollow = request.models['UserRequestedFollow']
   const User = request.models['User']
   
   let followingId = request.session['user']._id
@@ -88,25 +86,19 @@ module.exports.followUser = async (request, response) => {
     status = await UserFollow.findOne({ FollowingId : followingId, FollowedId : followedId })
 
     if(!status){ // If not following right now
-      let follow;
+      let follow = new UserFollow({
+        FollowingId: followingId,
+        FollowingName: request.session['user'].name,
+        FollowingSurname: request.session['user'].surname,
+        FollowedId: followedId,
+        FollowedName: follower.name,
+        FollowedSurname: follower.surname
+      });
+
       if(follower.isPublic){ // If user is public
-        follow = new UserFollow({
-          FollowingId: followingId,
-          FollowingName: request.session['user'].name,
-          FollowingSurname: request.session['user'].surname,
-          FollowedId: followedId,
-          FollowedName: follower.name,
-          FollowedSurname: follower.surname
-        });
+        follow.status = true
       } else {
-        follow = new UserRequestedFollow({
-          FollowingId: followingId,
-          FollowingName: request.session['user'].name,
-          FollowingSurname: request.session['user'].surname,
-          FollowedId: followedId,
-          FollowedName: follower.name,
-          FollowedSurname: follower.surname
-        });
+        follow.status = false
       }
 
     follow.save()
@@ -117,7 +109,7 @@ module.exports.followUser = async (request, response) => {
       });
     } else {
         return response.status(400).send({
-          errmsg: "Already following that user."
+          errmsg: "Already following or requested to follow that user."
         })
     }
   } else {
@@ -152,41 +144,23 @@ module.exports.unfollowUser = async (request, response) => {
 */
 module.exports.acceptRequest = async (request, response) => {
   let UserFollow = request.models['UserFollow']
-  const UserRequestedFollow = request.models['UserRequestedFollow']
 
   const followingId = request.session['user']._id
   const requestId = request.params['id']
 
-  req = await UserRequestedFollow.findOne({ _id : requestId})
+  req = await UserFollow.findOne({ _id : requestId, FollowedId: request.session['user']._id, status: false})
 
   // If there exists such request
   if(req){ 
-    let follow = new UserFollow({
-          FollowingId: req.FollowingId,
-          FollowingName: req.FollowingName,
-          FollowingSurname: req.FollowingSurname,
-          FollowedId: req.FollowedId,
-          FollowedName: req.FollowedName,
-          FollowedSurname: req.FollowedSurname
-        });
+    req.status = true;
 
     // Save it into user-follow table
-    follow.save() 
+    req.save() 
       .then(doc => {
         return response.status(204).send();
       }).catch(error => {
         return response.status(400).send(error);
       });    
-
-    //delete it from requests
-    await UserRequestedFollow.deleteOne({ _id : requestId }, (err, results) => { 
-      if(err){
-        return response.status(404).send({
-          errmsg: "Failed."
-        })
-      }
-      return response.send(204);
-    })
   } else {
     response.status(400).send({
       errmsg: "No such request."
@@ -199,11 +173,11 @@ module.exports.acceptRequest = async (request, response) => {
   Post method for rejecting user follow request.
 */
 module.exports.rejectRequest = async (request, response) => {
-  const UserRequestedFollow = request.models['UserRequestedFollow']
+  const UserFollow = request.models['UserFollow']
   
   const requestId = request.params['id']
 
-  await UserRequestedFollow.deleteOne({ _id : requestId }, (err, results) => {
+  await UserFollow.deleteOne({ _id : requestId, FollowedId: request.session['user']._id, status: false }, (err, results) => {
     if(err){
       return response.status(404).send({
         errmsg: "Failed."

@@ -29,6 +29,11 @@ let UserFollow = mongoose.model('UserFollow', {
   FollowedSurname: {
     type: String,
     require: true    
+  },
+
+  status: {
+    type: Boolean,
+    require: true
   }
 });
 
