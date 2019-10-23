@@ -10,13 +10,14 @@ module.exports.getDetails = async (request, response) => {
   let UserRequestedFollow = request.models['UserRequestedFollow']
   let User = request.models['User']
   
-  const id = request.params['id']
+  const requestedUserId = request.params['id']
   const currentUser = request.session['user']
 
-  if(currentUser && currentUser._id == id) {  // when the user asks for his own details
-    followings = await UserFollow.find({ FollowingId: id })
-    followers = await UserFollow.find({ FollowedId: id })
-    followRequests = await UserRequestedFollow.find({ FollowedId: id})
+  if(currentUser && currentUser._id == requestedUserId) {  // when the user asks for his own details
+    // retrieves the details about the people he follows and his followers
+    followings = await UserFollow.find({ FollowingId: requestedUserId })
+    followers = await UserFollow.find({ FollowedId: requestedUserId })
+    followRequests = await UserRequestedFollow.find({ FollowedId: requestedUserId})
 
     return response.send({
       currentUser,
@@ -24,44 +25,45 @@ module.exports.getDetails = async (request, response) => {
       followers,
       followRequests
     })
-  } else {
-    user = await User.findOne({ _id : id })
-    if(user){ // if such user exists
-      if(user.isPublic){ // if user is public return directly
-        const { _id, isTrader, isPublic, name, surname, email, location } = user    // Extract certain keys from doc
-        followings = await UserFollow.find({ FollowingId: id })
-        followers = await UserFollow.find({ FollowedId: id })
+  } else {  // when the user requested isn't the user logged in himself
+    const requestedUser = await User.findOne({ _id : requestedUserId })   // finds the user instance requested if it exists
+    if(requestedUser){ // if such user exists
+      if(requestedUser.isPublic){ // if user's profile is public, returns it directly
+        const { _id, isTrader, isPublic, name, surname, email, location } = requestedUser    // Extract certain keys from doc
+        followings = await UserFollow.find({ FollowingId: requestedUserId })
+        followers = await UserFollow.find({ FollowedId: requestedUserId })
         
         return response.send({
           _id, isTrader, isPublic, name, surname, email, location,
           followings,
           followers
         })
-      } else { // if user is private check for following condition
-        if(currentUser){
-          status = await UserFollow.findOne({ FollowingId : currentUser._id, FollowedId : user._id })
-          if(status){
-            const { _id, isTrader, isPublic, name, surname, email, location } = user    // Extract certain keys from doc
-            followings = await UserFollow.find({ FollowingId: id })
-            followers = await UserFollow.find({ FollowedId: id })
+      } else { // when user's profile is private, checks if the logged-in user has privilege to view it
+        if(currentUser){  // when the request came from another user logged in
+          // following status between users
+          const status = await UserFollow.findOne({ FollowingId : currentUser._id, FollowedId : user._id })
+          if(status){   // when currently logged-in user is following the user whose details are requested
+            const { _id, isTrader, isPublic, name, surname, email, location } = requestedUser    // Extract certain keys from doc
+            followings = await UserFollow.find({ FollowingId: requestedUserId })
+            followers = await UserFollow.find({ FollowedId: requestedUserId })
         
             return response.send({
               _id, isTrader, isPublic, name, surname, email, location,
               followings,
               followers
             })
-          } else{
+          } else {  // when currently logged-in user is not following the user whose details are requested and private
             return response.status(400).send({
               errmsg: "Profile is private."
             })  
           }
-        } else {
+        } else {    // when an anonymous user requested the profile details of a user with privacy preference on
           return response.status(400).send({
             errmsg: "Profile is private."
           }) 
         }
       }
-    } else{
+    } else {  // when there's no user with given ID
       return response.status(400).send({
         errmsg: "No such user."
       })
