@@ -5,6 +5,7 @@ const {modelBinder} = require('../controllers/db')
 const {isAuthenticated} = require('../controllers/auth')
 const { User } = require('../models/user')
 const { UserFollow } = require('../models/user-follow')
+const { UserRequestedFollow } = require('../models/user-requested-follow')
 
 /*
   Get endpoint for profile page.
@@ -16,7 +17,7 @@ router.get('/:id', modelBinder(User, 'User'), profileController.getDetails)
   Post endpoint for following user.
   Check controller function for more detail
 */
-router.post('/:id/follow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'), modelBinder(User, 'User')], profileController.followUser)
+router.post('/:id/follow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'), modelBinder(UserRequestedFollow, 'UserRequestedFollow'), modelBinder(User, 'User')], profileController.followUser)
 
 /*
   Post endpoint for unfollowing user.

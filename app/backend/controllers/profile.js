@@ -38,6 +38,7 @@ module.exports.getDetails = async (request, response) => {
 */
 module.exports.followUser = async (request, response) => {
   const UserFollow = request.models['UserFollow']
+  const UserRequestedFollow = request.models['UserRequestedFollow']
   const User = request.models['User']
   
   let followingId = request.session['user']._id
@@ -49,12 +50,22 @@ module.exports.followUser = async (request, response) => {
     status = await UserFollow.findOne({ FollowingId : followingId, FollowedId : followedId })
 
     if(!status){ // If not following right now
-      let follow = new UserFollow({
-        FollowingId: followingId,
-        FollowedId: followedId,
-        FollowedName: follower.name,
-        FollowedSurname: follower.surname
-      });
+      let follow;
+      if(follower.isPublic){ // If user is public
+        follow = new UserFollow({
+          FollowingId: followingId,
+          FollowedId: followedId,
+          FollowedName: follower.name,
+          FollowedSurname: follower.surname
+        });
+      } else {
+        follow = new UserRequestedFollow({
+          FollowingId: followingId,
+          FollowedId: followedId,
+          FollowedName: follower.name,
+          FollowedSurname: follower.surname
+        });
+      }
 
     follow.save()
       .then(doc => {
