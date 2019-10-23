@@ -37,8 +37,39 @@ module.exports.getDetails = async (request, response) => {
   Post method for following user.
 */
 module.exports.followUser = async (request, response) => {
-  let UserFollow = request.models['UserFollow']
+  const UserFollow = request.models['UserFollow']
+  const User = request.models['User']
+  
+  let followingId = request.session['user']._id
+  let followedId = request.params['id']
 
+  follower = await User.findOne({ _id : followedId })
+
+  if(follower){ // If user exists
+    status = await UserFollow.findOne({ FollowingId : followingId, FollowedId : followedId })
+
+    if(!status){ // If not following right now
+      let follow = new UserFollow({
+        FollowingId: followingId,
+        FollowedId: followedId,
+      });
+
+    follow.save()
+      .then(doc => {
+        return response.status(204).send();
+      }).catch(error => {
+        return response.status(400).send(error);
+      });
+    } else {
+        return response.status(400).send({
+          errmsg: "Already following that user."
+        })
+    }
+  } else {
+      return response.status(400).send({
+      errmsg: "No such user."
+    })
+  }
 }
 
 /*

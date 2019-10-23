@@ -16,7 +16,7 @@ router.get('/:id', modelBinder(User, 'User'), profileController.getDetails)
   Post endpoint for following user.
   Check controller function for more detail
 */
-router.post('/:id/follow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.followUser)
+router.post('/:id/follow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'), modelBinder(User, 'User')], profileController.followUser)
 
 /*
   Post endpoint for unfollowing user.
