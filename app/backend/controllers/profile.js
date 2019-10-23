@@ -117,7 +117,8 @@ module.exports.acceptRequest = async (request, response) => {
 
   req = await UserRequestedFollow.findOne({ _id : requestId})
 
-  if(req){
+  // If there exists such request
+  if(req){ 
     let follow = new UserFollow({
           FollowingId: req.FollowingId,
           FollowedId: req.FollowedId,
@@ -125,14 +126,16 @@ module.exports.acceptRequest = async (request, response) => {
           FollowedSurname: req.FollowedSurname
         });
 
-    follow.save()
+    // Save it into user-follow table
+    follow.save() 
       .then(doc => {
         return response.status(204).send();
       }).catch(error => {
         return response.status(400).send(error);
       });    
 
-    await UserRequestedFollow.deleteOne({ _id : requestId }, (err, results) => {
+    //delete it from requests
+    await UserRequestedFollow.deleteOne({ _id : requestId }, (err, results) => { 
       if(err){
         return response.status(404).send({
           errmsg: "Failed."
