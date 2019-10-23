@@ -112,6 +112,40 @@ module.exports.acceptRequest = async (request, response) => {
   let UserFollow = request.models['UserFollow']
   const UserRequestedFollow = request.models['UserRequestedFollow']
 
+  const followingId = request.session['user']._id
+  const requestId = request.params['id']
+
+  req = await UserRequestedFollow.findOne({ _id : requestId})
+
+  if(req){
+    let follow = new UserFollow({
+          FollowingId: req.FollowingId,
+          FollowedId: req.FollowedId,
+          FollowedName: req.FollowedName,
+          FollowedSurname: req.FollowedSurname
+        });
+
+    follow.save()
+      .then(doc => {
+        return response.status(204).send();
+      }).catch(error => {
+        return response.status(400).send(error);
+      });    
+
+    await UserRequestedFollow.deleteOne({ _id : requestId }, (err, results) => {
+      if(err){
+        return response.status(404).send({
+          errmsg: "Failed."
+        })
+      }
+      return response.send(204);
+    })
+  } else {
+    response.status(400).send({
+      errmsg: "No such request."
+    })
+  }
+  
 }
 
 /*
@@ -119,6 +153,17 @@ module.exports.acceptRequest = async (request, response) => {
 */
 module.exports.rejectRequest = async (request, response) => {
   const UserRequestedFollow = request.models['UserRequestedFollow']
+  
+  const requestId = request.params['id']
 
+  await UserRequestedFollow.deleteOne({ _id : requestId }, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+    
+    return response.send(204);
+  })
 }
 
