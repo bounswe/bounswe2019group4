@@ -9,6 +9,16 @@ let UserFollow = mongoose.model('UserFollow', {
   FollowedId: {
     type: String,
     require: true
+  },
+
+  FollowedName: {
+    type: String,
+    require: true    
+  },
+
+  FollowedSurname: {
+    type: String,
+    require: true    
   }
 });
 

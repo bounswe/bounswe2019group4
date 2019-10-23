@@ -52,6 +52,8 @@ module.exports.followUser = async (request, response) => {
       let follow = new UserFollow({
         FollowingId: followingId,
         FollowedId: followedId,
+        FollowedName: follower.name,
+        FollowedSurname: follower.surname
       });
 
     follow.save()
