@@ -25,4 +25,16 @@ router.post('/:id/follow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow
 */
 router.post('/:id/unfollow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.unfollowUser)
 
+/*
+  Post endpoint for rejecting user following request.
+  Check controller function for more detail
+*/
+router.post('/accept/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'), modelBinder(UserRequestedFollow, 'UserRequestedFollow')], profileController.acceptRequest)
+
+/*
+  Post endpoint for rejecting user following request.
+  Check controller function for more detail
+*/
+router.post('/reject/:id', [isAuthenticated, modelBinder(UserRequestedFollow, 'UserRequestedFollow')], profileController.rejectRequest)
+
 module.exports = router

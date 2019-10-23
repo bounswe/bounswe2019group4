@@ -105,3 +105,20 @@ module.exports.unfollowUser = async (request, response) => {
   });
 }
 
+/*
+  Post method for accepting user follow request.
+*/
+module.exports.acceptRequest = async (request, response) => {
+  let UserFollow = request.models['UserFollow']
+  const UserRequestedFollow = request.models['UserRequestedFollow']
+
+}
+
+/*
+  Post method for rejecting user follow request.
+*/
+module.exports.rejectRequest = async (request, response) => {
+  const UserRequestedFollow = request.models['UserRequestedFollow']
+
+}
+
