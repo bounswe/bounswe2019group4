@@ -8,7 +8,7 @@ module.exports.modelBinder = (model, modelName) => {
 	}
 }
 
-module.exports.modelBinder = (spec) => {
+module.exports.multipleModelBinder = (spec) => {
 	return (req, res, next) => {
 		if(!req.models) {
 			req.models = {}
