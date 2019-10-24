@@ -12,6 +12,34 @@ const until_day = "2019-01-01";
 const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
 
 
+module.exports.scheduleAPICalls = function(){
+  /*
+  Get method for events in every 30 minutes
+  */
+  getEventsFromAPI()
+  setInterval( () => {
+    getEventsFromAPI()
+  }, 30*60*1000);
+
+  /*
+  Get method for trading equipments every day
+  */
+  getTradingEquipmentsFromAPI(isOnlyToday)
+  isOnlyToday = true;
+  setInterval( () => {
+    getTradingEquipmentsFromAPI(isOnlyToday)
+  }, 24*60*60*1000);
+
+  /*
+  Get method for current trading equipments values in every two hours
+  */
+  getCurrentTradingEquipmentsFromAPI()
+  setInterval( () => {
+    getCurrentTradingEquipmentsFromAPI()
+  }, 2*60*60*1000);
+
+}
+
 /*
   Method in order to check whether password is valid or not.
   Password length must be at least 6 and also,
@@ -68,7 +96,7 @@ module.exports.checkTCKN = function(value) {
   Get method for events.
   Using 3rd party API, it saves events to database.
 */
-module.exports.getEventsFromAPI = function() {
+function getEventsFromAPI() {
 
   request(url, (error, response, body) => {
     // If there is an error
@@ -100,7 +128,7 @@ module.exports.getEventsFromAPI = function() {
   Get method for Trading Equipments.
   Using 3rd party API, it saves trading equipments to database.
 */
-module.exports.getTradingEquipmentsFromAPI = function(isOnlyToday) {
+function getTradingEquipmentsFromAPI(isOnlyToday) {
 
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
@@ -192,7 +220,7 @@ module.exports.getTradingEquipmentsFromAPI = function(isOnlyToday) {
   Get method for Trading Equipments.
   Using 3rd party API, it saves current trading equipments values to database.
 */
-module.exports.getCurrentTradingEquipmentsFromAPI = async function() {
+async function getCurrentTradingEquipmentsFromAPI() {
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
     let currencies = contents.split('\n'); // form an array consist of currencies
