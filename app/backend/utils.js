@@ -16,7 +16,6 @@ module.exports.scheduleAPICalls = function(){
   /*
   Get method for events in every 30 minutes
   */
-  getEventsFromAPI()
   setInterval( () => {
     getEventsFromAPI()
   }, 30*60*1000);
@@ -24,16 +23,13 @@ module.exports.scheduleAPICalls = function(){
   /*
   Get method for trading equipments every day
   */
-  getTradingEquipmentsFromAPI(isOnlyToday)
-  isOnlyToday = true;
   setInterval( () => {
-    getTradingEquipmentsFromAPI(isOnlyToday)
+    getTradingEquipmentsFromAPI(true)
   }, 24*60*60*1000);
 
   /*
   Get method for current trading equipments values in every two hours
   */
-  getCurrentTradingEquipmentsFromAPI()
   setInterval( () => {
     getCurrentTradingEquipmentsFromAPI()
   }, 2*60*60*1000);
