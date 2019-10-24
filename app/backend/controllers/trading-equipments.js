@@ -1,3 +1,5 @@
+const {findUserComments} = require('../utils')
+
 /*
   Get method for information of specific trading equipment.
 */
@@ -21,7 +23,7 @@ module.exports.getTradingEquipment = async (request, response) => {
 
   current = await CurrentTradingEquipment.find({ from : TradingEq});
 
-  comments = await Comment.find({ related : TradingEq })
+  comments = await findUserComments({ related : TradingEq })
 
   // Returns all values of given currency
   values = await TradingEquipment.find({ code: TradingEq }).sort({ Date: -1})
