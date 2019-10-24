@@ -1,27 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const commentController = require('../controllers/comments')
-const {modelBinder} = require('../controllers/db')
+const {modelBinder, multipleModelBinder} = require('../controllers/db')
 const {isAuthenticated} = require('../controllers/auth')
 const {validateBody} = require('../controllers/middleware')
-const { Comment } = require('../models/comment')
+const { EventsComment, TradingEquipmentsComment } = require('../models/comment')
 
 /*
   Post endpoint for comment page.
   Check controller function for more detail
 */
-router.post('/', [isAuthenticated, validateBody(['related', 'text']), modelBinder(Comment, 'Comment')], commentController.postComment)
+router.post('/', [isAuthenticated, 
+  multipleModelBinder([
+    [EventsComment, 'EventsComment'],
+    [TradingEquipmentsComment, 'TradingEquipmentsComment']
+  ])], commentController.postComment)
 
 /*
   Get endpoint for comment page.
   Check controller function for more detail
 */
-router.get('/:id', modelBinder(Comment, 'Comment'), commentController.getComment)
+router.get('/:id', multipleModelBinder([[EventsComment, 'EventsComment'], 
+    [TradingEquipmentsComment, 'TradingEquipmentsComment']]), commentController.getComment)
 
 /*
   Delete endpoint for comment page.
   Check controller function for more detail
 */
-router.delete('/:id', [isAuthenticated, modelBinder(Comment, 'Comment')], commentController.deleteComment)
+router.delete('/:id', [isAuthenticated, multipleModelBinder([[EventsComment, 'EventsComment'], 
+    [TradingEquipmentsComment, 'TradingEquipmentsComment']])], commentController.deleteComment)
 
 module.exports = router

@@ -1,4 +1,4 @@
-const {findUserComments} = require('../utils')
+const {findUserEventComments} = require('../utils')
 
 /*
   Get method for events.
@@ -44,7 +44,6 @@ module.exports.getEvents = async (request, response) => {
 */
 module.exports.getEvent = async (request, response) => {
   let Event = request.models['Event']
-  let Comment = request.models['Comment']
   const CalendarId = request.params['id']
   
   try{
@@ -53,7 +52,7 @@ module.exports.getEvent = async (request, response) => {
     if (!event) {  // If no instance is returned, credentials are invalid
       throw Error('No such event!')
     } else{
-      comments = await findUserComments({ related : CalendarId })
+      comments = await findUserEventComments({ related : CalendarId })
       return response.send({event, comments})  // Send only the extracted keys
     }
   } catch(error){
