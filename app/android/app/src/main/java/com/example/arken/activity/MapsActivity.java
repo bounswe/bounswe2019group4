@@ -35,17 +35,14 @@ import java.util.Locale;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
+    private boolean isLocationFirstSet = false;
     LocationManager locationManager;
-
     LocationListener locationListener;
-
     Button myLocation;
-
     double longitude;
     double latitude;
     String city;
-
+    Geocoder geocoder;
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -80,17 +77,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         myLocation = findViewById(R.id.myLocation_button);
 
-        myLocation.setOnClickListener(new View.OnClickListener(){
+        myLocation.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-             //   Toast.makeText(MapsActivity.this, city, Toast.LENGTH_SHORT).show();
-             Intent intent = getIntent();
-                intent.putExtra("location",city);
+                //   Toast.makeText(MapsActivity.this, city, Toast.LENGTH_SHORT).show();
+                Intent intent = getIntent();
+                intent.putExtra("location", city);
 
                 setResult(Activity.RESULT_OK, intent);
                 onBackPressed();
             }
-
 
 
         });
@@ -111,18 +107,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title("Your Location");
+                mMap.clear();
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.addMarker(markerOptions);
+                latitude = latLng.latitude;
+                longitude = latLng.longitude;
+                Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+
+                try {
+                    List<Address> listAdresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+
+                    if(listAdresses != null && listAdresses.size() > 0) {
+
+                        city = listAdresses.get(0).getLocality() + ", " + listAdresses.get(0).getAdminArea();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
 
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                if (!isLocationFirstSet) {
+                    isLocationFirstSet = true;
+                    LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-              /* LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
 
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));*/
-
-
+                }
             }
 
 
@@ -147,7 +173,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -173,7 +199,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 longitude = lastKnownLocation.getLongitude();
                 latitude = lastKnownLocation.getLatitude();
 
-                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
 
                 try {
                     List<Address> listAdresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
