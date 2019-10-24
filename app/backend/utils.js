@@ -1,14 +1,19 @@
+var fs = require("fs");
 const IBAN = require('iban');
 const commonPassword = require('common-password');
+const request = require('request');
+
+const {UserFollow} = require('./models/user-follow')
+const {User} = require('./models/user')
 const {Event} = require('./models/event');
 const {TradingEquipment} = require('./models/trading-eq');
 const {CurrentTradingEquipment} = require('./models/current-trading-eq');
-const request = require('request');
+const { tradingEquipmentKey } = require('./secrets');
+
 const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest";
 let trading_eq_url_base = "https://www.alphavantage.co/query?";
-const { tradingEquipmentKey } = require('./secrets');
-var fs = require("fs");
 const until_day = "2019-01-01";
+
 const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
 
 
@@ -255,4 +260,18 @@ async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
   }
+}
+
+module.exports.findUserFollows = async spec => {
+  const data = await UserFollow.find(spec).lean()
+  return await Promise.all(data.map(async el => {
+    const followingUser = await User.findOne({_id: el.FollowingId})
+    const followedUser = await User.findOne({_id: el.FollowedId})
+    return {
+      ...el,
+      FollowingName: followingUser.name,
+      FollowingSurname: followingUser.surname,
+      FollowedName: followedUser.name,
+      FollowedSurname: followedUser.surname,
+    }}))
 }

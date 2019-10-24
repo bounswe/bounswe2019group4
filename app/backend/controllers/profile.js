@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 let { User } = require('./../models/user.js');  // The connection to the User model in the database
 
+const {findUserFollows} = require('../utils')
 /*
   Get method for profile page.
   Get user id from parameter and responses accordingly.
@@ -15,40 +16,11 @@ module.exports.getDetails = async (request, response) => {
   try {
     if(currentUser && currentUser._id == requestedUserId) {  // when the user asks for his own details
       // retrieves the details about the people he follows and his followers
-      let followings = await UserFollow.find({ FollowingId: requestedUserId, status: true }).lean()
-      followings = await Promise.all(followings.map(async el => {
-        const followingUser = await User.findOne({_id: el.FollowingId})
-        const followedUser = await User.findOne({_id: el.FollowedId})
-        return {
-          ...el,
-          FollowingName: followingUser.name,
-          FollowingSurname: followingUser.surname,
-          FollowedName: followedUser.name,
-          FollowedSurname: followedUser.surname,
-        }}))
+      const followings = await findUserFollows({ FollowingId: requestedUserId, status: true })
 
-      let followers = await UserFollow.find({ FollowedId: requestedUserId, status: true }).lean()
-      followers = await Promise.all(followers.map(async el => {
-        const followingUser = await User.findOne({_id: el.FollowingId})
-        const followedUser = await User.findOne({_id: el.FollowedId})
-        return {
-          ...el,
-          FollowingName: followingUser.name,
-          FollowingSurname: followingUser.surname,
-          FollowedName: followedUser.name,
-          FollowedSurname: followedUser.surname,
-        }}))
-      let followRequests = await UserFollow.find({ FollowedId: requestedUserId, status: false}).lean()
-      followRequests = await Promise.all(followRequests.map(async el => {
-        const followingUser = await User.findOne({_id: el.FollowingId})
-        const followedUser = await User.findOne({_id: el.FollowedId})
-        return {
-          ...el,
-          FollowingName: followingUser.name,
-          FollowingSurname: followingUser.surname,
-          FollowedName: followedUser.name,
-          FollowedSurname: followedUser.surname,
-        }}))
+      const followers = await findUserFollows({ FollowedId: requestedUserId, status: true })
+
+      const followRequests = await findUserFollows({ FollowedId: requestedUserId, status: false})
       return response.send({
         currentUser,
         followings,
@@ -60,8 +32,8 @@ module.exports.getDetails = async (request, response) => {
       if(requestedUser){ // if such user exists
         if(requestedUser.isPublic){ // if user's profile is public, returns it directly
           const { _id, isTrader, isPublic, name, surname, email, location } = requestedUser    // Extract certain keys from doc
-          followings = await UserFollow.find({ FollowingId: requestedUserId, status: true })
-          followers = await UserFollow.find({ FollowedId: requestedUserId, status: true })
+          followings = await findUserFollows({ FollowingId: requestedUserId, status: true })
+          followers = await findUserFollows({ FollowingId: requestedUserId, status: true })
           
           return response.send({
             _id, isTrader, isPublic, name, surname, email, location,
@@ -74,8 +46,8 @@ module.exports.getDetails = async (request, response) => {
             const status = await UserFollow.findOne({ FollowingId : currentUser._id, FollowedId : requestedUser._id, status: true })
             if(status){   // when currently logged-in user is following the user whose details are requested
               const { _id, isTrader, isPublic, name, surname, email, location } = requestedUser    // Extract certain keys from doc
-              followings = await UserFollow.find({ FollowingId: requestedUserId, status: true })
-              followers = await UserFollow.find({ FollowedId: requestedUserId, status: true })
+              followings = await findUserFollows({ FollowingId: requestedUserId, status: true })
+              followers = await findUserFollows({ FollowedId: requestedUserId, status: true })
           
               return response.send({
                 _id, isTrader, isPublic, name, surname, email, location,
