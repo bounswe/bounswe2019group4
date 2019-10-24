@@ -18,7 +18,7 @@ let Comment = mongoose.model('Comment', {
   },
 
   date:{
-    type: String,
+    type: Date,
     require: true
   }  
 });
