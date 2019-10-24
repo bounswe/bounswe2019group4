@@ -15,10 +15,40 @@ module.exports.getDetails = async (request, response) => {
   try {
     if(currentUser && currentUser._id == requestedUserId) {  // when the user asks for his own details
       // retrieves the details about the people he follows and his followers
-      followings = await UserFollow.find({ FollowingId: requestedUserId, status: true })
-      followers = await UserFollow.find({ FollowedId: requestedUserId, status: true })
-      followRequests = await UserFollow.find({ FollowedId: requestedUserId, status: false})
-  
+      let followings = await UserFollow.find({ FollowingId: requestedUserId, status: true }).lean()
+      followings = await Promise.all(followings.map(async el => {
+        const followingUser = await User.findOne({_id: el.FollowingId})
+        const followedUser = await User.findOne({_id: el.FollowedId})
+        return {
+          ...el,
+          FollowingName: followingUser.name,
+          FollowingSurname: followingUser.surname,
+          FollowedName: followedUser.name,
+          FollowedSurname: followedUser.surname,
+        }}))
+
+      let followers = await UserFollow.find({ FollowedId: requestedUserId, status: true }).lean()
+      followers = await Promise.all(followers.map(async el => {
+        const followingUser = await User.findOne({_id: el.FollowingId})
+        const followedUser = await User.findOne({_id: el.FollowedId})
+        return {
+          ...el,
+          FollowingName: followingUser.name,
+          FollowingSurname: followingUser.surname,
+          FollowedName: followedUser.name,
+          FollowedSurname: followedUser.surname,
+        }}))
+      let followRequests = await UserFollow.find({ FollowedId: requestedUserId, status: false}).lean()
+      followRequests = await Promise.all(followRequests.map(async el => {
+        const followingUser = await User.findOne({_id: el.FollowingId})
+        const followedUser = await User.findOne({_id: el.FollowedId})
+        return {
+          ...el,
+          FollowingName: followingUser.name,
+          FollowingSurname: followingUser.surname,
+          FollowedName: followedUser.name,
+          FollowedSurname: followedUser.surname,
+        }}))
       return response.send({
         currentUser,
         followings,
