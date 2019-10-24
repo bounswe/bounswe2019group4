@@ -13,27 +13,27 @@ const { UserFollow } = require('../models/user-follow')
 router.get('/:id', [modelBinder(User, 'User'), modelBinder(UserFollow, 'UserFollow')], profileController.getDetails)
 
 /*
-  Post endpoint for following user.
+  Get endpoint for following user.
   Check controller function for more detail
 */
-router.post('/:id/follow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'), modelBinder(User, 'User')], profileController.followUser)
+router.get('/:id/follow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'), modelBinder(User, 'User')], profileController.followUser)
 
 /*
-  Post endpoint for unfollowing user.
+  Get endpoint for unfollowing user.
   Check controller function for more detail
 */
-router.post('/:id/unfollow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.unfollowUser)
-
-/*
-  Post endpoint for rejecting user following request.
-  Check controller function for more detail
-*/
-router.post('/accept/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.acceptRequest)
+router.get('/:id/unfollow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.unfollowUser)
 
 /*
   Post endpoint for rejecting user following request.
   Check controller function for more detail
 */
-router.post('/reject/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.rejectRequest)
+router.get('/accept/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.acceptRequest)
+
+/*
+  Post endpoint for rejecting user following request.
+  Check controller function for more detail
+*/
+router.get('/reject/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.rejectRequest)
 
 module.exports = router

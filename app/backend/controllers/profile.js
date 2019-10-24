@@ -71,7 +71,7 @@ module.exports.getDetails = async (request, response) => {
 }
 
 /*
-  Post method for following user.
+  Get method for following user.
 */
 module.exports.followUser = async (request, response) => {
   const UserFollow = request.models['UserFollow']
@@ -120,7 +120,7 @@ module.exports.followUser = async (request, response) => {
 }
 
 /*
-  Post method for unfollowing user.
+  Get method for unfollowing user.
 */
 module.exports.unfollowUser = async (request, response) => {
   let UserFollow = request.models['UserFollow']
@@ -140,7 +140,7 @@ module.exports.unfollowUser = async (request, response) => {
 }
 
 /*
-  Post method for accepting user follow request.
+  Get method for accepting user follow request.
 */
 module.exports.acceptRequest = async (request, response) => {
   let UserFollow = request.models['UserFollow']
@@ -170,7 +170,7 @@ module.exports.acceptRequest = async (request, response) => {
 }
 
 /*
-  Post method for rejecting user follow request.
+  Get method for rejecting user follow request.
 */
 module.exports.rejectRequest = async (request, response) => {
   const UserFollow = request.models['UserFollow']
