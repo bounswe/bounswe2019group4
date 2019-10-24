@@ -92,11 +92,7 @@ module.exports.followUser = async (request, response) => {
     if(!status){ // If not following right now
       let follow = new UserFollow({
         FollowingId: followingId,
-        FollowingName: request.session['user'].name,
-        FollowingSurname: request.session['user'].surname,
         FollowedId: followedId,
-        FollowedName: follower.name,
-        FollowedSurname: follower.surname
       });
 
       if(follower.isPublic){ // If user is public
