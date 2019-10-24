@@ -6,12 +6,13 @@ const {isAuthenticated} = require('../controllers/auth')
 const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
 const { TradingEquipment } = require('../models/trading-eq')
 const { CurrentTradingEquipment } = require('../models/current-trading-eq')
+const { Comment } = require('../models/comment')
 
 /*
   Get endpoint for information of specific trading equipment.
   Check controller function for more detail
 */
-router.get('/:code', [modelBinder(TradingEquipment, 'TradingEquipment'), modelBinder(TradingEquipmentFollow, 'TradingEquipmentFollow'), modelBinder(CurrentTradingEquipment, 'CurrentTradingEquipment')], tradingEquipmentController.getTradingEquipment)
+router.get('/:code', [modelBinder(TradingEquipment, 'TradingEquipment'), modelBinder(TradingEquipmentFollow, 'TradingEquipmentFollow'), modelBinder(CurrentTradingEquipment, 'CurrentTradingEquipment'), modelBinder(Comment, 'Comment')], tradingEquipmentController.getTradingEquipment)
 
 /*
   Get endpoint for information of all trading equipment's current values.
