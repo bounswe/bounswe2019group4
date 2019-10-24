@@ -26,3 +26,21 @@ module.exports.postComment = async (request, response) => {
     return response.status(400).send(error);
   });
 }
+
+/*
+  Get method for comments.
+  It returns given comment.
+*/
+module.exports.getComment = async (request, response) => {
+  let Comment = request.models['Comment']
+
+  comment = await Comment.findOne({ _id : request.params['id']});
+
+  if(comment){
+    return response.send(comment)
+  } else {
+    return response.status(400).send({
+      errmsg: "No such comment."
+    })
+  }
+}

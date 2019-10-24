@@ -11,4 +11,10 @@ const { Comment } = require('../models/comment')
 */
 router.post('/', [isAuthenticated, modelBinder(Comment, 'Comment')], commentController.postComment)
 
+/*
+  Get endpoint for comment page.
+  Check controller function for more detail
+*/
+router.get('/:id', modelBinder(Comment, 'Comment'), commentController.getComment)
+
 module.exports = router
