@@ -108,36 +108,7 @@ class ListEventFragment : Fragment(), OnItemClickListener {
     private fun initDataset() {
 
         val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(1, 10)
-        dataset = mutableListOf(
-            Event(
-                "l", "k", "China"
-                , Date(), "House Price Index YoY", "i", ",", "l", "i", 2, ","
-            ),
-            Event(
-                "l", "k", "China"
-                , Date(), "Loan Prime Rate 5Y", "i", ",", "l", "i", 2, ","
-            ),
-            Event(
-                "l", "k", "China"
-                , Date(), "Loan Prime Rate 1Y", "i", ",", "l", "i", 3, ","
-            ),
-            Event(
-                "l", "k", "Canada"
-                , Date(), "Federal Election", "i", ",", "l", "i", 3, ","
-            ),
-            Event(
-                "l", "k", "Japan"
-                , Date(), "Balance of Trade", "i", ",", "l", "i", 3, ","
-            ),
-            Event(
-                "l", "k", "Japan"
-                , Date(), "Exports YoY", "i", ",", "l", "i", 2, ","
-            ),
-            Event(
-                "l", "k", "Japan"
-                , Date(), "Imports YoY", "i", ",", "l", "i", 1, ","
-            )
-        )
+        dataset = mutableListOf()
         call.enqueue(object : Callback<ListEvent> {
             override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
                 if (response.isSuccessful) {
