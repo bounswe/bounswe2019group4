@@ -44,3 +44,21 @@ module.exports.getComment = async (request, response) => {
     })
   }
 }
+
+/*
+  Delete method for comments.
+  It deletes given comment.
+*/
+module.exports.deleteComment = async (request, response) => {
+  let Comment = request.models['Comment']
+
+  Comment.deleteOne({ _id : request.params['id'], userId : request.session['user']._id }, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+
+    return response.send(204);
+  });
+}

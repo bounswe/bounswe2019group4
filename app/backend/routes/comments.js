@@ -17,4 +17,10 @@ router.post('/', [isAuthenticated, modelBinder(Comment, 'Comment')], commentCont
 */
 router.get('/:id', modelBinder(Comment, 'Comment'), commentController.getComment)
 
+/*
+  Delete endpoint for comment page.
+  Check controller function for more detail
+*/
+router.delete('/:id', [isAuthenticated, modelBinder(Comment, 'Comment')], commentController.deleteComment)
+
 module.exports = router
