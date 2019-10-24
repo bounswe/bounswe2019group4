@@ -53,7 +53,7 @@ module.exports.getEvent = async (request, response) => {
     if (!event) {  // If no instance is returned, credentials are invalid
       throw Error('No such event!')
     } else{
-      comments = await findUserComments({ related : event._id })
+      comments = await findUserComments({ related : CalendarId })
       return response.send({event, comments})  // Send only the extracted keys
     }
   } catch(error){
