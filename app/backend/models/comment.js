@@ -1,6 +1,6 @@
 const {mongoose} =  require('../db');  // The mongodb connector library
 
-let Comment = mongoose.Schema({
+let Comment = mongoose.model('Comment', {
 
   userId: {
     type: String,
@@ -23,10 +23,6 @@ let Comment = mongoose.Schema({
   }  
 });
 
-let EventsComment = mongoose.model('EventsComment', Comment)
-let TradingEquipmentsComment = mongoose.model('TradingEquipmentsComment', Comment)
-
 module.exports = {
-  EventsComment: EventsComment,
-  TradingEquipmentsComment: TradingEquipmentsComment
+  Comment: Comment
 }

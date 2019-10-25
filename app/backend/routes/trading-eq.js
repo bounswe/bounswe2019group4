@@ -6,6 +6,7 @@ const {isAuthenticated} = require('../controllers/auth')
 const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
 const { TradingEquipment } = require('../models/trading-eq')
 const { CurrentTradingEquipment } = require('../models/current-trading-eq')
+const { Comment } = require('../models/comment')
 
 /*
   Get endpoint for information of specific trading equipment.
@@ -14,7 +15,8 @@ const { CurrentTradingEquipment } = require('../models/current-trading-eq')
 router.get('/:code', multipleModelBinder([
   [TradingEquipment, 'TradingEquipment'],
   [TradingEquipmentFollow, 'TradingEquipmentFollow'],
-  [CurrentTradingEquipment, 'CurrentTradingEquipment']
+  [CurrentTradingEquipment, 'CurrentTradingEquipment'],
+  [Comment, 'Comment'],
 ]), tradingEquipmentController.getTradingEquipment)
 
 /*
