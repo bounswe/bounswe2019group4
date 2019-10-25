@@ -10,7 +10,9 @@ const { EventsComment, TradingEquipmentsComment } = require('../models/comment')
   Post endpoint for comment page.
   Check controller function for more detail
 */
-router.post('/', [isAuthenticated, 
+router.post('/', [
+  isAuthenticated,
+  validateBody(['related', 'text']),
   multipleModelBinder([
     [EventsComment, 'EventsComment'],
     [TradingEquipmentsComment, 'TradingEquipmentsComment']
