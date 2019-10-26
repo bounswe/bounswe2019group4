@@ -8,6 +8,7 @@ module.exports.postComment = async (request, response) => {
   // Comment instance to add to the database
   let comment = new Comment({
     ...request.body,
+    about: request.body.about.toUpperCase(),
     userId: request.session['user']._id,
     date: new Date()
   });
@@ -28,7 +29,7 @@ module.exports.postComment = async (request, response) => {
 module.exports.getComment = async (request, response) => {
   let Comment = request.models['Comment']
 
-  comment = await Comment.findOne({ _id : request.params['id']});
+  comment = await Comment.findOne({ _id : request.params['id'], about : request.body.about.toUpperCase() });
 
   if(comment){
     return response.send(comment)
@@ -46,7 +47,7 @@ module.exports.getComment = async (request, response) => {
 module.exports.deleteComment = async (request, response) => {
   let Comment = request.models['Comment']
 
-  Comment.deleteOne({ _id : request.params['id'], userId : request.session['user']._id }, (err, results) => {
+  Comment.deleteOne({ _id : request.params['id'], userId : request.session['user']._id, about : request.body.about.toUpperCase() }, (err, results) => {
     if(err){
       return response.status(404).send({
         errmsg: "Failed."

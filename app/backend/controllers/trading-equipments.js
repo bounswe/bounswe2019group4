@@ -23,7 +23,7 @@ module.exports.getTradingEquipment = async (request, response) => {
 
   current = await CurrentTradingEquipment.find({ from : TradingEq});
 
-  comments = await findUserComments({ related : TradingEq })
+  comments = await findUserComments({ related : TradingEq, about : "TRADING-EQUIPMENT"})
 
   // Returns all values of given currency
   values = await TradingEquipment.find({ code: TradingEq }).sort({ Date: -1})

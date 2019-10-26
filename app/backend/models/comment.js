@@ -20,7 +20,12 @@ let Comment = mongoose.model('Comment', {
   date:{
     type: Date,
     require: true
-  }  
+  },
+
+  about:{
+    type: String,
+    require: true
+  }
 });
 
 module.exports = {

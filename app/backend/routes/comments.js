@@ -13,11 +13,8 @@ const { Comment } = require('../models/comment')
 
 router.post('/', [
   isAuthenticated,
-  validateBody(['related', 'text']),
-  multipleModelBinder([
-    [EventsComment, 'EventsComment'],
-    [TradingEquipmentsComment, 'TradingEquipmentsComment']
-  ])], commentController.postComment)
+  validateBody(['related', 'text', 'about']),
+  modelBinder(Comment, 'Comment')], commentController.postComment)
 
 /*
   Get endpoint for comment page.
