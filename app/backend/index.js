@@ -36,6 +36,8 @@ app.use('/events/', require('./routes/events')) // includes events endpoints to 
 
 app.use('/trading-equipments/', require('./routes/trading-eq')) // includes trading equipments endpoints to the main app
 
+app.use('/comments/', require('./routes/comments')) // includes comment endpoints to the main app
+
 // catch-all error handler for debugging
 app.use((err, req, res, next) => {
     console.log(err.stack)  // logs the error

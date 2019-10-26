@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const profileController = require('../controllers/profile')
-const {modelBinder} = require('../controllers/db')
+const {modelBinder, multipleModelBinder} = require('../controllers/db')
 const {isAuthenticated} = require('../controllers/auth')
 const { User } = require('../models/user')
 const { UserFollow } = require('../models/user-follow')
@@ -10,13 +10,19 @@ const { UserFollow } = require('../models/user-follow')
   Get endpoint for profile page.
   Check controller function for more detail
 */
-router.get('/:id', [modelBinder(User, 'User'), modelBinder(UserFollow, 'UserFollow')], profileController.getDetails)
+router.get('/:id', multipleModelBinder([
+  [User, 'User'],
+  [UserFollow, 'UserFollow'],
+]), profileController.getDetails)
 
 /*
   Get endpoint for following user.
   Check controller function for more detail
 */
-router.get('/:id/follow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'), modelBinder(User, 'User')], profileController.followUser)
+router.get('/:id/follow', [isAuthenticated, multipleModelBinder([
+  [User, 'User'],
+  [UserFollow, 'UserFollow'],
+])], profileController.followUser)
 
 /*
   Get endpoint for unfollowing user.

@@ -7,6 +7,7 @@ const {UserFollow} = require('./models/user-follow')
 const {User} = require('./models/user')
 const {Event} = require('./models/event');
 const {TradingEquipment} = require('./models/trading-eq');
+const {Comment} = require('./models/comment');
 const {CurrentTradingEquipment} = require('./models/current-trading-eq');
 const { tradingEquipmentKey } = require('./secrets');
 
@@ -297,5 +298,16 @@ module.exports.findUserFollows = async spec => {
       FollowingSurname: followingUser.surname,
       FollowedName: followedUser.name,
       FollowedSurname: followedUser.surname,
+    }}))
+}
+
+module.exports.findUserComments = async spec => {
+  const data = await Comment.find(spec).lean()
+  return await Promise.all(data.map(async el => {
+    const user = await User.findOne({_id: el.userId})
+    return {
+      ...el,
+      username: user.name,
+      usersurname: user.surname
     }}))
 }
