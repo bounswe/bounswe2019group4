@@ -27,10 +27,17 @@ async function profileResponse(user, me, followStatus, TradingEqFollow) {
     return obj;
   } else { // if profile is others
       if (user.isPublic || followStatus == 'TRUE') { // if profile is public or i am following
-        const { _id, isTrader, isPublic, name, surname, email, location } = user
+        tempUser = { _id : user._id, 
+          isTrader : user.isTrader, 
+          isPublic : user.isPublic, 
+          name : user.name, 
+          surname : user.surname, 
+          email : user.email, 
+          location: user.location
+        }
 
         obj = {
-          _id, isTrader, isPublic, name, surname, email, location,
+          user : tempUser,
           following: followings.length,
           followings,
           follower: followers.length,
@@ -40,9 +47,14 @@ async function profileResponse(user, me, followStatus, TradingEqFollow) {
       }
       return obj;
       } else { // if profile is private and i am not following right now.
-        const {_id, name, surname, isPublic} = user
+        tempUser = { _id : user._id, 
+          isPublic : user.isPublic, 
+          name : user.name, 
+          surname : user.surname
+        }
+
         obj = {
-          _id, isPublic, name, surname,
+          user: tempUser,
           following: followings.length,
           follower: followers.length,
           followStatus
@@ -56,7 +68,7 @@ module.exports.getDetails = async (request, response) => {
   let UserFollow = request.models['UserFollow']
   let User = request.models['User']
   let TradingEqFollow = request.models['TradingEquipmentFollow']
-  console.log(TradingEqFollow)
+
   const requestedUserId = request.params['id']
   const currentUser = request.session['user']
 
