@@ -9,11 +9,7 @@ const MongoStore = require('connect-mongo')(session)
 const { mongoose } = require('./db')
 const { sessionSecret } = require('./secrets')
 
-const { requireJSON } = require('./controllers/middleware')
 const { scheduleAPICalls } = require('./utils')
-
-var isOnlyToday = false;
-
 
 const app = express()   // the express instance that's doing everything
 
@@ -30,8 +26,6 @@ app.use(session({
     },
 }))
 
-app.use(requireJSON)        // responds with an error message when POST requests aren't JSON
-
 app.use(bodyParser.json()); // parses request body and binds to the request argument, request.body
 
 app.use('/auth/', require('./routes/login-signup'))  // includes login/signup endpoints to the main app
@@ -43,6 +37,16 @@ app.use('/events/', require('./routes/events')) // includes events endpoints to 
 app.use('/trading-equipments/', require('./routes/trading-eq')) // includes trading equipments endpoints to the main app
 
 app.use('/comments/', require('./routes/comments')) // includes comment endpoints to the main app
+
+// catch-all error handler for debugging
+app.use((err, req, res, next) => {
+    console.log(err.stack)  // logs the error
+    res.status(500).send({  // sends error message and error stack back to the caller
+        message: 'Unexpected error occured. Please contact the API developers.',
+        errmsg: err, 
+        errstack: err.stack
+    })
+})
 
 // catches all GET requests that arrive at this point
 app.use(/.*/, (request, response, nextHandler) => {
