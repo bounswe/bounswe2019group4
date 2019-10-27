@@ -60,7 +60,7 @@ module.exports.signup = async (request, response) => {
     const { _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified, googleId } = doc  // Extract certain keys from doc
     
     if(!user.googleId)
-      // sendVerifyEmail(email, user.token)
+      sendVerifyEmail(email, user.token)
 
     return response.send({ _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified, googleId });  // Send only the extracted keys 
   })
