@@ -55,14 +55,12 @@ module.exports.getDetails = async (request, response) => {
                 followers
               })
             } else {  // when currently logged-in user is not following the user whose details are requested and private
-              return response.status(400).send({
-                errmsg: "Profile is private."
-              })  
+              const {name, surname, isPublic} = requestedUser
+              return response.send({name, surname, isPublic})
             }
           } else {    // when an anonymous user requested the profile details of a user with privacy preference on
-            return response.status(400).send({
-              errmsg: "Profile is private."
-            }) 
+              const {name, surname, isPublic} = requestedUser
+              return response.send({name, surname, isPublic})
           }
         }
       } else {  // when there's no user with given ID
