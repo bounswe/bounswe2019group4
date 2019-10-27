@@ -10,14 +10,6 @@ const { checkPassword, checkIBAN, checkTCKN } = require('../utils')
 */
 module.exports.signup = async (request, response) => {
   let User = request.models['User']
-
-  // create a token for the user and make sure it's unique
-  let token = randomstring.generate()
-  let duplicateTokenOwners = await User.findOne({token})
-  while(duplicateTokenOwners) {
-    token = randomstring.generate()
-    duplicateTokenOwners = await User.findOne({token})
-  }
   
   // User instance to add to the database
   let user = new User({
@@ -63,16 +55,26 @@ module.exports.signup = async (request, response) => {
   
   // Saves the instance into the database, returns any error occured
   user.save()
-    .then(doc => {
+    .then(doc => {  // when successfully saved the user
     // Omit sensitive data
     const { _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified, googleId } = doc  // Extract certain keys from doc
     
     if(!user.googleId)
-      sendVerifyEmail(email, user.token)
+      // sendVerifyEmail(email, user.token)
 
     return response.send({ _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified, googleId });  // Send only the extracted keys 
-  }).catch(error => {
-    return response.status(400).send(error);
+  })
+  .catch(error => { // when error occurred
+    // parses error message(s)
+    let errmsg
+    try {
+      errmsg = JSON.parse(error.message)
+    } catch (err) {
+      errmsg = {
+        other: error.message,
+      }
+    }
+    return response.status(400).send({errmsg});
   });
 }
 
