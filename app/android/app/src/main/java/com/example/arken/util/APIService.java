@@ -6,6 +6,7 @@ import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
+import com.example.arken.model.Profile;
 import com.example.arken.model.SignupUser;
 import com.example.arken.model.tradingEquipment.ListCurrency;
 
@@ -64,4 +65,8 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")
     Call<Event> getEvent(@Path("id") long k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/{id}")
+    Call<Profile> getProfile(@Path("id") String k);
 }

@@ -10,4 +10,7 @@
     <string name="arken_stone">Arken Stone</string>
     <string name="title_activity_maps">Map</string>
     <string name="log_out_warning">You are about to log out! \n Do you want to go on with this action?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
