@@ -28,7 +28,7 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @POST("auth/login")
-    Call<ResponseBody> login(
+    Call<Profile> login(
             @Body LoginUser loginUser
     );
 

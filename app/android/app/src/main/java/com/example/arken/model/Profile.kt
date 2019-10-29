@@ -9,5 +9,7 @@ class Profile(
     val name: String?,
     val surname: String?,
     val email: String?,
-    val location: String?
+    val location: String?,
+    val iban: String?,
+    val tckn: String?
 ) : Serializable
