@@ -85,7 +85,9 @@ public class BaseFragment extends Fragment {
                 } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventFragment) {
                     findNavController(fragment).popBackStack();
                 } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.listCurrentFragment) {
-                    findNavController(fragment).popBackStack();
+                    findNavController(fragment).navigate(R.id.action_listCurrentFragment_to_eventListFragment);
+                } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.profileFragment) {
+                    findNavController(fragment).navigate(R.id.action_profileFragment_to_eventListFragment);
                 }
             }
         });
@@ -120,6 +122,9 @@ public class BaseFragment extends Fragment {
                 } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventFragment) {
                     findNavController(fragment).popBackStack();
                     findNavController(fragment).navigate(R.id.action_eventListFragment_to_listCurrentFragment);
+                } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.profileFragment) {
+
+                    findNavController(fragment).navigate(R.id.action_profileFragment_to_listCurrentFragment);
                 }
             }
         });
@@ -129,11 +134,11 @@ public class BaseFragment extends Fragment {
             public void onClick(View view) {
                 if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment) {
                    findNavController(fragment).navigate(R.id.action_eventListFragment_to_profileFragment);
-                } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment) {
-                    findNavController(fragment).navigate(R.id.action_eventListFragment_to_listCurrentFragment);
+                } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.listCurrentFragment) {
+                    findNavController(fragment).navigate(R.id.action_listCurrentFragment_to_profileFragment);
                 } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventFragment) {
                     findNavController(fragment).popBackStack();
-                    findNavController(fragment).navigate(R.id.action_eventListFragment_to_listCurrentFragment);
+                    findNavController(fragment).navigate(R.id.action_eventListFragment_to_profileFragment);
                 }
             }
         });
