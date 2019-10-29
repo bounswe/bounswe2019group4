@@ -41,14 +41,15 @@ import retrofit2.Response;
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
-    LinearLayout signupButton;
-    EditText emailEditText;
-    EditText passwordEditText;
-    Button loginButton;
-    Button guestButton;
-    ImageView passwordEyeImage;
+    private LinearLayout signupButton;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private Button loginButton;
+    private Button guestButton;
+    private ImageView passwordEyeImage;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
-    TextView forgotPasswordButton;
+    private TextView forgotPasswordButton;
+    private String userId;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -124,11 +125,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onResponse(Call<Profile> call, Response<Profile> response) {
                     if (response.isSuccessful()) {
+                        userId = response.body().get_id();
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                         editor.putString("email", email);
+                        editor.putString("userId", userId);
                         editor.apply();
-                      Toast.makeText(getContext(), response.body().get_id(), Toast.LENGTH_SHORT).show();
-                       // Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
+                     // Toast.makeText(getContext(), response.body().get_id(), Toast.LENGTH_SHORT).show();
+                        Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
                     } else {
 
                         String errorMessage = null;
