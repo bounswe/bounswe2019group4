@@ -41,7 +41,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:id="@+id/menu_logout"
-            app:layout_constraintStart_toEndOf="@id/menu_trading_eq"
+            app:layout_constraintStart_toEndOf="@id/menu_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <ImageButton
@@ -54,8 +54,21 @@
             android:layout_weight="1"
             android:id="@+id/menu_trading_eq"
             app:layout_constraintStart_toEndOf="@id/menu_event"
+            app:layout_constraintEnd_toStartOf="@id/menu_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_logout"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:id="@+id/menu_profile"
+            app:layout_constraintStart_toEndOf="@id/menu_trading_eq"
             app:layout_constraintEnd_toStartOf="@id/menu_logout"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,6 +88,17 @@
             app:layout_constraintTop_toBottomOf="@id/menu_trading_eq"
             android:textColor="@android:color/white"
             android:id="@+id/base_trading_eq_text"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            app:layout_constraintStart_toStartOf="@id/menu_profile"
+            app:layout_constraintEnd_toEndOf="@id/menu_profile"
+            app:layout_constraintTop_toBottomOf="@id/menu_profile"
+            android:textColor="@android:color/white"
+            android:id="@+id/base_profile_text"
             android:textSize="12sp"/>
 
         <TextView

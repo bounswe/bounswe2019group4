@@ -1,8 +1,6 @@
 package com.example.arken.fragment;
 
-import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -23,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
-import com.example.arken.activity.MapsActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,8 +31,10 @@ import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
 public class BaseFragment extends Fragment {
     private ImageButton eventPage;
     private ImageButton signOut;
+    private ImageButton profileMenu;
     private ImageButton tradingEq;
     private TextView signOutText;
+    private TextView profileText;
     private Fragment fragment;
     private boolean isLogged = true;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,12 +91,16 @@ public class BaseFragment extends Fragment {
         });
         signOut = view.findViewById(R.id.menu_logout);
         signOutText = view.findViewById(R.id.base_signout_text);
+        profileMenu = view.findViewById(R.id.menu_profile);
+        profileText = view.findViewById(R.id.base_profile_text);
         tradingEq = view.findViewById(R.id.menu_trading_eq);
         final SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         String email = prefs.getString("email", "default");
         if (GoogleSignIn.getLastSignedInAccount(getContext()) == null && email.equals("default")) {
             signOut.setVisibility(View.GONE);
             signOutText.setVisibility(View.GONE);
+            profileMenu.setVisibility(View.GONE);
+            profileText.setVisibility(View.GONE);
             isLogged = false;
         }
         signOut.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +123,21 @@ public class BaseFragment extends Fragment {
                 }
             }
         });
+
+        profileMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment) {
+                   findNavController(fragment).navigate(R.id.action_eventListFragment_to_profileFragment);
+                } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment) {
+                    findNavController(fragment).navigate(R.id.action_eventListFragment_to_listCurrentFragment);
+                } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventFragment) {
+                    findNavController(fragment).popBackStack();
+                    findNavController(fragment).navigate(R.id.action_eventListFragment_to_listCurrentFragment);
+                }
+            }
+        });
+
         return view;
     }
 

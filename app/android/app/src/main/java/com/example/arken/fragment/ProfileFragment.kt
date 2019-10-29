@@ -31,7 +31,7 @@ class ProfileFragment : Fragment() {
         name_textView = view.findViewById(R.id.name_textView)
 
 
-        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile("5dadf785c0b3f92ab993f5cc")
+        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile("5db61237ea89090f4c8ac4c7")
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {

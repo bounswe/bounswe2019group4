@@ -77,8 +77,6 @@ public class StartFragment extends Fragment implements View.OnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_startFragment_to_baseFragment);
         } else if (view.getId() == R.id.signin_google_button){
             signIn();
-        } else if (view.getId() == R.id.profile_button){
-            Navigation.findNavController(view).navigate(R.id.action_startFragment_to_profileFragment);
         }
 
     }
