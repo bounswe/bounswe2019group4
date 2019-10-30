@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Arken</string>
     <string name="sign_up">Sign Up</string>
+    <string name="buttonSignUp">Create Account</string>
     <string name="login">Login</string>
     <string name="go_on_as_a_guest">Go on as a Guest</string>
     <string name="e_mail">E-mail</string>
@@ -10,7 +11,9 @@
     <string name="arken_stone">Arken Stone</string>
     <string name="title_activity_maps">Map</string>
     <string name="log_out_warning">You are about to log out! \n Do you want to go on with this action?</string>
-
+    <string name="sign_up_now">Sign up Now!</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="sign_in">Sign In</string>
 
 
 </resources>
