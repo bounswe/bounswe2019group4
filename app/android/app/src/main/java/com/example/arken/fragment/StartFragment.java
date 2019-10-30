@@ -41,7 +41,6 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     private Button signUpButton;
     private Button guestButton;
     private SignInButton signupGoogle;
-    private Button profileButton;
     private static final int RC_SIGN_IN = 2;
     @Nullable
     @Override
@@ -51,8 +50,6 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         signUpButton = view.findViewById(R.id.start_signup_button);
         guestButton = view.findViewById(R.id.signup_guest_button);
         guestButton.setOnClickListener(this);
-        profileButton = view.findViewById(R.id.profile_button);
-        profileButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
         signupGoogle = view.findViewById(R.id.signin_google_button);
