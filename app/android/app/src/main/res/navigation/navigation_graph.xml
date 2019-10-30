@@ -64,6 +64,9 @@
         <action
             android:id="@+id/action_startFragment_to_googleSignupFragment"
             app:destination="@id/googleSignupFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/baseFragment"
@@ -91,4 +94,9 @@
             android:id="@+id/action_googleSignupFragment_to_startFragment"
             app:destination="@id/startFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.arken.fragment.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

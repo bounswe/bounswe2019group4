@@ -83,7 +83,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="40dp"
-        android:id="@+id/signin_google_button"/>
+        android:id="@+id/signin_google_button">
+
+    </com.google.android.gms.common.SignInButton>
 
     <Button
         android:layout_width="wrap_content"
@@ -98,5 +100,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@android:color/transparent"
         />
+
+    <Button
+        android:id="@+id/profile_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Go to profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signin_google_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
