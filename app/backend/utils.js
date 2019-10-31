@@ -326,6 +326,7 @@ async function resultPredictions() {
   const currencies = await CurrentTradingEquipment.find()
 
   var currentDay = new Date();
+  currentDay.setDate(currentDay.getDate()-1)
   day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
 
   // get today's all prediction data
