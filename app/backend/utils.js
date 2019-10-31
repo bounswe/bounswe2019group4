@@ -355,7 +355,9 @@ async function resultPredictions() {
         element.Result = "false"
       else
         element.Result = "true"
-    }
+    } else if(element.CurrentValue == currentValue)
+        element.Result = "false"
+
 
     // update database with the results
     await TradingEquipmentPrediction.updateOne({_id:element._id},{ Result: element.Result }) 
