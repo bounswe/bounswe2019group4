@@ -1,6 +1,6 @@
 package com.example.arken.fragment
 
-import android.content.Context.MODE_PRIVATE
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.arken.R
-import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.Profile
 import com.example.arken.util.RetroClient
 import retrofit2.Call
@@ -23,9 +22,16 @@ class ProfileFragment : Fragment() {
     private lateinit var location_value_textView: TextView
     private lateinit var user_type_textView: TextView
     private lateinit var email_value_textView: TextView
-   // private var profile: Profile? = null
+    private var profile: Profile? = null
+    // private var profile: Profile? = null
     // val prefs: SharedPreferences? = activity!!.getSharedPreferences(MY_PREFS_NAME!!, MODE_PRIVATE)
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        getProfileInfo()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,22 +41,41 @@ class ProfileFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
+        name_textView = view.findViewById(R.id.name_textView)
+        surname_textView = view.findViewById(R.id.surname_textView)
+        user_type_textView = view.findViewById(R.id.user_type_textView)
+        location_value_textView = view.findViewById(R.id.location_value_textView)
+        email_value_textView = view.findViewById(R.id.email_value_textView)
+
+        name_textView.text = profile?.name
+        surname_textView.text = profile?.surname
+        //user_type_textView.text = if (profile?.isTrader!!) {"Trader User"} else {"Basic User"}
+        location_value_textView.text = profile?.location
+        email_value_textView.text = profile?.email
 
 
-        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+        return view
+    }
+
+    private fun getProfileInfo() {
+
+        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(activity!!.getSharedPreferences(
+            LoginFragment.MY_PREFS_NAME,
+            Context.MODE_PRIVATE
+        )
             .getString("userId", "defaultId"))
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
-                    val profile = response.body()!!
+                    this@ProfileFragment.profile = response.body()!!
 
                     //val profileName: String? = profile!!.name!!
 
-                   //name_textView.text = profileName
+                    //name_textView.text = profileName
 
                     //Toast.makeText(context, profileName, Toast.LENGTH_SHORT).show()
-
+                    /*
                     name_textView = view.findViewById(R.id.name_textView)
                     surname_textView = view.findViewById(R.id.surname_textView)
                     user_type_textView = view.findViewById(R.id.user_type_textView)
@@ -62,6 +87,8 @@ class ProfileFragment : Fragment() {
                     user_type_textView.text = if (profile!!.isTrader!!) {"Trader User"} else {"Basic User"}
                     location_value_textView.text = profile!!.location
                     email_value_textView.text = profile!!.email
+                    */
+
 
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
@@ -76,6 +103,5 @@ class ProfileFragment : Fragment() {
 
 
 
-        return view
     }
 }
