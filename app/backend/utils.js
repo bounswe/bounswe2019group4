@@ -7,6 +7,7 @@ const {UserFollow} = require('./models/user-follow')
 const {User} = require('./models/user')
 const {Event} = require('./models/event');
 const {TradingEquipment} = require('./models/trading-eq');
+const {TradingEquipmentPrediction} = require('./models/trading-eq-prediction');
 const {Comment} = require('./models/comment');
 const {CurrentTradingEquipment} = require('./models/current-trading-eq');
 const { tradingEquipmentKey } = require('./secrets');
@@ -39,6 +40,13 @@ module.exports.scheduleAPICalls = function(){
   setInterval( () => {
     getCurrentTradingEquipmentsFromAPI()
   }, 2*60*60*1000);
+
+  /*
+  Result prediction method that find results everyday
+  */
+  setInterval( () => {
+    resultPredictions();
+  }, 24*60*60*1000);
 
 }
 
@@ -310,4 +318,88 @@ module.exports.findUserComments = async spec => {
       username: user.name,
       usersurname: user.surname
     }}))
+}
+
+async function resultPredictions() {
+
+  // Get currencies
+  const currencies = await CurrentTradingEquipment.find()
+
+  var currentDay = new Date();
+  currentDay.setDate(currentDay.getDate()-1)
+  day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
+
+  // get today's all prediction data
+  const data = await TradingEquipmentPrediction.find().where('Date').equals(day_format)
+
+  // for each prediction
+  for (const element of data) {
+
+    let TradingEq = element.TradingEq;
+    // get the current value of the predicted currency
+    const currency =  currencies.filter(function(c) {
+      return c.from == TradingEq;
+    });
+
+    let currentValue = currency[0].rate;
+    if(element.Result != "")
+      continue;
+
+    // check whether the value at the prediction time is higher or lower than the current value and determine prediction result accordingly
+    if(element.CurrentValue > currentValue){
+      if(element.Prediction == "down")
+        element.Result = "true"
+      else
+        element.Result = "false"
+    } else if(element.CurrentValue < currentValue){
+      if(element.Prediction == "down")
+        element.Result = "false"
+      else
+        element.Result = "true"
+    } else if(element.CurrentValue == currentValue)
+        element.Result = "false"
+
+
+    // update database with the results
+    await TradingEquipmentPrediction.updateOne({_id:element._id},{ Result: element.Result }) 
+    .then(doc => {
+
+    }).catch(error => {
+      
+    });
+
+    // now update prediction rate of users
+    let UserId = element.UserId;
+    let user = await User.findOne({_id: UserId})
+    
+    if(!user)
+      continue;
+    
+    let predictionRate = user.predictionRate;
+
+    // there is no previous prediction data. Now start with 0/0
+    if(predictionRate == null || predictionRate == undefined)
+      predictionRate = "0/0"
+    
+    
+    let temp = predictionRate.split('/')
+    let leftSide = parseInt(temp[0]);
+    let rightSide = parseInt(temp[1]);
+
+    if(element.Result == "true")
+      leftSide+=1;
+    
+    rightSide+=1
+
+    predictionRate = leftSide+"/"+rightSide;
+
+    // update database with the updated prediction rates
+    await User.updateOne({_id:UserId},{ predictionRate: predictionRate }) 
+    .then(doc => {
+
+    }).catch(error => {
+      
+    });
+
+  }
 }

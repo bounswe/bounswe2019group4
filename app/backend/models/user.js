@@ -71,6 +71,11 @@ const userSchema = mongoose.Schema({
   recoverPassToken: {
     type: String,
     default: null,
+  },
+
+  predictionRate: {
+    type: String,
+    default: "0/0"
   }
 })
 

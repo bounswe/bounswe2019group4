@@ -4,6 +4,7 @@ const tradingEquipmentController = require('../controllers/trading-equipments')
 const {modelBinder, multipleModelBinder} = require('../controllers/db')
 const {isAuthenticated} = require('../controllers/auth')
 const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
+const { TradingEquipmentPrediction } = require('../models/trading-eq-prediction')
 const { TradingEquipment } = require('../models/trading-eq')
 const { CurrentTradingEquipment } = require('../models/current-trading-eq')
 const { Comment } = require('../models/comment')
@@ -16,6 +17,7 @@ router.get('/:code', multipleModelBinder([
   [TradingEquipment, 'TradingEquipment'],
   [TradingEquipmentFollow, 'TradingEquipmentFollow'],
   [CurrentTradingEquipment, 'CurrentTradingEquipment'],
+  [TradingEquipmentPrediction, 'TradingEquipmentPrediction'],
   [Comment, 'Comment'],
 ]), tradingEquipmentController.getTradingEquipment)
 
@@ -36,5 +38,11 @@ router.post('/follow', [isAuthenticated, modelBinder(TradingEquipmentFollow, 'Tr
   Check controller function for more detail
 */
 router.post('/unfollow', [isAuthenticated, modelBinder(TradingEquipmentFollow, 'TradingEquipmentFollow')], tradingEquipmentController.unfollowTradingEq)
+
+/*
+  Post endpoint for making a prediction regarding the increase or decrease of a specific trading equipment.
+  Check controller function for more detail
+*/
+router.post('/prediction', [isAuthenticated, modelBinder(TradingEquipmentPrediction, 'TradingEquipmentPrediction')], tradingEquipmentController.predictTradingEq)
 
 module.exports = router
