@@ -41,5 +41,16 @@
             android:textColor="@color/colorDarkBlue"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/currentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="12dp"
+            android:text="date"
+            android:textColor="@color/colorDarkBlue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 </FrameLayout>

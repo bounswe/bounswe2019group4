@@ -21,24 +21,24 @@ class CurrencyAdapter(
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     class CurrentHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val value: TextView
-        val name: TextView
-
-        val background: RelativeLayout
+        private val value: TextView
+        private val name: TextView
+        private val date: TextView
+        private val background: RelativeLayout
 
         init {
             // Define click listener for the ViewHolder's View.
 
             name = v.findViewById(R.id.current)
             value = v.findViewById(R.id.value)
-
+            date= v.findViewById(R.id.currentDate)
             background = v.findViewById(R.id.current_row_background)
         }
 
         fun bind(current: Current, clickListener: OnCurrentClickListener) {
             name.text = current.from + "/" + current.to
             value.text = current.rate
-
+            date.text= current.Date.toString()
 
 
             itemView.setOnClickListener {
