@@ -10,6 +10,7 @@ class Profile(
     val surname: String?,
     val email: String?,
     val location: String?,
+    val predictionRate: String?,
     val iban: String?,
     val tckn: String?
 ) : Serializable

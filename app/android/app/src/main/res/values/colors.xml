@@ -18,6 +18,7 @@
     <color name="colorDarkerBlue">#2b70bf</color>
     <color name="buttonShadowDark">#11639e</color>
     <color name="buttonShadowLight">#3392d6</color>
+    <color name="colorMenu">#282f30</color>
 
     <!--colors for modern ui-->
     <color name="whiteTextColor">#fff</color>
