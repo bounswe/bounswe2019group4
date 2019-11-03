@@ -134,10 +134,11 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/email_label_textView"
         app:layout_constraintStart_toEndOf="@+id/email_label_textView" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/profile_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:scaleType="centerCrop"
         android:background="@drawable/ic_profile_sample"
         android:foreground="@drawable/round_image"
         app:layout_constraintBottom_toBottomOf="parent"
