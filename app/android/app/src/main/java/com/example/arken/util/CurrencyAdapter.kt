@@ -12,23 +12,20 @@ import com.example.arken.model.tradingEquipment.Current
 
 
 class CurrencyAdapter(
+
     var dataSet: MutableList<Current>,
     val itemClickListener: OnCurrentClickListener
 ) :
     RecyclerView.Adapter<CurrencyAdapter.CurrentHolder>() {
 
-    /**
-     * Provide a reference to the type of views that you are using (custom ViewHolder)
-     */
     class CurrentHolder(v: View) : RecyclerView.ViewHolder(v) {
+
         private val value: TextView
         private val name: TextView
         private val date: TextView
         private val background: RelativeLayout
 
         init {
-            // Define click listener for the ViewHolder's View.
-
             name = v.findViewById(R.id.current)
             value = v.findViewById(R.id.value)
             date= v.findViewById(R.id.currentDate)
@@ -48,9 +45,8 @@ class CurrencyAdapter(
 
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CurrentHolder {
-        // Create a new view.
+
         val v = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.current_row, viewGroup, false)
 
@@ -59,23 +55,16 @@ class CurrencyAdapter(
 
 
     override fun onBindViewHolder(viewHolder: CurrentHolder, position: Int) {
-        Log.d(TAG, "Element $position set.")
 
-        // Get element from your dataset at this position and replace the contents of the view
-        // with that element
+        Log.d(TAG, "Element $position set.")
         val event = dataSet[position]
         viewHolder.bind(event, itemClickListener)
-
     }
 
-
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
     companion object {
         private val TAG = "CustomAdapter"
-
-
     }
 }
 
