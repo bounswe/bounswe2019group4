@@ -33,6 +33,19 @@
     <fragment
         android:id="@+id/listCurrentFragment"
         android:name="com.example.arken.fragment.ListCurrentFragment"
-        android:label="ListCurrentFragment" />
+        android:label="ListCurrentFragment" >
+        <action
+            android:id="@+id/action_listCurrentFragment_to_currencyFragment"
+            app:destination="@id/currencyFragment"
+            app:popUpTo="@+id/listCurrentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currencyFragment"
+        android:name="com.example.arken.fragment.CurrencyFragment"
+        android:label="CurrencyFragment" >
+        <argument
+            android:name="codeOfCurrency"
+            app:argType="string" />
+    </fragment>
 
 </navigation>
