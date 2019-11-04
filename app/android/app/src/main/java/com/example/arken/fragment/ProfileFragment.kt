@@ -21,6 +21,7 @@ import com.example.arken.R
 import com.example.arken.activity.MainActivity.IMAGE_PREF
 import com.example.arken.model.Profile
 import com.example.arken.util.RetroClient
+import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,7 +32,8 @@ class ProfileFragment : Fragment() {
     private lateinit var surname_textView: TextView
     private lateinit var location_value_textView: TextView
     private lateinit var user_type_textView: TextView
-    private lateinit var profile_image: ImageButton
+    private lateinit var profile_image: CircleImageView
+    private lateinit var profile_button: ImageButton
     private lateinit var email_value_textView: TextView
     private lateinit var pred_value_textView: TextView
     private lateinit var uri: String
@@ -66,8 +68,7 @@ class ProfileFragment : Fragment() {
 
                     name_textView.text = profile!!.name
                     surname_textView.text = profile!!.surname
-                    pred_value_textView.text = profile!!.predictionRate
-                    user_type_textView.text = if (profile?.isTrader!!) {"Trader User"} else {"Basic User"}
+                    user_type_textView.text = if (profile?.isTrader!!) {"Trader"} else {"Basic"}
                     location_value_textView.text = profile!!.location
                     email_value_textView.text = profile!!.email
 
@@ -83,12 +84,13 @@ class ProfileFragment : Fragment() {
         })
 
         profile_image = view.findViewById(R.id.profile_image)
+        profile_button = view.findViewById(R.id.profile_button)
 
         val path = getPreference(context!!, "path" )
         if(path!=null) {
             profile_image.setImageURI(path!!.toUri())
         }
-        profile_image.setOnClickListener {
+        profile_button.setOnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(context?.let { it1 -> checkSelfPermission(it1,Manifest.permission.READ_EXTERNAL_STORAGE) } ==
                         PackageManager.PERMISSION_DENIED) {
