@@ -8,6 +8,7 @@ import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.Profile;
 import com.example.arken.model.SignupUser;
+import com.example.arken.model.tradingEquipment.Currency;
 import com.example.arken.model.tradingEquipment.ListCurrency;
 
 import okhttp3.ResponseBody;
@@ -61,6 +62,10 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @GET("trading-equipments")
     Call<ListCurrency> getCurrentCurrencyValues();
+
+    @Headers({"Content-Type: application/json"})
+    @GET("trading-equipments/{id}")
+    Call<Currency> getCurrency(@Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")
