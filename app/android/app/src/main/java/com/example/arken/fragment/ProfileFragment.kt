@@ -25,8 +25,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-//import java.util.jar.Manifest
-
 class ProfileFragment : Fragment() {
 
     private lateinit var name_textView: TextView
@@ -38,18 +36,6 @@ class ProfileFragment : Fragment() {
     private lateinit var pred_value_textView: TextView
     private lateinit var uri: String
     private lateinit var profile: Profile
-
-
-
-   // private var profile: Profile? = null
-    // val prefs: SharedPreferences? = activity!!.getSharedPreferences(MY_PREFS_NAME!!, MODE_PRIVATE)
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,10 +106,6 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
-
-
-
         return view
     }
 
@@ -145,8 +127,6 @@ class ProfileFragment : Fragment() {
     }
 
 
-
-
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         //intent.type = "image/*"
@@ -162,11 +142,6 @@ class ProfileFragment : Fragment() {
             profile_image.setImageURI(uri!!.toUri())
 
         }
-    }
-
-    private fun getProfileInfo() {
-
-
     }
 
 
