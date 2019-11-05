@@ -287,7 +287,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/location_label_textView"
         app:layout_constraintVertical_bias="0.0"
-        android:src="@drawable/ic_place_pin" />
+        android:src="@drawable/ic_place_white_48dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
