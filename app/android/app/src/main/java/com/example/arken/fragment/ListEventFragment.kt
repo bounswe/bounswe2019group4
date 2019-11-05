@@ -1,27 +1,24 @@
 package com.example.arken.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
-import com.example.arken.activity.MainActivity
 import com.example.arken.model.Event
 import com.example.arken.model.ListEvent
 import com.example.arken.util.EventAdapter
 import com.example.arken.util.OnItemClickListener
 import com.example.arken.util.RetroClient
-import com.google.android.gms.tasks.OnCompleteListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 
 class ListEventFragment : Fragment(), OnItemClickListener {
@@ -40,6 +37,7 @@ class ListEventFragment : Fragment(), OnItemClickListener {
 
 
         initDataset()
+        Log.i("ListEventFragment", "onCreate")
     }
 
     override fun onCreateView(
@@ -73,6 +71,8 @@ class ListEventFragment : Fragment(), OnItemClickListener {
 
         setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER)
 
+        Log.i("ListEventFragment", "onCreateView")
+
         return rootView
     }
 
@@ -99,6 +99,7 @@ class ListEventFragment : Fragment(), OnItemClickListener {
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
 
+        Log.i("ListEventFragment", "onSaveInstanceState")
 
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, currentLayoutManagerType)
         super.onSaveInstanceState(savedInstanceState)
@@ -137,6 +138,8 @@ class ListEventFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onResume() {
+
+        Log.i("ListEventFragment", "onResume")
         super.onResume()
         val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(1, 10)
         call.enqueue(object : Callback<ListEvent> {

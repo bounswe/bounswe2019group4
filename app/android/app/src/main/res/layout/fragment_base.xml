@@ -14,79 +14,120 @@
         app:navGraph="@navigation/navigation_base"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:orientation="horizontal" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorDarkBlue"
         android:id="@+id/submenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="5dp">
-        <ImageButton
+        android:background="@color/colorMenu"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp">
+
+        <View
+            android:id="@+id/start_line_basemenu"
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_event"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:id="@+id/menu_event"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/menu_trading_eq"
-            app:layout_constraintTop_toTopOf="parent"/>
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_logout"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:id="@+id/menu_logout"
-            app:layout_constraintStart_toEndOf="@id/menu_trading_eq"
+            android:layout_height="1dp"
+            android:background="@android:color/white"
+
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/submenu" />
+
+
         <ImageButton
+            android:id="@+id/menu_event"
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_trading_eq"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:layout_marginTop="6dp"
+
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:id="@+id/menu_trading_eq"
-            app:layout_constraintStart_toEndOf="@id/menu_event"
-            app:layout_constraintEnd_toStartOf="@id/menu_logout"
+            android:src="@drawable/ic_event"
+            app:layout_constraintEnd_toStartOf="@id/menu_trading_eq"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/menu_logout"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="6dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/menu_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/menu_trading_eq"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="6dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_trading_eq"
+            app:layout_constraintEnd_toStartOf="@id/menu_profile"
+            app:layout_constraintStart_toEndOf="@id/menu_event"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/menu_profile"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="6dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_person_white"
+            app:layout_constraintEnd_toStartOf="@id/menu_logout"
+            app:layout_constraintStart_toEndOf="@id/menu_trading_eq"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Events"
-            app:layout_constraintStart_toStartOf="@id/menu_event"
-            app:layout_constraintEnd_toEndOf="@id/menu_event"
-            app:layout_constraintTop_toBottomOf="@id/menu_event"
             android:textColor="@android:color/white"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/menu_event"
+            app:layout_constraintStart_toStartOf="@id/menu_event"
+            app:layout_constraintTop_toBottomOf="@id/menu_event" />
 
         <TextView
+            android:id="@+id/base_trading_eq_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Trading Equipment"
-            app:layout_constraintStart_toStartOf="@id/menu_trading_eq"
-            app:layout_constraintEnd_toEndOf="@id/menu_trading_eq"
-            app:layout_constraintTop_toBottomOf="@id/menu_trading_eq"
             android:textColor="@android:color/white"
-            android:id="@+id/base_trading_eq_text"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/menu_trading_eq"
+            app:layout_constraintStart_toStartOf="@id/menu_trading_eq"
+            app:layout_constraintTop_toBottomOf="@id/menu_trading_eq" />
 
         <TextView
+            android:id="@+id/base_profile_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/menu_profile"
+            app:layout_constraintStart_toStartOf="@id/menu_profile"
+            app:layout_constraintTop_toBottomOf="@id/menu_profile" />
+
+        <TextView
+            android:id="@+id/base_signout_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Log Out"
-            app:layout_constraintStart_toStartOf="@id/menu_logout"
-            app:layout_constraintEnd_toEndOf="@id/menu_logout"
-            app:layout_constraintTop_toBottomOf="@id/menu_logout"
             android:textColor="@android:color/white"
-            android:id="@+id/base_signout_text"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/menu_logout"
+            app:layout_constraintStart_toStartOf="@id/menu_logout"
+            app:layout_constraintTop_toBottomOf="@id/menu_logout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

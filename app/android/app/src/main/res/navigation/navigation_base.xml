@@ -19,6 +19,9 @@
             android:id="@+id/action_eventListFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment"
             app:popUpTo="@+id/eventListFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -33,6 +36,24 @@
     <fragment
         android:id="@+id/listCurrentFragment"
         android:name="com.example.arken.fragment.ListCurrentFragment"
-        android:label="ListCurrentFragment" />
+        android:label="ListCurrentFragment" >
+        <action
+            android:id="@+id/action_listCurrentFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.arken.fragment.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+    </fragment>
 
 </navigation>

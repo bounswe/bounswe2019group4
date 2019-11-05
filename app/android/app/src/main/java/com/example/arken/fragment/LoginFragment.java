@@ -25,6 +25,7 @@ import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.model.LoginUser;
+import com.example.arken.model.Profile;
 import com.example.arken.util.RetroClient;
 
 import org.json.JSONException;
@@ -32,7 +33,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,14 +40,15 @@ import retrofit2.Response;
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
-    Button signupButton;
-    EditText emailEditText;
-    EditText passwordEditText;
-    Button loginButton;
-    Button guestButton;
-    ImageView passwordEyeImage;
+    private Button signupButton;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private Button loginButton;
+    private Button guestButton;
+    private ImageView passwordEyeImage;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
-    TextView forgotPasswordButton;
+    private TextView forgotPasswordButton;
+    private String userId;
 
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
@@ -117,15 +118,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             final String email = String.valueOf(emailEditText.getText());
             String password = String.valueOf(passwordEditText.getText());
 
-            Call<ResponseBody> call = RetroClient.getInstance().getAPIService().login(new LoginUser(email, password));
+            Call<Profile> call = RetroClient.getInstance().getAPIService().login(new LoginUser(email, password));
 
-            call.enqueue(new Callback<ResponseBody>() {
+            call.enqueue(new Callback<Profile>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(Call<Profile> call, Response<Profile> response) {
                     if (response.isSuccessful()) {
+                        userId = response.body().get_id();
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                         editor.putString("email", email);
+                        editor.putString("userId", userId);
                         editor.apply();
+                     // Toast.makeText(getContext(), response.body().get_id(), Toast.LENGTH_SHORT).show();
                         Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
                     } else {
 
@@ -152,7 +156,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(Call<Profile> call, Throwable t) {
                     Toast.makeText(getContext(),t.getMessage(), Toast.LENGTH_SHORT ).show();
                 }
             });

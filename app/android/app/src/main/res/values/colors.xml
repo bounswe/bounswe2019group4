@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#FF0099CC</color>
-    <color name="colorAccent">#D81B60</color> -->
     <color name="colorPriBlue">#1565c0</color>
     <color name="colorlightBlue">#5e92f3</color>
     <color name="colorDarkBlue">#003c8f</color>
@@ -15,9 +11,10 @@
     <color name="colorAccent">#009c95</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorLightGray">#cacbcd</color>
-    <color name="colorDarkerBlue">#2b70bf</color>
+    <color name="colorDarkerBlue">#022a61</color>
     <color name="buttonShadowDark">#11639e</color>
     <color name="buttonShadowLight">#3392d6</color>
+    <color name="colorMenu">#1c2021</color>
 
     <!--colors for modern ui-->
     <color name="whiteTextColor">#fff</color>
