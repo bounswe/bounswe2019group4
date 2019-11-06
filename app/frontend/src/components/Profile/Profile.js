@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Icon } from 'semantic-ui-react'
+import {Button, Icon} from 'semantic-ui-react'
 import {loadState} from '../../_core/localStorage'
 import {Form, Checkbox, Grid, Segment, Header, Container, List, Divider} from 'semantic-ui-react';
 import {connect} from 'react-redux';
@@ -26,39 +26,92 @@ class Profile extends Component {
 
     render() {
         const { user } = this.state;
+        const ButtonExampleFloated = () => (
+            <div>
+                <Button active floated='right'>Right Floated</Button>
+
+            </div>
+        )
 
         return (
-            <Segment raised piled padded compact textAlign='left' >
-                <Image src={profilePhoto} size='medium'  floated='center' rounded />
-                <Header textAlign='center'>
-
-                {user.name} {user.surname}
-            </Header>
-                <ul >
-                    <li><strong>Name        :{user.name}</strong></li>
-                    <li><strong>Surname     :{user.surname}</strong></li>
-
-                    <li><strong>E-Mail      :{user.email}</strong></li>
-                    <li><strong>Account Type:{user.isTrader ? 'Trader' : 'Public'}</strong></li>
-                    {user.isTrader && <span>
-                        <li><strong>IBAN     :{user.iban}</strong></li>
-
-                        <li><strong>TCKN      :{user.tckn}</strong></li>
-
-
-                    </span>}
-                    <li><strong>Location:{user.location}</strong></li>
 
 
 
-                </ul>
-
-            </Segment>
+            <Segment.Group horizontal >
 
 
 
+                <Segment raised piled padded compact textAlign='left' >
+                    <Image src={profilePhoto} size='middle'   rounded />
+                    <Header textAlign='center'>
+
+                    {user.name} {user.surname}
+
+
+
+                            <button className="ui right floated button">Follow</button>
+
+
+
+
+
+                    </Header>
+
+                    <ul >
+                        <li><strong>Name        :{user.name}</strong></li>
+                        <li><strong>Surname     :{user.surname}</strong></li>
+
+                        <li><strong>E-Mail      :{user.email}</strong></li>
+                        <li><strong>Account Type:{user.isTrader ? 'Trader' : 'Public'}</strong></li>
+                        {user.isTrader && <span>
+                            <li><strong>IBAN     :{user.iban}</strong></li>
+
+                            <li><strong>TCKN      :{user.tckn}</strong></li>
+
+
+                        </span>}
+                        <li><strong>Location:{user.location}</strong></li>
+
+
+
+                    </ul>
+
+
+
+
+                </Segment>
+
+                <Segment raised piled padded compact textAlign='left'>
+
+                    <Header textAlign='Middle'>
+
+                        My Portfolio
+                    </Header>
+
+
+
+
+                </Segment>
+
+
+                <Segment raised piled padded compact textAlign='left'>
+
+                    <Header textAlign='Middle'>
+
+                        Profit/Loss
+
+                    </Header>
+
+
+
+
+                </Segment>
+
+            </Segment.Group>
         )
     }
+
+
 }
 
 export  default Profile;
