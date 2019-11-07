@@ -38,6 +38,58 @@ module.exports.postArticle = async (request, response) => {
       })
     }
   }
+
+/*
+  Patch method for editing articles.
+  It saves article to database.
+*/
+module.exports.editArticle = async (request, response) => {
+  let Article = request.models['Article']
+  const userId = request.session['user']._id
+  const title = request.body["title"];
+  const text = request.body["text"];
+  const articleId = request.body['articleId'];
+
+  article = await Article.findOne({ _id : articleId});
+  if(article){
+    try{
+      if(!title && !text){ // no change
+        return response.status(400).send({
+          errmsg: "No change."
+        })
+      } else if(!title && text){ // just text edited
+        await Article.updateOne({_id:articleId, userId: userId},{ text: text}) 
+        .then( doc => {
+          return response.status(204).send();
+        }).catch(error => {
+          return response.status(400).send(error);
+        });
+      } else if(!text && title){ // just title edited
+        await Article.updateOne({_id:articleId, userId: userId},{ title: title}) 
+        .then( doc => {
+          return response.status(204).send();
+        }).catch(error => {
+          return response.status(400).send(error);
+        });
+      } else if(text && title){ // text and title are both edited
+        await Article.updateOne({_id:articleId, userId: userId},{ title: title, text: text}) 
+        .then( doc => {
+          return response.status(204).send();
+        }).catch(error => {
+          return response.status(400).send(error);
+        });
+      }
+    } catch(error){
+      return response.status(404).send({
+        errmsg: error.message
+      })
+    }
+  } else {
+    return response.status(400).send({
+      errmsg: "No such article."
+    })
+  }
+}
   
   /*
     Delete method for articles.
@@ -105,7 +157,6 @@ module.exports.rateArticle = async (request, response) => {
   
       } else{
         // User already rated for that article. Change the rate value and update the database
-        console.log("user already rated"+row);
         await ArticleUser.updateOne({_id:row._id},{ rate: value}) 
         .then(async doc => {
           let newRateAverage = (article.rateAverage*article.numberOfRates-row.rate+value)/article.numberOfRates;
