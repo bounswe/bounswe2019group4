@@ -11,6 +11,7 @@ const { checkPassword, checkIBAN, checkTCKN } = require('../utils')
 module.exports.signup = async (request, response) => {
   let User = request.models['User']
   
+  let token = randomstring.generate()
   // User instance to add to the database
   let user = new User({
     ...request.body,
