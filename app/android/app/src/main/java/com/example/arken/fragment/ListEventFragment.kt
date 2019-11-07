@@ -1,5 +1,7 @@
 package com.example.arken.fragment
 
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -51,7 +53,9 @@ class ListEventFragment : Fragment(), OnItemClickListener {
         ).apply { tag = TAG }
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
-
+        countryEditText = rootView.findViewById(R.id.event_list_filter_country_editText)
+        importanceEditText = rootView.findViewById(R.id.event_list_filter_importance_editText)
+        filterButton = rootView.findViewById(R.id.event_list_filter_button)
 
         layoutManager = LinearLayoutManager(activity)
 
@@ -135,6 +139,43 @@ class ListEventFragment : Fragment(), OnItemClickListener {
         val action = ListEventFragmentDirections.actionEventListFragmentToEventFragment()
         action.eventToShow = event
         Navigation.findNavController(recyclerView).navigate(action)
+    }
+
+    fun onClick(view: View) {
+        if (view.id != R.id.event_list_filter_country_editText) {
+            val inputMethodManager =
+                activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+        if (view.id == R.id.send_email_button) {
+            if (countryEditText?.getText().toString().trim({ it <= ' ' }) == "") {
+                countryEditText?.setError("Please enter a country")
+                return
+            }
+            val country = countryEditText?.getText().toString()
+            val importance = importanceEditText!!.text[0].toInt()
+
+            val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEvents(country, importance)
+
+            call.enqueue(object : Callback<ListEvent> {
+                override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
+                    if (response.isSuccessful) {
+                        val listEvent: ListEvent? = response.body()
+                        // dataset=listEvent!!.events
+                        eventAdapter.dataSet = listEvent!!.events!!
+                        eventAdapter.totalPages = listEvent.totalNumberOfPages!!
+                        eventAdapter.page = 1
+                        eventAdapter.notifyDataSetChanged()
+                    } else {
+                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ListEvent>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
     }
 
     override fun onResume() {
