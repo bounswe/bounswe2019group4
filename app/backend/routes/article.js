@@ -15,6 +15,13 @@ const { ArticleUser } = require('../models/article-user')
 router.post('/', [ isAuthenticated, modelBinder(Article, 'Article')], articleController.postArticle)
 
 /*
+  Post endpoint for updating article.
+  Check controller function for more detail
+*/
+
+router.patch('/edit', [ isAuthenticated, modelBinder(Article, 'Article')], articleController.editArticle)
+
+/*
   Post endpoint for rating article.
   Check controller function for more detail
 */
