@@ -29,7 +29,7 @@ module.exports.postArticle = async (request, response) => {
   */
   module.exports.getArticle = async (request, response) => {
 
-    let article = await await findUserArticle({ _id : request.params['id']})
+    let article = await findUserArticle({ _id : request.params['id']})
   
     if(article){
       return response.send(article)
