@@ -85,8 +85,7 @@ module.exports.editArticle = async (request, response) => {
           errmsg: "Failed."
         })
       }
-  
-      return response.status(404).send();
+      return response.send(204);
     });
   }
 
