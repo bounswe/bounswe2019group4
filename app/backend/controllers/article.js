@@ -54,32 +54,12 @@ module.exports.editArticle = async (request, response) => {
   article = await Article.findOne({ _id : articleId});
   if(article){
     try{
-      if(!title && !text){ // no change
-        return response.status(400).send({
-          errmsg: "No change."
-        })
-      } else if(!title && text){ // just text edited
-        await Article.updateOne({_id:articleId, userId: userId},{ text: text}) 
-        .then( doc => {
-          return response.status(204).send();
-        }).catch(error => {
-          return response.status(400).send(error);
-        });
-      } else if(!text && title){ // just title edited
-        await Article.updateOne({_id:articleId, userId: userId},{ title: title}) 
-        .then( doc => {
-          return response.status(204).send();
-        }).catch(error => {
-          return response.status(400).send(error);
-        });
-      } else if(text && title){ // text and title are both edited
         await Article.updateOne({_id:articleId, userId: userId},{ title: title, text: text}) 
         .then( doc => {
           return response.status(204).send();
         }).catch(error => {
           return response.status(400).send(error);
         });
-      }
     } catch(error){
       return response.status(404).send({
         errmsg: error.message
