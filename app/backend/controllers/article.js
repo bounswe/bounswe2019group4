@@ -1,3 +1,5 @@
+const {findUserArticle} = require('../utils')
+
 /*
   Post method for articles.
   It saves article to database.
@@ -26,9 +28,8 @@ module.exports.postArticle = async (request, response) => {
     It returns given article.
   */
   module.exports.getArticle = async (request, response) => {
-    let Article = request.models['Article']
 
-    article = await Article.findOne({ _id : request.params['id']});
+    let article = await await findUserArticle({ _id : request.params['id']})
   
     if(article){
       return response.send(article)
