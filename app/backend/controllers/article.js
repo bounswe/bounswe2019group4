@@ -53,18 +53,12 @@ module.exports.editArticle = async (request, response) => {
 
   article = await Article.findOne({ _id : articleId});
   if(article){
-    try{
-        await Article.updateOne({_id:articleId, userId: userId},{ title: title, text: text}) 
-        .then( doc => {
-          return response.status(204).send();
-        }).catch(error => {
-          return response.status(400).send(error);
-        });
-    } catch(error){
-      return response.status(404).send({
-        errmsg: error.message
-      })
-    }
+    Article.updateOne({_id:articleId, userId: userId},{ title: title, text: text}) 
+      .then( doc => {
+        return response.status(204).send();
+      }).catch(error => {
+        return response.status(400).send(error);
+      });
   } else {
     return response.status(400).send({
       errmsg: "No such article."
@@ -119,12 +113,12 @@ module.exports.rateArticle = async (request, response) => {
           rate: value
         });
   
-        await rate.save()
+        rate.save()
         .then(async doc => {
            // now calculate the new average rate of the article update the database
           let newNumberOfRates = article.numberOfRates+1;
           let newRateAverage = (article.rateAverage*article.numberOfRates+value)/newNumberOfRates;
-          await Article.updateOne({_id:articleId},{ rateAverage: newRateAverage, numberOfRates: newNumberOfRates}) 
+          Article.updateOne({_id:articleId},{ rateAverage: newRateAverage, numberOfRates: newNumberOfRates}) 
           .then( doc => {
             return response.status(204).send();
           }).catch(error => {
@@ -137,10 +131,10 @@ module.exports.rateArticle = async (request, response) => {
   
       } else{
         // User already rated for that article. Change the rate value and update the database
-        await ArticleUser.updateOne({_id:row._id},{ rate: value}) 
-        .then(async doc => {
+        ArticleUser.updateOne({_id:row._id},{ rate: value}) 
+        .then(doc => {
           let newRateAverage = (article.rateAverage*article.numberOfRates-row.rate+value)/article.numberOfRates;
-          await Article.updateOne({_id:articleId},{ rateAverage: newRateAverage}) 
+          Article.updateOne({_id:articleId},{ rateAverage: newRateAverage}) 
           .then(doc => {
             return response.status(204).send();
           }).catch(error => {
