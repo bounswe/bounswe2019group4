@@ -52,11 +52,11 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("events")
-    Call<ListEvent> getEvents(@Query("country") String s, @Query("importance") Integer k);
+    Call<ListEvent> getEvents(@Query("country") String country, @Query("importance") Integer importance,@Query("page") Integer s, @Query("limit") Integer k);
 
-    @Headers({"Content-Type: application/json"})
+   /* @Headers({"Content-Type: application/json"})
     @GET("events")
-    Call<ListEvent> getEventsAll(@Query("page") Integer s, @Query("limit") Integer k);
+    Call<ListEvent> getEventsAll(@Query("page") Integer s, @Query("limit") Integer k);*/
 
     @Headers({"Content-Type: application/json"})
     @GET("trading-equipments")

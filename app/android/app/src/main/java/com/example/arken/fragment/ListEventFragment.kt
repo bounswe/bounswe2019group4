@@ -1,13 +1,17 @@
 package com.example.arken.fragment
 
 import android.content.ContentValues.TAG
+import android.view.inputmethod.InputMethodManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,15 +27,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ListEventFragment : Fragment(), OnItemClickListener {
+class ListEventFragment : Fragment(), OnItemClickListener,View.OnClickListener {
 
-
+private lateinit var countryEditText:EditText
+    private lateinit var importanceEditText:EditText
+    private lateinit var filterButton:Button
     private lateinit var currentLayoutManagerType: LayoutManagerType
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var dataset: MutableList<Event>
     private lateinit var eventAdapter: EventAdapter
-
+private lateinit var layout:ConstraintLayout
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,11 +62,13 @@ class ListEventFragment : Fragment(), OnItemClickListener {
         countryEditText = rootView.findViewById(R.id.event_list_filter_country_editText)
         importanceEditText = rootView.findViewById(R.id.event_list_filter_importance_editText)
         filterButton = rootView.findViewById(R.id.event_list_filter_button)
-
+filterButton.setOnClickListener(this)
         layoutManager = LinearLayoutManager(activity)
 
         currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
+        layout=rootView.findViewById(R.id.listEventBase)
+        layout.setOnClickListener(this)
         if (savedInstanceState != null) {
 
             currentLayoutManagerType = savedInstanceState
@@ -112,7 +120,7 @@ class ListEventFragment : Fragment(), OnItemClickListener {
 
     private fun initDataset() {
 
-        val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(1, 10)
+        val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEvents(null,null,1, 10)
         dataset = mutableListOf()
         call.enqueue(object : Callback<ListEvent> {
             override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
@@ -149,23 +157,21 @@ class ListEventFragment : Fragment(), OnItemClickListener {
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
         if (view.id == R.id.event_list_filter_button) {
-            if (countryEditText?.getText().toString().trim({ it <= ' ' }) == "") {
-                countryEditText?.setError("Please enter a country")
-                return
-            }
-            val country = countryEditText?.getText().toString()
-            val importance = importanceEditText!!.text[0].toInt()
 
-            val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEvents(country, importance)
+            val country = countryEditText?.getText().toString()
+            val importance = importanceEditText.text.toString().toIntOrNull()
+
+            val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEvents(country, importance,1,10)
 
             call.enqueue(object : Callback<ListEvent> {
                 override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
                     if (response.isSuccessful) {
                         val listEvent: ListEvent? = response.body()
-                        // dataset=listEvent!!.events
                         eventAdapter.dataSet = listEvent!!.events!!
                         eventAdapter.totalPages = listEvent.totalNumberOfPages!!
                         eventAdapter.page = 1
+                        eventAdapter.country=country
+                        eventAdapter.importance=importance
                         eventAdapter.notifyDataSetChanged()
                     } else {
                         Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
@@ -183,7 +189,7 @@ class ListEventFragment : Fragment(), OnItemClickListener {
 
         Log.i("ListEventFragment", "onResume")
         super.onResume()
-        val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(1, 10)
+        val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEvents(null,null,1, 10)
         call.enqueue(object : Callback<ListEvent> {
             override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
                 if (response.isSuccessful) {

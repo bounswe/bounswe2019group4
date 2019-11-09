@@ -17,12 +17,17 @@ import retrofit2.Response
 
 class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<EventAdapter.ViewHolder>() {
+
     var totalPages: Int = 1
     var page: Int = 1
+    var country: String? = null
+    var importance: Int? = null
+
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+
         val textView: TextView
         val importanceStar1: ImageView
         val importanceStar2: ImageView
@@ -81,7 +86,7 @@ class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnIte
     fun newPage() {
         page += 1
         if (page <= totalPages) {
-            val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(page, 10)
+            val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEvents(country,importance,page, 10)
             call.enqueue(object : Callback<ListEvent> {
                 override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
                     if (response.isSuccessful) {
@@ -125,5 +130,5 @@ class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnIte
 
 interface OnItemClickListener {
     fun onItemClicked(event: Event)
-    fun onClick(view: View)
+    //fun onClick(view: View)
 }
