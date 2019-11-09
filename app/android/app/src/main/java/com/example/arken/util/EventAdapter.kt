@@ -125,4 +125,5 @@ class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnIte
 
 interface OnItemClickListener {
     fun onItemClicked(event: Event)
+    fun onClick(view: View)
 }
