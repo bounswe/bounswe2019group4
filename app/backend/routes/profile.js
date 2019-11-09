@@ -6,6 +6,7 @@ const {isAuthenticated} = require('../controllers/auth')
 const { User } = require('../models/user')
 const { UserFollow } = require('../models/user-follow')
 const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
+const { Article } = require('../models/article')
 
 /*
   Get endpoint for profile page.
@@ -15,6 +16,7 @@ router.get('/:id', multipleModelBinder([
   [User, 'User'],
   [UserFollow, 'UserFollow'],
   [TradingEquipmentFollow, 'TradingEquipmentFollow'],
+  [Article, 'Article']
 ]), profileController.getDetails)
 
 /*
