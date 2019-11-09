@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 let { User } = require('./../models/user.js');  // The connection to the User model in the database
 
-const {findUserFollows} = require('../utils')
+const {findUserFollows, checkPassword, checkIBAN, checkTCKN} = require('../utils')
 /*
   Get method for profile page.
   Get user id from parameter and responses accordingly.
@@ -217,21 +217,108 @@ module.exports.rejectRequest = async (request, response) => {
 }
 
 /*
-  Get method for articles of user.
+  Patch method for editing profile details.
+  It saves profile to database.
 */
-module.exports.getArticles = async (request, response) => {
-  let Article = request.models['Article']
-  const currentUser = request.session['user']
-  console.log(""+currentUser);
+module.exports.editProfile = async (request, response) => {
+  const userId = request.session['user']._id
 
-  articles = await Article.findOne({ userId : currentUser});
+  const { name, surname, email, location, isTrader, isPublic, iban, tckn } = request.body  // Extract fields
 
-  if(articles){
-    return response.send(article)
+  // check valid iban
+  if(iban && !checkIBAN(iban)) {
+    return response.status(400).send({
+      errmsg: "Enter valid iban."
+    })
+  }
+  // check valid tckn
+  if(tckn && !checkTCKN(tckn)) {
+    return response.status(400).send({
+      errmsg: "Enter valid TCKN"
+    })
+  }
+
+  row = await User.findOne({ _id : userId});
+
+  if(row){
+    // Check email is changed
+    if(email && email != row.email){
+      return response.status(400).send({
+        errmsg: "Users cannot change their email."
+      })
+    }
+    try{
+        await User.updateOne({_id:userId},{ name: name, surname: surname, location: location, 
+                                            iban: iban, tckn: tckn, isPublic: isPublic, isTrader: isTrader}) 
+        .then( doc => {
+          return response.status(204).send();
+        }).catch(error => {
+          return response.status(400).send(error);
+        });
+    } catch(error){
+      return response.status(404).send({
+        errmsg: error.message
+      })
+    }
   } else {
     return response.status(400).send({
-      errmsg: "No articles."
-    })
+      errmsg: "No such user."
+       })
   }
 }
 
+/*
+  Patch method for change password.
+*/
+module.exports.changePassword = async (request, response) => {
+  const userId = request.session['user']._id
+
+  const { oldPassword, password } = request.body  // Extract fields
+
+  row = await User.findOne({ _id : userId});
+
+  if(row){
+    // check whether user is authenticated via Google. If so, return error
+    if(row.googleId){
+      return response.status(400).send({
+        errmsg: "Users authenticated via Google cannot change their password"
+      })
+    }
+
+    // If password hashed in the user instance doesn't match with the old password in the request, credentials are invalid
+    if (bcrypt.compareSync(oldPassword, row['password'])) {
+       // The user credentials are correct
+       // check valid password
+      if(password && !checkPassword(password)) {
+        return response.status(400).send({
+          errmsg: "Enter valid password. Your password either is less than 6 characters or is easy to guess."
+        })
+      }
+      
+      // Hashes the password
+      hashedPassword = bcrypt.hashSync(password, 10)
+
+      try{
+          await User.updateOne({_id:userId},{password: hashedPassword}) 
+          .then( doc => {
+            return response.status(204).send();
+          }).catch(error => {
+            return response.status(400).send(error);
+          });
+      } catch(error){
+        return response.status(404).send({
+          errmsg: error.message
+        })
+      }
+    } else {
+      return response.status(400).send({
+        errmsg: "Old password is not correct"
+      })
+    }
+    
+  } else {
+    return response.status(400).send({
+      errmsg: "No such user."
+    })
+  }
+}

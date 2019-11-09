@@ -46,4 +46,17 @@ router.get('/accept/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'
 */
 router.get('/reject/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.rejectRequest)
 
+
+/*
+  Get endpoint for editing profile details.
+  Check controller function for more detail
+*/
+router.patch('/edit',[isAuthenticated, modelBinder(User, 'User')], profileController.editProfile)
+
+/*
+  Get endpoint for change password
+  Check controller function for more detail
+*/
+router.patch('/changePassword',[isAuthenticated, modelBinder(User, 'User')], profileController.changePassword)
+
 module.exports = router
