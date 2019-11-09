@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 let { User } = require('./../models/user.js');  // The connection to the User model in the database
 
-const {findUserFollows} = require('../utils')
+const {findUserFollows, checkIBAN, checkTCKN} = require('../utils')
 /*
   Get method for profile page.
   Get user id from parameter and responses accordingly.
@@ -211,5 +211,57 @@ module.exports.rejectRequest = async (request, response) => {
     
     return response.sendStatus(204);
   })
+}
+
+/*
+  Patch method for editing profile details.
+  It saves profile to database.
+*/
+module.exports.editProfile = async (request, response) => {
+  const userId = request.session['user']._id
+
+  const { name, surname, email, location, isTrader, isPublic, iban, tckn } = request.body  // Extract fields
+
+  // check valid iban
+  if(iban && !checkIBAN(iban)) {
+    return response.status(400).send({
+      errmsg: "Enter valid iban."
+    })
+  }
+  console.log(isPublic)
+  // check valid tckn
+  if(tckn && !checkTCKN(tckn)) {
+    return response.status(400).send({
+      errmsg: "Enter valid TCKN"
+    })
+  }
+
+  row = await User.findOne({ _id : userId});
+
+  if(row){
+    // Check email is changed
+    if(email && email != row.email){
+      return response.status(400).send({
+        errmsg: "Users cannot change their email."
+      })
+    }
+    try{
+        await User.updateOne({_id:userId},{ name: name, surname: surname, location: location, 
+                                            iban: iban, tckn: tckn, isPublic: isPublic, isTrader: isTrader}) 
+        .then( doc => {
+          return response.status(204).send();
+        }).catch(error => {
+          return response.status(400).send(error);
+        });
+    } catch(error){
+      return response.status(404).send({
+        errmsg: error.message
+      })
+    }
+  } else {
+    return response.status(400).send({
+      errmsg: "No such user."
+    })
+  }
 }
 
