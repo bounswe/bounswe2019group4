@@ -9,6 +9,7 @@ const {Event} = require('./models/event');
 const {TradingEquipment} = require('./models/trading-eq');
 const {TradingEquipmentPrediction} = require('./models/trading-eq-prediction');
 const {Comment} = require('./models/comment');
+const {Article} = require('./models/article');
 const {CurrentTradingEquipment} = require('./models/current-trading-eq');
 const { tradingEquipmentKey } = require('./secrets');
 
@@ -311,6 +312,17 @@ module.exports.findUserFollows = async spec => {
 
 module.exports.findUserComments = async spec => {
   const data = await Comment.find(spec).lean()
+  return await Promise.all(data.map(async el => {
+    const user = await User.findOne({_id: el.userId})
+    return {
+      ...el,
+      username: user.name,
+      usersurname: user.surname
+    }}))
+}
+
+module.exports.findUserArticle = async spec => {
+  const data = await Article.find(spec).lean()
   return await Promise.all(data.map(async el => {
     const user = await User.findOne({_id: el.userId})
     return {
