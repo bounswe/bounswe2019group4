@@ -44,4 +44,11 @@ router.get('/accept/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'
 */
 router.get('/reject/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.rejectRequest)
 
+
+/*
+  Get endpoint for editing profile details.
+  Check controller function for more detail
+*/
+router.patch('/edit',[isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.editProfile)
+
 module.exports = router
