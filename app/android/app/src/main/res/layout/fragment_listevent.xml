@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listEventBase"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:id="@+id/listEventBase">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/event_list_header"
@@ -54,8 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/event_list_filter_importance_editText">
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-    </Button>
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"</Button>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
