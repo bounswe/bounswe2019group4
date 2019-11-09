@@ -141,13 +141,14 @@ class ListEventFragment : Fragment(), OnItemClickListener {
         Navigation.findNavController(recyclerView).navigate(action)
     }
 
-    fun onClick(view: View) {
-        if (view.id != R.id.event_list_filter_country_editText) {
+
+    override fun onClick(view: View) {
+        if (view.id != R.id.event_list_filter_country_editText && view.id != R.id.event_list_filter_importance_editText) {
             val inputMethodManager =
                 activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
-        if (view.id == R.id.send_email_button) {
+        if (view.id == R.id.event_list_filter_button) {
             if (countryEditText?.getText().toString().trim({ it <= ' ' }) == "") {
                 countryEditText?.setError("Please enter a country")
                 return
