@@ -12,7 +12,6 @@ import retrofit2.Response
 class TradingEquipmentViewModel : ViewModel() {
     val data: MutableLiveData<Currency> = MutableLiveData()
     private val apiService by lazy { RetroClient.getInstance().apiService }
-
     fun setData(code: String) {
         apiService.getCurrency(code).enqueue(
             object : Callback<Currency> {
