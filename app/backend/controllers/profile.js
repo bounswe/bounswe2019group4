@@ -228,7 +228,6 @@ module.exports.editProfile = async (request, response) => {
       errmsg: "Enter valid iban."
     })
   }
-  console.log(isPublic)
   // check valid tckn
   if(tckn && !checkTCKN(tckn)) {
     return response.status(400).send({
