@@ -49,7 +49,7 @@ module.exports.editArticle = async (request, response) => {
   const userId = request.session['user']._id
   const title = request.body["title"];
   const text = request.body["text"];
-  const articleId = request.body['articleId'];
+  const articleId = request.params['id'];
 
   article = await Article.findOne({ _id : articleId});
   if(article){
@@ -101,7 +101,7 @@ module.exports.rateArticle = async (request, response) => {
   let ArticleUser = request.models['ArticleUser']
   const userId = request.session['user']._id
   const value = request.body["value"];
-  const articleId = request.body['articleId'];
+  const articleId = request.params['id'];
   let Article = request.models['Article']
 
   if(value<1 || value>5){
