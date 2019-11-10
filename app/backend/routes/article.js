@@ -41,6 +41,9 @@ router.get('/:id', modelBinder(Article, 'Article'), articleController.getArticle
   Delete endpoint for article.
   Check controller function for more detail
 */
-router.delete('/:id', [isAuthenticated, modelBinder(Article, 'Article')], articleController.deleteArticle)
+router.delete('/:id', [isAuthenticated, multipleModelBinder([
+  [Article, 'Article'],
+  [ArticleUser, 'ArticleUser']
+])], articleController.deleteArticle)
 
 module.exports = router

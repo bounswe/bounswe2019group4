@@ -72,6 +72,7 @@ module.exports.editArticle = async (request, response) => {
   */
   module.exports.deleteArticle = async (request, response) => {
     let Article = request.models['Article']
+    let ArticleUser = request.models['ArticleUser']
   
     Article.deleteOne({ _id : request.params['id'], userId : request.session['user']._id }, (err, results) => {
       if(err){
@@ -79,8 +80,17 @@ module.exports.editArticle = async (request, response) => {
           errmsg: "Failed."
         })
       }
-      return response.send(204);
     });
+
+    ArticleUser.deleteMany({ articleId : request.params['id']}, (err, results) => {
+      if(err){
+        return response.status(404).send({
+          errmsg: "Failed."
+        })
+      }
+    });
+
+    return response.send(204);
   }
 
   
