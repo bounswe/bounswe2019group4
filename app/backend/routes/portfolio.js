@@ -22,13 +22,13 @@ router.post('/',[ isAuthenticated, multipleModelBinder([
   Check controller function for more detail
 */
 
-router.patch('/rename', [ isAuthenticated, modelBinder(Portfolio, 'Portfolio')], portfolioController.renamePortfolio)
+router.patch('/:id', [ isAuthenticated, modelBinder(Portfolio, 'Portfolio')], portfolioController.editPortfolio)
 
 /*
   Get endpoint for portfolio.
   Check controller function for more detail
 */
-router.get('/:id',[ isAuthenticated, multipleModelBinder([
+router.get('/:id',[ multipleModelBinder([
   [Portfolio, 'Portfolio'],
   [PortfolioTradingEq, 'PortfolioTradingEq']
 ])], portfolioController.getPortfolio)
@@ -38,7 +38,7 @@ router.get('/:id',[ isAuthenticated, multipleModelBinder([
   Check controller function for more detail
 */
 
-router.post('/add',[ isAuthenticated, multipleModelBinder([
+router.post('/:id/add',[ isAuthenticated, multipleModelBinder([
   [Portfolio, 'Portfolio'],
   [PortfolioTradingEq, 'PortfolioTradingEq']
 ])], portfolioController.addTradingEq)
@@ -48,7 +48,7 @@ router.post('/add',[ isAuthenticated, multipleModelBinder([
   Check controller function for more detail
 */
 
-router.delete('/remove',[ isAuthenticated, multipleModelBinder([
+router.delete('/:id/remove',[ isAuthenticated, multipleModelBinder([
   [Portfolio, 'Portfolio'],
   [PortfolioTradingEq, 'PortfolioTradingEq']
 ])], portfolioController.removeTradingEq)
@@ -66,18 +66,18 @@ router.delete('/:id',[ isAuthenticated, multipleModelBinder([
   Post endpoint for share portfolio.
   Check controller function for more detail
 */
-router.patch('/share', [ isAuthenticated, modelBinder(Portfolio, 'Portfolio')], portfolioController.sharePortfolio)
+router.patch('/:id/share', [ isAuthenticated, modelBinder(Portfolio, 'Portfolio')], portfolioController.sharePortfolio)
 
 /*
   Post endpoint for following specific portfolio.
   Check controller function for more detail
 */
-router.post('/follow', [isAuthenticated, modelBinder(PortfolioFollow, 'PortfolioFollow')], portfolioController.followPortfolio)
+router.post('/:id/follow', [isAuthenticated, modelBinder(PortfolioFollow, 'PortfolioFollow')], portfolioController.followPortfolio)
 
 /*
   Post endpoint for unfollowing specific portfolio.
   Check controller function for more detail
 */
-router.post('/unfollow', [isAuthenticated, modelBinder(PortfolioFollow, 'PortfolioFollow')], portfolioController.unfollowPortfolio)
+router.post('/:id/unfollow', [isAuthenticated, modelBinder(PortfolioFollow, 'PortfolioFollow')], portfolioController.unfollowPortfolio)
 
 module.exports = router

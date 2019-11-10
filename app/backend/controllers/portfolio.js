@@ -51,7 +51,7 @@ module.exports.getPortfolio = async (request, response) => {
   let PortfolioTradingEq = request.models['PortfolioTradingEq']
   let Portfolio = request.models['Portfolio']
 
-  let portfolio = await Portfolio.find({ _id : request.params['id']})
+  let portfolio = await Portfolio.findOne({ _id : request.params['id']})
   
   if(portfolio){
     let tradingEqsObj = await PortfolioTradingEq.find({ PortfolioId : request.params['id']})
@@ -75,14 +75,14 @@ module.exports.getPortfolio = async (request, response) => {
 /*
   Patch method for editing portfolios.
 */
-module.exports.renamePortfolio = async (request, response) => {
+module.exports.editPortfolio = async (request, response) => {
   let Portfolio = request.models['Portfolio']
   const userId = request.session['user']._id
   const title = request.body["title"];
   const definition = request.body["definition"];
-  const PortfolioId = request.body['PortfolioId'];
+  const PortfolioId = request.params['id'];
 
-  portfolio = await Portfolio.findOne({ _id : PortfolioId});
+  portfolio = await Portfolio.findOne({ _id : PortfolioId, userId: userId});
   if(portfolio){
     Portfolio.updateOne({_id:PortfolioId, userId: userId},{ title: title, definition: definition}) 
       .then( doc => {
@@ -132,7 +132,7 @@ module.exports.addTradingEq = async (request, response) => {
   let Portfolio = request.models['Portfolio']
   let PortfolioTradingEq = request.models['PortfolioTradingEq']
   let tradingEq = request.body['tradingEq']
-  const PortfolioId = request.body['PortfolioId'];
+  const PortfolioId = request.params['id']
   // portfolioTradingEq instance to add to the database
   let portfolioTradingEq = new PortfolioTradingEq({
       _id: {
@@ -159,7 +159,7 @@ module.exports.removeTradingEq = async (request, response) => {
   let Portfolio = request.models['Portfolio']
   let PortfolioTradingEq = request.models['PortfolioTradingEq']
   let tradingEq = request.body['tradingEq']
-  const PortfolioId = request.body['PortfolioId'];
+  const PortfolioId = request.params['id'];
 
   PortfolioTradingEq.deleteOne({ PortfolioId : PortfolioId, TradingEq: tradingEq}, (err, results) => {
     if(err){
@@ -178,9 +178,9 @@ module.exports.removeTradingEq = async (request, response) => {
 module.exports.sharePortfolio = async (request, response) => {
   let Portfolio = request.models['Portfolio']
   const userId = request.session['user']._id
-  const PortfolioId = request.body['PortfolioId'];
+  const PortfolioId = request.params['id'];
 
-  portfolio = await Portfolio.findOne({ _id : PortfolioId});
+  portfolio = await Portfolio.findOne({ _id : PortfolioId, userId : userId});
   if(portfolio){
     Portfolio.updateOne({_id:PortfolioId, userId: userId},{ isPrivate: false}) 
       .then( doc => {
@@ -196,13 +196,13 @@ module.exports.sharePortfolio = async (request, response) => {
 }
 
 /*
-  Post method for following specific trading equipment.
+  Post method for following specific portfolio.
 */
 module.exports.followPortfolio = async (request, response) => {
   let PortfolioFollow = request.models['PortfolioFollow']
 
   const UserId = request.session['user']._id
-  const PortfolioId = request.body['PortfolioId'];
+  const PortfolioId = request.params['id']
 
   try{
     row = await PortfolioFollow.findOne({ UserId, PortfolioId })
@@ -237,7 +237,7 @@ module.exports.unfollowPortfolio = async (request, response) => {
   let PortfolioFollow = request.models['PortfolioFollow']
 
   const UserId = request.session['user']._id
-  const PortfolioId = request.body['PortfolioId'];
+  const PortfolioId = request.params['id'];
   
   PortfolioFollow.deleteOne({ UserId, PortfolioId }, (err, results) => {
     if(err){
