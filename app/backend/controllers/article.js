@@ -80,17 +80,16 @@ module.exports.editArticle = async (request, response) => {
           errmsg: "Failed."
         })
       }
-    });
 
-    ArticleUser.deleteMany({ articleId : request.params['id']}, (err, results) => {
-      if(err){
-        return response.status(404).send({
-          errmsg: "Failed."
-        })
-      }
+      ArticleUser.deleteMany({ articleId : request.params['id']}, (err, results) => {
+        if(err){
+          return response.status(404).send({
+            errmsg: "Failed."
+          })
+        }
+        return response.send(204);
+      });
     });
-
-    return response.send(204);
   }
 
   
