@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/colorPrimaryDark">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="42dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="42dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="200dp" />
+
+    <EditText
+        android:id="@+id/comment_name_editText"
+        android:text="Name"
+        android:layout_marginTop ="50dp"
+        android:inputType="none"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        android:textAlignment="viewStart"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/style_editText"
+        android:textSize="18sp"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/comment_name_editText"
+        android:text ="@string/comment"
+        android:textAlignment="viewStart"
+        android:id="@+id/comment_body_text"
+        android:textSize="18sp"
+        android:textColor="@color/primaryTextColor"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/comment_body"
+        style="@style/style_editText"
+        android:scrollbars="vertical"
+        android:layout_marginTop="12dp"
+        android:hint="Surname"
+        android:maxLines="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toEndOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/comment_body_text" />
+
+    <Button
+        android:id="@+id/comment_submit_button"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/login_background"
+        android:ellipsize="none"
+        android:text="@string/comment_button"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/comment_body" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
