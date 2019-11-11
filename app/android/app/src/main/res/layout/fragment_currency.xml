@@ -47,7 +47,7 @@
             android:layout_marginBottom="8dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_location"
+            android:src="@drawable/ic_currency_follow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -71,7 +71,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/tequip_header">
-    <com.anychart.anychart.AnyChartView
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/any_chart_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -127,12 +127,13 @@
             android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_location"
+            android:src="@drawable/ic_currency_prediction_up"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/predictionRate"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
+            android:backgroundTint="@color/colorPrimaryDark"
             android:id="@+id/prediction_downButton"
             android:layout_width="80dp"
             android:layout_height="60dp"
@@ -142,7 +143,7 @@
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_location"
+            android:src="@drawable/ic_currency_prediction_down"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/prediction_upButton"
