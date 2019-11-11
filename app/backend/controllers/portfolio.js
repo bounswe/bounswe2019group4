@@ -110,18 +110,17 @@ module.exports.editPortfolio = async (request, response) => {
         return response.status(404).send({
           errmsg: "Failed to delete portfolio."
         })
-      }      
-    });
+      }
 
-    PortfolioTradingEq.deleteMany({ PortfolioId : request.params['id']}, (err, results) => {
-      if(err){
-        return response.status(404).send({
-          errmsg: "Failed to delete portfolio - trading eq. instances."
-        })
-      }       
+      PortfolioTradingEq.deleteMany({ PortfolioId : request.params['id']}, (err, results) => {
+        if(err){
+          return response.status(404).send({
+            errmsg: "Failed to delete portfolio - trading eq. instances."
+          })
+        }       
+        return response.status(204).send(); 
+      });
     });
-
-    return response.status(204).send(); 
   }
 
   /*
