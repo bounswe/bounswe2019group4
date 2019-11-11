@@ -39,7 +39,7 @@ class CurrencyAdapter(
 
 
             itemView.setOnClickListener {
-                clickListener.onItemClicked()
+                clickListener.onItemClicked(current.from)
             }
         }
 
@@ -69,5 +69,5 @@ class CurrencyAdapter(
 }
 
 interface OnCurrentClickListener {
-    fun onItemClicked()
+    fun onItemClicked(code:String)
 }

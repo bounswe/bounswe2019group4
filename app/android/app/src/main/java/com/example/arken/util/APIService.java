@@ -64,8 +64,8 @@ public interface APIService {
     Call<ListCurrency> getCurrentCurrencyValues();
 
     @Headers({"Content-Type: application/json"})
-    @GET("trading-equipments/{id}")
-    Call<Currency> getCurrency(@Path("id") String k);
+    @GET("trading-equipments/Eur")
+    Call<Currency> getCurrency( );
 
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")
