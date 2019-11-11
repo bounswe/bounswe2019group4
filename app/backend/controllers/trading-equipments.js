@@ -25,7 +25,7 @@ module.exports.getTradingEquipment = async (request, response) => {
     }
   }
 
-  current = await CurrentTradingEquipment.find({ from : TradingEq});
+  current = await CurrentTradingEquipment.findOne({ from : TradingEq});
 
   comments = await findUserComments({ related : TradingEq, about : "TRADING-EQUIPMENT"})
 
