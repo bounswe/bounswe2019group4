@@ -5,7 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorPriBlue">#1565c0</color>
     <color name="colorlightBlue">#5e92f3</color>
-    <color name="colorDarkBlue">#003c8f</color>
+    <color name="colorDarkBlue">#003C8F</color>
     <color name="darkBlueStar">#ffffff</color>
     <color name="grayBackground">#cfd8dc</color>
 </resources>

@@ -45,12 +45,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_currency_follow"
+            android:tint="#3D3D3F"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_currency_follow" />
 
         <TextView
             android:id="@+id/currencyTime"
@@ -64,36 +65,88 @@
             app:layout_constraintTop_toBottomOf="@id/currencyName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<LinearLayout
-    android:id="@+id/any"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tequip_header">
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/any_chart_view"
+    <LinearLayout
+        android:id="@+id/any"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tequip_header"/>
-</LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/tequip_header">
+
+        <com.anychart.AnyChartView
+            android:id="@+id/any_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tequip_header"
+            />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mwy"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/any">
+
+        <Button
+            android:id="@+id/week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Weekly"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/month"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Monthly"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/year"
+            app:layout_constraintStart_toEndOf="@id/week"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Yearly"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/month"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/currencyValueRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/predictionLine" />
+        app:layout_constraintTop_toBottomOf="@+id/rowline" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/predictionLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/any">
+        app:layout_constraintTop_toBottomOf="@+id/mwy">
 
         <TextView
             android:id="@+id/prediction"
@@ -125,7 +178,7 @@
             android:layout_width="80dp"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
-            android:background="@android:color/transparent"
+            android:backgroundTint="#008F13"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_currency_prediction_up"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -133,7 +186,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:backgroundTint="@color/colorPrimaryDark"
             android:id="@+id/prediction_downButton"
             android:layout_width="80dp"
             android:layout_height="60dp"
@@ -141,7 +193,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@android:color/transparent"
+            android:backgroundTint="#D60D0D"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_currency_prediction_down"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -150,4 +202,81 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rowline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/predictionLine">
+
+        <TextView
+            android:id="@+id/currencyDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="yyyy-mm-dd"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#000C0B0B"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/currencyDate"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/currencyRowOpen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Open"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/currencyRowHigh"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currencyRowHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="High"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/currencyRowLow"
+                app:layout_constraintStart_toEndOf="@id/currencyRowOpen"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currencyRowLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/currencyRowClose"
+                app:layout_constraintStart_toEndOf="@id/currencyRowHigh"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currencyRowClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Close"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/currencyRowLow"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

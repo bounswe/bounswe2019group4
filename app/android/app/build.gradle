@@ -28,7 +28,7 @@ android {
 dependencies {
     def nav_version = "2.1.0"
     def recyclerview_version = "1.0.0"
-    implementation 'com.github.AnyChart:AnyChart-Android:0.0.3'
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
     implementation "com.google.android.gms:play-services-location:17.0.0"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
