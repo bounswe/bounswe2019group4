@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
 import ThreeStar from '../../assets/threestar.png'
-
+import {Link} from 'react-router-dom'
 
 
 import history from '../../_core/history';
@@ -135,10 +135,9 @@ class Events extends Component {
         return (
 
             len?(
-        <Grid>
-            <div className="four wide column"></div>
-            <div className="ten wide column">
-            <Segment style={{width:"800px"}} raised piled padded compact textAlign='left'>
+
+            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
+            <Segment  raised piled padded compact textAlign='left'>
                 <Header textAlign='center'>
                     Events
                 </Header>
@@ -168,7 +167,7 @@ class Events extends Component {
                         return(
                         <tr>
                             <td>
-                                {event.Event}
+                                <Link to={"/events/"+event.CalendarId}>{event.Event}</Link>
                             </td>
                             <td>
                                 {event.Country}
@@ -180,7 +179,7 @@ class Events extends Component {
                                 {event.Source}
                             </td>
                             <td>
-                                {<img style={{width:"50px"}} src={src} alt='threeStar'/>}
+                                {<img style={{width:"50px"}} src={src} alt='stars'/>}
                             </td>
                         </tr>)
                     })}
@@ -195,7 +194,7 @@ class Events extends Component {
 
             </Segment>
             </div>
-        </Grid>):(<h1 style={{color:"white"}}>Loading</h1>)
+        ):(<h1 style={{color:"white"}}>Loading</h1>)
 
 
         )
