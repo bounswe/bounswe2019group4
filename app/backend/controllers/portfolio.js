@@ -37,7 +37,7 @@ module.exports.postPortfolio = async (request, response) => {
           // Saves the instance into the database, returns any error occured
           portfolioTradingEq.save()
       }
-      return response.status(204).send();
+      return response.status(200).send(doc);
   }).catch(error => {
     return response.status(400).send(error);
   });
@@ -86,7 +86,7 @@ module.exports.editPortfolio = async (request, response) => {
   if(portfolio){
     Portfolio.updateOne({_id:PortfolioId, userId: userId},{ title: title, definition: definition}) 
       .then( doc => {
-        return response.status(204).send();
+        return response.status(200).send(doc);
       }).catch(error => {
         return response.status(400).send(error);
       });
