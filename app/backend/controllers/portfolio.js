@@ -86,7 +86,7 @@ module.exports.editPortfolio = async (request, response) => {
   if(portfolio){
     Portfolio.updateOne({_id:PortfolioId, userId: userId},{ title: title, definition: definition}) 
       .then( doc => {
-        return response.status(200).send(doc);
+        return response.status(204).send()
       }).catch(error => {
         return response.status(400).send(error);
       });
