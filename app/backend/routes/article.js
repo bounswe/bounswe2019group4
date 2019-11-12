@@ -19,14 +19,14 @@ router.post('/', [ isAuthenticated, modelBinder(Article, 'Article')], articleCon
   Check controller function for more detail
 */
 
-router.patch('/edit', [ isAuthenticated, modelBinder(Article, 'Article')], articleController.editArticle)
+router.patch('/:id', [ isAuthenticated, modelBinder(Article, 'Article')], articleController.editArticle)
 
 /*
   Post endpoint for rating article.
   Check controller function for more detail
 */
 
-router.post('/rate', [ isAuthenticated, multipleModelBinder([
+router.post('/:id/rate', [ isAuthenticated, multipleModelBinder([
   [Article, 'Article'],
   [ArticleUser, 'ArticleUser']
 ])], articleController.rateArticle)
@@ -41,6 +41,9 @@ router.get('/:id', modelBinder(Article, 'Article'), articleController.getArticle
   Delete endpoint for article.
   Check controller function for more detail
 */
-router.delete('/:id', [isAuthenticated, modelBinder(Article, 'Article')], articleController.deleteArticle)
+router.delete('/:id', [isAuthenticated, multipleModelBinder([
+  [Article, 'Article'],
+  [ArticleUser, 'ArticleUser']
+])], articleController.deleteArticle)
 
 module.exports = router

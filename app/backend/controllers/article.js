@@ -17,7 +17,7 @@ module.exports.postArticle = async (request, response) => {
     // Saves the instance into the database, returns any error occured
     article.save()
       .then(doc => {
-      return response.status(204).send();
+      return response.status(200).send(doc);
     }).catch(error => {
       return response.status(400).send(error);
     });
@@ -49,7 +49,7 @@ module.exports.editArticle = async (request, response) => {
   const userId = request.session['user']._id
   const title = request.body["title"];
   const text = request.body["text"];
-  const articleId = request.body['articleId'];
+  const articleId = request.params['id'];
 
   article = await Article.findOne({ _id : articleId});
   if(article){
@@ -72,6 +72,7 @@ module.exports.editArticle = async (request, response) => {
   */
   module.exports.deleteArticle = async (request, response) => {
     let Article = request.models['Article']
+    let ArticleUser = request.models['ArticleUser']
   
     Article.deleteOne({ _id : request.params['id'], userId : request.session['user']._id }, (err, results) => {
       if(err){
@@ -79,7 +80,15 @@ module.exports.editArticle = async (request, response) => {
           errmsg: "Failed."
         })
       }
-      return response.send(204);
+
+      ArticleUser.deleteMany({ articleId : request.params['id']}, (err, results) => {
+        if(err){
+          return response.status(404).send({
+            errmsg: "Failed."
+          })
+        }
+        return response.send(204);
+      });
     });
   }
 
@@ -91,7 +100,7 @@ module.exports.rateArticle = async (request, response) => {
   let ArticleUser = request.models['ArticleUser']
   const userId = request.session['user']._id
   const value = request.body["value"];
-  const articleId = request.body['articleId'];
+  const articleId = request.params['id'];
   let Article = request.models['Article']
 
   if(value<1 || value>5){
@@ -120,9 +129,8 @@ module.exports.rateArticle = async (request, response) => {
           let newRateAverage = (article.rateAverage*article.numberOfRates+value)/newNumberOfRates;
           Article.updateOne({_id:articleId},{ rateAverage: newRateAverage, numberOfRates: newNumberOfRates}) 
           .then( doc => {
-            return response.status(204).send();
           }).catch(error => {
-            return response.status(400).send(error);
+            return response.status(204).send();
           });
           return response.status(204).send();
         }).catch(error => {
@@ -136,7 +144,6 @@ module.exports.rateArticle = async (request, response) => {
           let newRateAverage = (article.rateAverage*article.numberOfRates-row.rate+value)/article.numberOfRates;
           Article.updateOne({_id:articleId},{ rateAverage: newRateAverage}) 
           .then(doc => {
-            return response.status(204).send();
           }).catch(error => {
             return response.status(400).send(error);
           });
