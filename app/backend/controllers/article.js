@@ -17,7 +17,7 @@ module.exports.postArticle = async (request, response) => {
     // Saves the instance into the database, returns any error occured
     article.save()
       .then(doc => {
-      return response.status(204).send();
+      return response.status(200).send(doc);
     }).catch(error => {
       return response.status(400).send(error);
     });
@@ -129,9 +129,8 @@ module.exports.rateArticle = async (request, response) => {
           let newRateAverage = (article.rateAverage*article.numberOfRates+value)/newNumberOfRates;
           Article.updateOne({_id:articleId},{ rateAverage: newRateAverage, numberOfRates: newNumberOfRates}) 
           .then( doc => {
-            return response.status(204).send();
           }).catch(error => {
-            return response.status(400).send(error);
+            return response.status(204).send();
           });
           return response.status(204).send();
         }).catch(error => {
@@ -145,7 +144,6 @@ module.exports.rateArticle = async (request, response) => {
           let newRateAverage = (article.rateAverage*article.numberOfRates-row.rate+value)/article.numberOfRates;
           Article.updateOne({_id:articleId},{ rateAverage: newRateAverage}) 
           .then(doc => {
-            return response.status(204).send();
           }).catch(error => {
             return response.status(400).send(error);
           });
