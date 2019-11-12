@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Segment, Header,Table,Pagination,Grid} from 'semantic-ui-react';
+import {Header, Pagination, Segment} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
 import ThreeStar from '../../assets/threestar.png'
 import {Link} from 'react-router-dom'
-
-
-import history from '../../_core/history';
 import * as userActions from '../../actions/userActions';
 
 class Events extends Component {
@@ -41,38 +38,24 @@ class Events extends Component {
     }
 
     normalizeDate(date){
-        let d=new Date(date);
-        let month=d.getUTCMonth()+1;
-        let day=d.getUTCDate();
-        let year=d.getUTCFullYear();
-        let time=d.getUTCHours()+"."+d.getUTCMinutes();
-        let datetext = d.toTimeString();
 
-
-
-        var dat = new Date(date);
-        var formatOptions = {
-            day:    '2-digit',
-            month:  '2-digit',
-            year:   'numeric',
-            hour:   '2-digit',
+        const dat = new Date(date);
+        const formatOptions = {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
             minute: '2-digit',
             hour12: true
         };
-        var dateString = dat.toLocaleDateString('en-US', formatOptions);
-// datestring is "20:32:01 GMT+0530 (India Standard Time)"
-// Split with ' ' and we get: ["20:32:01", "GMT+0530", "(India", "Standard", "Time)"]
-// Take the first value from array :)
-        datetext = datetext.split(' ')[0];
-
-        return dateString;
+        return dat.toLocaleDateString('en-US', formatOptions);
     }
 
     updateDates(){
 
         let newevents=this.state.events.slice();
         //alert(this.state.events.length+"afasfaed")
-        var i;
+        let i;
         for(i=0;i<newevents.length;i++) {
             //alert(newevents[i].Date);
             let d=newevents[i].Date;
@@ -156,9 +139,9 @@ class Events extends Component {
 
                         const imp=event.Importance;
                         var src;
-                        if(imp==3){
+                        if(imp===3){
                             src=ThreeStar;
-                        }else if(imp==2){
+                        }else if(imp===2){
                             src=TwoStar;
                         }else{
                             src=OneStar;
