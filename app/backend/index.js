@@ -40,6 +40,8 @@ app.use('/comments/', require('./routes/comments')) // includes comment endpoint
 
 app.use('/articles/', require('./routes/article')) // includes article endpoints to the main app
 
+app.use('/portfolios/', require('./routes/portfolio')) // includes portfolio endpoints to the main app
+
 // catch-all error handler for debugging
 app.use((err, req, res, next) => {
     console.log(err.stack)  // logs the error
