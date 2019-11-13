@@ -54,6 +54,14 @@
         <action
             android:id="@+id/action_profileFragment_to_eventListFragment"
             app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_articleDialogFragment"
+            app:destination="@id/articleDialogFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/articleDialogFragment"
+        android:name="com.example.arken.fragment.ArticleDialogFragment"
+        android:label="fragment_article_dialog"
+        tools:layout="@layout/fragment_article_dialog" />
 
 </navigation>

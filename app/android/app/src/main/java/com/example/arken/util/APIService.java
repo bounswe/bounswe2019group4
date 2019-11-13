@@ -1,5 +1,6 @@
 package com.example.arken.util;
 
+import com.example.arken.model.Article;
 import com.example.arken.model.Email;
 import com.example.arken.model.Event;
 import com.example.arken.model.GoogleId;
@@ -28,7 +29,7 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @POST("auth/login")
-    Call<Profile> login(
+    Call<LoginUser> login(
             @Body LoginUser loginUser
     );
 
@@ -69,4 +70,10 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @GET("profile/{id}")
     Call<Profile> getProfile(@Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("articles")
+    Call<ResponseBody> createArticle(
+            @Body Article article
+    );
 }
