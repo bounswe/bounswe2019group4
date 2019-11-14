@@ -15,7 +15,7 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
     val data: MutableLiveData<Currency> = MutableLiveData()
    // private val apiService by lazy { RetroClient.getInstance().apiService }
     fun setData(code: String) {
-        val call: Call<Currency> = RetroClient.getInstance().apiService.getCurrency()
+        val call: Call<Currency> = RetroClient.getInstance().apiService.getCurrency(code)
             call.enqueue(
             object : Callback<Currency> {
                 override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
