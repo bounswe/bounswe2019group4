@@ -1,16 +1,55 @@
+var fs = require("fs");
 const IBAN = require('iban');
 const commonPassword = require('common-password');
+const request = require('request');
+
+const {UserFollow} = require('./models/user-follow')
+const {User} = require('./models/user')
 const {Event} = require('./models/event');
 const {TradingEquipment} = require('./models/trading-eq');
+const {TradingEquipmentPrediction} = require('./models/trading-eq-prediction');
+const {Comment} = require('./models/comment');
+const {Article} = require('./models/article');
 const {CurrentTradingEquipment} = require('./models/current-trading-eq');
-const request = require('request');
+const { tradingEquipmentKey } = require('./secrets');
+
 const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest";
 let trading_eq_url_base = "https://www.alphavantage.co/query?";
-const { tradingEquipmentKey } = require('./secrets');
-var fs = require("fs");
 const until_day = "2019-01-01";
+
 const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
 
+
+module.exports.scheduleAPICalls = function(){
+  /*
+  Get method for events in every 30 minutes
+  */
+  setInterval( () => {
+    getEventsFromAPI()
+  }, 30*60*1000);
+
+  /*
+  Get method for trading equipments every day
+  */
+  setInterval( () => {
+    getTradingEquipmentsFromAPI(true)
+  }, 24*60*60*1000);
+
+  /*
+  Get method for current trading equipments values in every two hours
+  */
+  setInterval( () => {
+    getCurrentTradingEquipmentsFromAPI()
+  }, 2*60*60*1000);
+
+  /*
+  Result prediction method that find results everyday
+  */
+  setInterval( () => {
+    resultPredictions();
+  }, 24*60*60*1000);
+
+}
 
 /*
   Method in order to check whether password is valid or not.
@@ -68,7 +107,7 @@ module.exports.checkTCKN = function(value) {
   Get method for events.
   Using 3rd party API, it saves events to database.
 */
-module.exports.getEventsFromAPI = function() {
+function getEventsFromAPI() {
 
   request(url, (error, response, body) => {
     // If there is an error
@@ -100,7 +139,7 @@ module.exports.getEventsFromAPI = function() {
   Get method for Trading Equipments.
   Using 3rd party API, it saves trading equipments to database.
 */
-module.exports.getTradingEquipmentsFromAPI = function(isOnlyToday) {
+function getTradingEquipmentsFromAPI(isOnlyToday) {
 
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
@@ -192,7 +231,7 @@ module.exports.getTradingEquipmentsFromAPI = function(isOnlyToday) {
   Get method for Trading Equipments.
   Using 3rd party API, it saves current trading equipments values to database.
 */
-module.exports.getCurrentTradingEquipmentsFromAPI = async function() {
+async function getCurrentTradingEquipmentsFromAPI() {
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
     let currencies = contents.split('\n'); // form an array consist of currencies
@@ -254,5 +293,125 @@ module.exports.getCurrentTradingEquipmentsFromAPI = async function() {
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
+  }
+}
+
+module.exports.findUserFollows = async spec => {
+  const data = await UserFollow.find(spec).lean()
+  return await Promise.all(data.map(async el => {
+    const followingUser = await User.findOne({_id: el.FollowingId})
+    const followedUser = await User.findOne({_id: el.FollowedId})
+    return {
+      ...el,
+      FollowingName: followingUser.name,
+      FollowingSurname: followingUser.surname,
+      FollowedName: followedUser.name,
+      FollowedSurname: followedUser.surname,
+    }}))
+}
+
+module.exports.findUserComments = async spec => {
+  const data = await Comment.find(spec).lean()
+  return await Promise.all(data.map(async el => {
+    const user = await User.findOne({_id: el.userId})
+    return {
+      ...el,
+      username: user.name,
+      usersurname: user.surname
+    }}))
+}
+
+module.exports.findUserArticle = async spec => {
+  const data = await Article.find(spec).lean()
+  return await Promise.all(data.map(async el => {
+    const user = await User.findOne({_id: el.userId})
+    return {
+      ...el,
+      username: user.name,
+      usersurname: user.surname
+    }}))
+}
+
+async function resultPredictions() {
+
+  // Get currencies
+  const currencies = await CurrentTradingEquipment.find()
+
+  var currentDay = new Date();
+  currentDay.setDate(currentDay.getDate()-1)
+  day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
+
+  // get today's all prediction data
+  const data = await TradingEquipmentPrediction.find().where('Date').equals(day_format)
+
+  // for each prediction
+  for (const element of data) {
+
+    let TradingEq = element.TradingEq;
+    // get the current value of the predicted currency
+    const currency =  currencies.filter(function(c) {
+      return c.from == TradingEq;
+    });
+
+    let currentValue = currency[0].rate;
+    if(element.Result != "")
+      continue;
+
+    // check whether the value at the prediction time is higher or lower than the current value and determine prediction result accordingly
+    if(element.CurrentValue > currentValue){
+      if(element.Prediction == "down")
+        element.Result = "true"
+      else
+        element.Result = "false"
+    } else if(element.CurrentValue < currentValue){
+      if(element.Prediction == "down")
+        element.Result = "false"
+      else
+        element.Result = "true"
+    } else if(element.CurrentValue == currentValue)
+        element.Result = "false"
+
+
+    // update database with the results
+    await TradingEquipmentPrediction.updateOne({_id:element._id},{ Result: element.Result }) 
+    .then(doc => {
+
+    }).catch(error => {
+      
+    });
+
+    // now update prediction rate of users
+    let UserId = element.UserId;
+    let user = await User.findOne({_id: UserId})
+    
+    if(!user)
+      continue;
+    
+    let predictionRate = user.predictionRate;
+
+    // there is no previous prediction data. Now start with 0/0
+    if(predictionRate == null || predictionRate == undefined)
+      predictionRate = "0/0"
+    
+    
+    let temp = predictionRate.split('/')
+    let leftSide = parseInt(temp[0]);
+    let rightSide = parseInt(temp[1]);
+
+    if(element.Result == "true")
+      leftSide+=1;
+    
+    rightSide+=1
+
+    predictionRate = leftSide+"/"+rightSide;
+
+    // update database with the updated prediction rates
+    await User.updateOne({_id:UserId},{ predictionRate: predictionRate }) 
+    .then(doc => {
+
+    }).catch(error => {
+      
+    });
+
   }
 }
