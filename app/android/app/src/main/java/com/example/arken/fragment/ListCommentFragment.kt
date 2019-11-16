@@ -67,16 +67,16 @@ class ListCommentFragment : Fragment(), OnCommentClickListener {
     override fun onItemClicked(comment: Comment) {
         //update
     }
+    fun addToDataset(comment: Comment){
+        dataset.add(0, comment)
+    }
 
     companion object {
         private val TAG = "RecyclerViewFragment"
         private val KEY_LAYOUT_MANAGER = "layoutManager"
         fun newInstance(list: MutableList<Comment>){
             val instance = ListCommentFragment()
-            val comment = Comment("vdvd", "dvdv", "bfb", Date(2019,6,2),"fhgg")
-            val dlist = mutableListOf<Comment>()
-            dlist.add(comment)
-            instance.setDataset(dlist)
+            instance.setDataset(list)
         }
     }
 }

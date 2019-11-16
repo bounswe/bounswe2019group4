@@ -148,7 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/event_row_background"
-            android:id="@+id/commentFragment" />
+            android:id="@+id/list_comment_fragment" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
