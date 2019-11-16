@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -24,16 +25,12 @@ import java.util.*
     comment fragment olmasıb
  */
 
-class ListCommentFragment : Fragment(), OnCommentClickListener {
+class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCommentClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var dataset: MutableList<Comment>
     private lateinit var commentAdapter: CommentAdapter
-    private lateinit var commentFragment: Fragment
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,7 +52,7 @@ class ListCommentFragment : Fragment(), OnCommentClickListener {
         recyclerView.adapter = commentAdapter
 
         Log.i("ListCommentFragment", "onCreateView")
-
+        fragmentManager?.beginTransaction()?.add(R.id.fragment_make_comment, CommentFragment.newInstance(this), "comment")?.commit()
         return rootView
     }
 
@@ -66,9 +63,15 @@ class ListCommentFragment : Fragment(), OnCommentClickListener {
     }
     override fun onItemClicked(comment: Comment) {
         //update
+        Log.i("cdfdfd", "cfv")
     }
+
     fun addToDataset(comment: Comment){
         dataset.add(0, comment)
+    }
+    override fun onSubmit(comment: Comment, textView: TextView) {
+        addToDataset(comment)
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 
     companion object {
@@ -79,6 +82,7 @@ class ListCommentFragment : Fragment(), OnCommentClickListener {
             instance.setDataset(list)
         }
     }
+
 }
 
 

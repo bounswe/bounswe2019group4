@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="3dp"
         app:layout_constraintStart_toStartOf="parent"/>
-    <fragment class="com.example.arken.fragment.CommentFragment"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/comment_header"

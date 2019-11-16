@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.arken.R
 import com.example.arken.model.Comment
-import com.example.arken.util.OnCommentClickListener
 import java.util.*
 
 class CommentFragment : Fragment() {
@@ -27,19 +26,7 @@ class CommentFragment : Fragment() {
 
         return view
     }
-    override fun onAttach(activity: Activity) {
-        super.onAttach(activity)
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            onCommentSubmittedListener = activity as OnCommentSubmitted
-            ?
-        } catch (e: ClassCastException) {
-            throw ClassCastException("$activity must implement TextClicked")
-        }
-    }
-//name alıyormuş gibi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //shared pref kullanabilirsin
@@ -56,5 +43,12 @@ class CommentFragment : Fragment() {
     }
     interface OnCommentSubmitted{
         fun onSubmit(comment: Comment, textView: TextView)
+    }
+    companion object{
+        fun newInstance(onCommentSubmitted: OnCommentSubmitted):CommentFragment{
+            val frag = CommentFragment()
+            frag.onCommentSubmittedListener = onCommentSubmitted
+            return frag
+        }
     }
 }
