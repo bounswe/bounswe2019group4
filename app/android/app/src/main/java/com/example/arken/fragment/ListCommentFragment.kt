@@ -1,5 +1,6 @@
 package com.example.arken.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,16 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Comment
 import com.example.arken.model.Event
+import com.example.arken.model.Profile
 import com.example.arken.util.CommentAdapter
 import com.example.arken.util.OnCommentClickListener
 import com.example.arken.util.OnItemClickListener
+import com.example.arken.util.RetroClient
+import retrofit2.Call
 import java.util.*
 
 /*
     !) adapter falan koy argument commentleri al
     3) kendi commentimse update veya delete seçeneği
-    bunlar nav graphda olmasın kendin aç hem de arguman verirsin
-    comment fragment olmasıb
  */
 
 class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCommentClickListener {
@@ -47,8 +49,10 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
         val comment2 = Comment("vdvdfd", "dvdv", "bfbdvvddvvddv", Date(2019,6,2),"fhgg")
         dataset.add(comment1)
         dataset.add(comment2)
+        val userId = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE
+        ).getString("userId", "defaultId")!!
 
-        commentAdapter = CommentAdapter(dataset, this)
+        commentAdapter = CommentAdapter(dataset, userId, this)
         recyclerView.adapter = commentAdapter
 
         Log.i("ListCommentFragment", "onCreateView")
