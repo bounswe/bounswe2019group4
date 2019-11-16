@@ -1,12 +1,15 @@
 package com.example.arken.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,12 +17,16 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
+import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.tradingEquipment.Currency
 import com.example.arken.util.CurrencyValueAdapter
 import com.example.arken.viewModel.TradingEquipmentViewModel
 
 
-class CurrencyFragment : Fragment() {
+class CurrencyFragment : Fragment() ,View.OnClickListener{
+
+
+    private lateinit var prefs : SharedPreferences
     private lateinit var currencyName:TextView
     private lateinit var predictionValue:TextView
     private lateinit var currencyValue:TextView
@@ -39,6 +46,8 @@ class CurrencyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_currency, container, false)
+        val layout :ConstraintLayout= view.findViewById(R.id.curBack)
+        layout.setOnClickListener(this)
         currencyValue=view.findViewById(R.id.currencyValue)
         currencyName=view.findViewById(R.id.currencyName)
         currencyTime=view.findViewById(R.id.currencyTime)
@@ -48,6 +57,7 @@ class CurrencyFragment : Fragment() {
         predictionUpButton=view.findViewById(R.id.prediction_upButton)
         predictionValue=view.findViewById(R.id.predictionRate)
         followButton=view.findViewById(R.id.follow_button)
+        followButton.setOnClickListener(this)
         recyclerView.setHasFixedSize(true)
         currencyValueAdapter = CurrencyValueAdapter()
         recyclerView.adapter = currencyValueAdapter
@@ -65,10 +75,17 @@ class CurrencyFragment : Fragment() {
         tradingEquipmentViewModel.setData(name)
         return view
     }
-
+    override fun onClick(v: View?) {
+        System.out.println("click works")
+        prefs=getActivity()!!.getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
+        when(v!!.id){
+            R.id.follow_button -> tradingEquipmentViewModel.followUnfollow(prefs.getString("cookie","null")!!,args.codeOfCurrency)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
     }
+
 }

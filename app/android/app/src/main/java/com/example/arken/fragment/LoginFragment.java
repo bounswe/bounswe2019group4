@@ -126,6 +126,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     if (response.isSuccessful()) {
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                         editor.putString("email", email);
+                        editor.putString("cookie",response.headers().get("Set-Cookie"));
                         editor.apply();
                         Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
                     } else {
