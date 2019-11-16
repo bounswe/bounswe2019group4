@@ -37,15 +37,16 @@ class MenuAdapter(var imageSet: IntArray, var nameSet: Array<String>, val isLogg
 
         viewHolder.imageView.setImageResource(imageSet[position])
         viewHolder.textView.text = nameSet[position]
-        viewHolder.itemView.setOnClickListener {
+        viewHolder.imageView.setOnClickListener {
             itemClickListener.onMenuItemClicked(position)
         }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount():Int{
+        //profile
         return if(!isLogged)
-            imageSet.size - 2
+            imageSet.size - 1
         else imageSet.size
     }
 

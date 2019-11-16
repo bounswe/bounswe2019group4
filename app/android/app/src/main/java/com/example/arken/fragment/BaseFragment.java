@@ -33,6 +33,7 @@ import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
 public class BaseFragment extends Fragment implements OnMenuItemClickListener {
     private Fragment fragment;
     private RecyclerView recyclerView;
+    private int selected = 0;
     private boolean isLogged = true;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_base, container, false);
@@ -41,34 +42,7 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment && isLogged) {
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                    builder1.setMessage(R.string.log_out_warning);
-                    builder1.setCancelable(true);
-
-                    builder1.setPositiveButton(
-                            "Yes",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                    signOut();
-                                }
-                            });
-
-                    builder1.setNegativeButton(
-                            "No",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                    AlertDialog alert11 = builder1.create();
-                    alert11.show();
-                } else {
-                    if (Navigation.findNavController(recyclerView).getCurrentDestination().getId() == R.id.baseFragment)
-                        Navigation.findNavController(recyclerView).popBackStack();
-                }
+                signOutPressed();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -88,6 +62,36 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
 
         return view;
     }
+    private void signOutPressed(){
+        if ((findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment || selected == 4) && isLogged) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+            builder1.setMessage(R.string.log_out_warning);
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            signOut();
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    "No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        } else {
+            if (Navigation.findNavController(recyclerView).getCurrentDestination().getId() == R.id.baseFragment)
+                Navigation.findNavController(recyclerView).popBackStack();
+        }
+    }
 
     private void signOut() {
         MainActivity.getClient().signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -104,6 +108,7 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
 
     @Override
     public void onMenuItemClicked(int index) {
+        selected = index;
         if(index == 0){
             if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment) {
                 RecyclerView recyclerView = fragment.getView().findViewById(R.id.recyclerView);
@@ -114,6 +119,8 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
                 findNavController(fragment).navigate(R.id.action_listCurrentFragment_to_eventListFragment);
             } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.profileFragment) {
                 findNavController(fragment).navigate(R.id.action_profileFragment_to_eventListFragment);
+            } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.searchFragment) {
+                findNavController(fragment).popBackStack();
             }
         }
         else if(index == 1){
@@ -126,8 +133,24 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
                 findNavController(fragment).popBackStack();
                 findNavController(fragment).navigate(R.id.action_eventListFragment_to_listCurrentFragment);
             } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.profileFragment) {
-
                 findNavController(fragment).navigate(R.id.action_profileFragment_to_listCurrentFragment);
+            }
+            else if (findNavController(fragment).getCurrentDestination().getId() == R.id.searchFragment) {
+                findNavController(fragment).navigate(R.id.action_searchFragment_to_listCurrentFragment);
+            }
+        }
+        else if(index == 2){
+            if (findNavController(fragment).getCurrentDestination().getId() == R.id.listCurrentFragment) {
+//                RecyclerView recyclerView = fragment.getView().findViewById(R.id.rec);
+//                recyclerView.smoothScrollToPosition(0);
+                findNavController(fragment).navigate(R.id.action_listCurrentFragment_to_searchFragment);
+            } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventListFragment) {
+                findNavController(fragment).navigate(R.id.action_eventListFragment_to_searchFragment);
+            } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventFragment) {
+                findNavController(fragment).popBackStack();
+                findNavController(fragment).navigate(R.id.action_eventListFragment_to_searchFragment);
+            } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.profileFragment) {
+                findNavController(fragment).navigate(R.id.action_profileFragment_to_searchFragment);
             }
         }
         else if (index == 3){
@@ -138,10 +161,12 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
             } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.eventFragment) {
                 findNavController(fragment).popBackStack();
                 findNavController(fragment).navigate(R.id.action_eventListFragment_to_profileFragment);
+            } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.searchFragment) {
+                findNavController(fragment).navigate(R.id.action_searchFragment_to_profileFragment);
             }
         }
         else if (index == 4){
-            signOut();
+            signOutPressed();
         }
 
     }

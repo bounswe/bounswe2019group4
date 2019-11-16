@@ -1,11 +1,9 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.arken.R
@@ -24,7 +22,7 @@ class SearchFragment: Fragment() {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         viewPager = view.findViewById(R.id.search_viewPager)
         // Get the list of movies from the JSON file
-        val values = arrayOf("elif1","elif2 ","elif3","elif4")
+        val values = arrayOf("EVENTS","TRADING EQ","ARTICLE","USER")
 
         pagerAdapter = fragmentManager?.let { SearchPagerAdapter(it, values) }!!
         viewPager.adapter = pagerAdapter
