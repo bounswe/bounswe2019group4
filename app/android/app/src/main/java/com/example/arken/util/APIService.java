@@ -66,11 +66,15 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("trading-equipments/{id}")
-    Call<Currency> getCurrency(@Path("id") String k);
+    Call<Currency> getCurrency(@Header("Cookie") String cookie, @Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
     @POST("trading-equipments/follow")
     Call<Currency> followCurrency(@Header("Cookie") String cookie, @Query("tEq") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("trading-equipments/unfollow")
+    Call<Currency> unFollowCurrency(@Header("Cookie") String cookie, @Query("tEq") String k);
 
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")
