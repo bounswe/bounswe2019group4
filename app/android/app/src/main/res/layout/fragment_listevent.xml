@@ -59,6 +59,7 @@
             android:layout_marginTop="10dp"
             android:hint="Country"
             android:inputType="textPersonName"
+            android:textColor="@android:color/background_dark"
             app:layout_constraintEnd_toStartOf="@id/guideline_middle"
             app:layout_constraintStart_toStartOf="@id/guideline_left"
             app:layout_constraintTop_toTopOf="parent" />
@@ -69,6 +70,7 @@
             android:layout_marginLeft="8dp"
             android:hint="Importance"
             android:inputType="textPersonName"
+            android:textColor="@android:color/background_dark"
             app:layout_constraintEnd_toStartOf="@id/guideline_right"
             app:layout_constraintStart_toEndOf="@id/guideline_middle"
             app:layout_constraintTop_toTopOf="@id/event_list_filter_country_editText" />
@@ -93,10 +95,10 @@
             android:id="@+id/event_list_clear_button"
             android:layout_width="94dp"
             android:layout_height="46dp"
-            android:background="@color/colorWhite"
+            android:background="@drawable/login_background"
             android:text="Clear Filter"
             android:textAllCaps="false"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintHorizontal_bias="1.0"
