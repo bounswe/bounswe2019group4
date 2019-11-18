@@ -95,6 +95,7 @@
             android:layout_height="46dp"
             android:background="@color/colorWhite"
             android:text="Clear Filter"
+            android:textAllCaps="false"
             android:textColor="@android:color/holo_blue_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
