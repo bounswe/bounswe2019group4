@@ -89,6 +89,20 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@id/event_list_filter_country_editText" />
 
+        <Button
+            android:id="@+id/event_list_clear_button"
+            android:layout_width="94dp"
+            android:layout_height="46dp"
+            android:background="@color/colorWhite"
+            android:text="Clear Filter"
+            android:textColor="@android:color/holo_blue_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/event_list_filter_button"
+            app:layout_constraintTop_toBottomOf="@+id/signup_event_list_filter_importance_editText"
+            app:layout_constraintVertical_bias="0.909" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
