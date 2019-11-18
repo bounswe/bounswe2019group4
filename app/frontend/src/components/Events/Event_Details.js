@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Segment, Header,Table,Pagination,Grid} from 'semantic-ui-react';
+import {Header, Segment} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
 import ThreeStar from '../../assets/threestar.png'
 import news from '../../assets/news.png'
-
-
-import history from '../../_core/history';
 import * as userActions from '../../actions/userActions';
 import Image from "semantic-ui-react/dist/commonjs/elements/Image";
-import profilePhoto from "../Profile/h2.jpg";
+import Events from "./Events";
 
 class Event_Details extends Component {
 
@@ -37,26 +34,22 @@ class Event_Details extends Component {
     }
     componentWillMount() {
         this.getEvents();
-        //alert(this.normalizeDate("2019-10-20T23:50:00.000Z"));
-        // alert("here");
+
     }
 
     normalizeDate(date){
 
-        var dat = new Date(date);
-        var formatOptions = {
-            day:    '2-digit',
-            month:  '2-digit',
-            year:   'numeric',
-            hour:   '2-digit',
+
+        const dat = new Date(date);
+        const formatOptions = {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
             minute: '2-digit',
             hour12: true
         };
-        var dateString = dat.toLocaleDateString('en-US', formatOptions);
-
-
-
-        return dateString;
+        return dat.toLocaleDateString('en-US', formatOptions);
     }
 
 
@@ -77,11 +70,11 @@ class Event_Details extends Component {
     getStars=()=>{
 
 
-            const imp=this.state.events.Importance;
-            var src;
-            if (imp == 3) {
+            const imp=this.state.events.event.Importance;
+        let src;
+        if (imp === 3) {
                 src = ThreeStar;
-            } else if (imp == 2) {
+            } else if (imp === 2) {
                 src = TwoStar;
             } else {
                 src = OneStar;
@@ -92,10 +85,10 @@ class Event_Details extends Component {
 
             )
 
-    }
+    };
 
     render() {
-        const {events}  = this.state;
+        const events  = this.state.events.event;
 
 
 
