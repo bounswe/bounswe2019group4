@@ -64,7 +64,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/signup_event_list_filter_importance_editText"
+            android:id="@+id/event_list_filter_importance_editText"
             style="@style/style_editText"
             android:layout_marginLeft="8dp"
             android:hint="Importance"
@@ -101,7 +101,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/event_list_filter_button"
-            app:layout_constraintTop_toBottomOf="@+id/signup_event_list_filter_importance_editText"
+            app:layout_constraintTop_toBottomOf="@+id/event_list_filter_importance_editText"
             app:layout_constraintVertical_bias="0.909" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
