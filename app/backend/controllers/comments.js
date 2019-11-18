@@ -47,8 +47,8 @@ module.exports.getComment = async (request, response) => {
 module.exports.deleteComment = async (request, response) => {
   let Comment = request.models['Comment']
 
-  Comment.deleteOne({ _id : request.params['id'], userId : request.session['user']._id, about : request.body.about.toUpperCase() }, (err, results) => {
-    if(err){
+  Comment.deleteOne({ _id: request.params['id'], userId: request.session['user']._id, about: request.params.about.toUpperCase() }, (err, results) => {
+    if (err) {
       return response.status(404).send({
         errmsg: "Failed."
       })
