@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Header, Segment} from 'semantic-ui-react';
+import {Header, Segment,Loader} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
@@ -8,7 +8,7 @@ import ThreeStar from '../../assets/threestar.png'
 import news from '../../assets/news.png'
 import * as userActions from '../../actions/userActions';
 import Image from "semantic-ui-react/dist/commonjs/elements/Image";
-import Events from "./Events";
+
 
 class Event_Details extends Component {
 
@@ -133,10 +133,11 @@ class Event_Details extends Component {
 
                     </table>
                     </Segment>
+
                 </Segment>
                 </div>
 
-                    ):(<h1 style={{color:"white"}}>Loading</h1>)
+                    ):(<div className="ui active text loader" style={{color:"gray",backgroundColor:"white"}}>Loading</div>)
 
 
         )

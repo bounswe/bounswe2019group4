@@ -177,7 +177,7 @@ class Events extends Component {
 
             </Segment>
             </div>
-        ):(<h1 style={{color:"white"}}>Loading</h1>)
+        ):(<div className="ui active text loader" style={{color:"gray",backgroundColor:"white"}}>Loading</div>)
 
 
         )
