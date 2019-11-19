@@ -2,7 +2,6 @@ package com.example.arken.model;
 
 public class GoogleUser {
 
-
     private String name;
     private String surname;
     private String email;

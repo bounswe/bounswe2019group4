@@ -29,18 +29,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="200dp" />
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/guideline_right"
-        app:layout_constraintStart_toStartOf="@id/guideline_middle"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text ="Date"
-        android:textAlignment="viewEnd"
-        android:id="@+id/comment_date"
-        android:textSize="12sp"
-        android:textColor="@color/primaryTextColor" />
-
     <EditText
         android:id="@+id/comment_name_editText"
         android:text="Name"
@@ -49,7 +37,7 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         android:textAlignment="viewStart"
-        app:layout_constraintTop_toBottomOf="@id/comment_date"
+        app:layout_constraintTop_toTopOf="parent"
         style="@style/style_editText"
         android:textSize="12sp"/>
     <TextView

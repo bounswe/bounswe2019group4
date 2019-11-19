@@ -80,17 +80,5 @@
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="invisible"/>
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/comment_edit"
-        android:src="@drawable/ic_edit"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toStartOf="@id/comment_delete"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="12dp"
-        android:visibility="invisible"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

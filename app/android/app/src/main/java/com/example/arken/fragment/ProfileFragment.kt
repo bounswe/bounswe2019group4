@@ -19,6 +19,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.arken.R
 import com.example.arken.activity.MainActivity.IMAGE_PREF
+import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.Profile
 import com.example.arken.util.RetroClient
 import de.hdodenhof.circleimageview.CircleImageView
@@ -53,24 +54,24 @@ class ProfileFragment : Fragment() {
         location_value_textView = view.findViewById(R.id.location_value_textView)
         email_value_textView = view.findViewById(R.id.email_value_textView)
         pred_value_textView = view.findViewById(R.id.pred_value_textView)
-
-
-       val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(activity!!.getSharedPreferences(
+        val id = activity!!.getSharedPreferences(
             LoginFragment.MY_PREFS_NAME,
             Context.MODE_PRIVATE
         )
-            .getString("userId", "defaultId"))
+            .getString("userId", "defaultId")
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE).getString("user_cookie", "")
+       val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, id)
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
                     profile = response.body()!!
 
-                    name_textView.text = profile!!.name
-                    surname_textView.text = profile!!.surname
-                    user_type_textView.text = if (profile?.isTrader!!) {"Trader"} else {"Basic"}
-                    location_value_textView.text = profile!!.location
-                    email_value_textView.text = profile!!.email
+                    name_textView.text = profile.user?.name
+                    surname_textView.text = profile.user?.surname
+                    user_type_textView.text = if (profile.user?.isTrader!!) {"Trader"} else {"Basic"}
+                    location_value_textView.text = profile.user?.location
+                    email_value_textView.text = profile.user?.email
 
 
                 } else {

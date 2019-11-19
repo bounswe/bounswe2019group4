@@ -1,6 +1,7 @@
 package com.example.arken.fragment
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,26 +13,34 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
+import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.Comment
 import com.example.arken.model.Event
 import com.example.arken.model.Profile
-import com.example.arken.util.CommentAdapter
-import com.example.arken.util.OnCommentClickListener
-import com.example.arken.util.OnItemClickListener
-import com.example.arken.util.RetroClient
+import com.example.arken.model.SignupUser
+import com.example.arken.util.*
+import okhttp3.ResponseBody
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
 import java.util.*
 
 /*
-    !) adapter falan koy argument commentleri al
-    3) kendi commentimse update veya delete seçeneği
+    1)teye comment ekleme
+    2) guest ise comment yazma yok
+    3) dataset yenileme
  */
 
-class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCommentClickListener {
+class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCommentDeletedListener {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var dataset: MutableList<Comment>
+    private var dataset: MutableList<Comment> = mutableListOf()
     private lateinit var commentAdapter: CommentAdapter
+    private var related = ""
+    private var about = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,46 +53,119 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
         ).apply { tag = TAG }
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
-        dataset = mutableListOf()
-        val comment1 = Comment("vdvd", "dvdv", "bfb", Date(2019,6,2),"fhgg")
-        val comment2 = Comment("vdvdfd", "dvdv", "bfbdvvddvvddv", Date(2019,6,2),"fhgg")
-        dataset.add(comment1)
-        dataset.add(comment2)
-        val userId = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE
+        val userId = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE
         ).getString("userId", "defaultId")!!
 
         commentAdapter = CommentAdapter(dataset, userId, this)
         recyclerView.adapter = commentAdapter
+
+        initDataset()
+        recyclerView.adapter?.notifyDataSetChanged()
 
         Log.i("ListCommentFragment", "onCreateView")
         fragmentManager?.beginTransaction()?.add(R.id.fragment_make_comment, CommentFragment.newInstance(this), "comment")?.commit()
         return rootView
     }
 
-    private fun setDataset(list: MutableList<Comment>) {
-        //arguman alacaksın
-        this.dataset = list
-        recyclerView.adapter?.notifyDataSetChanged()
-    }
-    override fun onItemClicked(comment: Comment) {
-        //update
-        Log.i("cdfdfd", "cfv")
-    }
+    override fun onSubmit(comment: String) {
 
-    fun addToDataset(comment: Comment){
-        dataset.add(0, comment)
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
+        val call = RetroClient.getInstance().apiService.makeComment(userCookie, Comment(related, comment, about))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "Your comment is sent", Toast.LENGTH_SHORT).show()
+                    initDataset()
+                    recyclerView.adapter?.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
+
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
-    override fun onSubmit(comment: Comment, textView: TextView) {
-        addToDataset(comment)
-        recyclerView.adapter?.notifyDataSetChanged()
+    override fun onItemClicked(commentId: String, position:Int) {
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
+        if(about == "EVENT"){
+            val call: Call<ResponseBody> = RetroClient.getInstance().apiService.deleteEventComment(userCookie, commentId)
+
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "Your comment is deleted", Toast.LENGTH_SHORT).show()
+                        dataset.removeAt(position)
+                        recyclerView.adapter?.notifyDataSetChanged()
+
+                    } else {
+                        Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        else if(about == "TRADING_EQUIPMENT"){
+            val call: Call<ResponseBody> = RetroClient.getInstance().apiService.deleteTEComment(userCookie, commentId)
+
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "Your comment is deleted", Toast.LENGTH_SHORT).show()
+                        dataset.removeAt(position)
+                        recyclerView.adapter?.notifyDataSetChanged()
+
+                    } else {
+                        Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+    }
+    fun initDataset(){
+        if(about == "EVENT"){
+            val call: Call<Event> = RetroClient.getInstance().apiService.getEvent(related)
+
+            call.enqueue(object : Callback<Event> {
+                override fun onResponse(call: Call<Event>, response: Response<Event>) {
+                    if (response.isSuccessful) {
+                        val callEvent: Event? = response.body()
+                        if (callEvent != null) {
+                            var comments = callEvent.comments
+                            dataset = comments
+                        }
+                    } else {
+                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Event>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
     }
 
     companion object {
         private val TAG = "RecyclerViewFragment"
         private val KEY_LAYOUT_MANAGER = "layoutManager"
-        fun newInstance(list: MutableList<Comment>){
+        fun newInstance(related:String, about:String): ListCommentFragment{
             val instance = ListCommentFragment()
-            instance.setDataset(list)
+            instance.related = related
+            instance.about = about
+            return instance
         }
     }
 

@@ -20,7 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import org.jetbrains.annotations.NotNull;
 
-public class MainActivity extends FragmentActivity implements CommentFragment.OnCommentSubmitted {
+public class MainActivity extends FragmentActivity {
     private static GoogleSignInClient mGoogleSignInClient;
     public static final String IMAGE_PREF = "imag_pref";
 
@@ -38,14 +38,4 @@ public class MainActivity extends FragmentActivity implements CommentFragment.On
         return mGoogleSignInClient;
     }
 
-    @Override
-    public void onSubmit(@NotNull Comment comment, TextView textView) {
-        // Get Fragment B
-        if(Navigation.findNavController(textView).getCurrentDestination().getId() == R.id.eventFragment){
-            EventFragment eventFragment = (EventFragment)getSupportFragmentManager().findFragmentById(R.id.eventFragment);
-            //listCommentFragment.addToDataset(comment);
-            Log.i("burada", " sfsff");
-        }
-
-    }
 }

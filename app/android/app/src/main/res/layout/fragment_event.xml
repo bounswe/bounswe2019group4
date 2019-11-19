@@ -143,7 +143,7 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <fragment class="com.example.arken.fragment.ListCommentFragment"
+        <FrameLayout
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
