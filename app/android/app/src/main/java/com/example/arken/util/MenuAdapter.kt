@@ -46,7 +46,7 @@ class MenuAdapter(var imageSet: IntArray, var nameSet: Array<String>, val isLogg
     override fun getItemCount():Int{
         //profile
         return if(!isLogged)
-            imageSet.size - 1
+            imageSet.size - 2
         else imageSet.size
     }
 

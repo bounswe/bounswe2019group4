@@ -141,7 +141,7 @@ android:textColor="#ffffff"
         android:id="@+id/currencyValueRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/list_comment_fragment"
         app:layout_constraintTop_toBottomOf="@+id/rowline" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -289,4 +289,10 @@ android:textColor="#ffffff"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/list_comment_fragment" />
 </androidx.constraintlayout.widget.ConstraintLayout>

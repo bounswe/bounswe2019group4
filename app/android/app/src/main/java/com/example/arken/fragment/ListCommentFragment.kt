@@ -63,7 +63,9 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
         recyclerView.adapter?.notifyDataSetChanged()
 
         Log.i("ListCommentFragment", "onCreateView")
-        fragmentManager?.beginTransaction()?.add(R.id.fragment_make_comment, CommentFragment.newInstance(this), "comment")?.commit()
+        if(userId!="defaultId"){
+            fragmentManager?.beginTransaction()?.add(R.id.fragment_make_comment, CommentFragment.newInstance(this), "comment")?.commit()
+        }
         return rootView
     }
 
@@ -99,7 +101,8 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
                     if (response.isSuccessful) {
                         Toast.makeText(context, "Your comment is deleted", Toast.LENGTH_SHORT).show()
                         dataset.removeAt(position)
-                        recyclerView.adapter?.notifyDataSetChanged()
+                        commentAdapter.dataSet = dataset
+                        commentAdapter.notifyDataSetChanged()
 
                     } else {
                         Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
@@ -120,7 +123,8 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
                     if (response.isSuccessful) {
                         Toast.makeText(context, "Your comment is deleted", Toast.LENGTH_SHORT).show()
                         dataset.removeAt(position)
-                        recyclerView.adapter?.notifyDataSetChanged()
+                        commentAdapter.dataSet = dataset
+                        commentAdapter.notifyDataSetChanged()
 
                     } else {
                         Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
@@ -144,6 +148,8 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
                         if (callEvent != null) {
                             var comments = callEvent.comments
                             dataset = comments
+                            commentAdapter.dataSet = dataset
+                            commentAdapter.notifyDataSetChanged()
                         }
                     } else {
                         Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()

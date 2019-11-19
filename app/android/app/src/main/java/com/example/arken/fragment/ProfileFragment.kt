@@ -69,10 +69,6 @@ class ProfileFragment : Fragment() {
         val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE).getString("user_cookie", "")
        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, id)
 
-        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile("5dca8dbbdc69c332f1a979f5")
-
-
-
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
