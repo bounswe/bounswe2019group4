@@ -127,9 +127,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         userId = response.body().get_id();
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                         editor.putString("email", email);
+                        editor.putString("cookie",response.headers().get("Set-Cookie"));
                         editor.putString("userId", userId);
                         editor.apply();
-                     // Toast.makeText(getContext(), response.body().get_id(), Toast.LENGTH_SHORT).show();
                         Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
                     } else {
 
