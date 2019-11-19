@@ -54,7 +54,10 @@ router.get('/reject/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'
   Get endpoint for editing profile details.
   Check controller function for more detail
 */
-router.patch('/edit',[isAuthenticated, modelBinder(User, 'User')], profileController.editProfile)
+router.patch('/edit',[
+  validateBody(['name', 'surname', 'email', 'location', 'isTrader', 'isPublic']),
+  isAuthenticated,
+  modelBinder(User, 'User')], profileController.editProfile)
 
 /*
   Get endpoint for change password
