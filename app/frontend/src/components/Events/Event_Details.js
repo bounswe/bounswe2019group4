@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Header, Segment,Loader} from 'semantic-ui-react';
+import {Header, Segment} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
@@ -8,7 +8,9 @@ import ThreeStar from '../../assets/threestar.png'
 import news from '../../assets/news.png'
 import * as userActions from '../../actions/userActions';
 import Image from "semantic-ui-react/dist/commonjs/elements/Image";
-
+import userFactory from "../../factories/userFactory";
+import {normalizeDate} from "./Events";
+import Loading from "../Loading";
 
 class Event_Details extends Component {
 
@@ -16,7 +18,11 @@ class Event_Details extends Component {
         super(props);
         this.state = {
             user: {},
-            events: {}
+            events: {
+
+
+
+            },
 
 
         }
@@ -24,45 +30,66 @@ class Event_Details extends Component {
 
     }
 
-    componentDidMount() {
+    async componentDidMount() {
 
         const localState = loadState();
         this.setState({user: localState.user});
-
-
-
-    }
-    componentWillMount() {
-        this.getEvents();
+        await this.getEvents();
+        await this.getsetUsername();
 
     }
 
-    normalizeDate(date){
+
+    getsetUsername=async ()=>{
+        const comments=[];
+        for(let i of this.state.events.comments) {
+
+            let data=await this.props.userInformation("/" + i.userID);
+            let user=data.value;
+            i.username=user.user.name + " " + user.user.surname;
+            comments.push(i);
 
 
-        const dat = new Date(date);
-        const formatOptions = {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true
-        };
-        return dat.toLocaleDateString('en-US', formatOptions);
-    }
+        }
+        this.setState({events:{...this.state.events,comments:comments}});
+    };
 
 
-    getEvents(){
+    async getEvents(){
+        const comments=[
+            {
+                userID: "5da9098b3866660dabd30d6f",
+                text:"fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf",
+                date:"2019-11-11T13:56:51.066Z"
 
-        this.props.events("/"+this.props.match.params.id).then(result=> {
-                //alert(Object.keys(result.action.payload));
-                this.setState({events:result.value});
+            },
+            {
+                userID: "5da9098b3866660dabd30d6f",
+                text:"fssfsdssfgfasf",
+                date:"2019-11-11T13:56:51.066Z"
+
+            },
+            {
+                userID: "5da9098b3866660dabd30d6f",
+                text:"fssfsdssfgfasf",
+                date:"2019-11-11T13:56:51.066Z"
+
+            },
+            {
+                userID: "5da9098b3866660dabd30d6f",
+                text:"fssfsdssfgfasf",
+                date:"2019-11-11T13:56:51.066Z"
 
             }
+        ];
+        await this.props.events("/"+this.props.match.params.id).then(async result=> {
+                //alert(Object.keys(result.action.payload));
+                let newevents=result.value;
+                newevents.comments=comments;
 
+                await this.setState({events:newevents})
 
-
+            }
         )
 
     }
@@ -89,7 +116,7 @@ class Event_Details extends Component {
 
     render() {
         const events  = this.state.events.event;
-
+        const state=this.state;
 
 
         return (
@@ -97,15 +124,15 @@ class Event_Details extends Component {
             events?(
 
 
-                <div style={{display:"flex",justifyContent:"center"}}>
-                <Segment raised piled padded compact textAlign="left" style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                <Segment raised piled padded compact textAlign="left" style={{display:"flex",flexDirection:"column",width:"30%",alignItems:"center"}}>
                     {<Image size="medium" src={news} />}
                     <Header textAlign='center'>
 
                         {events.Event}
                     </Header>
                     <ul>
-                        <li><strong>Date:</strong>{this.normalizeDate(events.Date)}</li>
+                        <li><strong>Date:</strong>{normalizeDate(events.Date)}</li>
                         <li><strong>Country:</strong>{events.Country}</li>
 
                         <li><strong>Importance:</strong>{this.getStars()}</li>
@@ -135,9 +162,37 @@ class Event_Details extends Component {
                     </Segment>
 
                 </Segment>
+
+                <Segment style={{width:"50%"}}>
+                    <Header textAlign={"center"}>
+                        Comments
+                    </Header>
+                    <table  className="ui red table">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th class="ten wide" style={{whiteSpace:"wrap"}}>Comment</th>
+                            <th class="two wide">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {state.events.comments.map(item=>(
+                            <tr>
+                                <td>{item.username?item.username: <Loading/>}</td>
+                                <td>{item.text}</td>
+                                <td>{normalizeDate(item.date)}</td>
+                            </tr>
+                        ))}
+
+                        </tbody>
+
+                    </table>
+
+                </Segment>
                 </div>
 
-                    ):(<div className="ui active text loader" style={{color:"gray",backgroundColor:"white"}}>Loading</div>)
+                    ):(<Loading/>
+                )
 
 
         )
@@ -146,7 +201,9 @@ class Event_Details extends Component {
 
 const dispatchToProps = dispatch => {
     return {
-        events: params => dispatch(userActions.events(params))
+        events: params => dispatch(userActions.events(params)),
+        userInformation:params=>dispatch(userActions.users(params))
+
     };
 };
 

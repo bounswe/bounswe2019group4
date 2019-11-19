@@ -55,3 +55,9 @@ export function events(params) {
         payload: userService.events(params)
     };
 }
+export function users(params) {
+    return {
+        type:"USER_PROFILE",
+        payload: userService.userProfile(params)
+    };
+}

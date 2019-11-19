@@ -5,6 +5,7 @@ function userFactory() {
     this.forgetPassword = params => baseRequest.post("/auth/forget-password", params);
     this.resetPassword = params => baseRequest.post("/auth/reset-password", params);
     this.events=path => baseRequest.get("/events"+path);
+    this.userProfile=path => baseRequest.get("/profile"+path);
 }
 
 export default new userFactory();
