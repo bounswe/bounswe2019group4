@@ -50,6 +50,18 @@
         <action
             android:id="@+id/action_listCurrentFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_currencyFragment"
+            app:destination="@id/currencyFragment"
+            app:popUpTo="@+id/listCurrentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currencyFragment"
+        android:name="com.example.arken.fragment.CurrencyFragment"
+        android:label="CurrencyFragment" >
+        <argument
+            android:name="codeOfCurrency"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -76,5 +88,4 @@
             android:id="@+id/action_searchFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />
     </fragment>
-
 </navigation>
