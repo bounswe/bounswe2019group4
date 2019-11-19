@@ -31,6 +31,7 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener 
     private lateinit var countryEditText: EditText
     private lateinit var importanceEditText: EditText
     private lateinit var filterButton: Button
+    private lateinit var clearButton: Button
     private lateinit var currentLayoutManagerType: LayoutManagerType
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -63,6 +64,8 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener 
         importanceEditText = rootView.findViewById(R.id.event_list_filter_importance_editText)
         filterButton = rootView.findViewById(R.id.event_list_filter_button)
         filterButton.setOnClickListener(this)
+        clearButton = rootView.findViewById(R.id.event_list_clear_button)
+        clearButton.setOnClickListener(this)
         layoutManager = LinearLayoutManager(activity)
 
         currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
@@ -185,6 +188,10 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener 
                     Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+
+        if (view.id == R.id.event_list_clear_button) {
+            initDataset()
         }
     }
 
