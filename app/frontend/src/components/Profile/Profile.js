@@ -8,19 +8,29 @@ import history from '../../_core/history';
 import * as userActions from '../../actions/userActions';
 import Image from "semantic-ui-react/dist/commonjs/elements/Image";
 import profilePhoto from "./h2.jpg";
+import * as portfolios from "lodash";
 
 class Profile extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-             user: {}
+            user: {},
+            portfolios:[]
         }
     }
 
     componentDidMount() {
         const localState = loadState();
         this.setState({user: localState.user});
+        const { id } = this.state;
+        fetch(`http://api.dev.arkenstone.ml/profile/${id}`)
+            .then(results => {
+                return results.json();
+            }).then(data =>{
+                const { portfolios } = data;
+                this.setState({portfolios})
+            })
     }
 
 
@@ -45,11 +55,12 @@ class Profile extends Component {
                     <Image src={profilePhoto} size='middle'   rounded />
                     <Header textAlign='center'>
 
-                    {user.name} {user.surname}
+                        {user.name} {user.surname}
 
 
 
-                            <button className="ui right floated button">Follow</button>
+                        <button className="ui right floated button">Follow</button>
+
 
 
 
@@ -85,12 +96,38 @@ class Profile extends Component {
 
                     <Header textAlign='Middle'>
 
-                        My Portfolio
+                        My Portfolios
+
                     </Header>
 
+                    {portfolios.forEach(function(item, index){
+                        console.log(item[index]);
+                    })}
+
+                    {   portfolios.forEach(function(key) {
+
+                        console.log(key, this.portfolios[key]);
+
+                    })}
 
 
 
+
+                    {portfolios.forEach(function (key) {
+                        if(portfolios.key.map(isPrivate =>portfolios[key].contains(false))){
+
+                            return (<ul>
+                                <li><strong> {} </strong></li>
+                                <li> {key.definition}</li>
+                                <li><small> {key.date} IFFFFFFFF</small></li>
+                            </ul>);
+
+                        }else{
+                            return (       <line>ELSEEEE</line>)
+                        }
+                    })}
+
+                ffsdsdfsdf
                 </Segment>
 
 
@@ -102,7 +139,7 @@ class Profile extends Component {
 
                     </Header>
 
-
+                sdfdsfsdfdsfsd
 
 
                 </Segment>
