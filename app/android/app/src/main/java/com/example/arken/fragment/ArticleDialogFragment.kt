@@ -1,6 +1,7 @@
 package com.example.arken.fragment
 
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,7 +47,12 @@ class ArticleDialogFragment : DialogFragment() {
         {
             override fun onClick(v: View?) {
 
-                val call: Call<ResponseBody> = RetroClient.getInstance().apiService.createArticle(Article(text_editText.text.toString(),
+                val call: Call<ResponseBody> = RetroClient.getInstance().apiService.createArticle(activity!!.getSharedPreferences(
+                    LoginFragment.MY_PREFS_NAME,
+                    Context.MODE_PRIVATE
+                )
+                    .getString("user-cookie", "defaultCookie")
+                , Article(text_editText.text.toString(),
                     title_editText.text.toString()))
 
 

@@ -5,6 +5,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -66,11 +67,14 @@ class ProfileFragment : Fragment() {
         }
 
 
-         val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(activity!!.getSharedPreferences(
-             LoginFragment.MY_PREFS_NAME,
-             Context.MODE_PRIVATE
-         )
-             .getString("userId", "defaultId"))
+         val sharedPreferences: SharedPreferences =activity!!.getSharedPreferences(
+        LoginFragment.MY_PREFS_NAME,
+        Context.MODE_PRIVATE
+        )
+
+         val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(
+             sharedPreferences.getString("user-cookies", "defaultCookie" ),
+             sharedPreferences.getString("userId", "defaultId"))
 
 
         call.enqueue(object : Callback<Profile> {

@@ -15,6 +15,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -30,7 +31,7 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @POST("auth/login")
     Call<LoginUser> login(
-            @Body LoginUser loginUser
+          @Body LoginUser loginUser
     );
 
     @Headers({"Content-Type: application/json"})
@@ -69,11 +70,12 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("profile/{id}")
-    Call<Profile> getProfile(@Path("id") String k);
+    Call<Profile> getProfile(
+            @Header("Cookie") String userCookie, @Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
     @POST("articles")
     Call<ResponseBody> createArticle(
-            @Body Article article
+            @Header("Cookie") String userCookie, @Body Article article
     );
 }
