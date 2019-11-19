@@ -128,6 +128,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         userId = response.body().get_id();
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                         editor.putString("email", email);
+                        editor.putString("cookie",response.headers().get("Set-Cookie"));
                         editor.putString("userId", userId);
                         editor.apply();
 

@@ -16,4 +16,5 @@
     <string name="sign_in">Sign In</string>
     <string name="comment_button">Make Comment</string>
     <string name="comment">Write your comment here:</string>
+    <string name="economic_events">Economic Events</string>
 </resources>

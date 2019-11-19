@@ -22,6 +22,10 @@
         <action
             android:id="@+id/action_eventListFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@id/eventListFragment"/>
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -43,6 +47,21 @@
         <action
             android:id="@+id/action_listCurrentFragment_to_eventListFragment"
             app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_currencyFragment"
+            app:destination="@id/currencyFragment"
+            app:popUpTo="@+id/listCurrentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currencyFragment"
+        android:name="com.example.arken.fragment.CurrencyFragment"
+        android:label="CurrencyFragment" >
+        <argument
+            android:name="codeOfCurrency"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -54,6 +73,19 @@
         <action
             android:id="@+id/action_profileFragment_to_eventListFragment"
             app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
-
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.arken.fragment.search.SearchFragment"
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/action_searchFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+    </fragment>
 </navigation>

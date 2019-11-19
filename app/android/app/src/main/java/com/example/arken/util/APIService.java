@@ -10,6 +10,7 @@ import com.example.arken.model.LoginUser;
 import com.example.arken.model.Profile;
 import com.example.arken.model.SignupUser;
 import com.example.arken.model.User;
+import com.example.arken.model.tradingEquipment.Currency;
 import com.example.arken.model.tradingEquipment.ListCurrency;
 
 import okhttp3.ResponseBody;
@@ -62,15 +63,24 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("events")
-    Call<ListEvent> getEvents(@Query("country") String s, @Query("importance") Integer k);
+    Call<ListEvent> getEvents(@Query("country") String country, @Query("importance") Integer importance, @Query("page") Integer s, @Query("limit") Integer k);
 
-    @Headers({"Content-Type: application/json"})
-    @GET("events")
-    Call<ListEvent> getEventsAll(@Query("page") Integer s, @Query("limit") Integer k);
 
     @Headers({"Content-Type: application/json"})
     @GET("trading-equipments")
     Call<ListCurrency> getCurrentCurrencyValues();
+
+    @Headers({"Content-Type: application/json"})
+    @GET("trading-equipments/{id}")
+    Call<Currency> getCurrency(@Header("Cookie") String cookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("trading-equipments/follow")
+    Call<Currency> followCurrency(@Header("Cookie") String cookie, @Query("tEq") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("trading-equipments/unfollow")
+    Call<Currency> unFollowCurrency(@Header("Cookie") String cookie, @Query("tEq") String k);
 
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")

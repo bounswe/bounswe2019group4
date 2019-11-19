@@ -4,6 +4,7 @@ package com.example.arken.fragment
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -11,17 +12,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.example.arken.R
+import com.example.arken.activity.MainActivity
 import com.example.arken.activity.MainActivity.IMAGE_PREF
 import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.Profile
 import com.example.arken.util.RetroClient
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,6 +45,7 @@ class ProfileFragment : Fragment() {
     private lateinit var pred_value_textView: TextView
     private lateinit var uri: String
     private lateinit var profile: Profile
+    private lateinit var logOut: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +68,10 @@ class ProfileFragment : Fragment() {
             .getString("userId", "defaultId")
         val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE).getString("user_cookie", "")
        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, id)
+
+        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile("5dca8dbbdc69c332f1a979f5")
+
+
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
@@ -124,7 +135,6 @@ class ProfileFragment : Fragment() {
                 } else {
 
                 }
-
             }
         }
     }
