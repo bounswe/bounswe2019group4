@@ -8,7 +8,7 @@ const { UserFollow } = require('../models/user-follow')
 const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
 const { Article } = require('../models/article')
 const { Portfolio } = require('../models/portfolio')
-
+const { validateBody } = require('../controllers/middleware')
 
 /*
   Get endpoint for profile page.
@@ -60,6 +60,10 @@ router.patch('/edit',[isAuthenticated, modelBinder(User, 'User')], profileContro
   Get endpoint for change password
   Check controller function for more detail
 */
-router.patch('/changePassword',[isAuthenticated, modelBinder(User, 'User')], profileController.changePassword)
+router.patch('/changePassword',[
+  validateBody(['oldPassword', 'password']),
+  isAuthenticated,
+  modelBinder(User, 'User')
+], profileController.changePassword)
 
 module.exports = router
