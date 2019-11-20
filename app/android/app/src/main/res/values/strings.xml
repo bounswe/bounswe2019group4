@@ -17,4 +17,11 @@
     <string name="comment_button">Make Comment</string>
     <string name="comment">Write your comment here:</string>
     <string name="economic_events">Economic Events</string>
+
+    <integer-array name="importance">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </integer-array>
+
 </resources>
