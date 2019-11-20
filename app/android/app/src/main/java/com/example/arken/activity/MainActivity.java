@@ -1,13 +1,24 @@
 package com.example.arken.activity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
 
 import com.example.arken.R;
+import com.example.arken.fragment.BaseFragment;
+import com.example.arken.fragment.CommentFragment;
+import com.example.arken.fragment.EventFragment;
+import com.example.arken.fragment.ListCommentFragment;
+import com.example.arken.model.Comment;
+import com.example.arken.model.Event;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
+import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends FragmentActivity {
     private static GoogleSignInClient mGoogleSignInClient;
@@ -26,4 +37,5 @@ public class MainActivity extends FragmentActivity {
     public static GoogleSignInClient getClient() {
         return mGoogleSignInClient;
     }
+
 }

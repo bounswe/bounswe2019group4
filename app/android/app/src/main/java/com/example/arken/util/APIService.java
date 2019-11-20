@@ -1,5 +1,6 @@
 package com.example.arken.util;
 
+import com.example.arken.model.Comment;
 import com.example.arken.model.Email;
 import com.example.arken.model.Event;
 import com.example.arken.model.GoogleId;
@@ -8,12 +9,14 @@ import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.Profile;
 import com.example.arken.model.SignupUser;
+import com.example.arken.model.User;
 import com.example.arken.model.tradingEquipment.Currency;
 import com.example.arken.model.tradingEquipment.ListCurrency;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -30,7 +33,7 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @POST("auth/login")
-    Call<Profile> login(
+    Call<User> login(
             @Body LoginUser loginUser
     );
 
@@ -42,14 +45,20 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @POST("auth/google")
-    Call<ResponseBody> google(
+    Call<User> google(
             @Body GoogleId googleId
     );
 
     @Headers({"Content-Type: application/json"})
     @POST("auth/signup")
-    Call<ResponseBody> signupGoogle(
+    Call<User> signupGoogle(
             @Body GoogleUser googleUser
+    );
+
+    @Headers({"Content-Type: application/json"})
+    @POST("comments")
+    Call<ResponseBody> makeComment(@Header("Cookie") String userCookie,
+            @Body Comment comment
     );
 
     @Headers({"Content-Type: application/json"})
@@ -75,9 +84,17 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")
-    Call<Event> getEvent(@Path("id") long k);
+    Call<Event> getEvent(@Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
     @GET("profile/{id}")
-    Call<Profile> getProfile(@Path("id") String k);
+    Call<Profile> getProfile(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("comments/event/{id}")
+    Call<ResponseBody> deleteEventComment(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("comments/trading-equipment/{id}")
+    Call<ResponseBody> deleteTEComment(@Header("Cookie") String userCookie, @Path("id") String k);
 }

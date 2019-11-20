@@ -61,29 +61,24 @@ class ProfileFragment : Fragment() {
         location_value_textView = view.findViewById(R.id.location_value_textView)
         email_value_textView = view.findViewById(R.id.email_value_textView)
         pred_value_textView = view.findViewById(R.id.pred_value_textView)
-
-
-       /*val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(activity!!.getSharedPreferences(
+        val id = activity!!.getSharedPreferences(
             LoginFragment.MY_PREFS_NAME,
             Context.MODE_PRIVATE
         )
-            .getString("userId", "defaultId")) */
-
-        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile("5dca8dbbdc69c332f1a979f5")
-
-
+            .getString("userId", "defaultId")
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE).getString("user_cookie", "")
+       val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, id)
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
                     profile = response.body()!!
 
-                    name_textView.text = profile.name
-                    surname_textView.text = profile.surname
-                    user_type_textView.text = if (profile.isTrader==null || profile.isTrader == false) {"Basic"} else {"Trader"}
-                   //user_type_textView.text = profile.isTrader.toString()
-                    location_value_textView.text = profile.location
-                    email_value_textView.text = profile.email
+                    name_textView.text = profile.user?.name
+                    surname_textView.text = profile.user?.surname
+                    user_type_textView.text = if (profile.user?.isTrader!!) {"Trader"} else {"Basic"}
+                    location_value_textView.text = profile.user?.location
+                    email_value_textView.text = profile.user?.email
 
 
                 } else {
