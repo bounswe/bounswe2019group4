@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -26,10 +24,16 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener {
+class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        importance = position+1// .
+    }
 
     private lateinit var countryEditText: EditText
-    private lateinit var importanceEditText: EditText
+    private lateinit var importanceSpinner: Spinner
     private lateinit var filterButton: Button
     private lateinit var clearButton: Button
     private lateinit var currentLayoutManagerType: LayoutManagerType
@@ -38,6 +42,7 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener 
     private lateinit var dataset: MutableList<Event>
     private lateinit var eventAdapter: EventAdapter
     private lateinit var layout: ConstraintLayout
+    private var importance = 1;
 
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
 
@@ -61,12 +66,25 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener 
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
         countryEditText = rootView.findViewById(R.id.event_list_filter_country_editText)
-        importanceEditText = rootView.findViewById(R.id.event_list_filter_importance_editText)
+        importanceSpinner = rootView.findViewById(R.id.importance_spinner)
         filterButton = rootView.findViewById(R.id.event_list_filter_button)
         filterButton.setOnClickListener(this)
         clearButton = rootView.findViewById(R.id.event_list_clear_button)
         clearButton.setOnClickListener(this)
         layoutManager = LinearLayoutManager(activity)
+        val imp = arrayOf(1,2,3)
+
+        ArrayAdapter(
+            context!!,
+            android.R.layout.simple_spinner_item, imp
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            importanceSpinner.adapter = adapter
+        }
+
+        importanceSpinner.onItemSelectedListener = this
 
         currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
@@ -163,7 +181,6 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener 
         if (view.id == R.id.event_list_filter_button) {
 
             val country = countryEditText.text.toString()
-            val importance = importanceEditText.text.toString().toIntOrNull()
 
             val call: Call<ListEvent> =
                 RetroClient.getInstance().apiService.getEvents(country, importance, 1, 10)
