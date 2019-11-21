@@ -35,6 +35,7 @@ class Events extends Component {
             drCo:[],
             drEv:[],
             drImp:[],
+            drSrc:[],
             loading:false,
             startDate:new Date(),
             endDate:new Date()
@@ -57,9 +58,9 @@ class Events extends Component {
 
     }
     setInitialDates=async ()=>{
-        let {0 : a ,length : l, [l - 1] : b} = this.state.events;
+        let {0 : a ,length : l, [l - 1] : b} = this.state.events2;
 
-        await this.setState({startDate:new Date(b.normalDate),endDate:new Date(a.normalDate)});
+        await this.setState({startDate:new Date(b.Date.toString()),endDate:new Date(a.Date.toString())});
     };
 
     getCountriesForDropdown=()=>{
@@ -116,6 +117,34 @@ class Events extends Component {
         });
         this.setState({dropdown2Items:dropdownItems});
     };
+    getSourcesForDropdown=()=>{
+        let dropdownItems=[];
+        let key=1;
+        for(let i of this.state.events ){
+            let check=false;
+            for(let j of dropdownItems){
+                if(j.value.trim()===i.Source.trim()){
+                    check=true;
+                    break;
+                }
+            }
+            if(!check){
+                let newitem={
+                    key:key,
+                    text:i.Source,
+                    value:i.Source
+
+                };
+                dropdownItems.push(newitem);
+                key++;
+            }
+        }
+        dropdownItems.sort((a,b)=>{
+            return ('' + a.value).localeCompare(b.value);
+        });
+        this.setState({dropdown4Items:dropdownItems});
+
+    };
 
     setShownEvents(){
 
@@ -144,6 +173,7 @@ class Events extends Component {
                 this.setState({events2:this.state.events});
                 this.getCountriesForDropdown();
                 this.getEventsForDropdown();
+                this.getSourcesForDropdown();
                 this.setState({loading:false});
             })
         });
@@ -232,14 +262,20 @@ class Events extends Component {
         let value1=this.state.drCo;
         let value2=this.state.drEv;
         let value3=this.state.drImp;
+        let value4=this.state.drSrc;
 
             let empty1 = value1.length === 0;
             let empty2 = value2.length === 0;
             let empty3 = value3.length === 0;
+            let empty4 = value4.length===0;
             for (let i of this.state.events) {
                 let date=new Date(i.normalDate);
 
-                if ((value1.includes(i.Country) || empty1) && (value2.includes(i.Event) || empty2)&&(value3.includes(i.Importance)||empty3)&&(compareDates(this.state.startDate,date)&&compareDates(date,this.state.endDate))) {
+                if ((value1.includes(i.Country) || empty1) && (value2.includes(i.Event) || empty2)&&(value3.includes(i.Importance)||empty3)&&
+                    (compareDates(this.state.startDate,date)&&compareDates(date,this.state.endDate))&&
+                    (value4.includes(i.Source)||empty4)
+
+                ) {
                     list.push(i);
                 }
             }
@@ -303,6 +339,9 @@ class Events extends Component {
     };
     onImpChange=(e,{value})=>{
         this.setState({drImp:value},this.onDropdownsChange)
+    };
+    onSourceChange=(e,{value})=>{
+        this.setState({drSrc:value},this.onDropdownsChange)
     };
 
     startDateChange=(date)=>{
@@ -407,7 +446,24 @@ class Events extends Component {
 
                                 </th>
 
-                                <th><h4>Source</h4></th>
+                                <th>
+                                    <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                                        Source
+
+                                        <Dropdown
+                                            style={{marginLeft:5}}
+                                            placeholder='All'
+                                            multiple
+                                            search
+                                            selection
+                                            options={this.state.dropdown4Items}
+                                            onChange={this.onSourceChange}
+                                        />
+
+
+                                    </div>
+
+                                </th>
                                 <th>
                                     <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
                                         Importance
