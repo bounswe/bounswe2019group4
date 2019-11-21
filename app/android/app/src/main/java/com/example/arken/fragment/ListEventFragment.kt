@@ -25,12 +25,6 @@ import retrofit2.Response
 
 
 class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        importance = position+1// .
-    }
 
     private lateinit var countryEditText: EditText
     private lateinit var importanceSpinner: Spinner
@@ -42,13 +36,12 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener,
     private lateinit var dataset: MutableList<Event>
     private lateinit var eventAdapter: EventAdapter
     private lateinit var layout: ConstraintLayout
-    private var importance = 1;
+    private var importance: Int? = 1
 
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         initDataset()
         Log.i("ListEventFragment", "onCreate")
@@ -72,7 +65,7 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener,
         clearButton = rootView.findViewById(R.id.event_list_clear_button)
         clearButton.setOnClickListener(this)
         layoutManager = LinearLayoutManager(activity)
-        val imp = arrayOf(1,2,3)
+        val imp = arrayOf(1,2,3,"All")
 
         ArrayAdapter(
             context!!,
@@ -169,6 +162,18 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener,
         val action = ListEventFragmentDirections.actionEventListFragmentToEventFragment()
         action.eventToShow = event
         Navigation.findNavController(recyclerView).navigate(action)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        if(position!=3) {
+            importance = position + 1
+        }
+        else{
+            importance = null
+        }
     }
 
 
