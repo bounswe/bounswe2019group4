@@ -55,6 +55,15 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="206dp" />
 
+        <Spinner
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/importance_spinner"
+            app:layout_constraintEnd_toStartOf="@id/guideline_right"
+            app:layout_constraintStart_toEndOf="@id/guideline_middle"
+            app:layout_constraintTop_toTopOf="@id/event_list_filter_country_editText"
+            />
+
         <EditText
             android:id="@+id/event_list_filter_country_editText"
             style="@style/style_editText"
@@ -66,16 +75,6 @@
             app:layout_constraintStart_toStartOf="@id/guideline_left"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/event_list_filter_importance_editText"
-            style="@style/style_editText"
-            android:layout_marginLeft="8dp"
-            android:hint="Importance"
-            android:inputType="textPersonName"
-            android:textColor="@android:color/background_dark"
-            app:layout_constraintEnd_toStartOf="@id/guideline_right"
-            app:layout_constraintStart_toEndOf="@id/guideline_middle"
-            app:layout_constraintTop_toTopOf="@id/event_list_filter_country_editText" />
 
 
         <Button
