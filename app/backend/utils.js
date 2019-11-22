@@ -418,17 +418,14 @@ async function resultPredictions() {
 }
 
 module.exports.filterData = (data, fields, keyword, max_ = 1) => {
-  keyword = keyword.toLowerCase()
+  keyword = keyword.toLowerCase().split()
   
   return data.filter((row) => {
-    const ff = fields.filter(field => {
+    return fields.filter(field => {
       const words = String(row[field]).toLowerCase().split(' ')
-      const a = words.filter(word => {
-        const dis = levenstein(word, keyword) <= max_
-        return dis
+      return words.filter(word => {
+        return levenstein(word, keyword) <= max_
       }).length > 0
-      return a
     }).length > 0
-    return ff
   })
 }
