@@ -28,18 +28,19 @@ app.use(session({
 
 app.use(bodyParser.json()); // parses request body and binds to the request argument, request.body
 
-app.use('/auth/', require('./routes/login-signup'))  // includes login/signup endpoints to the main app
+app.use('/auth/', require('./routes/login-signup')) // includes login/signup endpoints to the main app
 
-app.use('/profile/', require('./routes/profile')) // includes profile page endpoints to the main app
+app.use('/profile/', require('./routes/profile'))   // includes profile page endpoints to the main app
 
-app.use('/events/', require('./routes/events')) // includes events endpoints to the main app
+app.use('/events/', require('./routes/events'))     // includes events endpoints to the main app
 
 app.use('/trading-equipments/', require('./routes/trading-eq')) // includes trading equipments endpoints to the main app
 
 app.use('/comments/', require('./routes/comments')) // includes comment endpoints to the main app
 
-app.use('/article/', require('./routes/article')) // includes article endpoints to the main app
+app.use('/article/', require('./routes/article'))   // includes article endpoints to the main app
 
+app.use('/search/', require('./routes/search'))     // includes search endpoints to the main app
 // catch-all error handler for debugging
 app.use((err, req, res, next) => {
     console.log(err.stack)  // logs the error
