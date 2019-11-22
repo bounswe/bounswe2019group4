@@ -6,7 +6,7 @@ module.exports.search = async (req, res, next) => {
     const terms = req.query.q.split(' ')
 
     let usersData = User.find().select('name surname location').lean()
-    let eventsData = Event.find().select('Country CalendarId Date Catogory').lean()
+    let eventsData = Event.find().select('Country CalendarId Date Catogory Event').lean()
     let tradingEqData = TradingEquipment.find().select('code name').lean()
     let articlesData = Article.find().select('text title').lean()
 
@@ -17,7 +17,7 @@ module.exports.search = async (req, res, next) => {
     articlesData = await articlesData
 
     const users = terms.flatMap(term => filterData(usersData, ['name', 'surname', 'location'], term))
-    const events = terms.flatMap(term => filterData(eventsData, ['Country', 'Catogory'], term))
+    const events = terms.flatMap(term => filterData(eventsData, ['Country', 'Catogory', 'Event'], term))
     const tradingEq = terms.flatMap(term => filterData(tradingEqData, ['code', 'name'], term))
     const articles = terms.flatMap(term => filterData(articlesData, ['text', 'title'], term))
 
