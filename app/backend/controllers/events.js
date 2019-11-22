@@ -12,7 +12,10 @@ module.exports.getEvents = async (request, response) => {
     Events can be filtered by country and importance
     TODO: FILTER BY DATE MUST BE ADDED!
   */
-  let Country = request.query.country.toLowerCase()
+  let Country = request.query.country
+  if(Country) {
+    Country = Country.toLowerCase()
+  }
   let Importance = request.query.importance
   const limit = parseInt(request.query.limit || 10)
   const skip = (parseInt(request.query.page || 1) - 1) * limit
