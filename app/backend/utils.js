@@ -2,6 +2,7 @@ var fs = require("fs");
 const IBAN = require('iban');
 const commonPassword = require('common-password');
 const request = require('request');
+const levenstein = require('leven')
 
 const {UserFollow} = require('./models/user-follow')
 const {User} = require('./models/user')
@@ -414,4 +415,17 @@ async function resultPredictions() {
     });
 
   }
+}
+
+module.exports.filterData = (data, fields, keyword, max_ = 1) => {
+  keyword = keyword.toLowerCase()
+  
+  return data.filter((row) => {
+    return fields.filter(field => {
+      const words = String(row[field]).toLowerCase().split(' ')
+      return words.filter(word => {
+        return levenstein(word, keyword) <= max_
+      }).length > 0
+    }).length > 0
+  })
 }

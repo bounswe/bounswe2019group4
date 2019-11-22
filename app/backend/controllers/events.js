@@ -12,16 +12,16 @@ module.exports.getEvents = async (request, response) => {
     Events can be filtered by country and importance
     TODO: FILTER BY DATE MUST BE ADDED!
   */
-  let Country = request.query.country
+  let Country = request.query.country.toLowerCase()
   let Importance = request.query.importance
   const limit = parseInt(request.query.limit || 10)
   const skip = (parseInt(request.query.page || 1) - 1) * limit
   // undefined variables are the projections over the collection
   try {
     if(Country && Importance){
-      events = await Event.find({ Country, Importance }, undefined, {skip, limit}).sort({Date: -1})
+      events = await Event.find({ Country: { $regex: new RegExp("^" + Country, "i") }, Importance }, undefined, {skip, limit}).sort({Date: -1})
     } else if(Country && !Importance){
-      events = await Event.find({ Country }, undefined, {skip, limit}).sort({Date: -1})
+      events = await Event.find({ Country: { $regex: new RegExp("^" + Country, "i") } }, undefined, {skip, limit}).sort({Date: -1})
     } else if(!Country && Importance){
       events = await Event.find({ Importance }, undefined, {skip, limit}).sort({Date: -1})
     } else {
