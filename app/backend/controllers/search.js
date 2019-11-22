@@ -9,7 +9,7 @@ module.exports.search = async (req, res, next) => {
         return res.status(400).json({errormsg: 'Query string should be passed as query in \'q\'.'})
     }
 
-    const users = filterData(await User.find().lean(), ['name', 'surname',], term)
+    const users = filterData(await User.find().lean(), ['name', 'surname', 'location'], term)
     const events = filterData(await Event.find().lean(), ['Country', 'CalendarId', 'Date', 'Catogory',], term)
     const tradingEq = filterData(await TradingEquipment.find().lean(), ['code', 'name',], term)
     const articles = filterData(await Article.find().lean(), ['text', 'title',], term)
