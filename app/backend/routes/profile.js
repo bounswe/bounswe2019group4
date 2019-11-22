@@ -7,6 +7,8 @@ const { User } = require('../models/user')
 const { UserFollow } = require('../models/user-follow')
 const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
 const { Article } = require('../models/article')
+const { Portfolio } = require('../models/portfolio')
+const { validateBody } = require('../controllers/middleware')
 
 /*
   Get endpoint for profile page.
@@ -16,7 +18,8 @@ router.get('/:id', multipleModelBinder([
   [User, 'User'],
   [UserFollow, 'UserFollow'],
   [TradingEquipmentFollow, 'TradingEquipmentFollow'],
-  [Article, 'Article']
+  [Article, 'Article'],
+  [Portfolio, 'Portfolio']
 ]), profileController.getDetails)
 
 /*
@@ -51,12 +54,19 @@ router.get('/reject/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow'
   Get endpoint for editing profile details.
   Check controller function for more detail
 */
-router.patch('/edit',[isAuthenticated, modelBinder(User, 'User')], profileController.editProfile)
+router.patch('/edit',[
+  validateBody(['name', 'surname', 'email', 'location', 'isTrader', 'isPublic']),
+  isAuthenticated,
+  modelBinder(User, 'User')], profileController.editProfile)
 
 /*
   Get endpoint for change password
   Check controller function for more detail
 */
-router.patch('/changePassword',[isAuthenticated, modelBinder(User, 'User')], profileController.changePassword)
+router.patch('/changePassword',[
+  validateBody(['oldPassword', 'password']),
+  isAuthenticated,
+  modelBinder(User, 'User')
+], profileController.changePassword)
 
 module.exports = router

@@ -38,7 +38,9 @@ app.use('/trading-equipments/', require('./routes/trading-eq')) // includes trad
 
 app.use('/comments/', require('./routes/comments')) // includes comment endpoints to the main app
 
-app.use('/article/', require('./routes/article'))   // includes article endpoints to the main app
+app.use('/articles/', require('./routes/article')) // includes article endpoints to the main app
+
+app.use('/portfolios/', require('./routes/portfolio')) // includes portfolio endpoints to the main app
 
 app.use('/search/', require('./routes/search'))     // includes search endpoints to the main app
 // catch-all error handler for debugging

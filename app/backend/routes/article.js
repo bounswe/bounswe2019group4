@@ -5,28 +5,36 @@ const {modelBinder, multipleModelBinder} = require('../controllers/db')
 const {isAuthenticated} = require('../controllers/auth')
 const { Article } = require('../models/article')
 const { ArticleUser } = require('../models/article-user')
-
+const { validateBody } = require('../controllers/middleware')
 
 /*
   Post endpoint for article.
   Check controller function for more detail
 */
 
-router.post('/', [ isAuthenticated, modelBinder(Article, 'Article')], articleController.postArticle)
+router.post('/', [
+  validateBody(['title', 'text']),
+  isAuthenticated,
+  modelBinder(Article, 'Article')], articleController.postArticle)
 
 /*
   Post endpoint for updating article.
   Check controller function for more detail
 */
 
-router.patch('/edit', [ isAuthenticated, modelBinder(Article, 'Article')], articleController.editArticle)
+router.patch('/:id', [ 
+  validateBody(['title', 'text']),
+  isAuthenticated,
+  modelBinder(Article, 'Article')], articleController.editArticle)
 
 /*
   Post endpoint for rating article.
   Check controller function for more detail
 */
 
-router.post('/rate', [ isAuthenticated, multipleModelBinder([
+router.post('/:id/rate', [
+  validateBody(['value']),
+  isAuthenticated, multipleModelBinder([
   [Article, 'Article'],
   [ArticleUser, 'ArticleUser']
 ])], articleController.rateArticle)
@@ -41,6 +49,9 @@ router.get('/:id', modelBinder(Article, 'Article'), articleController.getArticle
   Delete endpoint for article.
   Check controller function for more detail
 */
-router.delete('/:id', [isAuthenticated, modelBinder(Article, 'Article')], articleController.deleteArticle)
+router.delete('/:id', [isAuthenticated, multipleModelBinder([
+  [Article, 'Article'],
+  [ArticleUser, 'ArticleUser']
+])], articleController.deleteArticle)
 
 module.exports = router
