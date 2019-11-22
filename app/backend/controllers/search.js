@@ -3,16 +3,23 @@ const {filterData} = require('../utils')
 module.exports.search = async (req, res, next) => {
     const {Event, TradingEquipment, Article, User} = req.models
     
-    const term = req.query.q
+    const terms = req.query.q.split(' ')
 
-    if(!term) {
-        return res.status(400).json({errormsg: 'Query string should be passed as query in \'q\'.'})
-    }
+    let usersData = User.find().select('name surname location').lean()
+    let eventsData = Event.find().select('Country CalendarId Date Catogory').lean()
+    let tradingEqData = TradingEquipment.find().select('code name').lean()
+    let articlesData = Article.find().select('text title').lean()
 
-    const users = filterData(await User.find().lean(), ['name', 'surname', 'location'], term)
-    const events = filterData(await Event.find().lean(), ['Country', 'CalendarId', 'Date', 'Catogory',], term)
-    const tradingEq = filterData(await TradingEquipment.find().lean(), ['code', 'name',], term)
-    const articles = filterData(await Article.find().lean(), ['text', 'title',], term)
+
+    usersData = await usersData
+    eventsData = await eventsData
+    tradingEqData = await tradingEqData
+    articlesData = await articlesData
+
+    const users = terms.flatMap(term => filterData(usersData, ['name', 'surname', 'location'], term))
+    const events = terms.flatMap(term => filterData(eventsData, ['Country', 'Catogory'], term))
+    const tradingEq = terms.flatMap(term => filterData(tradingEqData, ['code', 'name'], term))
+    const articles = terms.flatMap(term => filterData(articlesData, ['text', 'title'], term))
 
     return res.json({
         users,

@@ -418,7 +418,7 @@ async function resultPredictions() {
 }
 
 module.exports.filterData = (data, fields, keyword, max_ = 1) => {
-  keyword = keyword.toLowerCase().split()
+  keyword = keyword.toLowerCase()
   
   return data.filter((row) => {
     return fields.filter(field => {
