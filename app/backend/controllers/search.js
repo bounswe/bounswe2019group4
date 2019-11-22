@@ -6,7 +6,7 @@ module.exports.search = async (req, res, next) => {
     const terms = req.query.q.split(' ')    // splits query string into words for word-by-word search
 
     // creates connections for each query
-    let usersData = User.find().select('name surname location').lean()
+    let usersData = User.find().select('name surname location').sort({predictionRate: -1}).lean()
     let eventsData = Event.find().select('Country CalendarId Date Catogory Event').lean()
     let tradingEqData = TradingEquipment.find().select('code name').lean()
     let articlesData = Article.find().select('text title').lean()
