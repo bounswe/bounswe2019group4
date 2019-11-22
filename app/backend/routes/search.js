@@ -3,7 +3,7 @@ const { Router } = require('express')
 const {multipleModelBinder} = require('../controllers/db')
 const {Article} = require('../models/article')
 const {User} = require('../models/user')
-const {TradingEquipment} = require('../models/trading-eq')
+const {CurrentTradingEquipment} = require('../models/current-trading-eq')
 const {Event} = require('../models/event')
 const {validateQuery} = require('../controllers/middleware')
 
@@ -17,7 +17,7 @@ router.get('/', [
         [[User, 'User'],
         [Article, 'Article'],
         [Event, 'Event'],
-        [TradingEquipment, 'TradingEquipment'],
+        [CurrentTradingEquipment, 'CurrentTradingEquipment'],
     ]),
     search])
 

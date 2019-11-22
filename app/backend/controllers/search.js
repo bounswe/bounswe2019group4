@@ -1,14 +1,14 @@
 const {filterData} = require('../utils')
 
 module.exports.search = async (req, res, next) => {
-    const {Event, TradingEquipment, Article, User} = req.models
+    const {Event, CurrentTradingEquipment, Article, User} = req.models
     
     const terms = req.query.q.split(' ')    // splits query string into words for word-by-word search
 
     // creates connections for each query
     let usersData = User.find().select('name surname location').sort({predictionRate: -1}).lean()
-    let eventsData = Event.find().select('Country CalendarId Date Catogory Event').lean()
-    let tradingEqData = TradingEquipment.find().select('code name').lean()
+    let eventsData = Event.find().select('Country CalendarId Date Catogory Event').sort({Importance: -1}).lean()
+    let tradingEqData = CurrentTradingEquipment.find().select('from fromName to toName').lean()
     let articlesData = Article.find().select('text title').lean()
 
 
@@ -20,7 +20,7 @@ module.exports.search = async (req, res, next) => {
     // searches for every word in the query string
     const users = terms.flatMap(term => filterData(usersData, ['name', 'surname', 'location'], term))
     const events = terms.flatMap(term => filterData(eventsData, ['Country', 'Catogory', 'Event'], term))
-    const tradingEq = terms.flatMap(term => filterData(tradingEqData, ['code', 'name'], term))
+    const tradingEq = terms.flatMap(term => filterData(tradingEqData, ['from', 'fromName', 'to', 'toName'], term))
     const articles = terms.flatMap(term => filterData(articlesData, ['text', 'title'], term))
 
     return res.json({

@@ -7,9 +7,17 @@ let CurrentTradingEquipment = mongoose.model('CurrentTradingEquipment', {
     require: true
   },
 
+  fromName: {
+    type: String
+  },
+
   to: {
     type: String,
     require: true
+  },
+
+  toName: {
+    type: String
   },
 
   rate: {
