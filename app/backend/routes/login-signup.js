@@ -10,7 +10,7 @@ const { validateBody } = require('../controllers/middleware')
   Check controller function for more detail
 */
 router.post('/signup', [
-  validateBody(['name', 'surname', 'email', 'location', 'isTrader', 'isPublic']),
+  validateBody(['name', 'surname', 'email', 'location', 'isPublic']),
   modelBinder(User, 'User')], authControllers.signup)
 
 /*
