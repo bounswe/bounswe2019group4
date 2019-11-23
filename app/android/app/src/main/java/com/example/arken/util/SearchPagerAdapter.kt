@@ -4,6 +4,7 @@ import android.app.usage.UsageEvents
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.example.arken.fragment.BaseFragment
 import com.example.arken.fragment.search.SearchArticle
 import com.example.arken.fragment.search.SearchTE
 import com.example.arken.fragment.search.SearchUser

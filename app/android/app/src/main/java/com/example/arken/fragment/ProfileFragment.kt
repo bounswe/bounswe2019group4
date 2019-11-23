@@ -26,6 +26,7 @@ import com.example.arken.activity.MainActivity
 import com.example.arken.activity.MainActivity.IMAGE_PREF
 import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.Profile
+import com.example.arken.util.OnUserClickedListener
 import com.example.arken.util.RetroClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -34,7 +35,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProfileFragment : Fragment() {
+class ProfileFragment( var userId: String?) : Fragment() {
+    constructor() : this(null)
 
     private lateinit var name_textView: TextView
     private lateinit var surname_textView: TextView
@@ -47,8 +49,6 @@ class ProfileFragment : Fragment() {
     private lateinit var uri: String
     private lateinit var profile: Profile
     private val args: ProfileFragmentArgs by navArgs()
-    private lateinit var logOut: Button
-    private var id = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,11 +65,12 @@ class ProfileFragment : Fragment() {
         email_value_textView = view.findViewById(R.id.email_value_textView)
         pred_value_textView = view.findViewById(R.id.pred_value_textView)
 
-        id = args.userId
-            //activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("userId", "defaultId")!!
+        if(userId == null){
+            userId = args.userId
+        }
 
         val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
-        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, id)
+        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, userId)
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
@@ -96,9 +97,7 @@ class ProfileFragment : Fragment() {
         profile_button = view.findViewById(R.id.profile_button)
 
         val path = getPreference(context!!, "path" )
-        if(path!=null) {
-            profile_image.setImageURI(path!!.toUri())
-        }
+        profile_image.setImageURI(path!!.toUri())
         profile_button.setOnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(context?.let { it1 -> checkSelfPermission(it1,Manifest.permission.READ_EXTERNAL_STORAGE) } ==

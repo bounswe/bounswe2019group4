@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.fragment.CommentFragment
 import com.example.arken.fragment.ListCommentFragment
 import com.example.arken.fragment.LoginFragment
+import com.example.arken.fragment.ProfileFragment
 import com.example.arken.model.Comment
 import com.example.arken.model.Event
 import com.example.arken.model.Profile
@@ -26,9 +29,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchUser:Fragment(), OnUserClickedListener {
+class SearchUser: Fragment(), OnUserClickedListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var userAdapter: UserAdapter
+    private var openProf = false
+    private var profFragment:ProfileFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,8 +48,22 @@ class SearchUser:Fragment(), OnUserClickedListener {
         recyclerView.adapter = userAdapter
 
         recyclerView.adapter?.notifyDataSetChanged()
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(openProf && profFragment!=null){
+                    openProf = false
+                    fragmentManager?.beginTransaction()?.remove(profFragment!!)?.commit()
+                }
+                else{
+                    NavHostFragment.findNavController(this@SearchUser).popBackStack()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
         return rootView
     }
+
 
     override fun onItemClicked(userId: String) {
         val userCookie = activity!!.getSharedPreferences(
@@ -57,7 +76,9 @@ class SearchUser:Fragment(), OnUserClickedListener {
             call.enqueue(object : Callback<Profile> {
                 override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                     if (response.isSuccessful) {
-
+                        profFragment = ProfileFragment(response.body()?.user?._id)
+                        fragmentManager?.beginTransaction()?.add(R.id.search_container, profFragment!!, "prof")?.commit()
+                        openProf = true
 
                     } else {
                         Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()

@@ -1,18 +1,13 @@
 package com.example.arken.fragment
 
-import android.content.DialogInterface
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 
@@ -21,17 +16,15 @@ import com.example.arken.activity.MainActivity
 import com.example.arken.util.MenuAdapter
 import com.example.arken.util.OnMenuItemClickListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-
-import java.util.Objects
 
 import android.content.Context.MODE_PRIVATE
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
 import com.example.arken.fragment.search.SearchFragmentDirections
+import com.example.arken.fragment.search.SearchUser
 
 class BaseFragment : Fragment(), OnMenuItemClickListener {
+
     private var fragment: Fragment? = null
     private var recyclerView: RecyclerView? = null
     private var selected = 0
