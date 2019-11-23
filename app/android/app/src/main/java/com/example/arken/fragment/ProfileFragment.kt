@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.arken.R
 import com.example.arken.activity.MainActivity
 import com.example.arken.activity.MainActivity.IMAGE_PREF
@@ -45,6 +46,7 @@ class ProfileFragment : Fragment() {
     private lateinit var pred_value_textView: TextView
     private lateinit var uri: String
     private lateinit var profile: Profile
+    private val args: ProfileFragmentArgs by navArgs()
     private lateinit var logOut: Button
     private var id = ""
 
@@ -63,7 +65,8 @@ class ProfileFragment : Fragment() {
         email_value_textView = view.findViewById(R.id.email_value_textView)
         pred_value_textView = view.findViewById(R.id.pred_value_textView)
 
-        id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("userId", "defaultId")!!
+        id = args.userId
+            //activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("userId", "defaultId")!!
 
         val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
         val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, id)
