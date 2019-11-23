@@ -2,7 +2,7 @@ package com.example.arken.model.tradingEquipment
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-import java.time.LocalDateTime
+import java.util.Observable
 
 data class Currency(
     @SerializedName("following")
@@ -17,4 +17,4 @@ data class Currency(
     var numberOfDowns: Int?
 
 
-):Serializable
+) : Serializable, Observable()

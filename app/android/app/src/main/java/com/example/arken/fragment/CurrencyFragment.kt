@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -99,12 +101,10 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
         System.out.println("click works")
         when (v!!.id) {
             R.id.follow_button -> if (loggedIn) {
-                tradingEquipmentViewModel.followUnfollow(
-                    prefs.getString(
-                        "cookie",
-                        "null"
-                    )!!, args.codeOfCurrency, tradingEquipmentViewModel.data.value?.following!!
-                )
+                followButtonPressed(tradingEquipmentViewModel.data.value?.following!!)
+            } else {
+                Toast.makeText(context, "You need to login to use this action", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -112,9 +112,42 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefs = getActivity()!!.getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
-        loggedIn = !prefs.getString("cookie", "null").equals("null")
-        tradingEquipmentViewModel.setData(name, prefs.getString("cookie", null))
-        fragmentManager?.beginTransaction()?.add(R.id.list_comment_fragment, ListCommentFragment.newInstance( name, "TRADING_EQUIPMENT"), "commentList")?.commit()
+        loggedIn = !prefs.getString("user_cookie", "null").equals("null")
+        tradingEquipmentViewModel.setData(name, prefs.getString("user_cookie", null))
+        fragmentManager?.beginTransaction()?.add(
+            R.id.list_comment_fragment,
+            ListCommentFragment.newInstance(name, "TRADING_EQUIPMENT"),
+            "commentList"
+        )?.commit()
+
+    }
+
+    private fun followButtonPressed(isFollowing: Boolean) {
+
+        val builder1 =
+            AlertDialog.Builder(context!!)
+        if (isFollowing) {
+            builder1.setMessage(R.string.teq_unfollow_warning)
+        } else {
+            builder1.setMessage(R.string.teq_follow_warning)
+        }
+        builder1.setCancelable(true)
+        builder1.setPositiveButton(
+            "Yes"
+        ) { dialog, id ->
+            dialog.cancel()
+            tradingEquipmentViewModel.followUnfollow(
+                prefs.getString(
+                    "user_cookie",
+                    "null"
+                )!!, args.codeOfCurrency, isFollowing
+            )
+        }
+        builder1.setNegativeButton(
+            "No"
+        ) { dialog, id -> dialog.cancel() }
+        val alert11 = builder1.create()
+        alert11.show()
 
     }
 

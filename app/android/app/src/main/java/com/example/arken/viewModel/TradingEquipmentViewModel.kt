@@ -54,6 +54,7 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
                     override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
                         if (response.isSuccessful) {
                             data.value?.following = false
+                            data.value = data.value
                         } else {
                             System.out.println(response.code())
                         }
@@ -72,6 +73,7 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
                     override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
                         if (response.isSuccessful) {
                             data.value?.following = true
+                            data.value = data.value
                         } else {
                             System.out.println(response.code())
                         }
