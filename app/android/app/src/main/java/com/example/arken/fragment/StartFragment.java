@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -16,11 +19,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
 import com.example.arken.model.GoogleId;
 import com.example.arken.util.RetroClient;
+import com.example.arken.util.SliderAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
@@ -40,6 +45,10 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     private Button loginButton;
     private Button signUpButton;
     private Button guestButton;
+    private ViewPager slideViewPager;
+    private SliderAdapter sliderAdapter;
+    private LinearLayout dotsLayout;
+    private TextView[] dots;
     private SignInButton signupGoogle;
     private static final int RC_SIGN_IN = 2;
     @Nullable
@@ -49,6 +58,9 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         loginButton = view.findViewById(R.id.start_login_button);
         signUpButton = view.findViewById(R.id.start_signup_button);
         guestButton = view.findViewById(R.id.signup_guest_button);
+        slideViewPager = view.findViewById(R.id.slideViewPager);
+        dotsLayout = view.findViewById(R.id.dotsLayout);
+
         guestButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
@@ -56,11 +68,19 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         signupGoogle.setOnClickListener(this);
         OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
-            public void handleOnBackPressed() {
-                getActivity().finish();
-            }
+            public void handleOnBackPressed() {getActivity().finish();}
+
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+       requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
+
+        sliderAdapter = new SliderAdapter(getContext());
+        slideViewPager.setAdapter(sliderAdapter);
+
+        addDotsIndicator(0);
+
+        slideViewPager.addOnPageChangeListener(viewListener);
+
         return view;
     }
 
@@ -77,6 +97,46 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
+    public void addDotsIndicator(int position) {
+        dots = new TextView[5];
+        dotsLayout.removeAllViews();
+
+        for(int i=0; i < dots.length; i++) {
+
+            dots[i] = new TextView(getContext());
+            dots[i].setText(Html.fromHtml("&#8226;"));
+            dots[i].setTextSize(35);
+            dots[i].setTextColor(getResources().getColor(R.color.colorLightGray));
+
+            dotsLayout.addView(dots[i]);
+        }
+
+        if(dots.length > 0) {
+
+            dots[position].setTextColor(getResources().getColor(R.color.whiteTextColor));
+
+        }
+    }
+
+    ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+
+            addDotsIndicator(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
+
     private void signIn() {
         Intent signInIntent = MainActivity.getClient().getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
