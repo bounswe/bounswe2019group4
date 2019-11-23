@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.arken.R
 import com.example.arken.model.*
@@ -18,7 +21,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchFragment: Fragment() {
+class SearchFragment: Fragment() , SearchUser.OnBackPressed{
+
     private lateinit var viewPager: ViewPager
     private lateinit var pagerAdapter: SearchPagerAdapter
     private lateinit var tabLayout: TabLayout
@@ -37,7 +41,7 @@ class SearchFragment: Fragment() {
         // Get the list of movies from the JSON file
         val values = arrayOf("EVENTS","TRADING EQ","ARTICLE","USER")
 
-        pagerAdapter = fragmentManager?.let { SearchPagerAdapter(it, values) }!!
+        pagerAdapter = fragmentManager?.let { SearchPagerAdapter(it, values, this) }!!
         viewPager.adapter = pagerAdapter
 
         tabLayout = view.findViewById(R.id.search_tab_view)
@@ -80,4 +84,9 @@ class SearchFragment: Fragment() {
 
         return view
     }
+
+    override fun onBackPressed() {
+        findNavController().popBackStack()
+    }
+
 }

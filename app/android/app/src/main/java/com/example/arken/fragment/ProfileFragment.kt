@@ -48,6 +48,7 @@ class ProfileFragment( var userId: String?) : Fragment() {
     private lateinit var pred_value_textView: TextView
     private lateinit var uri: String
     private lateinit var profile: Profile
+    private lateinit var followButton: TextView
     private val args: ProfileFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -64,10 +65,12 @@ class ProfileFragment( var userId: String?) : Fragment() {
         location_value_textView = view.findViewById(R.id.location_value_textView)
         email_value_textView = view.findViewById(R.id.email_value_textView)
         pred_value_textView = view.findViewById(R.id.pred_value_textView)
+        followButton = view.findViewById(R.id.user_follow)
 
         if(userId == null){
             userId = args.userId
         }
+        val realId = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("userId", "defaultId")
 
         val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
         val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, userId)
@@ -82,6 +85,9 @@ class ProfileFragment( var userId: String?) : Fragment() {
                     user_type_textView.text = if (profile.user?.isTrader!!) {"Trader"} else {"Basic"}
                     location_value_textView.text = profile.user?.location
                     email_value_textView.text = profile.user?.email
+                    if(userCookie!= "" && realId != userId){
+                        followButton.visibility = View.VISIBLE
+                    }
 
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()

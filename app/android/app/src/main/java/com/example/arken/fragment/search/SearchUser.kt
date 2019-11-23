@@ -29,7 +29,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchUser: Fragment(), OnUserClickedListener {
+class SearchUser(var onBackPressed: OnBackPressed): Fragment(), OnUserClickedListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var userAdapter: UserAdapter
     private var openProf = false
@@ -56,7 +56,7 @@ class SearchUser: Fragment(), OnUserClickedListener {
                     fragmentManager?.beginTransaction()?.remove(profFragment!!)?.commit()
                 }
                 else{
-                    NavHostFragment.findNavController(this@SearchUser).popBackStack()
+                    onBackPressed.onBackPressed()
                 }
             }
         }
@@ -93,5 +93,9 @@ class SearchUser: Fragment(), OnUserClickedListener {
     fun setDataset(list: MutableList<User>){
         userAdapter.dataSet = list
         userAdapter.notifyDataSetChanged()
+    }
+
+    interface OnBackPressed{
+        fun onBackPressed()
     }
 }
