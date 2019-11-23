@@ -18,7 +18,6 @@ async function profileResponse(user, me, followStatus, TradingEqFollow, Article,
     portfolios = await Portfolio.find().where('userId').equals(user._id)
   }
   else{
-    console.log("hel")
     portfolios = await Portfolio.find({userId: user._id, isPrivate: false})
   }
 
