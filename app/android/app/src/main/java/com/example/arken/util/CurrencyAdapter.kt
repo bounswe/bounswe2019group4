@@ -35,8 +35,13 @@ class CurrencyAdapter(
         fun bind(current: Current, clickListener: OnCurrentClickListener) {
             name.text = current.from + "/" + current.to
             value.text = current.rate
-            date.text= current.Date.toString()
 
+            if (current.Date==null) {
+                date.text = ""
+            }
+            else {
+                date.text = current.Date.toString()
+            }
 
             itemView.setOnClickListener {
                 clickListener.onItemClicked(current.from)
