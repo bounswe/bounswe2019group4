@@ -110,4 +110,12 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @GET("profile/{id}/unfollow")
     Call<ResponseBody> unfollow(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/accept/{id}")
+    Call<ResponseBody> accept(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/reject/{id}")
+    Call<ResponseBody> reject(@Header("Cookie") String userCookie, @Path("id") String k);
 }

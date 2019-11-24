@@ -5,8 +5,10 @@ import java.io.Serializable
 class Profile(
     val user:User?,
     val following:Int?,
+    val followings: MutableList<FollowRequest>?,
     val follower:Int?,
-    val followStatus:Boolean?,
+    val followers: MutableList<FollowRequest>?,
+    val followStatus:String?,
     val followRequest:Int?,
-    val followRequests:MutableList<User>
+    val followRequests:MutableList<FollowRequest>
 ) : Serializable
