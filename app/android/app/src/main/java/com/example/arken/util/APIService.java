@@ -8,6 +8,7 @@ import com.example.arken.model.GoogleUser;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.Profile;
+import com.example.arken.model.SearchResult;
 import com.example.arken.model.SignupUser;
 import com.example.arken.model.User;
 import com.example.arken.model.tradingEquipment.Currency;
@@ -98,6 +99,26 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @DELETE("comments/trading-equipment/{id}")
     Call<ResponseBody> deleteTEComment(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("search")
+    Call<SearchResult> search(@Query("q") String query);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/{id}/follow")
+    Call<ResponseBody> follow(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/{id}/unfollow")
+    Call<ResponseBody> unfollow(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/accept/{id}")
+    Call<ResponseBody> accept(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/reject/{id}")
+    Call<ResponseBody> reject(@Header("Cookie") String userCookie, @Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
     @POST("trading-equipments/prediction")

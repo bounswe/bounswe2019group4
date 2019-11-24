@@ -7,7 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -24,7 +29,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
+class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener,
+    AdapterView.OnItemSelectedListener {
 
     private lateinit var countryEditText: EditText
     private lateinit var importanceSpinner: Spinner
@@ -65,7 +71,7 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener,
         clearButton = rootView.findViewById(R.id.event_list_clear_button)
         clearButton.setOnClickListener(this)
         layoutManager = LinearLayoutManager(activity)
-        val imp = arrayOf(1,2,3,"All")
+        val imp = arrayOf(1, 2, 3, "All")
 
         ArrayAdapter(
             context!!,
@@ -168,17 +174,16 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener,
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if(position!=3) {
+        if (position != 3) {
             importance = position + 1
-        }
-        else{
+        } else {
             importance = null
         }
     }
 
 
     override fun onClick(view: View) {
-        if (view.id != R.id.event_list_filter_country_editText && view.id != R.id.event_list_filter_importance_editText) {
+        if (view.id != R.id.event_list_filter_country_editText) {
             val inputMethodManager =
                 activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
