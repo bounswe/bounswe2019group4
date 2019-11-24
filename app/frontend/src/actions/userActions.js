@@ -55,3 +55,16 @@ export function events(params) {
         payload: userService.events(params)
     };
 }
+
+export function profile(params) {
+    return {
+        type:"PROFILE",
+        payload: userService.profile(params)
+    };
+}
+export function portfolios(params) {
+    return {
+        type:"PORTFOLIOS",
+        payload: userService.portfolios(params)
+    };
+}
