@@ -175,7 +175,7 @@ class Event_Details extends Component {
                         <div style={{display:"flex",flex:1}}>
                             <div style={{display:"flex",flexDirection:"row",flex:3}}/>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"center",flex:3}}>
-                                <Button onClick={this.onSubmit} content='Add Comment' labelPosition='left' icon='edit' basic color={"black"} />
+                                <Button onClick={this.onSubmit} content='Send Comment' labelPosition='left' icon='edit' basic color={"black"} />
                             </div>
                             <div style={{fontSize:14,display:"flex",flexDirection:"row",justifyContent:"flex-end",alignItems:"flex-start",flex:3}}>
                                     {this.state.rest}
