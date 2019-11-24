@@ -61,3 +61,10 @@ export function users(params) {
         payload: userService.userProfile(params)
     };
 }
+
+export function postComment(params) {
+    return {
+        type:"POST_COMMENT",
+        payload: userService.postComment(params)
+    };
+}

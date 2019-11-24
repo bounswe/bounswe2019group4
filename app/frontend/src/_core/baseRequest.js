@@ -11,19 +11,23 @@ const baseUrl = config.getBasePublicUrl();
 
 axios.defaults.baseURL = baseUrl;
 baseRequest.addHeader = token => {
+
     let sessionToken = null;
     if (isUserLoggedIn()) {
+
         sessionToken = loadState().user.sessionToken;
     }
-    axios.defaults.headers.common["Authorization"] = sessionToken || token;
-};
 
+    axios.defaults.headers.common["Authorization"] = sessionToken || token;
+
+};
 
 baseRequest.request = (method, path, params, responseType) => {
     return axios({ method, url: path, data: params, responseType }).then(result => {
         if (result.data.message) {
             throw new Error(result.data.errmsg);
         } else {
+
             return result.data;
         }
     });

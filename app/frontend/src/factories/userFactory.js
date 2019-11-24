@@ -6,6 +6,7 @@ function userFactory() {
     this.resetPassword = params => baseRequest.post("/auth/reset-password", params);
     this.events=path => baseRequest.get("/events"+path);
     this.userProfile=path => baseRequest.get("/profile"+path);
+    this.postComment=params=> baseRequest.post("/comments",params)
 }
 
 export default new userFactory();
