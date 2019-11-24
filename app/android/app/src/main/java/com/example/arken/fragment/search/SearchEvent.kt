@@ -38,9 +38,9 @@ class SearchEvent: Fragment(), OnEventClickedListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_listevent, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_event_list, container, false)
 
-        recyclerView = rootView.findViewById(R.id.recyclerView)
+        recyclerView = rootView.findViewById(R.id.event_recyclerView)
 
         eventAdapter = EventAdapter(mutableListOf(), this)
         recyclerView.adapter = eventAdapter
