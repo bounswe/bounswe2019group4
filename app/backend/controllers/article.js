@@ -28,11 +28,21 @@ module.exports.postArticle = async (request, response) => {
     It returns given article.
   */
   module.exports.getArticle = async (request, response) => {
+    let ArticleUser = request.models['ArticleUser']
 
-    let article = await findUserArticle({ _id : request.params['id']})
+    let articleId = request.params['id']
+    let article = await findUserArticle({ _id : articleId})
   
     if(article){
-      return response.send(article)
+      let yourRate = 0
+      if(request.session['user']){
+        let userId = request.session['user']._id
+        row = await ArticleUser.findOne({userId, articleId})
+        if(row){
+          yourRate = row.rate
+        }
+      }
+      return response.send({...article[0], yourRate})
     } else {
       return response.status(400).send({
         errmsg: "No such article."

@@ -43,7 +43,7 @@ router.post('/:id/rate', [
   Get endpoint for article.
   Check controller function for more detail
 */
-router.get('/:id', modelBinder(Article, 'Article'), articleController.getArticle)
+router.get('/:id', modelBinder(ArticleUser, 'ArticleUser'), articleController.getArticle)
 
 /*
   Delete endpoint for article.
