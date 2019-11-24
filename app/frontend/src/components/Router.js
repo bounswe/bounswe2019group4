@@ -37,9 +37,9 @@ class Routes extends Component {
                     <Route path="/events/:id" render={(props) => { return <Event_Details{...props} />; }} />
                     <Route path="/events" render={() => { return <Events />; }} />
                     <Route path="/profile" render={
-                        () => {
+                        (props) => {
                             if(this.checkAuthorization()) {
-                                return <Profile />;
+                                return <Profile {...props}/>;
                             } else {
                                 return null;
                             }
