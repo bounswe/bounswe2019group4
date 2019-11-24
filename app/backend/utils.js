@@ -309,13 +309,22 @@ module.exports.findUserFollows = async spec => {
   return await Promise.all(data.map(async el => {
     const followingUser = await User.findOne({_id: el.FollowingId})
     const followedUser = await User.findOne({_id: el.FollowedId})
-    return {
-      ...el,
-      FollowingName: followingUser.name,
-      FollowingSurname: followingUser.surname,
-      FollowedName: followedUser.name,
-      FollowedSurname: followedUser.surname,
-    }}))
+    let payload = {...el}
+    if(followingUser) {
+      payload = {
+        ...payload,
+        FollowingName: followingUser.name,
+        FollowingSurname: followingUser.surname
+      }
+    }
+    if(followedUser) {
+      payload = {
+        ...payload,
+        FollowedName: followedUser.name,
+        FollowedSurname: followedUser.surname,
+      }
+    }
+    return payload}))
 }
 
 module.exports.findUserComments = async spec => {
