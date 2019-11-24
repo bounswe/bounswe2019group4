@@ -1,27 +1,23 @@
 package com.example.arken.fragment
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.arken.R
 import com.example.arken.activity.MainActivity
+import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
+import com.example.arken.fragment.search.SearchFragmentDirections
 import com.example.arken.util.MenuAdapter
 import com.example.arken.util.OnMenuItemClickListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-
-import android.content.Context.MODE_PRIVATE
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
-import com.example.arken.fragment.search.SearchFragmentDirections
-import com.example.arken.fragment.search.SearchUser
 
 class BaseFragment : Fragment(), OnMenuItemClickListener {
 
@@ -51,7 +47,7 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
             isLogged = false
         }
 
-        val imageArr = intArrayOf(
+        val imageArr = listOf(
             R.drawable.ic_event,
             R.drawable.ic_trading_eq,
             R.drawable.ic_search,

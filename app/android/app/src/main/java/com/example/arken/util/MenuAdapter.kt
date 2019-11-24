@@ -1,18 +1,19 @@
 package com.example.arken.util
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
-import com.example.arken.model.Event
 
-class MenuAdapter(var imageSet: IntArray, var nameSet: Array<String>, val isLogged: Boolean, val itemClickListener: OnMenuItemClickListener) :
+class MenuAdapter(
+    var imageSet: List<Int>,
+    var nameSet: Array<String>,
+    val isLogged: Boolean,
+    val itemClickListener: OnMenuItemClickListener
+) :
     RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
