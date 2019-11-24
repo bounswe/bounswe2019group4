@@ -24,6 +24,7 @@ import com.example.arken.R
 import com.example.arken.model.tradingEquipment.Currency
 import com.example.arken.util.CurrencyValueAdapter
 import com.example.arken.viewModel.TradingEquipmentViewModel
+import java.math.RoundingMode
 
 class CurrencyFragment : Fragment(), View.OnClickListener {
 
@@ -71,12 +72,25 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
             ViewModelProviders.of(this).get(TradingEquipmentViewModel::class.java)
         tradingEquipmentViewModel.data.observe(this, Observer<Currency> {
             currencyTime.text = it.current!!.Date.toString()
-            currencyValue.text = it.current!!.rate
+            currencyValue.text =
+                it.current!!.rate.toBigDecimal().setScale(4, RoundingMode.HALF_EVEN).toString()
             currencyName.text = "${it.current!!.from}/${it.current!!.to}"
-            predictionValue.text =
-                "%" + (it.numberOfUps!!.toDouble().div(it.numberOfDowns!! + it.numberOfUps!!)).times(
-                    100
-                ) + " up"
+            if (it.current!!.rate.toDouble() >= it.values!![0].close!!.toDouble()) {
+                currencyName.setTextColor(Color.GREEN)
+                currencyValue.setTextColor(Color.GREEN)
+            } else {
+                currencyName.setTextColor(Color.RED)
+                currencyValue.setTextColor(Color.RED)
+            }
+
+            if (it.numberOfUps!!.toDouble().div(it.numberOfDowns!! + it.numberOfUps!!).isNaN()) {
+                predictionValue.text = "%0.00 up"
+            } else {
+                predictionValue.text =
+                    "%${it.numberOfUps!!.toDouble().div(it.numberOfDowns!! + it.numberOfUps!!).times(
+                        100
+                    ).toBigDecimal().setScale(2, RoundingMode.HALF_EVEN)} up"
+            }
             currencyValueAdapter.setData(it)
             anyChartView.setChart(tradingEquipmentViewModel.setChart(2))
             if (it.following!!) {
