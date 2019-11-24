@@ -73,7 +73,7 @@ class Article_Details extends Component {
         const article  = this.state.article;
         let rating=article?article.rateAverage:0;
             rating=rating.toFixed(1);
-
+        let user=this.state.user;
 
         return (
 
@@ -103,25 +103,28 @@ class Article_Details extends Component {
 
                                     </List>
                                     <Button as='div' labelPosition='right'>
-                                        <Popup
-                                            flowing
-                                            hoverable
-                                            position={"bottom center"}
-                                            trigger={
-                                                <Button color='blue'>
-                                                    Rate
-                                                </Button>
-                                            }
+                                        {user&&user.loggedIn?
+                                            <Popup
+                                                flowing
+                                                hoverable
+                                                position={"bottom center"}
+                                                trigger={
+                                                    <Button color='blue'>
+                                                        Rate
+                                                    </Button>
+                                                }
                                             >
 
-                                                    <Rating
-                                                        icon={"star"}
-                                                        onRate={this.handlerate}
-                                                        defaultRating={article.yourRate}
-                                                        maxRating={5}
+                                                <Rating
+                                                    icon={"star"}
+                                                    onRate={this.handlerate}
+                                                    defaultRating={article.yourRate}
+                                                    maxRating={5}
 
-                                                    />
-                                        </Popup>
+                                                />
+                                            </Popup>:
+                                            null
+                                        }
                                         <Label as='a' basic color='#396D7C' pointing='left'>
                                             <Icon color={"grey"} size={"large"}
                                                   style={{marginRight: 3}} name={"star"}/>
