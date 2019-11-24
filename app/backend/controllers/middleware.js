@@ -5,7 +5,7 @@ function validateJsonField(field) {
             // helper function used in mapping keys in given spec
             function notContainsKey(key) {
                 // if given key isn't present in the given field of the request, return a dict with error message
-                if(!req[field][key]) {
+                if((req[field][key] === undefined)) {
                     const error = {}
                     error[key] = `Couldn't found the '${key}' in the request ${field}.`
                     return error
