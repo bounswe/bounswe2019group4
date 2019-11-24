@@ -6,10 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import com.anychart.AnyChart
 import com.anychart.chart.common.dataentry.HighLowDataEntry
 import com.anychart.charts.Stock
-import com.anychart.core.stock.Plot
+import com.anychart.core.stock.series.Area
 import com.anychart.data.Table
 import com.anychart.data.TableMapping
 import com.example.arken.model.tradingEquipment.Currency
+import com.example.arken.model.tradingEquipment.Prediction
 import com.example.arken.util.RetroClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,8 +20,6 @@ import retrofit2.Response
 class TradingEquipmentViewModel(application: Application) : AndroidViewModel(application) {
 
     val data: MutableLiveData<Currency> = MutableLiveData()
-    val weekTable: Table = Table.instantiate("x")
-    val monthTable: Table = Table.instantiate("x")
     val yearTable: Table = Table.instantiate("x")
     fun setData(code: String, cookie: String?) {
         val call: Call<Currency> = RetroClient.getInstance().apiService.getCurrency(cookie, code)
@@ -32,7 +31,7 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
                         val currency: Currency? = response.body()
                         if (currency != null) {
                             data.value = currency
-                            setChartData()
+                            setChartData(true)
                         }
                     }
                 }
@@ -42,6 +41,52 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
                 }
             }
         )
+    }
+
+    fun prediction(cookie: String, code: String, isUp: Boolean) {
+        if (isUp) {
+            val call: Call<Currency> =
+                RetroClient.getInstance().apiService.predictionCurrency(
+                    cookie,
+                    Prediction(data.value?.current?.rate?.toDouble(), "up", code)
+                )
+            call.enqueue(
+                object : Callback<Currency> {
+                    override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
+                        if (response.isSuccessful) {
+
+                        } else {
+                            System.out.println(response.code())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Currency>, t: Throwable) {
+                        System.out.println(t.message)
+                    }
+                }
+            )
+        } else {
+            val call: Call<Currency> =
+                RetroClient.getInstance().apiService.predictionCurrency(
+                    cookie,
+                    Prediction(data.value?.current?.rate?.toDouble(), "down", code)
+                )
+            call.enqueue(
+                object : Callback<Currency> {
+                    override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
+                        if (response.isSuccessful) {
+
+                        } else {
+                            System.out.println(response.code())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Currency>, t: Throwable) {
+                        System.out.println(t.message)
+                    }
+                }
+            )
+        }
     }
 
     fun followUnfollow(cookie: String, code: String, alreadyFollow: Boolean) {
@@ -72,6 +117,7 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
                     override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
                         if (response.isSuccessful) {
                             data.value?.following = true
+
                         } else {
                             System.out.println(response.code())
                         }
@@ -88,27 +134,15 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
     fun setChart(k: Int): Stock {
         var mapping: TableMapping = yearTable.mapAs("{ x: 'x', value: 'low'}")
         val stock: Stock = AnyChart.stock()
-        val plot: Plot = stock.plot(0)
-        plot.area(mapping)
+        val plot: Area = stock.plot(0).area(mapping)
+        plot.name("${data.value?.current?.from}/${data.value?.current?.to}")
         return stock
     }
 
-    private fun setChartData() {
-        var i = 0
-        data.value!!.values!!.forEach {
-            yearTable.addData(
-                listOf(
-                    StockDataEntry(
-                        it.Date!!,
-                        it.open!!.toDouble(),
-                        it.high!!.toDouble(),
-                        it.low!!.toDouble(),
-                        it.close!!.toDouble()
-                    )
-                )
-            )
-            if (i < 32) {
-                monthTable.addData(
+    private fun setChartData(index: Boolean) {
+        if (index) {
+            data.value!!.values!!.forEach {
+                yearTable.addData(
                     listOf(
                         StockDataEntry(
                             it.Date!!,
@@ -119,20 +153,22 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
                         )
                     )
                 )
-                if (i < 8) {
-                    weekTable.addData(
-                        listOf(
-                            StockDataEntry(
-                                it.Date!!,
-                                it.open!!.toDouble(),
-                                it.high!!.toDouble(),
-                                it.low!!.toDouble(),
-                                it.close!!.toDouble()
-                            )
+
+            }
+        } else {
+            data.value!!.values!!.forEach {
+                yearTable.addData(
+                    listOf(
+                        StockDataEntry(
+                            it.Date!!,
+                            1.div(it.open!!.toDouble()),
+                            1.div(it.high!!.toDouble()),
+                            1.div(it.low!!.toDouble()),
+                            1.div(it.close!!.toDouble())
                         )
                     )
-                }
-                i++
+                )
+
             }
         }
 
