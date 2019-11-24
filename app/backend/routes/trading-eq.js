@@ -8,6 +8,7 @@ const { TradingEquipmentPrediction } = require('../models/trading-eq-prediction'
 const { TradingEquipment } = require('../models/trading-eq')
 const { CurrentTradingEquipment } = require('../models/current-trading-eq')
 const { Comment } = require('../models/comment')
+const {validateBody} = require('../controllers/middleware')
 
 /*
   Get endpoint for information of specific trading equipment.
@@ -43,6 +44,10 @@ router.post('/unfollow', [isAuthenticated, modelBinder(TradingEquipmentFollow, '
   Post endpoint for making a prediction regarding the increase or decrease of a specific trading equipment.
   Check controller function for more detail
 */
-router.post('/prediction', [isAuthenticated, modelBinder(TradingEquipmentPrediction, 'TradingEquipmentPrediction')], tradingEquipmentController.predictTradingEq)
+router.post('/prediction', [
+  isAuthenticated,
+  modelBinder(TradingEquipmentPrediction, 'TradingEquipmentPrediction')],
+  validateBody(['tEq', 'value', 'prediction']),
+  tradingEquipmentController.predictTradingEq)
 
 module.exports = router
