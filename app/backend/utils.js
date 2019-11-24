@@ -322,11 +322,20 @@ module.exports.findUserComments = async spec => {
   const data = await Comment.find(spec).lean()
   return await Promise.all(data.map(async el => {
     const user = await User.findOne({_id: el.userId})
-    return {
-      ...el,
-      username: user.name,
-      usersurname: user.surname
-    }}))
+    if (user) {
+      return {
+        ...el,
+        username: user.name,
+        usersurname: user.surname
+      }
+    } else {
+      return {
+        ...el,
+        username: '<deleted user>',
+        usersurname: ' ',
+      }
+    }
+  }))
 }
 
 module.exports.findUserArticle = async spec => {
