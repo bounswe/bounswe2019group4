@@ -22,17 +22,16 @@ import * as userActions from '../../actions/userActions';
 import {normalizeDate} from "../Events/Events";
 import Loading from "../Loading";
 import article_photo from "../../assets/article_photo.png"
-
 class Article_Details extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             user:{},
-            rating:0,
             loading:false,
             rest:1000,
-            text:""
+            text:"",
+            ratesubmitted:false
         }
     }
 
@@ -62,29 +61,30 @@ class Article_Details extends Component {
         let rate={
             value:rating
         };
-        await this.props.rateArticle("/"+this.props.match.params.id,rate).then(result=>{
-            this.setState({rating:rating})
+        await this.props.rateArticle("/"+this.props.match.params.id+"/rate",rate).then(result=>{
+            this.getArticle();
         });
+        this.setState({ratesubmitted:true});
+        setTimeout(()=>this.setState({ratesubmitted:false}),3000);
 
     };
 
     render() {
         const article  = this.state.article;
         let rating=article?article.rateAverage:0;
-        if(rating){
             rating=rating.toFixed(1);
-        }
-        //const comments=this.state.article.comments;
+
+
         return (
 
             article?(
                 <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
                     <div style={{width:"100%"}}>
                         <Grid>
-                            <Grid.Column width={1} >
-                            </Grid.Column>
+
+
                             <Grid.Column width={4} >
-                                <Segment  textAlign="left" style={{display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
+                                <Segment  textAlign="left" style={{marginRight:50,marginLeft:20,display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
                                     {<Image size="medium" src={article_photo} />}
 
                                     <List relaxed>
@@ -104,27 +104,23 @@ class Article_Details extends Component {
                                     </List>
                                     <Button as='div' labelPosition='right'>
                                         <Popup
-                                            pinned
-                                            on={"click"}
+                                            flowing
+                                            hoverable
                                             position={"bottom center"}
                                             trigger={
                                                 <Button color='blue'>
                                                     Rate
                                                 </Button>
-                                            }>
-                                            <Popup
-                                                on={"click"}
-                                                position={"bottom center"}
-                                                trigger={
-                                                    <Rating
-                                                        onRate={this.handlerate}
-                                                        defaultRating={this.state.rating}
-                                                        maxRating={5}
-                                                        clearable
-                                                    />}
+                                            }
                                             >
-                                                You can clear by clicking the same star again
-                                            </Popup>
+
+                                                    <Rating
+                                                        icon={"star"}
+                                                        onRate={this.handlerate}
+                                                        defaultRating={article.yourRate}
+                                                        maxRating={5}
+
+                                                    />
                                         </Popup>
                                         <Label as='a' basic color='#396D7C' pointing='left'>
                                             <Icon color={"grey"} size={"large"}
@@ -137,11 +133,14 @@ class Article_Details extends Component {
                                             {article.numberOfRates}
                                         </Label>
                                     </Button>
+                                    {this.state.ratesubmitted?
+                                        <h5>Your rate has been submitted.</h5>:<div/>
+                                    }
 
                                 </Segment>
                             </Grid.Column>
                             <Grid.Column width={10}>
-                                <Segment raised piled padded compact style={{display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
+                                <Segment raised piled padded compact style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                                     <div style={{margin:20,fontFamily:"timesnewroman",fontSize:15}}>
                                         <Header style={{fontFamily:"timesnewroman"}}>
                                             {article.title}
