@@ -6,13 +6,17 @@ const {isAuthenticated} = require('../controllers/auth')
 const { Portfolio } = require('../models/portfolio')
 const { PortfolioTradingEq } = require('../models/portfolio-tradingEq')
 const { PortfolioFollow } = require('../models/portfolio-follow')
+const { validateBody } = require('../controllers/middleware')
 
 /*
   Post endpoint for portfolio.
   Check controller function for more detail
 */
 
-router.post('/',[ isAuthenticated, multipleModelBinder([
+router.post('/',[
+  validateBody(['title', 'definition', 'tradingEqs', 'isPrivate']),
+  isAuthenticated, 
+  multipleModelBinder([
     [Portfolio, 'Portfolio'],
     [PortfolioTradingEq, 'PortfolioTradingEq']
   ])], portfolioController.postPortfolio)
@@ -22,7 +26,10 @@ router.post('/',[ isAuthenticated, multipleModelBinder([
   Check controller function for more detail
 */
 
-router.patch('/:id', [ isAuthenticated, modelBinder(Portfolio, 'Portfolio')], portfolioController.editPortfolio)
+router.patch('/:id', [
+  validateBody(['title', 'definition']),
+  isAuthenticated,
+  modelBinder(Portfolio, 'Portfolio')], portfolioController.editPortfolio)
 
 /*
   Get endpoint for portfolio.
@@ -38,20 +45,26 @@ router.get('/:id',[ multipleModelBinder([
   Check controller function for more detail
 */
 
-router.post('/:id/add',[ isAuthenticated, multipleModelBinder([
-  [Portfolio, 'Portfolio'],
-  [PortfolioTradingEq, 'PortfolioTradingEq']
-])], portfolioController.addTradingEq)
+router.post('/:id/add',[
+  validateBody(['tradingEq']),
+  isAuthenticated,
+  multipleModelBinder([
+    [Portfolio, 'Portfolio'],
+    [PortfolioTradingEq, 'PortfolioTradingEq']
+  ])], portfolioController.addTradingEq)
 
 /*
   Delete endpoint for remove trading eq from portfolio.
   Check controller function for more detail
 */
 
-router.delete('/:id/remove',[ isAuthenticated, multipleModelBinder([
-  [Portfolio, 'Portfolio'],
-  [PortfolioTradingEq, 'PortfolioTradingEq']
-])], portfolioController.removeTradingEq)
+router.delete('/:id/remove',[
+  validateBody(['tradingEq']),
+  isAuthenticated,
+  multipleModelBinder([
+    [Portfolio, 'Portfolio'],
+    [PortfolioTradingEq, 'PortfolioTradingEq']
+  ])], portfolioController.removeTradingEq)
 
 /*
   Delete endpoint for portfolio.

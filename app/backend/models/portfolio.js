@@ -9,8 +9,7 @@ let Portfolio = mongoose.model('Portfolio', {
 
   title:{
     type: String,
-    require: true,
-    unique: true
+    require: true
   },
 
   definition:{

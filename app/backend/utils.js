@@ -2,6 +2,7 @@ var fs = require("fs");
 const IBAN = require('iban');
 const commonPassword = require('common-password');
 const request = require('request');
+const levenstein = require('leven')
 
 const {UserFollow} = require('./models/user-follow')
 const {User} = require('./models/user')
@@ -240,15 +241,20 @@ async function getCurrentTradingEquipmentsFromAPI() {
       await asyncForEach(currencies, async (currency) => {
         await waitFor(13*1000)                  // wait 13 second to complete. Because the limit is 5 request per minute
         from_symbol = currency.split(',')[0]    // currency code
-
+        from_name = currency.split(',')[1]    // currency name
+        
         if(!from_symbol)
          return
   
         // Take the USD value for every currency except USD. Take EUR value for USD.
-        if(from_symbol == 'EUR')
+        if(from_symbol == 'EUR'){
           to_symbol = 'USD'
-        else
+          to_name = 'United States Dollar'    // currency name
+        }
+        else{
           to_symbol = 'EUR'
+          to_name = 'EURO'    // currency name
+        }
   
         // form the request url
         let trading_eq_url = trading_eq_url_base + "function=" + func + "&from_currency="+from_symbol+"&to_currency="+to_symbol+"&apikey="+tradingEquipmentKey;
@@ -267,7 +273,9 @@ async function getCurrentTradingEquipmentsFromAPI() {
                 if(!teq){
                   teq = new CurrentTradingEquipment({
                     from : from_symbol,
-                    to : to_symbol
+                    fromName : from_name,
+                    to : to_symbol,
+                    toName : to_name
                   });
                 }
 
@@ -314,11 +322,20 @@ module.exports.findUserComments = async spec => {
   const data = await Comment.find(spec).lean()
   return await Promise.all(data.map(async el => {
     const user = await User.findOne({_id: el.userId})
-    return {
-      ...el,
-      username: user.name,
-      usersurname: user.surname
-    }}))
+    if (user) {
+      return {
+        ...el,
+        username: user.name,
+        usersurname: user.surname
+      }
+    } else {
+      return {
+        ...el,
+        username: '<deleted user>',
+        usersurname: ' ',
+      }
+    }
+  }))
 }
 
 module.exports.findUserArticle = async spec => {
@@ -414,4 +431,17 @@ async function resultPredictions() {
     });
 
   }
+}
+
+module.exports.filterData = (data, fields, keyword, max_ = 1) => {
+  keyword = keyword.toLowerCase()
+  
+  return data.filter((row) => {
+    return fields.filter(field => {
+      const words = String(row[field]).toLowerCase().split(' ')
+      return words.filter(word => {
+        return levenstein(word, keyword) <= max_
+      }).length > 0
+    }).length > 0
+  })
 }
