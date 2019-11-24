@@ -31,7 +31,7 @@ import retrofit2.Response
 
 class SearchUser(var onBackPressed: OnBackPressed): Fragment(), OnUserClickedListener {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var userAdapter: UserAdapter
+    private var userAdapter: UserAdapter? = null
     private var openProf = false
     private var profFragment:ProfileFragment? = null
 
@@ -43,8 +43,9 @@ class SearchUser(var onBackPressed: OnBackPressed): Fragment(), OnUserClickedLis
         val rootView = inflater.inflate(R.layout.fragment_user_list, container, false)
 
         recyclerView = rootView.findViewById(R.id.user_recyclerView)
-
-        userAdapter = UserAdapter(mutableListOf(), this)
+        if (userAdapter == null) {
+            userAdapter = UserAdapter(mutableListOf(), this)
+        }
         recyclerView.adapter = userAdapter
 
         recyclerView.adapter?.notifyDataSetChanged()
@@ -64,14 +65,14 @@ class SearchUser(var onBackPressed: OnBackPressed): Fragment(), OnUserClickedLis
         return rootView
     }
 
-
     override fun onItemClicked(userId: String) {
         val userCookie = activity!!.getSharedPreferences(
             LoginFragment.MY_PREFS_NAME,
             Context.MODE_PRIVATE
-            ).getString("user_cookie", "")
+        ).getString("user_cookie", "")
 
-            val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, userId)
+        val call: Call<Profile> =
+            RetroClient.getInstance().apiService.getProfile(userCookie, userId)
 
             call.enqueue(object : Callback<Profile> {
                 override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
@@ -80,19 +81,23 @@ class SearchUser(var onBackPressed: OnBackPressed): Fragment(), OnUserClickedLis
                         fragmentManager?.beginTransaction()?.add(R.id.search_container, profFragment!!, "prof")?.commit()
                         openProf = true
 
-                    } else {
-                        Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
-                    }
+                } else {
+                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                 }
+            }
 
-                override fun onFailure(call: Call<Profile>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                }
-            })
+            override fun onFailure(call: Call<Profile>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    fun setDataset(list: MutableList<User>) {
+        if (userAdapter == null) {
+            userAdapter = UserAdapter(mutableListOf(), this)
         }
-    fun setDataset(list: MutableList<User>){
-        userAdapter.dataSet = list
-        userAdapter.notifyDataSetChanged()
+        userAdapter!!.dataSet = list
+        userAdapter!!.notifyDataSetChanged()
     }
 
     interface OnBackPressed{
