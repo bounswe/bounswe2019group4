@@ -102,4 +102,12 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @GET("search")
     Call<SearchResult> search(@Query("q") String query);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/{id}/follow")
+    Call<ResponseBody> follow(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/{id}/unfollow")
+    Call<ResponseBody> unfollow(@Header("Cookie") String userCookie, @Path("id") String k);
 }
