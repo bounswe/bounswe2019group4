@@ -7,3 +7,19 @@ module.exports.modelBinder = (model, modelName) => {
 		next()
 	}
 }
+
+module.exports.multipleModelBinder = (spec) => {
+	return (req, res, next) => {
+		if(!req.models) {
+			req.models = {}
+		}
+		if(Array.isArray(spec)) {
+			spec.forEach(model => {
+				req.models[model[1]] = model[0]
+			});
+		} else {
+			throw Error('Invalid argument given to modelBinder middleware.')
+		}
+		next()
+	}
+}

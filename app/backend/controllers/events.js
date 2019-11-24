@@ -1,3 +1,5 @@
+const {findUserComments} = require('../utils')
+
 /*
   Get method for events.
   It returns events from database.
@@ -11,15 +13,18 @@ module.exports.getEvents = async (request, response) => {
     TODO: FILTER BY DATE MUST BE ADDED!
   */
   let Country = request.query.country
+  if(Country) {
+    Country = Country.toLowerCase()
+  }
   let Importance = request.query.importance
   const limit = parseInt(request.query.limit || 10)
   const skip = (parseInt(request.query.page || 1) - 1) * limit
   // undefined variables are the projections over the collection
   try {
     if(Country && Importance){
-      events = await Event.find({ Country, Importance }, undefined, {skip, limit}).sort({Date: -1})
+      events = await Event.find({ Country: { $regex: new RegExp("^" + Country, "i") }, Importance }, undefined, {skip, limit}).sort({Date: -1})
     } else if(Country && !Importance){
-      events = await Event.find({ Country }, undefined, {skip, limit}).sort({Date: -1})
+      events = await Event.find({ Country: { $regex: new RegExp("^" + Country, "i") } }, undefined, {skip, limit}).sort({Date: -1})
     } else if(!Country && Importance){
       events = await Event.find({ Importance }, undefined, {skip, limit}).sort({Date: -1})
     } else {
@@ -42,6 +47,7 @@ module.exports.getEvents = async (request, response) => {
 */
 module.exports.getEvent = async (request, response) => {
   let Event = request.models['Event']
+  let Comment = request.models['Comment']
   const CalendarId = request.params['id']
   
   try{
@@ -50,7 +56,8 @@ module.exports.getEvent = async (request, response) => {
     if (!event) {  // If no instance is returned, credentials are invalid
       throw Error('No such event!')
     } else{
-      return response.send(event)  // Send only the extracted keys
+      comments = await findUserComments({ related : CalendarId, about : "EVENT" })
+      return response.send({event, comments})  // Send only the extracted keys
     }
   } catch(error){
     return response.status(404).send({

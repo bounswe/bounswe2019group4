@@ -1,37 +1,33 @@
 const {mongoose} =  require('../db');  // The mongodb connector library
 
-let CurrentTradingEquipment = mongoose.model('CurrentTradingEquipment', {
+let Comment = mongoose.model('Comment', {
 
-  from: {
+  userId: {
     type: String,
     require: true
   },
 
-  fromName: {
-    type: String
-  },
-
-  to: {
+  related: {
     type: String,
     require: true
   },
 
-  toName: {
-    type: String
-  },
-
-  rate: {
+  text: {
     type: String,
     require: true
   },
 
-  Date:{
+  date:{
+    type: Date,
+    require: true
+  },
+
+  about:{
     type: String,
     require: true
   }
-  
 });
 
 module.exports = {
-  CurrentTradingEquipment: CurrentTradingEquipment
+  Comment: Comment
 }
