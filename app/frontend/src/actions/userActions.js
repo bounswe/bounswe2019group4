@@ -68,3 +68,17 @@ export function postComment(params) {
         payload: userService.postComment(params)
     };
 }
+
+export function getArticleDetails(params) {
+    return {
+        type:"ARTICLE_DETAIL",
+        payload: userService.getArticle(params)
+    };
+}
+
+export function rateArticle(path,params) {
+    return {
+        type:"ARTICLE_RATE",
+        payload: userService.rateArticle(path,params)
+    };
+}

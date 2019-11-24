@@ -7,6 +7,8 @@ function userFactory() {
     this.events=path => baseRequest.get("/events"+path);
     this.userProfile=path => baseRequest.get("/profile"+path);
     this.postComment=params=> baseRequest.post("/comments",params)
+    this.getArticle=path=>baseRequest.get("/articles"+path)
+    this.rateArticle=(path,params)=>baseRequest.post("/articles"+path,params)
 }
 
 export default new userFactory();
