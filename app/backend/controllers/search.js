@@ -18,9 +18,8 @@ module.exports.search = async (req, res, next) => {
     articlesData = await articlesData
 
     // searches for every word in the query string
-    const users = terms
-        .flatMap(term => filterData(usersData, ['name', 'surname', 'location'],term))
-        .sort((a, b) => eval(b.predictionRate) - eval(a.predictionRate))
+    let users = terms.flatMap(term => filterData(usersData, ['name', 'surname', 'location'],term))
+    users = Array.from(new Set(users)).sort((a, b) => eval(b.predictionRate) - eval(a.predictionRate))
     const events = terms.flatMap(term => filterData(eventsData, ['Country', 'Catogory', 'Event'], term))
     const tradingEq = terms.flatMap(term => filterData(tradingEqData, ['from', 'fromName', 'to', 'toName'], term))
     const articles = terms.flatMap(term => filterData(articlesData, ['text', 'title'], term))
