@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -121,6 +119,9 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
                 findNavController(fragment).navigate(R.id.action_profileFragment_to_eventListFragment);
             } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.searchFragment) {
                 findNavController(fragment).popBackStack();
+            } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.currencyFragment) {
+                findNavController(fragment).popBackStack();
+                findNavController(fragment).navigate(R.id.action_listCurrentFragment_to_eventListFragment);
             }
         }
         else if(index == 1){
@@ -137,6 +138,8 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
             }
             else if (findNavController(fragment).getCurrentDestination().getId() == R.id.searchFragment) {
                 findNavController(fragment).navigate(R.id.action_searchFragment_to_listCurrentFragment);
+            } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.currencyFragment) {
+                findNavController(fragment).popBackStack();
             }
         }
         else if(index == 2){
@@ -151,6 +154,9 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
                 findNavController(fragment).navigate(R.id.action_eventListFragment_to_searchFragment);
             } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.profileFragment) {
                 findNavController(fragment).navigate(R.id.action_profileFragment_to_searchFragment);
+            } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.currencyFragment) {
+                findNavController(fragment).popBackStack();
+                findNavController(fragment).navigate(R.id.action_listCurrentFragment_to_searchFragment);
             }
         }
         else if (index == 3){
@@ -163,6 +169,9 @@ public class BaseFragment extends Fragment implements OnMenuItemClickListener {
                 findNavController(fragment).navigate(R.id.action_eventListFragment_to_profileFragment);
             } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.searchFragment) {
                 findNavController(fragment).navigate(R.id.action_searchFragment_to_profileFragment);
+            } else if (findNavController(fragment).getCurrentDestination().getId() == R.id.currencyFragment) {
+                findNavController(fragment).popBackStack();
+                findNavController(fragment).navigate(R.id.action_listCurrentFragment_to_profileFragment);
             }
         }
         else if (index == 4){
