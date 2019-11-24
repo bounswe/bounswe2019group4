@@ -46,7 +46,7 @@ router.get('/:id',[ multipleModelBinder([
 */
 
 router.post('/:id/add',[
-  validateBody(['tradingEqs']),
+  validateBody(['tradingEq']),
   isAuthenticated,
   multipleModelBinder([
     [Portfolio, 'Portfolio'],
@@ -59,7 +59,7 @@ router.post('/:id/add',[
 */
 
 router.delete('/:id/remove',[
-  validateBody(['tradingEqs']),
+  validateBody(['tradingEq']),
   isAuthenticated,
   multipleModelBinder([
     [Portfolio, 'Portfolio'],
