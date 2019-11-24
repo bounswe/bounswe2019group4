@@ -38,9 +38,9 @@ class SearchTE: Fragment(), OnCurrentClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_tequipments, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_currency_list, container, false)
 
-        recyclerView = rootView.findViewById(R.id.recyclerViewcurrent)
+        recyclerView = rootView.findViewById(R.id.currency_recyclerView)
 
         currencyAdapter = CurrencyAdapter(mutableListOf(), this)
         recyclerView.adapter = currencyAdapter
