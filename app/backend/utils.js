@@ -386,7 +386,7 @@ async function resultPredictions() {
       else
         element.Result = "true"
     } else if(element.CurrentValue == currentValue)
-        element.Result = "false"
+        element.Result = "nochange"
 
 
     // update database with the results
@@ -418,7 +418,8 @@ async function resultPredictions() {
     if(element.Result == "true")
       leftSide+=1;
     
-    rightSide+=1
+    if(element.Result == "true" || element.Result == "false")
+      rightSide+=1
 
     predictionRate = leftSide+"/"+rightSide;
 
