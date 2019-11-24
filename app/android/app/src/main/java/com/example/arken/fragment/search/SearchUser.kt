@@ -13,6 +13,6 @@ class SearchUser:Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_signup, container, false)
+        return inflater.inflate(R.layout.fragment_start_search, container, false)
     }
 }
