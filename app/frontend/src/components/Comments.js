@@ -1,14 +1,25 @@
 import React, {Component} from "react";
-import {Comment, Divider,Button,Modal,Image,Header,Icon} from "semantic-ui-react";
+import {Comment, Divider,Button,Modal,Image,Header,Icon,Popup} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import {normalizeDate} from "./Events/Events";
+import {loadState} from "../_core/localStorage";
+import * as userActions from "../actions/userActions";
+import {connect} from "react-redux";
 
 
-export default class Comments extends Component{
+class Comments extends Component{
 
 
-    componentDidMount() {
-        this.scrollBottom();
+    state={
+        user:{}
+    };
+
+     async componentDidMount() {
+
+         this.scrollBottom();
+        const localState = loadState();
+        await this.setState({user: localState.user});
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -24,26 +35,71 @@ export default class Comments extends Component{
     };
 
     preview=(comment)=>{
-        return comment.substr(0,200);
+        return comment.substr(0,200)+"...";
+    };
+
+    deleteComment=async(id)=>{
+        let type=this.props.type;
+        let check=window.confirm("Delete comment?");
+        if(check) {
+            await this.props.deleteComment("/" + type + "/" + id).then(() => {
+                this.props.resendComments();
+            })
+        }
     };
 
     render(){
         const comments  = this.props.data;
-
+        let user=this.state.user;
         return(
-            <Comment.Group id={"cgroup"} style={{overflow:"auto",height:"250px",backgroundColor:"#fcfcfc",borderRadius:10}}>
+            <div id={"cgroup"} style={{overflow:"auto",height:"250px",backgroundColor:"#fcfcfc",borderRadius:10,borderWidth:2,borderColor:"black"}}>
+
 
                 {comments.length>0?comments.map(item=>(
 
-                        <Comment style={{backgroundColor:"white",borderRadius:10}}>
-                            <Comment.Content >
-                                <Comment.Author ><Link to={"/profile/"+item.userId}>{item.username+" "+item.usersurname}</Link></Comment.Author>
-                                <Comment.Metadata >
-                                    <span>{normalizeDate(item.date)}</span>
-                                </Comment.Metadata>
-                                <Comment.Text>{item.text.length>100?
+                        <div style={{backgroundColor:"#F0F0F0"}}>
+
+                                <div style={{display:"flex",marginLeft:10,marginRight:20}}>
+                                    <div style={{display:"flex",flex:1}}>
+                                    <a   style={{marginLeft:10,marginRight:4,textAlign:"left"}} href={"/profile/"+item.userId}>
+                                        <h5 >{item.username+" "+item.usersurname}</h5>
+                                    </a>
+                                    <div style={{fontSize:10,color:"grey"}}>
+                                    {normalizeDate(item.date)}
+                                    </div>
+                                    </div>
+                                    {user.loggedIn&&user._id===item.userId?(
+
+                                                    <Popup
+                                                        flowing
+                                                        on={"click"}
+                                                        position={"bottom right"}
+                                                        hoverable
+                                                        hideOnScroll
+                                                        trigger={
+
+                                                                <a style={{fontSize:20,cursor:"pointer"}}>
+                                                                    ...
+                                                                </a>
+
+                                                        }
+                                                    >
+
+                                                        <Button onClick={()=>this.deleteComment(item._id)} color={"red"} >Delete</Button>
+
+
+                                                    </Popup>
+
+                                        ):
+                                        <div/>
+
+                                    }
+
+                                </div>
+                                <Divider/>
+                                <Comment.Text style={{color:"#5F5F5F",marginLeft:20,marginRight:20}}>{item.text.length>100?
                                     (<div>{this.preview(item.text)}
-                                            <Modal trigger={<Button size={"mini"}>...</Button>}>
+                                            <Modal trigger={<Button size={"mini"}>read further</Button>}>
                                                 <Modal.Header>Comment</Modal.Header>
                                                 <Modal.Content image>
                                                     <Icon size={"large"} name={"comment"} />
@@ -65,18 +121,24 @@ export default class Comments extends Component{
                                     ):item.text
                                 }</Comment.Text>
 
-                            </Comment.Content>
                             <Divider/>
-                        </Comment>
+                        </div>
 
                     )
-
-
-
-
                 ):<h3 style={{color:"gray"}}>No comments yet</h3>}
 
-            </Comment.Group>
+            </div>
         )
     }
 }
+
+
+const dispatchToProps = dispatch => {
+    return {
+
+        deleteComment:path=>dispatch(userActions.deleteComment(path))
+
+    };
+};
+
+export default connect(null, dispatchToProps)(Comments);

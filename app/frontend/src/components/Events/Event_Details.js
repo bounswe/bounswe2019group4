@@ -52,7 +52,8 @@ class Event_Details extends Component {
 
 
 
-    async getEvents(){
+     getEvents=async()=>{
+
 
         await this.props.events("/"+this.props.match.params.id).then(async result=> {
                 //alert(Object.keys(result.action.payload));
@@ -62,7 +63,7 @@ class Event_Details extends Component {
             }
         )
 
-    }
+    };
 
 
 
@@ -79,11 +80,11 @@ class Event_Details extends Component {
                 related:calendarID,
                 about:"EVENT"
                 };
-            let user=this.state.user;
+            this.setState({loading:true})
             await this.props.postComment(com).then(async result=>{
 
                 await this.getEvents();
-                this.setState({text: "",rest:1000})
+                this.setState({text: "",rest:1000,loading:false})
             });
 
 
@@ -167,7 +168,7 @@ class Event_Details extends Component {
                             Comments
                         </Header>
 
-                        <Comments  data={comments}/>
+                        <Comments type={"event"} resendComments={this.getEvents}  data={comments}/>
 
                     <Segment >
 
@@ -178,7 +179,12 @@ class Event_Details extends Component {
                         <div style={{display:"flex",flex:1}}>
                             <div style={{display:"flex",flexDirection:"row",flex:3}}/>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"center",flex:3}}>
-                                <Button onClick={this.onSubmit} content='Send Comment' labelPosition='left' icon='edit' basic color={"black"} />
+
+                                <Button onClick={this.onSubmit} content='Send Comment'
+                                        labelPosition='left'
+                                        icon={'edit'}
+                                        basic color={"black"}
+                                    />
                             </div>
                             <div style={{fontSize:14,display:"flex",flexDirection:"row",justifyContent:"flex-end",alignItems:"flex-start",flex:3}}>
                                     {this.state.rest}

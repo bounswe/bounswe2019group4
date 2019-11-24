@@ -69,6 +69,14 @@ export function postComment(params) {
     };
 }
 
+
+export function deleteComment(path) {
+    return {
+        type:"DELETE_COMMENT",
+        payload: userService.deleteComment(path)
+    };
+}
+
 export function getArticleDetails(params) {
     return {
         type:"ARTICLE_DETAIL",

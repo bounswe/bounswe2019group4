@@ -36,6 +36,7 @@ baseRequest.request = (method, path, params, responseType) => {
 
 baseRequest.get = path => baseRequest.request("GET", path);
 baseRequest.post = (path, params) => baseRequest.request("POST", path, params);
+baseRequest.delete=(path)=>baseRequest.request("DELETE",path);
 baseRequest.download = (path, params) => baseRequest.request("POST", path, params, "blob");
 
 baseRequest.addHeader();
