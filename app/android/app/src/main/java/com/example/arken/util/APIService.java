@@ -13,6 +13,7 @@ import com.example.arken.model.SignupUser;
 import com.example.arken.model.User;
 import com.example.arken.model.tradingEquipment.Currency;
 import com.example.arken.model.tradingEquipment.ListCurrency;
+import com.example.arken.model.tradingEquipment.Prediction;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -59,7 +60,7 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @POST("comments")
     Call<ResponseBody> makeComment(@Header("Cookie") String userCookie,
-            @Body Comment comment
+                                   @Body Comment comment
     );
 
     @Headers({"Content-Type: application/json"})
@@ -118,4 +119,8 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @GET("profile/reject/{id}")
     Call<ResponseBody> reject(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("trading-equipments/prediction")
+    Call<Currency> predictionCurrency(@Header("Cookie") String cookie, @Body Prediction prediction);
 }

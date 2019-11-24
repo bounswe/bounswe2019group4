@@ -1,32 +1,26 @@
 package com.example.arken.fragment
 
-import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.Comment
 import com.example.arken.model.Event
-import com.example.arken.model.Profile
-import com.example.arken.model.SignupUser
-import com.example.arken.util.*
+import com.example.arken.model.tradingEquipment.Currency
+import com.example.arken.util.CommentAdapter
+import com.example.arken.util.OnCommentDeletedListener
+import com.example.arken.util.RetroClient
 import okhttp3.ResponseBody
-import org.json.JSONException
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
-import java.util.*
 
 /*
     1)teye comment ekleme
@@ -113,9 +107,7 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
                     Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
-        }
-
-        else if(about == "TRADING_EQUIPMENT"){
+        } else if (about == "TRADING-EQUIPMENT") {
             val call: Call<ResponseBody> = RetroClient.getInstance().apiService.deleteTEComment(userCookie, commentId)
 
             call.enqueue(object : Callback<ResponseBody> {
@@ -138,6 +130,8 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
         }
     }
     fun initDataset(){
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            .getString("user_cookie", "")
         if(about == "EVENT"){
             val call: Call<Event> = RetroClient.getInstance().apiService.getEvent(related)
 
@@ -157,6 +151,30 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
                 }
 
                 override fun onFailure(call: Call<Event>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else if (about == "TRADING-EQUIPMENT") {
+            val call: Call<Currency> =
+                RetroClient.getInstance().apiService.getCurrency(userCookie, related)
+
+            call.enqueue(object : Callback<Currency> {
+                override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
+                    if (response.isSuccessful) {
+                        val callCurrency: Currency? = response.body()
+                        if (callCurrency != null) {
+                            var comments = callCurrency.comments
+                            dataset = comments
+                            commentAdapter.dataSet = dataset
+                            commentAdapter.notifyDataSetChanged()
+                        }
+                    } else {
+                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Currency>, t: Throwable) {
                     Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })

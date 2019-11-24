@@ -112,6 +112,9 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_profileFragment_to_eventListFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.searchFragment) {
                 findNavController(fragment!!).popBackStack()
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
+                findNavController(fragment!!).popBackStack()
+                findNavController(fragment!!).navigate(R.id.action_listCurrentFragment_to_eventListFragment)
             }
         } else if (index == 1) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -127,6 +130,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_profileFragment_to_listCurrentFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.searchFragment) {
                 findNavController(fragment!!).navigate(R.id.action_searchFragment_to_listCurrentFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
+                findNavController(fragment!!).popBackStack()
             }
         } else if (index == 2) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -138,6 +143,9 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_eventListFragment_to_searchFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.profileFragment) {
                 findNavController(fragment!!).navigate(R.id.action_profileFragment_to_searchFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
+                findNavController(fragment!!).popBackStack()
+                findNavController(fragment!!).navigate(R.id.action_listCurrentFragment_to_searchFragment)
             }
         } else if (index == 3) {
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
@@ -154,6 +162,11 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(act)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.searchFragment) {
                 val act = SearchFragmentDirections.actionSearchFragmentToProfileFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
+                findNavController(fragment!!).popBackStack()
+                val act =
+                    ListCurrentFragmentDirections.actionListCurrentFragmentToProfileFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             }
         } else if (index == 4) {

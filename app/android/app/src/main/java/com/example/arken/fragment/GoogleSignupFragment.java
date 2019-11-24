@@ -27,13 +27,11 @@ import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.GoogleUser;
-import com.example.arken.model.Profile;
 import com.example.arken.model.User;
 import com.example.arken.util.RetroClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -120,7 +118,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                     return;
                 }
             }
-            boolean isPrivate = isPrivateSwitch.isChecked();
+            boolean isPrivate = !isPrivateSwitch.isChecked();
             Call<User> call;
             if (isTrader) {
                 String tckn = String.valueOf(tcknEditText.getText());
