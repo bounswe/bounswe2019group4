@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +29,6 @@ import com.example.arken.util.RetroClient;
 import com.example.arken.util.SliderAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
@@ -49,7 +49,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     private SliderAdapter sliderAdapter;
     private LinearLayout dotsLayout;
     private TextView[] dots;
-    private SignInButton signupGoogle;
+    private ImageButton signupGoogle;
     private static final int RC_SIGN_IN = 2;
     @Nullable
     @Override

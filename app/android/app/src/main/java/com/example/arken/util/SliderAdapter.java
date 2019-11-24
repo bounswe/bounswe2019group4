@@ -23,20 +23,24 @@ public class SliderAdapter extends PagerAdapter {
     }
 
     public int[] slideImages = {
-            R.drawable.ic_email,
-            R.drawable.ic_person_gray,
-            R.drawable.ic_camera,
-            R.drawable.ic_email,
-            R.drawable.ic_person_gray
+            R.drawable.slide_image_1,
+            R.drawable.slide_image_2,
+            R.drawable.slide_image_3,
+            R.drawable.slide_image_5,
+            R.drawable.slide_image_4
     };
 
     public String[] slide_descs = {
 
-            "This is slide desc 1",
-            "This is slide desc 2",
-            "This is slide desc 3",
-            "This is slide desc 4",
-            "This is slide desc 5"
+            "Welcome to an interactive trading platform with full of people who are interested in trading and investing in financial markets worldwide.",
+
+            "Connect with other finance enthusiasts like you. Follow their portfolios, articles and interact with them to stay up to date.",
+
+            "Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.",
+
+            "Find out what is happening in financial markets all around world. Search and read about economic events to invest wisely.",
+
+           "Arkenstone has a native web and native mobile (Android) platform to make things easier for you. Earn wherever you go and whenever you want!"
     };
 
     @Override
