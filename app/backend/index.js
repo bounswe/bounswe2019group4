@@ -13,7 +13,11 @@ const { scheduleAPICalls } = require('./utils')
 
 const app = express()   // the express instance that's doing everything
 
-app.use(cors())         // adds support for CORS requests
+// adds support for CORS requests
+app.use(cors({
+    credentials: true,
+    domain: ['http://localhost:3000', 'dev.arkenstone.ml', 'arkenstone.ml']
+}))
 // cookie session middleware. Saves session ID's in cache, since we didn'te provide a store
 app.use(session({
     name: 'arkenstone',
