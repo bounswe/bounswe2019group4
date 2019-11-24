@@ -130,7 +130,7 @@ module.exports.predictTradingEq = async (request, response) => {
   let TradingEqPrediction = request.models['TradingEquipmentPrediction']
 
   const UserId = request.session['user']._id
-  const TradingEq = request.body["tEq"];
+  const TradingEq = request.body["tEq"].toUpperCase();
   const value = request.body["value"];
   const prediction_value = request.body['prediction']
 
