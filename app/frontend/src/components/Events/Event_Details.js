@@ -42,7 +42,7 @@ class Event_Details extends Component {
     }
 
     async componentDidMount() {
-        this.scrollref=React.createRef();
+
 
         const localState = loadState();
         this.setState({user: localState.user});
@@ -66,11 +66,11 @@ class Event_Details extends Component {
 
 
 
-    onSubmit=async ()=>{                              //duzenle
+    onSubmit=async ()=>{
 
         if(this.state.text!=="") {
                     let newlist = this.state.events.comments;
-                    let user=this.state.user;
+
 
             let calendarID=this.props.match.params.id;
 
@@ -79,10 +79,11 @@ class Event_Details extends Component {
                 related:calendarID,
                 about:"EVENT"
                 };
+            let user=this.state.user;
+            await this.props.postComment(com).then(async result=>{
 
-            await this.props.postComment(com).then(result=>{
-                newlist = [ ...newlist,result.value];
-                this.setState({events: {...this.state.events, comments: newlist}, text: "",rest:1000})
+                await this.getEvents();
+                this.setState({text: "",rest:1000})
             });
 
 
@@ -107,7 +108,7 @@ class Event_Details extends Component {
                     </Header>
                     <List>
                         <List.Item>
-                            <List.Icon name={"calendar"}/>
+                            <List.Icon name={"calendar alternate"}/>
                             <List.Content>
                             {normalizeDate(event.Date)}
                             </List.Content>
@@ -166,10 +167,12 @@ class Event_Details extends Component {
                             Comments
                         </Header>
 
-                        <Comments data={comments}/>
+                        <Comments  data={comments}/>
 
                     <Segment >
-                    <Form >
+
+                        {this.state.user.loggedIn?
+                            (<Form >
                         <Form.TextArea maxLength={1000} style={{borderWidth:1,borderColor:"gray"}} value={this.state.text}  onChange={(item)=>this.setState({rest:1000-item.target.value.length,text:item.target.value})}/>
 
                         <div style={{display:"flex",flex:1}}>
@@ -181,7 +184,9 @@ class Event_Details extends Component {
                                     {this.state.rest}
                             </div>
                         </div>
-                    </Form>
+                    </Form>)
+                            :
+                            <h3>Sign in to make comments!</h3>}
                     </Segment>
                 </Segment>
                         </Grid.Column>
@@ -209,30 +214,3 @@ const dispatchToProps = dispatch => {
 };
 
 export default connect(null, dispatchToProps)(Event_Details);
-
-/*  const comments=[
-        {
-            userID: "5dab628e083bcb305a5eb172",
-            text:"fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf",
-            date:"2019-11-11T13:56:51.066Z"
-
-        },
-        {
-            userID: "5dab628e083bcb305a5eb172",
-            text:"fssfsdssfgfasf",
-            date:"2019-11-11T13:56:51.066Z"
-
-        },
-        {
-            userID: "5dab628e083bcb305a5eb172",
-            text:"fssfsdssfgfasf",
-            date:"2019-11-11T13:56:51.066Z"
-
-        },
-        {
-            userID: "5dab628e083bcb305a5eb172",
-            text:"fssfsdssfgfasf",
-            date:"2019-11-11T13:56:51.066Z"
-
-        }
-    ];*/
