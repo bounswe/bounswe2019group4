@@ -4,34 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.arken.R
-import com.example.arken.util.OnEventClickedListener
-import com.example.arken.util.EventAdapter
-import android.content.Context
-import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.arken.fragment.CommentFragment
-import com.example.arken.fragment.EventFragment
-import com.example.arken.fragment.ListEventFragment
-import com.example.arken.model.Comment
+import com.example.arken.R
 import com.example.arken.model.Event
-import com.example.arken.model.ListEvent
-import com.example.arken.model.Profile
-import com.example.arken.model.User
-import com.example.arken.util.CommentAdapter
+import com.example.arken.util.EventAdapter
+import com.example.arken.util.OnEventClickedListener
 import com.example.arken.util.RetroClient
-import kotlinx.android.synthetic.main.fragment_listevent.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchEvent: Fragment(), OnEventClickedListener {
+class SearchEvent : Fragment(), OnEventClickedListener {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var eventAdapter: EventAdapter
+    private var eventAdapter: EventAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,8 +29,10 @@ class SearchEvent: Fragment(), OnEventClickedListener {
         val rootView = inflater.inflate(R.layout.fragment_event_list, container, false)
 
         recyclerView = rootView.findViewById(R.id.event_recyclerView)
+        if (eventAdapter == null) {
+            eventAdapter = EventAdapter(mutableListOf(), this)
+        }
 
-        eventAdapter = EventAdapter(mutableListOf(), this)
         recyclerView.adapter = eventAdapter
 
         recyclerView.adapter?.notifyDataSetChanged()
@@ -68,9 +58,13 @@ class SearchEvent: Fragment(), OnEventClickedListener {
             }
         })
     }
-    fun setDataset(list: MutableList<Event>){
-        eventAdapter.dataSet = list
-        eventAdapter.notifyDataSetChanged()
+
+    fun setDataset(list: MutableList<Event>) {
+        if (eventAdapter == null) {
+            eventAdapter = EventAdapter(mutableListOf(), this)
+        }
+        eventAdapter!!.dataSet = list
+        eventAdapter!!.notifyDataSetChanged()
     }
 
 }
