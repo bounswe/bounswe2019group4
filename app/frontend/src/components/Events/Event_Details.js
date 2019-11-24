@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Header, Segment} from 'semantic-ui-react';
+import {Header, Segment,Table,Comment,Form,Button,Card,Divider,Grid,Rating,List,Popup} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
@@ -8,61 +8,66 @@ import ThreeStar from '../../assets/threestar.png'
 import news from '../../assets/news.png'
 import * as userActions from '../../actions/userActions';
 import Image from "semantic-ui-react/dist/commonjs/elements/Image";
-import Events from "./Events";
-
+import userFactory from "../../factories/userFactory";
+import {normalizeDate} from "./Events";
+import Loading from "../Loading";
+import {Link} from "react-router-dom";
+import axios from "axios"
 class Event_Details extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             user: {},
-            events: {}
-
-
+            events: {},
+            loading:false,
+            rest:200,
+            text:""
         }
-
-
     }
 
-    componentDidMount() {
+    async componentDidMount() {
 
         const localState = loadState();
         this.setState({user: localState.user});
-
-
-
-    }
-    componentWillMount() {
-        this.getEvents();
-
-    }
-
-    normalizeDate(date){
-
-
-        const dat = new Date(date);
-        const formatOptions = {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true
-        };
-        return dat.toLocaleDateString('en-US', formatOptions);
+        await this.getEvents();
     }
 
 
-    getEvents(){
 
-        this.props.events("/"+this.props.match.params.id).then(result=> {
-                //alert(Object.keys(result.action.payload));
-                this.setState({events:result.value});
+    async getEvents(){
+      /*  const comments=[
+            {
+                userID: "5dab628e083bcb305a5eb172",
+                text:"fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf fdsfsdssfgfasffssfsdssfgfasffssfsdssfgfasf",
+                date:"2019-11-11T13:56:51.066Z"
+
+            },
+            {
+                userID: "5dab628e083bcb305a5eb172",
+                text:"fssfsdssfgfasf",
+                date:"2019-11-11T13:56:51.066Z"
+
+            },
+            {
+                userID: "5dab628e083bcb305a5eb172",
+                text:"fssfsdssfgfasf",
+                date:"2019-11-11T13:56:51.066Z"
+
+            },
+            {
+                userID: "5dab628e083bcb305a5eb172",
+                text:"fssfsdssfgfasf",
+                date:"2019-11-11T13:56:51.066Z"
 
             }
+        ];*/
+        await this.props.events("/"+this.props.match.params.id).then(async result=> {
+                //alert(Object.keys(result.action.payload));
+                let newevents=result.value;
+                 await this.setState({events:newevents})
 
-
-
+            }
         )
 
     }
@@ -87,9 +92,32 @@ class Event_Details extends Component {
 
     };
 
+    onSubmit=()=>{                              //duzenle
+
+        if(this.state.text!=="") {
+                    let newlist = this.state.events.comments;
+                    let user=this.state.user;
+
+            let calendarID=this.props.match.params.id;
+            let com = {
+                text: this.state.text,
+                related:calendarID,
+                about:"events"
+                };
+            newlist = [com, ...newlist];
+            let comment = {
+                related: "195426",
+                text: "yükselir",
+                about: "EVENT"
+            };
+            const data = axios.post("api.dev.arkenstone.ml/comments", comment, {withCredentials: true})
+            //alert(JSON.stringify(data));
+            this.setState({events: {...this.state.events, comments: newlist}, text: ""})
+        }
+    };
     render() {
         const events  = this.state.events.event;
-
+        const state=this.state;
 
 
         return (
@@ -97,25 +125,50 @@ class Event_Details extends Component {
             events?(
 
 
-                <div style={{display:"flex",justifyContent:"center"}}>
-                <Segment raised piled padded compact textAlign="left" style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                    <Segment raised padded compact  style={{display:"flex",width:"70%"}}>
+                        <Grid columns={2} relaxed={"very"}>
+                            <Grid.Column>
+                <Segment  textAlign="left" style={{display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
                     {<Image size="medium" src={news} />}
                     <Header textAlign='center'>
 
                         {events.Event}
                     </Header>
-                    <ul>
-                        <li><strong>Date:</strong>{this.normalizeDate(events.Date)}</li>
-                        <li><strong>Country:</strong>{events.Country}</li>
+                    <List>
+                        <List.Item>
+                            <List.Icon name={"calendar"}/>
+                            <List.Content>
+                            {normalizeDate(events.Date)}
+                            </List.Content>
+                        </List.Item>
+                        <List.Item>
+                            <List.Icon name={"world"}/>
+                            <List.Content>
+                            {events.Country}
+                            </List.Content>
+                        </List.Item>
 
-                        <li><strong>Importance:</strong>{this.getStars()}</li>
+                            <Popup
+                                content={"Importance"}
+                                trigger={
+                                    <List.Item>
+                                        <List.Icon name={"attention"}/>
+                                        < List.Content >
+                                        < Rating defaultRating={events.Importance} maxRating={3} disabled />
 
-                    </ul>
+                                        </List.Content>
+                                    </List.Item>
+                                }
+                        />
 
 
-                    <Segment  textAlign="center">
+                    </List>
+
+
+                    <Segment style={{borderWidth:2}} textAlign="center">
                         <h4>Values</h4>
-                    <table  className="ui inverted table">
+                    <Table fixed  className="ui table">
                         <thead>
                         <tr>
                             <th>Actual</th>
@@ -131,12 +184,65 @@ class Event_Details extends Component {
                             </tr>
                         </tbody>
 
-                    </table>
+                    </Table>
+                    </Segment>
+
+                </Segment>
+                            </Grid.Column>
+                            <Grid.Column>
+                <Segment loading={this.state.loading} style={{borderRadius:10,borderWidth:2,backgroundColor:"#f5f5f5"}}>
+                    <Header as='h4' inverted block style={{borderRadius:10}} textAlign={"left"}>
+                        Comments
+                    </Header>
+                    <Comment.Group style={{overflow:"auto",height:"250px",backgroundColor:"#fcfcfc",borderRadius:10}}>
+
+                        {state.events.comments.length>0?state.events.comments.map(item=>(
+
+                            <Comment style={{backgroundColor:"white",borderRadius:10}}>
+                               <Comment.Content >
+                                   <Comment.Author ><Link to={"/profile/"+item.userId}>{item.username+" "+item.usersurname}</Link></Comment.Author>
+                                    <Comment.Metadata >
+                                        <span>{normalizeDate(item.date)}</span>
+                                    </Comment.Metadata>
+                                    <Comment.Text>{item.text}</Comment.Text>
+
+                                </Comment.Content>
+                                <Divider/>
+                            </Comment>
+
+                            )
+
+
+
+
+                        ):<h1>No comments yet</h1>}
+
+                    </Comment.Group>
+                    <Segment >
+                    <Form >
+                        <Form.TextArea style={{borderWidth:1,borderColor:"gray"}} maxLength={200} value={this.state.text}  onChange={(item)=>this.setState({rest:200-item.target.value.length,text:item.target.value})}/>
+
+                        <div style={{display:"flex",flex:1}}>
+                            <div style={{display:"flex",flexDirection:"row",flex:3}}/>
+                            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",flex:3}}>
+                                <Button onClick={this.onSubmit} content='Add Comment' labelPosition='left' icon='edit' basic color={"black"} />
+                            </div>
+                            <div style={{display:"flex",flexDirection:"row",justifyContent:"flex-end",alignItems:"flex-start",flex:3}}>
+                                <h4>{this.state.rest}</h4>
+                            </div>
+                        </div>
+                    </Form>
                     </Segment>
                 </Segment>
+                        </Grid.Column>
+                        </Grid>
+                        <Divider vertical></Divider>
+                </Segment>
+
                 </div>
 
-                    ):(<h1 style={{color:"white"}}>Loading</h1>)
+                    ):(<Loading/>)
+
 
 
         )
@@ -145,7 +251,9 @@ class Event_Details extends Component {
 
 const dispatchToProps = dispatch => {
     return {
-        events: params => dispatch(userActions.events(params))
+        events: params => dispatch(userActions.events(params)),
+        userInformation:params=>dispatch(userActions.users(params))
+
     };
 };
 
