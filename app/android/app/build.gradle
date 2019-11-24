@@ -53,4 +53,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'br.com.simplepass:loading-button-android:2.2.0'
 }

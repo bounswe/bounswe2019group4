@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="100dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorDarkBlue"
         app:layout_constraintBottom_toTopOf="@+id/name_textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -123,14 +123,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/user_type_background"
-        android:text="User Type"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp"
         android:paddingTop="8dp"
+        android:paddingRight="12dp"
         android:paddingBottom="8dp"
+        android:text="User Type"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_header" />
 
@@ -180,6 +180,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/email_label_textView"
         app:layout_constraintStart_toEndOf="@+id/email_label_textView" />
 
+    <!--
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
@@ -212,9 +213,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintVertical_bias="0.04" /> -->
 
-
+<!--
     <ImageView
         android:id="@+id/camera_image"
         android:layout_width="80dp"
@@ -225,7 +226,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.13" /> -->
 
 
     <Button
@@ -289,6 +290,17 @@
         app:layout_constraintVertical_bias="0.0"
         android:src="@drawable/ic_place_white_48dp" />
 
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:src="@drawable/profile_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

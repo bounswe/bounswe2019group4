@@ -38,7 +38,7 @@ public class SliderAdapter extends PagerAdapter {
 
             "Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.",
 
-            "Find out what is happening in financial markets all around world. Search and read about economic events to invest wisely.",
+            "Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely.",
 
            "Arkenstone has a native web and native mobile (Android) platform to make things easier for you. Earn wherever you go and whenever you want!"
     };
