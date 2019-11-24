@@ -151,7 +151,7 @@ module.exports.predictTradingEq = async (request, response) => {
         Result: ""
       });
 
-      await prediction.save()
+      prediction.save()
       .then(doc => {
         return response.status(204).send();
       }).catch(error => {
@@ -160,7 +160,7 @@ module.exports.predictTradingEq = async (request, response) => {
 
     } else{
       // User already made a prediction for that currency. Change the prediction and update database
-      await TradingEqPrediction.updateOne({_id:row._id},{ Prediction: prediction_value, CurrentValue, value }) 
+      TradingEqPrediction.updateOne({_id:row._id},{ Prediction: prediction_value, CurrentValue: value, value }) 
       .then(doc => {
         return response.status(204).send();
       }).catch(error => {
