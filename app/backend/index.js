@@ -16,7 +16,7 @@ const app = express()   // the express instance that's doing everything
 // adds support for CORS requests
 app.use(cors({
     credentials: true,
-    origin: ['http://localhost:3000', 'http://dev.arkenstone.ml', 'http://arkenstone.ml'],
+    origin: /.*/,
 }))
 // cookie session middleware. Saves session ID's in cache, since we didn'te provide a store
 app.use(session({
