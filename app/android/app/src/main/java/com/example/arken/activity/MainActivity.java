@@ -26,4 +26,5 @@ public class MainActivity extends FragmentActivity {
     public static GoogleSignInClient getClient() {
         return mGoogleSignInClient;
     }
+
 }

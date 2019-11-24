@@ -74,25 +74,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dotsLayout"
-        app:layout_constraintVertical_bias="0.359"></Button>
-
-  <!--  <com.google.android.gms.common.SignInButton
-        android:id="@+id/signin_google_button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/login_background"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.178"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.963">
-
-    </com.google.android.gms.common.SignInButton> -->
+        app:layout_constraintVertical_bias="0.359"/>
 
     <Button
         android:id="@+id/signup_guest_button"

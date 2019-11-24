@@ -14,6 +14,8 @@
     <string name="sign_up_now">Sign up Now!</string>
     <string name="dont_have_an_account">Don\'t have an account?</string>
     <string name="sign_in">Sign In</string>
+    <string name="comment_button">Make Comment</string>
+    <string name="comment">Write your comment here:</string>
     <string name="economic_events">Economic Events</string>
     <string name="slider_desc_1">This is description 1</string>
     <string name="slider_desc_2">This is description 2</string>
@@ -21,4 +23,10 @@
     <string name="slider_desc_4">This is description 4</string>
     <string name="slider_desc_5">This is description 5</string>
     <string name="already_have_account">Already have an account?</string>
+    <integer-array name="importance">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </integer-array>
+
 </resources>

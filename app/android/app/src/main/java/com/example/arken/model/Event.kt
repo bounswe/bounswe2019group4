@@ -14,5 +14,6 @@ class Event(
     val Previous: String?,
     val Forecast: String?,
     val Importance: Int?,
-    val __v: String?
+    val __v: String?,
+    val comments: MutableList<Comment>
 ) : Serializable

@@ -25,12 +25,17 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
 import com.example.arken.model.GoogleId;
+import com.example.arken.model.GoogleUser;
+import com.example.arken.model.Profile;
+import com.example.arken.model.User;
 import com.example.arken.util.RetroClient;
 import com.example.arken.util.SliderAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import java.util.PropertyPermission;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -162,15 +167,22 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         }
     }
     private void onLoggedIn(GoogleSignInAccount googleSignInAccount, final boolean onStart) {
-        Call<ResponseBody> call;
+        Call<User> call;
 
         call = RetroClient.getInstance().getAPIService().google(new GoogleId( googleSignInAccount.getId()));
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     //google login fragment???
+                    User pr = response.body();
+                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                    editor.putString("userId",pr.get_id());
+                    String cookie = response.headers().get("Set-Cookie");
+                    editor.putString("user_cookie", cookie.split(";")[0]);
+                    editor.commit();
+                    Log.i("basee ",response.raw().toString());
                     Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_baseFragment);
                 } else if(!onStart){
                     Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_googleSignupFragment);
@@ -178,7 +190,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

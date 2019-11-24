@@ -114,6 +114,8 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
         prefs = getActivity()!!.getSharedPreferences("MyPrefsFile", MODE_PRIVATE)
         loggedIn = !prefs.getString("cookie", "null").equals("null")
         tradingEquipmentViewModel.setData(name, prefs.getString("cookie", null))
+        fragmentManager?.beginTransaction()?.add(R.id.list_comment_fragment, ListCommentFragment.newInstance( name, "TRADING_EQUIPMENT"), "commentList")?.commit()
+
     }
 
 }
