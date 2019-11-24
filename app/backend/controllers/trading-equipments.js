@@ -118,7 +118,7 @@ module.exports.unfollowTradingEq = async (request, response) => {
       })
     }
 
-    return response.send(204);
+    return response.sendStatus(204);
   });
 }
 
