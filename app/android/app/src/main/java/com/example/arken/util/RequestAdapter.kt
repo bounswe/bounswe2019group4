@@ -19,12 +19,19 @@ class RequestAdapter(var dataSet: MutableList<FollowRequest>, val requestClicked
         private val userLocation: TextView = v.findViewById(R.id.user_country)
 
         fun bind(req: FollowRequest, requestClickedListener: OnRequestClickedListener, position: Int, mode:Int) {
-            userName.text = req.FollowingName + " "+ req.FollowingSurname
+
             if(mode == 0){
+                userName.text = req.FollowingName + " "+ req.FollowingSurname
                 accept.visibility = View.VISIBLE
                 reject.visibility = View.VISIBLE
             }
-            else{
+            else if (mode == 1){
+                userName.text = req.FollowingName + " "+ req.FollowingSurname
+                accept.visibility = View.GONE
+                reject.visibility = View.GONE
+            }
+            else if (mode == 2){
+                userName.text = req.FollowedName + " "+ req.FollowedSurname
                 accept.visibility = View.GONE
                 reject.visibility = View.GONE
             }

@@ -144,7 +144,7 @@ class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListen
         }
         followingCountText.setOnClickListener{
             if(followingList.size>0){
-                dialog = PendingUserDialog(followingList, this, 1)
+                dialog = PendingUserDialog(followingList, this, 2)
                 dialog.show(fragmentManager!!, "PioneersFragment_tag")
             }
         }
