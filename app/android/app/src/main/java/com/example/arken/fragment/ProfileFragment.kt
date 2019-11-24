@@ -46,6 +46,7 @@ class ProfileFragment : Fragment() {
     private lateinit var uri: String
     private lateinit var profile: Profile
     private lateinit var logOut: Button
+    private var id = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,13 +62,11 @@ class ProfileFragment : Fragment() {
         location_value_textView = view.findViewById(R.id.location_value_textView)
         email_value_textView = view.findViewById(R.id.email_value_textView)
         pred_value_textView = view.findViewById(R.id.pred_value_textView)
-        val id = activity!!.getSharedPreferences(
-            LoginFragment.MY_PREFS_NAME,
-            Context.MODE_PRIVATE
-        )
-            .getString("userId", "defaultId")
-        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE).getString("user_cookie", "")
-       val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, id)
+
+        id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("userId", "defaultId")!!
+
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
+        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, id)
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
@@ -79,7 +78,6 @@ class ProfileFragment : Fragment() {
                     user_type_textView.text = if (profile.user?.isTrader!!) {"Trader"} else {"Basic"}
                     location_value_textView.text = profile.user?.location
                     email_value_textView.text = profile.user?.email
-
 
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
@@ -169,7 +167,7 @@ class ProfileFragment : Fragment() {
     companion object {
 
         private val IMAGE_PICK_CODE = 1000
-        private val PERMISSION_CODE = 1001
+        private val PERMISSION_CODE = 1000
     }
 
 }
