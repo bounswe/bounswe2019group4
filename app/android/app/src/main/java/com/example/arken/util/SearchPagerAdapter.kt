@@ -36,5 +36,9 @@ class SearchPagerAdapter(fragmentManager: FragmentManager, private val values: A
     }
     fun setDataset(mutableListEvent: MutableList<Event>, mutableListTE: MutableList<Current>, mutableListArticle: MutableList<Article>, mutableListUser: MutableList<User>){
         user.setDataset(mutableListUser)
+        event.setDataset(mutableListEvent)
+        te.setDataset(mutableListTE)
+        //TODO:
+        //article.setDataset(mutableListArticle) //Implement after Articles implemented!!!
     }
 }
