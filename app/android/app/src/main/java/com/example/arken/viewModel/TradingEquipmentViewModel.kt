@@ -88,6 +88,7 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
             )
         }
     }
+
     fun followUnfollow(cookie: String, code: String, alreadyFollow: Boolean) {
 
         if (alreadyFollow) {
@@ -140,20 +141,20 @@ class TradingEquipmentViewModel(application: Application) : AndroidViewModel(app
 
     private fun setChartData(index: Boolean) {
         if (index) {
-        data.value!!.values!!.forEach {
-            yearTable.addData(
-                listOf(
-                    StockDataEntry(
-                        it.Date!!,
-                        it.open!!.toDouble(),
-                        it.high!!.toDouble(),
-                        it.low!!.toDouble(),
-                        it.close!!.toDouble()
+            data.value!!.values!!.forEach {
+                yearTable.addData(
+                    listOf(
+                        StockDataEntry(
+                            it.Date!!,
+                            it.open!!.toDouble(),
+                            it.high!!.toDouble(),
+                            it.low!!.toDouble(),
+                            it.close!!.toDouble()
+                        )
                     )
                 )
-            )
 
-        }
+            }
         } else {
             data.value!!.values!!.forEach {
                 yearTable.addData(

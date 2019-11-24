@@ -33,7 +33,7 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
     private lateinit var currencyName: TextView
     private lateinit var predictionValue: TextView
     private lateinit var currencyValue: TextView
-    private lateinit var followButton: ImageButton
+    lateinit var followButton: ImageButton
     private lateinit var predictionUpButton: ImageButton
     private lateinit var predictionDownButton: ImageButton
     private lateinit var currencyTime: TextView
@@ -122,7 +122,7 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
         tradingEquipmentViewModel.setData(name, prefs.getString("user_cookie", null))
         fragmentManager?.beginTransaction()?.add(
             R.id.list_comment_fragment_currency,
-            ListCommentFragment.newInstance(name, "TRADING_EQUIPMENT"),
+            ListCommentFragment.newInstance(name, "TRADING-EQUIPMENT"),
             "commentList"
         )?.commit()
 
@@ -148,7 +148,10 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
                     "null"
                 )!!, args.codeOfCurrency, isFollowing
             )
+            follow(!tradingEquipmentViewModel.data.value?.following!!)
         }
+
+
         builder1.setNegativeButton(
             "No"
         ) { dialog, id -> dialog.cancel() }

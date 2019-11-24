@@ -1,5 +1,6 @@
 package com.example.arken.model.tradingEquipment
 
+import com.example.arken.model.Comment
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.Observable
@@ -14,7 +15,9 @@ data class Currency(
     @SerializedName("numberOfUps")
     var numberOfUps: Int?,
     @SerializedName("numberOfDowns")
-    var numberOfDowns: Int?
+    var numberOfDowns: Int?,
+    @SerializedName("comments")
+    val comments: MutableList<Comment>
 
 
 ) : Serializable, Observable()
