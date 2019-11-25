@@ -35,9 +35,9 @@ class CurrencyValueAdapter() : RecyclerView.Adapter<CurrencyValueAdapter.Currenc
         fun bind(current: CurrencyValue) {
 
             open.text = current.open
-            high.text=current.high
-            low.text=current.low
-            close.text=current.close
+            high.text = current.high
+            low.text = current.low
+            close.text = current.close
             date.text = current.Date.toString()
 
         }

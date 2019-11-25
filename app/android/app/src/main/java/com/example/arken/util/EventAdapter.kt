@@ -86,7 +86,8 @@ class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnEve
     fun newPage() {
         page += 1
         if (page <= totalPages) {
-            val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEvents(country,importance,page, 10)
+            val call: Call<ListEvent> =
+                RetroClient.getInstance().apiService.getEvents(country, importance, page, 10)
             call.enqueue(object : Callback<ListEvent> {
                 override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
                     if (response.isSuccessful) {

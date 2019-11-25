@@ -1,26 +1,15 @@
 package com.example.arken.fragment
 
 import android.annotation.SuppressLint
-import android.app.usage.UsageEvents
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
-import com.example.arken.model.Comment
-import com.example.arken.model.Event
-import com.example.arken.model.tradingEquipment.ListCurrency
-import com.example.arken.util.RetroClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class EventFragment : Fragment() {
     val args: EventFragmentArgs by navArgs()
@@ -73,7 +62,11 @@ class EventFragment : Fragment() {
             }
         }
 
-        fragmentManager?.beginTransaction()?.add(R.id.list_comment_fragment, ListCommentFragment.newInstance( event.CalendarId!!, "EVENT"), "commentList")?.commit()
+        fragmentManager?.beginTransaction()?.add(
+            R.id.list_comment_fragment,
+            ListCommentFragment.newInstance(event.CalendarId!!, "EVENT"),
+            "commentList"
+        )?.commit()
 
     }
 }

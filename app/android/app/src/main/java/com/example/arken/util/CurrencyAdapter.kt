@@ -28,7 +28,7 @@ class CurrencyAdapter(
         init {
             name = v.findViewById(R.id.current)
             value = v.findViewById(R.id.value)
-            date= v.findViewById(R.id.currentDate)
+            date = v.findViewById(R.id.currentDate)
             background = v.findViewById(R.id.current_row_background)
         }
 
@@ -36,10 +36,9 @@ class CurrencyAdapter(
             name.text = current.from + "/" + current.to
             value.text = current.rate
 
-            if (current.Date==null) {
+            if (current.Date == null) {
                 date.text = ""
-            }
-            else {
+            } else {
                 date.text = current.Date.toString()
             }
 
@@ -74,5 +73,5 @@ class CurrencyAdapter(
 }
 
 interface OnCurrentClickListener {
-    fun onItemClicked(code:String)
+    fun onItemClicked(code: String)
 }

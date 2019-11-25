@@ -12,12 +12,13 @@
         app:defaultNavHost="true"
         android:layout_above="@id/menu_recycler"
         app:navGraph="@navigation/navigation_base"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/menu_recycler"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </RelativeLayout>

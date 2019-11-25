@@ -1,11 +1,13 @@
 package com.example.arken.util
 
-import android.app.usage.UsageEvents
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.example.arken.fragment.BaseFragment
-import com.example.arken.fragment.search.*
+import com.example.arken.fragment.search.SearchArticle
+import com.example.arken.fragment.search.SearchEvent
+import com.example.arken.fragment.search.SearchFragment
+import com.example.arken.fragment.search.SearchTE
+import com.example.arken.fragment.search.SearchUser
 import com.example.arken.model.Article
 import com.example.arken.model.Event
 import com.example.arken.model.User
@@ -31,10 +33,17 @@ class SearchPagerAdapter(fragmentManager: FragmentManager, private val values: A
     override fun getCount(): Int {
         return values.size
     }
+
     override fun getPageTitle(position: Int): CharSequence {
         return values[position]
     }
-    fun setDataset(mutableListEvent: MutableList<Event>, mutableListTE: MutableList<Current>, mutableListArticle: MutableList<Article>, mutableListUser: MutableList<User>){
+
+    fun setDataset(
+        mutableListEvent: MutableList<Event>,
+        mutableListTE: MutableList<Current>,
+        mutableListArticle: MutableList<Article>,
+        mutableListUser: MutableList<User>
+    ) {
         user.setDataset(mutableListUser)
         event.setDataset(mutableListEvent)
         te.setDataset(mutableListTE)

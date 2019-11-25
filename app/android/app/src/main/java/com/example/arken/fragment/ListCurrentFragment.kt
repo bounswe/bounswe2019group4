@@ -124,7 +124,7 @@ class ListCurrentFragment : Fragment(), OnCurrentClickListener {
 
     }
 
-    override fun onItemClicked(code:String){
+    override fun onItemClicked(code: String) {
         val action = ListCurrentFragmentDirections.actionListCurrentFragmentToCurrencyFragment(code)
         Navigation.findNavController(recyclerView).navigate(action)
     }

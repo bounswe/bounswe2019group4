@@ -135,8 +135,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         editor.commit();
 
                         Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
-
-
                     } else {
 
                         String errorMessage = null;

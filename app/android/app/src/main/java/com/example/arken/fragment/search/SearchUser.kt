@@ -2,7 +2,6 @@ package com.example.arken.fragment.search
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,19 +13,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
-import com.example.arken.fragment.CommentFragment
-import com.example.arken.fragment.ListCommentFragment
 import com.example.arken.fragment.LoginFragment
 import com.example.arken.fragment.ProfileFragment
-import com.example.arken.model.Comment
-import com.example.arken.model.Event
 import com.example.arken.model.Profile
 import com.example.arken.model.User
-import com.example.arken.util.CommentAdapter
 import com.example.arken.util.OnUserClickedListener
 import com.example.arken.util.RetroClient
 import com.example.arken.util.UserAdapter
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -90,5 +83,5 @@ class SearchUser: Fragment(), OnUserClickedListener {
     fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
-    }
+
 }

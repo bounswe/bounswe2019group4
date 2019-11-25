@@ -25,8 +25,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
 import com.example.arken.model.GoogleId;
-import com.example.arken.model.GoogleUser;
-import com.example.arken.model.Profile;
 import com.example.arken.model.User;
 import com.example.arken.util.RetroClient;
 import com.example.arken.util.SliderAdapter;
@@ -35,9 +33,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-import java.util.PropertyPermission;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -178,11 +173,11 @@ public class StartFragment extends Fragment implements View.OnClickListener {
                     //google login fragment???
                     User pr = response.body();
                     SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                    editor.putString("userId",pr.get_id());
+                    editor.putString("userId", pr.get_id());
                     String cookie = response.headers().get("Set-Cookie");
                     editor.putString("user_cookie", cookie.split(";")[0]);
                     editor.commit();
-                    Log.i("basee ",response.raw().toString());
+                    Log.i("basee ", response.raw().toString());
                     Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_baseFragment);
                 } else if(!onStart){
                     Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_googleSignupFragment);
