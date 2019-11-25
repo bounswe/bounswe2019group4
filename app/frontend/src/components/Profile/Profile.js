@@ -69,23 +69,6 @@ class Profile extends Component {
             //console.log(this.state.portfolios)
             }
         )
-
-        let newTradingEqs = {}
-        for (let i=0;i<=portfolios.length;i++){
-
-            await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
-                    let newPortfolios = result.value
-                    newTradingEqs[i] = newPortfolios.tradingEqs
-                //console.log(newPortfolios.tradingEqs)
-                //console.log(i)
-                }
-            )
-
-        }
-          console.log(newTradingEqs)
-          //console.log(newTradingEqs[0])
-          this.setState({tradingEqs:newTradingEqs})
-
     }
 
 
@@ -174,10 +157,6 @@ class Profile extends Component {
                                 meta={item.date.substring(0,10)}
                                 description={item.definition}>
                                 </Card>
-                                <div className="extra content">
-                                    <i className="check icon"></i>
-                                    {tradingEqs[ind]}
-                                </div>
                             </div>);
 
                         })}

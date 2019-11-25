@@ -20,12 +20,10 @@ class Profile extends Component {
         this.state = {
             follower:0,
             following:0,
-            user:{},
+            otherUser:{},
             portfolios:[],
             isPublic:false,
-            tradingEqs:{}
-
-
+            newProfile:{}
         }
     }
     componentDidMount() {
@@ -51,10 +49,10 @@ class Profile extends Component {
         // console.log(ikz)
         await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
                 let newPortfolios = result.value
-                let newTradingEqs = {}
+                //let newTradingEqs = {}
                 console.log(newPortfolios.tradingEqs)
-                newTradingEqs[i] = newPortfolios.tradingEqs
-                this.setState({tradingEqs:newTradingEqs})
+                //newTradingEqs[i] = newPortfolios.tradingEqs
+                //this.setState({tradingEqs:newTradingEqs})
 
             }
         )
@@ -64,41 +62,35 @@ class Profile extends Component {
         await this.props.profile(this.props.match.params.id).then(async result =>{
                 let newProfile = result.value
                 console.log(newProfile)
-                this.setState({user:newProfile.user})
-                this.setState({following:newProfile.following})
-                this.setState({follower:newProfile.follower})
-                this.setState({isPublic:newProfile.user.isPublic})
-                this.setState({portfolios:(newProfile.portfolios)})
-                //console.log(this.state.portfolios)
+                this.setState({newProfile:newProfile,otherUser:newProfile.user, following:newProfile.following,
+                            follower:newProfile.follower,
+                            isPublic:newProfile.user.isPublic,
+                            portfolios:newProfile.portfolios || []})
+
+                //console.log(newProfile.portfolios)
+                console.log(this.state.portfolios)
             }
         )
-
-        // let newTradingEqs = {}
-        // for (let i=0;i<=portfolios.length;i++){
-        //
-        //     await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
-        //             let newPortfolios = result.value
-        //             newTradingEqs[i] = newPortfolios.tradingEqs
-        //             //console.log(newPortfolios.tradingEqs)
-        //             //console.log(i)
-        //         }
-        //     )
-        //
-        // }
-        // console.log(newTradingEqs)
-        // //console.log(newTradingEqs[0])
-        // this.setState({tradingEqs:newTradingEqs})
-
     }
 
+    followUser(id) {
+        this.props.follow(id).then(()=> {
+            this.getProfile();
+        })
+    }
 
+    unFollowUser(id){
+        this.props.unfollow(id).then(()=> {
+            this.getProfile();
+        })
+    }
 
 
 
     render() {
 
 
-        const { user,portfolios,tradingEqs,following,follower } = this.state;
+        const {newProfile, otherUser,portfolios,following,follower } = this.state;
 
 
         //console.log(portfolios)
@@ -128,15 +120,19 @@ class Profile extends Component {
                         <Image src={profilePhoto} size='middle'   rounded />
                         <Header textAlign='center'>
 
-                            {user.name} {user.surname}
+                            {otherUser.name} {otherUser.surname}
 
 
 
 
-                            {this.state.isPublic?
-                                null    :
-                                <button onClick={this.navigate} className="ui right floated button">Follow</button>
+                            {newProfile.followStatus === "FALSE" && newProfile.followStatus !== "PENDING"?
+                                <button onClick={this.followUser.bind(this, otherUser._id)} className="ui right floated button">Follow</button>
+                                :null}
+                            {newProfile.followStatus === "TRUE" && newProfile.followStatus !== "PENDING"?
+                                <button onClick={this.unFollowUser.bind(this, otherUser._id)} className="ui right floated button">Unfollow</button>:null
                             }
+                            {newProfile.followStatus === "PENDING"? <button className="ui right floated button">Pending</button>
+                                :null}
 
 
                         </Header>
@@ -145,19 +141,20 @@ class Profile extends Component {
                         </small>
 
                         <ul >
-                            <li><strong>Name        :{user.name}</strong></li>
-                            <li><strong>Surname     :{user.surname}</strong></li>
+                            <li><strong>Name        :{otherUser.name}</strong></li>
+                            <li><strong>Surname     :{otherUser.surname}</strong></li>
                             {this.state.isPublic?
-                                <li><strong>E-Mail      :{user.email}</strong></li>:null}
-                            <li><strong>Account Type:{user.isTrader ? 'Trader' : 'Normal'}</strong></li>
-                            {user.isTrader && <span>
-                            <li><strong>IBAN     :{user.iban}</strong></li>
+                                <li><strong>E-Mail      :{otherUser.email}</strong></li>:null}
+                            <li><strong>Account Type:{otherUser.isTrader ? 'Trader' : 'Normal'}</strong></li>
+                            {otherUser.isTrader && <span>
+                            <li><strong>IBAN     :{otherUser.iban}</strong></li>
 
-                            <li><strong>TCKN      :{user.tckn}</strong></li>
+                            <li><strong>TCKN      :{otherUser.tckn}</strong></li>
 
 
                         </span>}
-                            <li><strong>Location:{user.location}</strong></li>
+
+                        <li><strong>Location:{otherUser.location}</strong></li>
 
 
 
@@ -177,7 +174,7 @@ class Profile extends Component {
                         </Header>
 
                         <ul>
-                            {!user.isPublic? null :
+                            {!newProfile.followStatus? null:
                                 portfolios.map((item,ind) => {
 
                                 return (
@@ -187,10 +184,6 @@ class Profile extends Component {
                                               meta={item.date.substring(0,10)}
                                               description={item.definition}>
                                         </Card>
-                                        <div className="extra content">
-                                            <i className="check icon"></i>
-                                            {tradingEqs[ind]}
-                                        </div>
                                     </div>);
 
                             })}
@@ -227,7 +220,8 @@ const dispatchToProps = dispatch => {
     return {
         profile: params => dispatch(userActions.profile(params)),
         portfolios: params => dispatch(userActions.portfolios(params)),
-        follow:params => dispatch(userActions.follow(params))
+        follow:params => dispatch(userActions.follow(params)),
+        unfollow:params => dispatch(userActions.unfollow(params))
     };
 };
 

@@ -69,9 +69,15 @@ export function portfolios(params) {
     };
 }
 
-export function follow(params) {
+export function follow(path) {
     return {
-        type:"FOLLOW",
-        payload: userService.follow(params)
+        type:"FOLLOW_USER",
+        payload: userService.follow(path)
+    };
+}
+export function unfollow(path) {
+    return {
+        type:"UNFOLLOW_USER",
+        payload: userService.unfollow(path)
     };
 }
