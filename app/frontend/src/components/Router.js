@@ -10,6 +10,7 @@ import VerifyEmail from "../components/SignUp/VerifyEmail";
 import ResetPassword from "../components/SignIn/ResetPassword";
 import Profile from "./Profile/Profile";
 import Events from "./Events/Events";
+import TradingEquipment from "./TradingEquipment/TradingEquipment";
 
 import authService from "../factories/authFactory";
 
@@ -34,6 +35,7 @@ class Routes extends Component {
                     <Route path="/sign_up_google" render={(props) => { return <SignUpGoogle {...props} />; }} />
                     <Route path="/sign_up" render={() => { return <SignUp />; }} />
                     <Route path="/events" render={() => { return <Events />; }} />
+                    <Route path="/trading-equipment" render={() => { return <TradingEquipment />; }} />
                     <Route path="/profile" render={
                         () => {
                             if(this.checkAuthorization()) {
