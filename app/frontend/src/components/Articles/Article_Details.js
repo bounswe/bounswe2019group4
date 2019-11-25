@@ -48,6 +48,12 @@ class Article_Details extends Component {
         //await this.getRating();
     }
 
+    componentDidUpdate(props) {
+        if(props.match.params.id !== this.props.match.params.id) {
+            this.getArticle();
+        }
+    }
+
 
     async getArticle(){
 
