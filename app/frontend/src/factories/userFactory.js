@@ -11,6 +11,11 @@ function userFactory() {
     this.rateArticle=(path,params)=>baseRequest.post("/articles"+path,params);
     this.editArticle=(path,params)=>baseRequest.patch("/articles"+path,params);
     this.deleteComment=(path)=>baseRequest.delete("/comments"+path);
+    this.profile = path => baseRequest.get("/profile/"+path);
+    this.portfolios = path => baseRequest.get("/portfolios/"+path);
+    this.follow = path => baseRequest.get("/profile/"+path+"/follow");
+    this.unfollow = path => baseRequest.get("/profile/"+path+"/unfollow");
+
 }
 
 export default new userFactory();
