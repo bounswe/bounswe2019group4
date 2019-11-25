@@ -9,42 +9,97 @@ import * as userActions from '../../actions/userActions';
 import Image from "semantic-ui-react/dist/commonjs/elements/Image";
 import profilePhoto from "./h2.jpg";
 import * as portfolios from "lodash";
+import { Card } from 'semantic-ui-react'
+
+import SegmentGroup from "semantic-ui-react/dist/commonjs/elements/Segment/SegmentGroup";
 
 class Profile extends Component {
+
+
 
     constructor(props) {
         super(props);
         this.state = {
+            index:0,
             user: {},
-            portfolios:[]
+            portfolios: [
+                {
+                    "_id": "5ddb04331d01120dba5c7a2a",
+                    "title": "My Favorite Trading Eqs",
+                    "definition": "This portfolio includes my favourite trading equipments",
+                    "isPrivate": true,
+                    "userId": "5dd986e3221a57705b9a4d14",
+                    "date": "2019-11-23T19:37:17.822Z",
+                    "__v": 0
+                },
+                {
+                    "_id": "5ddb050a1d01120dba5c7a2b",
+                    "title": "My Second Favorite ones",
+                    "definition": "This portfolio includes my 2nd favourite trading equipments",
+                    "isPrivate": true,
+                    "userId": "5dd986e3221a57705b9a4d14",
+                    "date": "2019-11-22T21:57:06.278Z",
+                    "__v": 0
+                }
+            ]
+
+
         }
     }
+    async componentDidMount() {
 
-    componentDidMount() {
         const localState = loadState();
-        this.setState({user: localState.user});
-        const { id } = this.state;
-        fetch(`http://api.dev.arkenstone.ml/profile/${id}`)
-            .then(results => {
-                return results.json();
-            }).then(data =>{
-                const { portfolios } = data;
-                this.setState({portfolios})
-            })
+        this.setState({user: localState.user, rest:1000});
+        await this.getProfile()
     }
+
+    getPortfolios(i) {
+
+        const son ={}
+        this.props.portfolios(this.state.portfolios[i]._id).then(result => console.log(result)
+        )
+
+
+        //this.setState({portfolios: result.user.portfolios})
+
+
+    }
+
+      getProfile() {
+        this.props.profile(loadState().user._id).then( result =>{
+            let newProfile = result.value;
+            this.setState({newProfile})
+
+        })
+            //this.setState({portfolios: result.user.portfolios}
+    }
+
+
 
 
     render() {
-        const { user } = this.state;
+
+
+        const { user,portfolios,follower,following } = this.state;
+
+
+        //console.log(portfolios)
+
+        //const { portfolios } = this.state;
+        //const portfolios = this.getData(user).then(data => console.log(data));
+       // console.log(user)
+
+        //console.log(JSON.parse(portfolios[0]));
+
+
         const ButtonExampleFloated = () => (
             <div>
                 <Button active floated='right'>Right Floated</Button>
 
             </div>
         )
-
         return (
-
+                <>
 
 
             <Segment.Group horizontal >
@@ -58,12 +113,10 @@ class Profile extends Component {
                         {user.name} {user.surname}
 
 
+                        Following {console.log(following)}
+                        Follower {console.log(follower)}
 
                         <button className="ui right floated button">Follow</button>
-
-
-
-
 
 
                     </Header>
@@ -100,34 +153,25 @@ class Profile extends Component {
 
                     </Header>
 
-                    {portfolios.forEach(function(item, index){
-                        console.log(item[index]);
-                    })}
+                    <ul>
+                        {portfolios.map((item,ind) => {
 
-                    {   portfolios.forEach(function(key) {
+                            return (
+                            <div>
+                                <Card
+                                header={item.title}
+                                meta={item.date.substring(0,10)}
+                                description={item.definition}>
+                                </Card>
+                                {this.getPortfolios(ind)}
+                            </div>);
 
-                        console.log(key, this.portfolios[key]);
-
-                    })}
-
+                        })}
+                    </ul>
 
 
 
-                    {portfolios.forEach(function (key) {
-                        if(portfolios.key.map(isPrivate =>portfolios[key].contains(false))){
 
-                            return (<ul>
-                                <li><strong> {} </strong></li>
-                                <li> {key.definition}</li>
-                                <li><small> {key.date} IFFFFFFFF</small></li>
-                            </ul>);
-
-                        }else{
-                            return (       <line>ELSEEEE</line>)
-                        }
-                    })}
-
-                ffsdsdfsdf
                 </Segment>
 
 
@@ -139,16 +183,27 @@ class Profile extends Component {
 
                     </Header>
 
-                sdfdsfsdfdsfsd
+
 
 
                 </Segment>
 
             </Segment.Group>
+                    </>
         )
     }
 
 
 }
 
-export  default Profile;
+const dispatchToProps = dispatch => {
+    return {
+        profile: params => dispatch(userActions.profile(params)),
+        portfolios: params => dispatch(userActions.portfolios(params))
+
+    };
+};
+
+export default connect(null, dispatchToProps)(Profile);
+
+
