@@ -61,3 +61,38 @@ export function users(params) {
         payload: userService.userProfile(params)
     };
 }
+
+export function postComment(params) {
+    return {
+        type:"POST_COMMENT",
+        payload: userService.postComment(params)
+    };
+}
+
+
+export function deleteComment(path) {
+    return {
+        type:"DELETE_COMMENT",
+        payload: userService.deleteComment(path)
+    };
+}
+
+export function getArticleDetails(params) {
+    return {
+        type:"ARTICLE_DETAIL",
+        payload: userService.getArticle(params)
+    };
+}
+
+export function rateArticle(path,params) {
+    return {
+        type:"ARTICLE_RATE",
+        payload: userService.rateArticle(path,params)
+    };
+}
+export function editArticle(path,params) {
+    return {
+        type:"ARTICLE_EDIT",
+        payload: userService.editArticle(path,params)
+    };
+}

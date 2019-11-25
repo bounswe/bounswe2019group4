@@ -8,7 +8,7 @@ export default ({ dispatch }) => next => action => {
             console.log(action.type);
             const error = /.*_REJECTED$/;
             if (action.type.match(error)) {
-                const message = action.payload.response.data.errmsg;
+                const message = action.payload.response.data.errmsg?action.payload.response.data.errmsg:action.payload.message;
                 dispatch(alertActions.showAlert(message));
                 if (message === "Unauthorized") {
                     baseRequest.addHeader();

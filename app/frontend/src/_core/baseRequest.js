@@ -10,20 +10,25 @@ const baseRequest = {};
 const baseUrl = config.getBasePublicUrl();
 
 axios.defaults.baseURL = baseUrl;
+axios.defaults.withCredentials=true;
 baseRequest.addHeader = token => {
+
     let sessionToken = null;
     if (isUserLoggedIn()) {
+
         sessionToken = loadState().user.sessionToken;
     }
+
     axios.defaults.headers.common["Authorization"] = sessionToken || token;
+
 };
 
-
 baseRequest.request = (method, path, params, responseType) => {
-    return axios({ method, url: path, data: params, responseType }).then(result => {
+    return axios({ method, url: path, data: params, responseType}).then(result => {
         if (result.data.message) {
             throw new Error(result.data.errmsg);
         } else {
+
             return result.data;
         }
     });
@@ -31,6 +36,8 @@ baseRequest.request = (method, path, params, responseType) => {
 
 baseRequest.get = path => baseRequest.request("GET", path);
 baseRequest.post = (path, params) => baseRequest.request("POST", path, params);
+baseRequest.delete=(path)=>baseRequest.request("DELETE",path);
+baseRequest.patch=(path,params)=>baseRequest.request("PATCH",path,params);
 baseRequest.download = (path, params) => baseRequest.request("POST", path, params, "blob");
 
 baseRequest.addHeader();
