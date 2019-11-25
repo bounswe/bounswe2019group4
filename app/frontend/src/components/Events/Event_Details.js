@@ -67,30 +67,7 @@ class Event_Details extends Component {
 
 
 
-    onSubmit=async ()=>{
 
-        if(this.state.text!=="") {
-                    let newlist = this.state.events.comments;
-
-
-            let calendarID=this.props.match.params.id;
-
-            let com = {
-                text: this.state.text,
-                related:calendarID,
-                about:"EVENT"
-                };
-            this.setState({loading:true})
-            await this.props.postComment(com).then(async result=>{
-
-                await this.getEvents();
-                this.setState({text: "",rest:1000,loading:false})
-            });
-
-
-
-        }
-    };
     render() {
         const event  = this.state.events.event;
         const comments=this.state.events.comments;
@@ -162,40 +139,11 @@ class Event_Details extends Component {
                 </Segment>
                             </Grid.Column>
                             <Grid.Column>
-                  <Segment loading={this.state.loading} style={{borderRadius:10,borderWidth:2,backgroundColor:"#f5f5f5"}}>
 
-                        <Header as='h4' inverted block style={{borderRadius:10}} textAlign={"left"}>
-                            Comments
-                        </Header>
 
-                        <Comments type={"event"} resendComments={this.getEvents}  data={comments}/>
+                                <Comments type={"event"} _id={this.props.match.params.id} resendComments={this.getEvents}  data={comments}/>
 
-                    <Segment >
-
-                        {this.state.user.loggedIn?
-                            (<Form >
-                        <Form.TextArea maxLength={1000} style={{borderWidth:1,borderColor:"gray"}} value={this.state.text}  onChange={(item)=>this.setState({rest:1000-item.target.value.length,text:item.target.value})}/>
-
-                        <div style={{display:"flex",flex:1}}>
-                            <div style={{display:"flex",flexDirection:"row",flex:3}}/>
-                            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",flex:3}}>
-
-                                <Button onClick={this.onSubmit} content='Send Comment'
-                                        labelPosition='left'
-                                        icon={'edit'}
-                                        basic color={"black"}
-                                    />
-                            </div>
-                            <div style={{fontSize:14,display:"flex",flexDirection:"row",justifyContent:"flex-end",alignItems:"flex-start",flex:3}}>
-                                    {this.state.rest}
-                            </div>
-                        </div>
-                    </Form>)
-                            :
-                            <h3>Sign in to make comments!</h3>}
-                    </Segment>
-                </Segment>
-                        </Grid.Column>
+                             </Grid.Column>
                         </Grid>
                         <Divider vertical/>
                 </Segment>

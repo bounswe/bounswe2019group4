@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Comment, Divider,Button,Modal,Image,Header,Icon,Popup} from "semantic-ui-react";
+import {Comment, Divider, Button, Modal, Image, Header, Icon, Popup, Segment, Form} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import {normalizeDate} from "./Events/Events";
 import {loadState} from "../_core/localStorage";
@@ -11,7 +11,10 @@ class Comments extends Component{
 
 
     state={
-        user:{}
+        user:{},
+        loading:false,
+        rest:1000,
+        text:""
     };
 
      async componentDidMount() {
@@ -48,10 +51,52 @@ class Comments extends Component{
         }
     };
 
+    onSubmit=async ()=>{
+
+        if(this.state.text!=="") {
+            let calendarID=this.props._id;
+            let com;
+            if(this.props.type==="event") {
+                 com = {
+                    text: this.state.text,
+                    related: calendarID,
+                    about: "EVENT"
+                };
+            }else if(this.props.type==="treq"){
+                com = {
+                    text: this.state.text,
+                    related: calendarID,
+                    about: "TRADING-EQUIPMENT"
+                };
+            }else if(this.props.type==="article"){
+                com = {
+                    text: this.state.text,
+                    related: calendarID,
+                    about: "ARTICLE"
+                };
+            }
+            this.setState({loading:true});
+            await this.props.postComment(com).then(async result=>{
+
+               // await this.getEvents();
+                this.props.resendComments();
+                this.setState({text: "",rest:1000,loading:false})
+            });
+
+
+
+        }
+    };
+
     render(){
         const comments  = this.props.data;
         let user=this.state.user;
         return(
+            <Segment loading={this.state.loading} style={{borderRadius:10,borderWidth:2,backgroundColor:"#f5f5f5"}}>
+
+                <Header as='h4' inverted block style={{borderRadius:10}} textAlign={"left"}>
+                    Comments
+                </Header>
             <div id={"cgroup"} style={{overflow:"auto",height:"250px",backgroundColor:"#fcfcfc",borderRadius:10,borderWidth:2,borderColor:"black"}}>
 
 
@@ -128,6 +173,31 @@ class Comments extends Component{
                 ):<h3 style={{color:"gray"}}>No comments yet</h3>}
 
             </div>
+                <Segment >
+
+                    {this.state.user.loggedIn?
+                        (<Form >
+                            <Form.TextArea maxLength={1000} style={{borderWidth:1,borderColor:"gray"}} value={this.state.text}  onChange={(item)=>this.setState({rest:1000-item.target.value.length,text:item.target.value})}/>
+
+                            <div style={{display:"flex",flex:1}}>
+                                <div style={{display:"flex",flexDirection:"row",flex:3}}/>
+                                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",flex:3}}>
+
+                                    <Button onClick={this.onSubmit} content='Send Comment'
+                                            labelPosition='left'
+                                            icon={'edit'}
+                                            basic color={"black"}
+                                    />
+                                </div>
+                                <div style={{fontSize:14,display:"flex",flexDirection:"row",justifyContent:"flex-end",alignItems:"flex-start",flex:3}}>
+                                    {this.state.rest}
+                                </div>
+                            </div>
+                        </Form>)
+                        :
+                        <h3>Sign in to make comments!</h3>}
+                </Segment>
+            </Segment>
         )
     }
 }
@@ -136,8 +206,8 @@ class Comments extends Component{
 const dispatchToProps = dispatch => {
     return {
 
-        deleteComment:path=>dispatch(userActions.deleteComment(path))
-
+        deleteComment:path=>dispatch(userActions.deleteComment(path)),
+        postComment:params=>dispatch(userActions.postComment(params))
     };
 };
 
