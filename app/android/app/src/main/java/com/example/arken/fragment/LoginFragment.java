@@ -25,6 +25,7 @@ import androidx.navigation.Navigation;
 
 import com.example.arken.R;
 import com.example.arken.model.LoginUser;
+import com.example.arken.model.User;
 import com.example.arken.util.RetroClient;
 
 import org.json.JSONException;
@@ -46,7 +47,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private Button guestButton;
     private ImageView passwordEyeImage;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
-    public static final String COOKIE = "MyCookie";
     private TextView forgotPasswordButton;
     private String userId;
 
@@ -118,20 +118,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             final String email = String.valueOf(emailEditText.getText());
             String password = String.valueOf(passwordEditText.getText());
 
+            Call<User> call = RetroClient.getInstance().getAPIService().login(new LoginUser(email, password));
 
-            Call<LoginUser> call = RetroClient.getInstance().getAPIService().login(new LoginUser(email, password));
-
-            call.enqueue(new Callback<LoginUser>() {
+            call.enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(Call<LoginUser> call, Response<LoginUser> response) {
+                public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
-                        userId = response.body().getId();
-                        String cookie = response.headers().get("Set-Cookie");
+                        userId = response.body().get_id();
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                         editor.putString("email", email);
                         editor.putString("userId", userId);
-                        editor.putString("user-cookie", cookie.split(";")[0]);
                         editor.apply();
+
+                        String cookie = response.headers().get("Set-Cookie");
+                        editor.putString("user_cookie", cookie.split(";")[0]);
+                        editor.commit();
                      // Toast.makeText(getContext(), response.body().get_id(), Toast.LENGTH_SHORT).show();
                         Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
                     } else {
@@ -159,7 +160,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 }
 
                 @Override
-                public void onFailure(Call<LoginUser> call, Throwable t) {
+                public void onFailure(Call<User> call, Throwable t) {
                     Toast.makeText(getContext(),t.getMessage(), Toast.LENGTH_SHORT ).show();
                 }
             });

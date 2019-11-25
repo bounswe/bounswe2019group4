@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,14 +27,17 @@ import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.GoogleUser;
+import com.example.arken.model.User;
 import com.example.arken.util.RetroClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
 
 public class GoogleSignupFragment extends Fragment implements View.OnClickListener {
     private String userName;
@@ -114,8 +118,8 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                     return;
                 }
             }
-            boolean isPrivate = isPrivateSwitch.isChecked();
-            Call<ResponseBody> call;
+            boolean isPrivate = !isPrivateSwitch.isChecked();
+            Call<User> call;
             if (isTrader) {
                 String tckn = String.valueOf(tcknEditText.getText());
                 String iban = String.valueOf(ibanEditText.getText());
@@ -127,10 +131,16 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                         userSurname, userEmail, googleId, location, isPrivate));
             }
 
-            call.enqueue(new Callback<ResponseBody>() {
+            call.enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) { //events
+                        User pr = response.body();
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.putString("userId", pr.get_id());
+                        String cookie = response.headers().get("Set-Cookie");
+                        editor.putString("user_cookie", cookie.split(";")[0]);
+                        editor.commit();
                         Navigation.findNavController(submitButton).navigate(R.id.action_googleSignupFragment_to_baseFragment);
                     } else {
                         Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
@@ -138,7 +148,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(Call<User> call, Throwable t) {
                     Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });

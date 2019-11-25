@@ -2,7 +2,6 @@ package com.example.arken.model;
 
 public class GoogleUser {
 
-
     private String name;
     private String surname;
     private String email;
@@ -11,7 +10,7 @@ public class GoogleUser {
     private boolean isTrader;
     private String tckn;
     private String iban;
-    private boolean isPrivate;
+    private boolean isPublic;
 
     public boolean isTrader() {
         return isTrader;
@@ -37,16 +36,16 @@ public class GoogleUser {
         this.iban = iban;
     }
 
-    public GoogleUser(String name, String surname, String email, String googleId, String location, boolean isPrivate) {
+    public GoogleUser(String name, String surname, String email, String googleId, String location, boolean isPublic) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.googleId = googleId;
         this.location = location;
-        this.isPrivate = isPrivate;
+        this.isPublic = isPublic;
     }
 
-    public GoogleUser(String name, String surname, String email, String googleId, String location, boolean isTrader, String tckn, String iban, boolean isPrivate) {
+    public GoogleUser(String name, String surname, String email, String googleId, String location, boolean isTrader, String tckn, String iban, boolean isPublic) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -55,7 +54,7 @@ public class GoogleUser {
         this.isTrader = isTrader;
         this.tckn = tckn;
         this.iban = iban;
-        this.isPrivate = isPrivate;
+        this.isPublic = isPublic;
     }
 
     public String getName() {
