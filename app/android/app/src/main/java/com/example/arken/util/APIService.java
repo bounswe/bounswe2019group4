@@ -130,4 +130,10 @@ public interface APIService {
     Call<ResponseBody> createArticle(
             @Header("Cookie") String userCookie, @Body Article article
     );
+
+    @Headers({"Content-Type: application/json"})
+    @GET("articles/{id}")
+    Call<Article> getArticle(
+            @Header("Cookie") String userCookie, @Path("id") String article
+    );
 }

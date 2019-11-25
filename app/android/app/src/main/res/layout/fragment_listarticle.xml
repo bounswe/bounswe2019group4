@@ -24,7 +24,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/articleRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        app:layout_constraintTop_toBottomOf="@id/article_list_header" />
+        android:layout_height="0dp"
+
+        app:layout_constraintBottom_toTopOf="@id/articleCreate"
+        app:layout_constraintTop_toBottomOf="@+id/article_list_header"
+        app:layout_constraintVertical_bias="0.213"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <Button
+        android:id="@+id/articleCreate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="4dp"
+        android:text="Create Article"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

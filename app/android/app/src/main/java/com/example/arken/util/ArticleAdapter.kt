@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Article
 
-class ArticleAdapter(var dataSet: MutableList<Article> = mutableListOf()) :
+class ArticleAdapter(
+    var dataSet: MutableList<Article>,
+    val articleClickListener: OnArticleClickListener
+) :
     RecyclerView.Adapter<ArticleAdapter.ArticleHolder>() {
 
 
@@ -21,8 +24,11 @@ class ArticleAdapter(var dataSet: MutableList<Article> = mutableListOf()) :
             title = v.findViewById(R.id.article_row_title)
         }
 
-        fun bind(article: Article) {
+        fun bind(article: Article, clickListener: OnArticleClickListener) {
             title.text = article.title
+            itemView.setOnClickListener {
+                clickListener.onArticleItemClicked(article._id!!)
+            }
         }
     }
 
@@ -39,7 +45,7 @@ class ArticleAdapter(var dataSet: MutableList<Article> = mutableListOf()) :
 
         Log.d(TAG, "Element $position set.")
         val event = dataSet[position]
-        viewHolder.bind(event)
+        viewHolder.bind(event, articleClickListener)
     }
 
     fun setData(articles: List<Article>) {

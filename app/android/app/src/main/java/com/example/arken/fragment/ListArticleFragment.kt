@@ -4,22 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Article
 import com.example.arken.util.ArticleAdapter
+import com.example.arken.util.OnArticleClickListener
 
 
-class ListArticleFragment : Fragment() {
+class ListArticleFragment : Fragment(), OnArticleClickListener {
 
     val args: ListArticleFragmentArgs by navArgs()
     private lateinit var currentLayoutManagerType: LayoutManagerType
     private lateinit var recyclerView: RecyclerView
     private var dataset: MutableList<Article> = mutableListOf()
     private lateinit var articleAdapter: ArticleAdapter
+    private lateinit var createArticleButton: Button
     private lateinit var layoutManager: RecyclerView.LayoutManager
 
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
@@ -32,7 +36,11 @@ class ListArticleFragment : Fragment() {
             inflater.inflate(R.layout.fragment_listarticle, container, false).apply { tag = TAG }
 
         recyclerView = rootView.findViewById(R.id.articleRecyclerView)
-
+        createArticleButton = rootView.findViewById(R.id.articleCreate)
+        createArticleButton.setOnClickListener {
+            Navigation.findNavController(rootView)
+                .navigate(R.id.action_listArticleFragment_to_articleDialogFragment)
+        }
 
         layoutManager = LinearLayoutManager(activity)
 
@@ -47,8 +55,9 @@ class ListArticleFragment : Fragment() {
 
 
 
-        articleAdapter = ArticleAdapter(args.profile?.articles as MutableList<Article>)
+        articleAdapter = ArticleAdapter(args.profile?.articles as MutableList<Article>, this)
         recyclerView.adapter = articleAdapter
+        articleAdapter.notifyDataSetChanged()
 
         setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER)
 
@@ -87,5 +96,10 @@ class ListArticleFragment : Fragment() {
     companion object {
         private val TAG = "RecyclerViewFragment"
         private val KEY_LAYOUT_MANAGER = "layoutManager"
+    }
+
+    override fun onArticleItemClicked(id: String) {
+        val action = ListArticleFragmentDirections.actionListArticleFragmentToArticleDetail(id)
+        Navigation.findNavController(recyclerView).navigate(action)
     }
 }
