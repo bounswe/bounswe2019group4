@@ -15,7 +15,8 @@ import {
     Popup,
     Image,
     Icon,
-    Label
+    Label,
+    Dimmer
 } from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import * as userActions from '../../actions/userActions';
@@ -31,7 +32,10 @@ class Article_Details extends Component {
             loading:false,
             rest:1000,
             text:"",
-            ratesubmitted:false
+            titletext:"",
+            editloading:false,
+            ratesubmitted:false,
+            dimmer:false
         }
     }
 
@@ -49,7 +53,7 @@ class Article_Details extends Component {
 
         await this.props.article("/"+this.props.match.params.id).then(async result=> {
                 let newarticle=result.value;
-                this.setState({article:newarticle})
+                this.setState({article:newarticle,text:newarticle.text,titletext:newarticle.title})
 
             }
         )
@@ -69,12 +73,28 @@ class Article_Details extends Component {
 
     };
 
+    onSubmit=async ()=>{
+
+        let param={
+            text:this.state.text,
+            title:this.state.titletext
+        };
+        this.setState({editloading:true});
+        await this.props.editArticle("/"+this.state.article._id,param).then(()=>{
+            this.setState({editloading:false});
+            this.setState({dimmer:true});
+            setTimeout(()=>this.setState({dimmer:false}),2000);
+
+        })
+
+    };
+
     render() {
         const article  = this.state.article;
         let rating=article?article.rateAverage:0;
             rating=rating.toFixed(1);
         let user=this.state.user;
-
+        let active=this.state.dimmer;
         return (
 
             article?(
@@ -144,14 +164,86 @@ class Article_Details extends Component {
                             </Grid.Column>
                             <Grid.Column width={10}>
                                 <Segment raised piled padded compact style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-                                    <div style={{margin:20,fontFamily:"timesnewroman",fontSize:15}}>
-                                        <Header style={{fontFamily:"timesnewroman"}}>
-                                            {article.title}
-                                        </Header>
+                                    <div style={{margin:20,fontFamily:"timesnewroman",fontSize:15,width:"80%"}}>
 
-                                        <p>
-                                            {article.text}
-                                        </p>
+                                        {user && user.loggedIn&&article.userId===user._id ? (
+                                                <Header style={{fontFamily: "timesnewroman"}}>
+                                                    Edit your article
+                                                </Header>
+                                            ) :
+                                            (
+                                                <Header style={{fontFamily: "timesnewroman"}}>
+                                                    {article.title}
+                                                </Header>
+                                            )
+                                        }
+
+
+
+
+                                        {user && user.loggedIn&&article.userId===user._id ? (
+                                            <Dimmer.Dimmable dimmed={active}>
+                                                <Form
+                                                loading={this.state.editloading}
+                                                >
+                                                    <Form.TextArea
+                                                        label={"Title"}
+                                                        style={{borderWidth: 1, borderColor: "gray"}}
+                                                        value={this.state.titletext}
+                                                        onChange={(item) => this.setState({
+                                                            titletext: item.target.value
+                                                        })}
+                                                    />
+                                                    <Form.TextArea
+                                                                    label={"Text"}
+                                                                   style={{borderWidth: 1, borderColor: "gray"}}
+                                                                   value={this.state.text}
+                                                                   onChange={(item) => this.setState({
+                                                                       text: item.target.value
+                                                                   })}
+                                                    />
+
+                                                    <div style={{display: "flex", flex: 1}}>
+                                                        <div style={{display: "flex", flexDirection: "row", flex: 3}}/>
+                                                        <div style={{
+                                                            display: "flex",
+                                                            flexDirection: "row",
+                                                            justifyContent: "center",
+                                                            flex: 3
+                                                        }}>
+
+                                                            <Button onClick={this.onSubmit} content='Submit'
+                                                                    labelPosition='left'
+                                                                    icon={'edit'}
+                                                                    basic color={"black"}
+                                                            />
+                                                        </div>
+                                                        <div style={{
+                                                            fontSize: 14,
+                                                            display: "flex",
+                                                            flexDirection: "row",
+                                                            justifyContent: "flex-end",
+                                                            alignItems: "flex-start",
+                                                            flex: 3
+                                                        }}>
+
+                                                        </div>
+                                                    </div>
+                                                </Form>
+                                                <Dimmer
+                                                    active={active}
+                                                    onClickOutside={this.handleHide}
+                                                >
+                                                    Your article has been edited!
+                                                </Dimmer>
+                                            </Dimmer.Dimmable>
+                                            )
+                                            : (
+                                                <p>
+                                                    {article.text}
+                                                </p>
+                                            )
+                                        }
                                     </div>
                                 </Segment>
                             </Grid.Column>
@@ -175,8 +267,8 @@ const dispatchToProps = dispatch => {
     return {
         article: params => dispatch(userActions.getArticleDetails(params)),
         userInformation:params=>dispatch(userActions.users(params)),
-        rateArticle:(path,params)=>dispatch(userActions.rateArticle(path,params))
-
+        rateArticle:(path,params)=>dispatch(userActions.rateArticle(path,params)),
+        editArticle:(path,params)=>dispatch(userActions.editArticle(path,params))
     };
 };
 

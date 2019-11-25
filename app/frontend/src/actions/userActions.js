@@ -90,3 +90,9 @@ export function rateArticle(path,params) {
         payload: userService.rateArticle(path,params)
     };
 }
+export function editArticle(path,params) {
+    return {
+        type:"ARTICLE_EDIT",
+        payload: userService.editArticle(path,params)
+    };
+}
