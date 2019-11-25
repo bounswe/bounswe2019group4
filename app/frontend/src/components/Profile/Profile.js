@@ -24,7 +24,7 @@ class Profile extends Component {
             user: {},
             portfolios: [
                 {
-                    "_id": "5dd98a6d221a57705b9a4d16",
+                    "_id": "5ddb04331d01120dba5c7a2a",
                     "title": "My Favorite Trading Eqs",
                     "definition": "This portfolio includes my favourite trading equipments",
                     "isPrivate": true,
@@ -33,7 +33,7 @@ class Profile extends Component {
                     "__v": 0
                 },
                 {
-                    "_id": "5dd9ab32221a57705b9a4d54",
+                    "_id": "5ddb050a1d01120dba5c7a2b",
                     "title": "My Second Favorite ones",
                     "definition": "This portfolio includes my 2nd favourite trading equipments",
                     "isPrivate": true,
@@ -41,53 +41,46 @@ class Profile extends Component {
                     "date": "2019-11-22T21:57:06.278Z",
                     "__v": 0
                 }
-            ],
-            tradingEqs: []
+            ]
 
 
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
 
         const localState = loadState();
-        this.setState({user: localState.user});
-
-    }
-
-    componentWillMount() {
-
-        this.getProfile()
-
-        //this.getPortfolios()
-        //const portfolio = this.getData(this.state.user);
-        //console.log(this.state.portfolios)
-
+        this.setState({user: localState.user, rest:1000});
+        await this.getProfile()
     }
 
     getPortfolios(i) {
 
-        const son = this.props.portfolios(this.state.portfolios[i]._id)//.then(result =>console.log(result))
-        //console.log(son)
-        return son
+        const son ={}
+        this.props.portfolios(this.state.portfolios[i]._id).then(result => console.log(result)
+        )
+
 
         //this.setState({portfolios: result.user.portfolios})
 
 
     }
 
-     getProfile() {
-        this.props.profile(loadState().user._id)//.then(result =>console.log(result))
-            //this.setState({portfolios: result.user.portfolios})
+      getProfile() {
+        this.props.profile(loadState().user._id).then( result =>{
+            let newProfile = result.value;
+            this.setState({newProfile})
 
-
+        })
+            //this.setState({portfolios: result.user.portfolios}
     }
+
 
 
 
     render() {
 
 
-        const { user,portfolios,index } = this.state;
+        const { user,portfolios,follower,following } = this.state;
 
 
         //console.log(portfolios)
@@ -120,6 +113,8 @@ class Profile extends Component {
                         {user.name} {user.surname}
 
 
+                        Following {console.log(following)}
+                        Follower {console.log(follower)}
 
                         <button className="ui right floated button">Follow</button>
 
@@ -168,7 +163,7 @@ class Profile extends Component {
                                 meta={item.date.substring(0,10)}
                                 description={item.definition}>
                                 </Card>
-                                {console.log(this.getPortfolios(ind))}
+                                {this.getPortfolios(ind)}
                             </div>);
 
                         })}
