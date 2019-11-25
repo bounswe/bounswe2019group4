@@ -22,7 +22,7 @@ class Profile extends Component {
             index:0,
             user: {},
             portfolios:[],
-            tradingEqs:[]
+            tradingEqs:{}
 
 
         }
@@ -32,10 +32,14 @@ class Profile extends Component {
         const localState = loadState();
         this.setState({user: localState.user});
         this.setState({userLocal: localState.user});
-        this.getProfile()
-        for(let i=0;i<=this.state.portfolios.length;i++){
-            this.getPortfolios(i)
-        }
+        this.getProfile();
+        //console.log(this.state.portfolios);
+        this.state.portfolios.forEach(element =>{
+            console.log(element);
+            this.getPortfolios(element._id);
+        })
+
+
 
 
 
@@ -43,12 +47,14 @@ class Profile extends Component {
 
 
     async getPortfolios(i) {
-        let ikz = this.state.user.portfolios;
-        console.log(ikz)
-        await this.props.portfolios(this.state.portfolios._id).then(async result => {
+        //let ikz = this.state.user.portfolios;
+       // console.log(ikz)
+        await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
                 let newPortfolios = result.value
+                let newTradingEqs = {}
                 console.log(newPortfolios.tradingEqs)
-                this.setState({tradingEqs:newPortfolios.tradingEqs})
+                newTradingEqs[i] = newPortfolios.tradingEqs
+                this.setState({tradingEqs:newTradingEqs})
 
             }
         )
@@ -59,10 +65,29 @@ class Profile extends Component {
             let newProfile = result.value
             console.log(newProfile.portfolios)
             this.setState({user:newProfile})
-            this.setState({portfolios:newProfile.portfolios})
+            this.setState({portfolios:(newProfile.portfolios)})
+            //console.log(this.state.portfolios)
             }
         )
+
+        let newTradingEqs = {}
+        for (let i=0;i<=portfolios.length;i++){
+
+            await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
+                    let newPortfolios = result.value
+                    newTradingEqs[i] = newPortfolios.tradingEqs
+                //console.log(newPortfolios.tradingEqs)
+                //console.log(i)
+                }
+            )
+
+        }
+          console.log(newTradingEqs)
+          //console.log(newTradingEqs[0])
+          this.setState({tradingEqs:newTradingEqs})
+
     }
+
 
 
 
@@ -70,7 +95,7 @@ class Profile extends Component {
     render() {
 
 
-        const { user,portfolios,userLocal } = this.state;
+        const { user,portfolios,userLocal,tradingEqs } = this.state;
 
 
         //console.log(portfolios)
@@ -102,15 +127,9 @@ class Profile extends Component {
 
                         {userLocal.name} {userLocal.surname}
 
-
-
-
-                        <button className="ui right floated button">Follow</button>
-
-
                     </Header>
                     <small >
-                        Following {user.following} Follower {user.follower} Follow Requests {!user.followRequest}
+                        Following {user.following} - Follower {user.follower}
                     </small>
 
                     <ul >
@@ -149,12 +168,16 @@ class Profile extends Component {
                         {portfolios.map((item,ind) => {
 
                             return (
-                            <div>
-                                <Card
+                            <div class="ui card">
+                                <Card raised piled padded compact
                                 header={item.title}
                                 meta={item.date.substring(0,10)}
                                 description={item.definition}>
                                 </Card>
+                                <div className="extra content">
+                                    <i className="check icon"></i>
+                                    {tradingEqs[ind]}
+                                </div>
                             </div>);
 
                         })}

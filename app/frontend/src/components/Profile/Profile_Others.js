@@ -3,14 +3,12 @@ import {Button, Icon} from 'semantic-ui-react'
 import {loadState} from '../../_core/localStorage'
 import {Form, Checkbox, Grid, Segment, Header, Container, List, Divider} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-
 import history from '../../_core/history';
 import * as userActions from '../../actions/userActions';
 import Image from "semantic-ui-react/dist/commonjs/elements/Image";
 import profilePhoto from "./h2.jpg";
 import * as portfolios from "lodash";
 import { Card } from 'semantic-ui-react'
-
 import SegmentGroup from "semantic-ui-react/dist/commonjs/elements/Segment/SegmentGroup";
 
 class Profile extends Component {
@@ -20,10 +18,11 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userLocal:{},
+            profile_Id:"",
             index:0,
             user: {},
-            portfolios: []
+            portfolios:[],
+            tradingEqs:{}
 
 
         }
@@ -32,38 +31,62 @@ class Profile extends Component {
 
         const localState = loadState();
         this.setState({user: localState.user});
-        this.setState({userLocal: localState.user});
-        console.log(this.userLocal)
-        this.getProfile()
-        this.getPortfolios(this.state.index)
+        this.getProfile();
+        //console.log(this.state.portfolios);
+        this.state.portfolios.forEach(element =>{
+            console.log(element);
+            this.getPortfolios(element._id);
+        })
+
+
+
+
 
     }
 
 
     async getPortfolios(i) {
+        //let ikz = this.state.user.portfolios;
+        // console.log(ikz)
         await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
-                let newPortfolios = result.value;
-                console.log(newPortfolios)
-                this.setState({newPortfolios})
+                let newPortfolios = result.value
+                let newTradingEqs = {}
+                console.log(newPortfolios.tradingEqs)
+                newTradingEqs[i] = newPortfolios.tradingEqs
+                this.setState({tradingEqs:newTradingEqs})
 
             }
         )
-
-
-        //this.setState({portfolios: result.user.portfolios})
-
-
     }
 
     async getProfile() {
-        await this.props.profile(loadState().user._id).then(async result =>{
-            let newProfile = result.value
-            //console.log(newProfile)
-            this.setState({user:newProfile})
+        await this.props.profile(this.props.id).then(async result =>{
+                let newProfile = result.value
+                console.log(newProfile)
+                this.setState({user:newProfile})
+                this.setState({portfolios:(newProfile.portfolios)})
+                //console.log(this.state.portfolios)
+            }
+        )
 
-        })
-        //this.setState({portfolios: result.user.portfolios}
+        let newTradingEqs = {}
+        for (let i=0;i<=portfolios.length;i++){
+
+            await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
+                    let newPortfolios = result.value
+                    newTradingEqs[i] = newPortfolios.tradingEqs
+                    //console.log(newPortfolios.tradingEqs)
+                    //console.log(i)
+                }
+            )
+
+        }
+        console.log(newTradingEqs)
+        //console.log(newTradingEqs[0])
+        this.setState({tradingEqs:newTradingEqs})
+
     }
+
 
 
 
@@ -71,7 +94,7 @@ class Profile extends Component {
     render() {
 
 
-        const { user,portfolios,userLocal } = this.state;
+        const { user,portfolios,userLocal,tradingEqs } = this.state;
 
 
         //console.log(portfolios)
@@ -106,13 +129,13 @@ class Profile extends Component {
 
 
 
-                            {!user.isPrivate?<button className="ui right floated button">Follow</button>
+                            {user.isPublic?<button className="ui right floated button">Follow</button>
                                 : null}
 
 
                         </Header>
                         <small >
-                            Following {user.following} Follower {user.follower} Follow Requests {console.log(user)}
+                            Following {user.following} Follower {user.follower}
                         </small>
 
                         <ul >
@@ -151,13 +174,16 @@ class Profile extends Component {
                             {portfolios.map((item,ind) => {
 
                                 return (
-                                    <div>
-                                        <Card
-                                            header={item.title}
-                                            meta={item.date.substring(0,10)}
-                                            description={item.definition}>
+                                    <div class="ui card">
+                                        <Card raised piled padded compact
+                                              header={item.title}
+                                              meta={item.date.substring(0,10)}
+                                              description={item.definition}>
                                         </Card>
-                                        {console.log(user.portfolios)}
+                                        <div className="extra content">
+                                            <i className="check icon"></i>
+                                            {tradingEqs[ind]}
+                                        </div>
                                     </div>);
 
                             })}
@@ -199,5 +225,3 @@ const dispatchToProps = dispatch => {
 };
 
 export default connect(null, dispatchToProps)(Profile);
-
-
