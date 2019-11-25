@@ -13,7 +13,7 @@ import Events from "./Events/Events";
 import Event_Details from "./Events/Event_Details";
 import Article_Details from "./Articles/Article_Details";
 import TradingEquipment from "./TradingEquipment/TradingEquipment";
-
+import Create_Article from "./Articles/Create_Article";
 import authService from "../factories/authFactory";
 import Profile_Others from "./Profile/Profile_Others";
 
@@ -39,6 +39,7 @@ class Routes extends Component {
                     <Route path="/sign_up" render={() => { return <SignUp />; }} />
                     <Route path="/events/:id" render={(props) => { return <Event_Details{...props} />; }} />
                     <Route path="/events" render={() => { return <Events />; }} />
+                    <Route path="/articles/new" render={(props) => { return <Create_Article {...props} />; }} />
                     <Route path="/articles/:id" render={(props) => { return <Article_Details{...props} />; }} />
                     <Route path="/trading-equipment" render={(props) => { return <TradingEquipment {...props} />; }} />
                     <Route exact path="/profile/:id" render={(props) => { return <Profile_Others{...props} />; }} />

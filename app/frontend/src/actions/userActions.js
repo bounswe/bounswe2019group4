@@ -121,4 +121,11 @@ export function editArticle(path,params) {
         type:"ARTICLE_EDIT",
         payload: userService.editArticle(path,params)
     };
+};
+
+export function createArticle(params) {
+    return {
+        type:"ARTICLE_CREATE",
+        payload: userService.createArticle(params)
+    };
 }
