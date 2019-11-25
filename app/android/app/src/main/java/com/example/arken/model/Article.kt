@@ -1,14 +1,18 @@
 package com.example.arken.model
 
 import java.io.Serializable
-import java.util.*
+import java.util.Date
 
 class Article (
-    val _id: String?,
-    val userId: String?,
-    val title: String?,
-    val text: String?,
-    val date: Date?,
-    val rateAverage: Double?,
-    val numberOfRates: Int?
+    val _id: String? = null,
+    val rateAverage: Double? = null,
+    val numberOfRates: Int? = null,
+    val userId: String? = null,
+    val date: Date? = null,
+    val __v: Int? = null,
+    val username: String? = null,
+    val usersurname: String? = null,
+    val yourRate: Int? = null,
+    val title: String? = null,
+    val text: String? = null
     ) : Serializable

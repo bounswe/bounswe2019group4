@@ -11,9 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.arken.R
-import com.example.arken.model.Comment
 import com.example.arken.model.Profile
-import com.example.arken.model.User
 import com.example.arken.util.RetroClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,21 +35,25 @@ class CommentFragment : Fragment() {
         val userNameText: EditText = view.findViewById(R.id.comment_name_editText)
         val commentBody: EditText = view.findViewById(R.id.comment_body)
         val submitComment: Button = view.findViewById(R.id.comment_submit_button)
-        lateinit var profile:Profile
+        lateinit var profile: Profile
 
-        val userCookie = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE).getString("user_cookie", "")
-        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, activity!!.getSharedPreferences(
-            LoginFragment.MY_PREFS_NAME,
-            Context.MODE_PRIVATE
+        val userCookie =
+            activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE)
+                .getString("user_cookie", "")
+        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(
+            userCookie, activity!!.getSharedPreferences(
+                LoginFragment.MY_PREFS_NAME,
+                Context.MODE_PRIVATE
+            )
+                .getString("userId", "defaultId")
         )
-            .getString("userId", "defaultId"))
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
                     profile = response.body()!!
 
-                    userNameText.setText(profile.user?.name+" "+profile.user?.surname)
+                    userNameText.setText(profile.user?.name + " " + profile.user?.surname)
 
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
@@ -69,11 +71,13 @@ class CommentFragment : Fragment() {
             commentBody.setText("")
         }
     }
-    interface OnCommentSubmitted{
+
+    interface OnCommentSubmitted {
         fun onSubmit(text: String)
     }
-    companion object{
-        fun newInstance(onCommentSubmitted: OnCommentSubmitted):CommentFragment{
+
+    companion object {
+        fun newInstance(onCommentSubmitted: OnCommentSubmitted): CommentFragment {
             val frag = CommentFragment()
             frag.onCommentSubmittedListener = onCommentSubmitted
             return frag

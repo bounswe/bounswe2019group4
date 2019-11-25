@@ -24,7 +24,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
+class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListener,
+    AdapterView.OnItemSelectedListener {
 
     private lateinit var countryEditText: EditText
     private lateinit var importanceSpinner: Spinner

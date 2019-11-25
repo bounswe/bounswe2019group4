@@ -16,7 +16,7 @@ class UserAdapter(var dataSet: MutableList<User>, val userClickedListener: OnUse
         private val userLocation: TextView = v.findViewById(R.id.user_country)
 
         fun bind(user: User, userClickedListener: OnUserClickedListener) {
-            userName.text = user.name + " "+ user.surname
+            userName.text = user.name + " " + user.surname
             userLocation.text = user.location
 
             itemView.setOnClickListener {

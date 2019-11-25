@@ -1,5 +1,6 @@
 package com.example.arken.util;
 
+import com.example.arken.model.Article;
 import com.example.arken.model.Comment;
 import com.example.arken.model.Email;
 import com.example.arken.model.Event;
@@ -123,4 +124,16 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @POST("trading-equipments/prediction")
     Call<Currency> predictionCurrency(@Header("Cookie") String cookie, @Body Prediction prediction);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("articles")
+    Call<ResponseBody> createArticle(
+            @Header("Cookie") String userCookie, @Body Article article
+    );
+
+    @Headers({"Content-Type: application/json"})
+    @GET("articles/{id}")
+    Call<Article> getArticle(
+            @Header("Cookie") String userCookie, @Path("id") String article
+    );
 }

@@ -9,27 +9,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Comment
 
-class CommentAdapter(var dataSet: MutableList<Comment>, val userId:String, val deletedListener: OnCommentDeletedListener) :
+class CommentAdapter(
+    var dataSet: MutableList<Comment>,
+    val userId: String,
+    val deletedListener: OnCommentDeletedListener
+) :
     RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val userName: TextView = v.findViewById(R.id.list_comment_user_name)
         private val commentBody: TextView = v.findViewById(R.id.list_comment_body)
-        private val commentDate:TextView = v.findViewById(R.id.list_comment_date)
+        private val commentDate: TextView = v.findViewById(R.id.list_comment_date)
         private val deleteButton: ImageView = v.findViewById(R.id.comment_delete)
 
-        fun bind(comment: Comment, userId: String, deletedListener: OnCommentDeletedListener, position: Int) {
-            userName.text = comment.username + " "+ comment.usersurname
+        fun bind(
+            comment: Comment,
+            userId: String,
+            deletedListener: OnCommentDeletedListener,
+            position: Int
+        ) {
+            userName.text = comment.username + " " + comment.usersurname
             commentBody.text = comment.text
             commentDate.text = comment.date.toString()
-            if(userId == comment.userId){
+            if (userId == comment.userId) {
                 deleteButton.visibility = View.VISIBLE
-            }
-            else{
+            } else {
                 deleteButton.visibility = View.GONE
             }
 
-            deleteButton.setOnClickListener{
+            deleteButton.setOnClickListener {
                 deletedListener.onItemClicked(comment._id!!, position)
             }
         }
@@ -57,5 +65,5 @@ class CommentAdapter(var dataSet: MutableList<Comment>, val userId:String, val d
 }
 
 interface OnCommentDeletedListener {
-    fun onItemClicked(commentId: String, position:Int)
+    fun onItemClicked(commentId: String, position: Int)
 }

@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavHost
-import androidx.navigation.NavHostController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.arken.R
-import com.example.arken.model.*
+import com.example.arken.model.Article
+import com.example.arken.model.Event
+import com.example.arken.model.SearchResult
+import com.example.arken.model.User
 import com.example.arken.model.tradingEquipment.Current
 import com.example.arken.util.RetroClient
 import com.example.arken.util.SearchPagerAdapter
@@ -21,7 +22,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchFragment: Fragment() , SearchUser.OnBackPressed{
+class SearchFragment : Fragment(), SearchUser.OnBackPressed {
 
     private lateinit var viewPager: ViewPager
     private lateinit var pagerAdapter: SearchPagerAdapter
@@ -39,7 +40,7 @@ class SearchFragment: Fragment() , SearchUser.OnBackPressed{
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         viewPager = view.findViewById(R.id.search_viewPager)
         // Get the list of movies from the JSON file
-        val values = arrayOf("EVENTS","TRADING EQ","ARTICLE","USER")
+        val values = arrayOf("EVENTS", "TRADING EQ", "ARTICLE", "USER")
 
         pagerAdapter = fragmentManager?.let { SearchPagerAdapter(it, values, this) }!!
         viewPager.adapter = pagerAdapter
@@ -56,11 +57,15 @@ class SearchFragment: Fragment() , SearchUser.OnBackPressed{
 
             override fun onQueryTextChange(newText: String): Boolean {
 
-                if(newText.trim() != ""){
-                    val call: Call<SearchResult> = RetroClient.getInstance().apiService.search(newText)
+                if (newText.trim() != "") {
+                    val call: Call<SearchResult> =
+                        RetroClient.getInstance().apiService.search(newText)
 
                     call.enqueue(object : Callback<SearchResult> {
-                        override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                        override fun onResponse(
+                            call: Call<SearchResult>,
+                            response: Response<SearchResult>
+                        ) {
                             if (response.isSuccessful) {
                                 userList = response.body()?.users!!
                                 articleList = response.body()?.articles!!
@@ -69,7 +74,11 @@ class SearchFragment: Fragment() , SearchUser.OnBackPressed{
                                 pagerAdapter.setDataset(eventList, tEList, articleList, userList)
 
                             } else {
-                                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    response.raw().toString(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
 

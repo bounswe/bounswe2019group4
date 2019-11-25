@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
 import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
@@ -22,13 +24,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListener {
+class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListener {
     constructor() : this(null)
 
     private lateinit var name_textView: TextView
     private lateinit var surname_textView: TextView
     private lateinit var location_value_textView: TextView
     private lateinit var user_type_textView: TextView
+    private lateinit var article_button: Button
     private lateinit var email_value_textView: TextView
     private lateinit var pred_value_textView: TextView
     private lateinit var profile: Profile
@@ -39,12 +42,12 @@ class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListen
     private var isPublic = true
     private val args: ProfileFragmentArgs by navArgs()
     private var following = false
-    private lateinit var pendingReqText:TextView
-    var userCookie =""
-    private var pendingReqList:MutableList<FollowRequest> = mutableListOf()
-    private var followerList:MutableList<FollowRequest> = mutableListOf()
-    private var followingList:MutableList<FollowRequest> = mutableListOf()
-    private lateinit var dialog:PendingUserDialog
+    private lateinit var pendingReqText: TextView
+    var userCookie = ""
+    private var pendingReqList: MutableList<FollowRequest> = mutableListOf()
+    private var followerList: MutableList<FollowRequest> = mutableListOf()
+    private var followingList: MutableList<FollowRequest> = mutableListOf()
+    private lateinit var dialog: PendingUserDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,35 +63,50 @@ class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListen
         location_value_textView = view.findViewById(R.id.location_value_textView)
         email_value_textView = view.findViewById(R.id.email_value_textView)
         pred_value_textView = view.findViewById(R.id.pred_value_textView)
+
         followButton = view.findViewById(R.id.user_follow)
         followerCountText = view.findViewById(R.id.follower_value_textView)
         followingCountText = view.findViewById(R.id.following_value_textView)
         pendingReqText = view.findViewById(R.id.profile_pending_req)
+        article_button = view.findViewById(R.id.article_button)
 
-        if(userId == null){
+        article_button.setOnClickListener {
+            val act = ProfileFragmentDirections.actionProfileFragmentToListArticleFragment()
+            act.profile = profile
+            findNavController().navigate(act)
+        }
+        if (userId == null) {
             userId = args.userId
         }
         getProfile()
 
-        followButton.setOnClickListener{
-            userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")!!
-            if(!following){
-                val callFollow: Call<ResponseBody> = RetroClient.getInstance().apiService.follow(userCookie, userId)
+        followButton.setOnClickListener {
+            userCookie = activity!!.getSharedPreferences(
+                MY_PREFS_NAME,
+                MODE_PRIVATE
+            ).getString("user_cookie", "")!!
+            if (!following) {
+                val callFollow: Call<ResponseBody> =
+                    RetroClient.getInstance().apiService.follow(userCookie, userId)
 
                 callFollow.enqueue(object : Callback<ResponseBody> {
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
                         if (response.isSuccessful) {
 
-                            if(isPublic){
+                            if (isPublic) {
 
                                 getProfile()
                                 followButton.text = "UNFOLLOW"
                                 following = true
-                                Toast.makeText(context, "You are following", Toast.LENGTH_SHORT).show()
-                            }
-                            else{
+                                Toast.makeText(context, "You are following", Toast.LENGTH_SHORT)
+                                    .show()
+                            } else {
                                 followButton.text = "PENDING"
-                                Toast.makeText(context, "Your request is sent", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Your request is sent", Toast.LENGTH_SHORT)
+                                    .show()
                             }
 
                         } else {
@@ -101,26 +119,37 @@ class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListen
                         Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
-            }
-            else{
-                if(followButton.text == "PENDING"){
-                    Toast.makeText(context, "Your request is already sent", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    if(!following){
+            } else {
+                if (followButton.text == "PENDING") {
+                    Toast.makeText(context, "Your request is already sent", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    if (!following) {
                         followButton.text = "Follow"
-                    }else{
-                        val callFollow: Call<ResponseBody> = RetroClient.getInstance().apiService.unfollow(userCookie, userId)
+                    } else {
+                        val callFollow: Call<ResponseBody> =
+                            RetroClient.getInstance().apiService.unfollow(userCookie, userId)
 
                         callFollow.enqueue(object : Callback<ResponseBody> {
-                            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            override fun onResponse(
+                                call: Call<ResponseBody>,
+                                response: Response<ResponseBody>
+                            ) {
                                 if (response.isSuccessful) {
-                                    Toast.makeText(context, "You have unfollowed", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "You have unfollowed",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
                                     getProfile()
 
                                 } else {
-                                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
+                                    Toast.makeText(
+                                        context,
+                                        response.raw().toString(),
+                                        Toast.LENGTH_SHORT
+                                    )
                                         .show()
                                 }
                             }
@@ -132,25 +161,23 @@ class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListen
                     }
                 }
 
-
             }
-
         }
-        followerCountText.setOnClickListener{
-            if(followerList.size>0){
+        followerCountText.setOnClickListener {
+            if (followerList.size > 0) {
                 dialog = PendingUserDialog(followerList, this, 1)
                 dialog.show(fragmentManager!!, "PioneersFragment_tag")
             }
         }
-        followingCountText.setOnClickListener{
-            if(followingList.size>0){
+        followingCountText.setOnClickListener {
+            if (followingList.size > 0) {
                 dialog = PendingUserDialog(followingList, this, 2)
                 dialog.show(fragmentManager!!, "PioneersFragment_tag")
             }
         }
 
-        pendingReqText.setOnClickListener{
-            if(pendingReqList.size>0){
+        pendingReqText.setOnClickListener {
+            if (pendingReqList.size > 0) {
                 dialog = PendingUserDialog(pendingReqList, this, 0)
                 dialog.show(fragmentManager!!, "PioneersFragment_tag")
             }
@@ -166,8 +193,12 @@ class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListen
 
     override fun onAcceptClicked(followingId: String, position: Int) {
         //call
-        userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")!!
-        val callAccept: Call<ResponseBody> = RetroClient.getInstance().apiService.accept(userCookie, followingId)
+        userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString(
+            "user_cookie",
+            ""
+        )!!
+        val callAccept: Call<ResponseBody> =
+            RetroClient.getInstance().apiService.accept(userCookie, followingId)
 
         callAccept.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -191,8 +222,10 @@ class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListen
 
     override fun onRejectClicked(followingId: String, position: Int) {
         //call
-        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
-        val callAccept: Call<ResponseBody> = RetroClient.getInstance().apiService.reject(userCookie, followingId)
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            .getString("user_cookie", "")
+        val callAccept: Call<ResponseBody> =
+            RetroClient.getInstance().apiService.reject(userCookie, followingId)
 
         callAccept.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -211,11 +244,15 @@ class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListen
             }
         })
     }
-    fun getProfile(){
-        val realId = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("userId", "defaultId")
 
-        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
-        val call: Call<Profile> = RetroClient.getInstance().apiService.getProfile(userCookie, userId)
+    fun getProfile() {
+        val realId = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            .getString("userId", "defaultId")
+
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            .getString("user_cookie", "")
+        val call: Call<Profile> =
+            RetroClient.getInstance().apiService.getProfile(userCookie, userId)
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
@@ -227,32 +264,36 @@ class ProfileFragment( var userId: String?) : Fragment(), OnRequestClickedListen
                     followerCountText.text = "" + profile.follower
                     followingCountText.text = "" + profile.following
                     followerCount = profile.follower!!
-                    if((userCookie!= "" && realId == userId) || profile.user?.isPublic!! || profile.followStatus=="TRUE"){
-                        user_type_textView.text = if (profile.user?.isTrader!!) {"Trader"} else {"Basic"}
+                    if ((userCookie != "" && realId == userId) || profile.user?.isPublic!! || profile.followStatus == "TRUE") {
+                        user_type_textView.text = if (profile.user?.isTrader!!) {
+                            "Trader"
+                        } else {
+                            "Basic"
+                        }
                         location_value_textView.text = profile.user?.location
                         email_value_textView.text = profile.user?.email
                         followingList = profile.followings!!
                         followerList = profile.followers!!
-                    }else{
+                    } else {
                         user_type_textView.visibility = View.GONE
                         location_value_textView.visibility = View.GONE
-                        email_value_textView.visibility =View.GONE
+                        email_value_textView.visibility = View.GONE
                     }
 
                     isPublic = profile.user?.isPublic!!
-                    if(userCookie!= "" && realId != userId){
+                    if (userCookie != "" && realId != userId) {
                         followButton.visibility = View.VISIBLE
-                        if(profile.followStatus=="TRUE"){
+                        if (profile.followStatus == "TRUE") {
                             followButton.text = "UNFOLLOW"
                             following = true
-                        }else{
+                        } else {
                             followButton.text = "FOLLOW"
                             following = false
                         }
-                    }
-                    else if(userCookie!=""){
+                    } else if (userCookie != "") {
                         pendingReqText.visibility = View.VISIBLE
                         pendingReqText.text = "Pending Requests: " + profile.followRequest
+                        article_button.visibility = View.VISIBLE
                         pendingReqList = profile.followRequests
                     }
 
