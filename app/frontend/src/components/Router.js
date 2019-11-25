@@ -12,6 +12,7 @@ import Profile from "./Profile/Profile";
 import Events from "./Events/Events";
 import Event_Details from "./Events/Event_Details";
 import Article_Details from "./Articles/Article_Details";
+import TradingEquipment from "./TradingEquipment/TradingEquipment";
 
 import authService from "../factories/authFactory";
 
@@ -38,6 +39,7 @@ class Routes extends Component {
                     <Route path="/events/:id" render={(props) => { return <Event_Details{...props} />; }} />
                     <Route path="/events" render={() => { return <Events />; }} />
                     <Route path="/articles/:id" render={(props) => { return <Article_Details{...props} />; }} />
+                    <Route path="/trading-equipment" render={() => { return <TradingEquipment />; }} />
                     <Route path="/profile" render={
                         () => {
                             if(this.checkAuthorization()) {
