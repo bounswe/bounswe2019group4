@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.fragment.LoginFragment
@@ -21,11 +24,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchUser(var onBackPressed: OnBackPressed) : Fragment(), OnUserClickedListener {
+class SearchUser: Fragment(), OnUserClickedListener {
     private lateinit var recyclerView: RecyclerView
     private var userAdapter: UserAdapter? = null
-    private var openProf = false
-    private var profFragment: ProfileFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,17 +43,6 @@ class SearchUser(var onBackPressed: OnBackPressed) : Fragment(), OnUserClickedLi
 
         recyclerView.adapter?.notifyDataSetChanged()
 
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (openProf && profFragment != null) {
-                    openProf = false
-                    fragmentManager?.beginTransaction()?.remove(profFragment!!)?.commit()
-                } else {
-                    onBackPressed.onBackPressed()
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
         return rootView
     }
 
@@ -65,13 +55,12 @@ class SearchUser(var onBackPressed: OnBackPressed) : Fragment(), OnUserClickedLi
         val call: Call<Profile> =
             RetroClient.getInstance().apiService.getProfile(userCookie, userId)
 
-        call.enqueue(object : Callback<Profile> {
-            override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
-                if (response.isSuccessful) {
-                    profFragment = ProfileFragment(response.body()?.user?._id)
-                    fragmentManager?.beginTransaction()
-                        ?.add(R.id.search_container, profFragment!!, "prof")?.commit()
-                    openProf = true
+            call.enqueue(object : Callback<Profile> {
+                override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
+                    if (response.isSuccessful) {
+                        recyclerView.hideKeyboard()
+                        val act = SearchFragmentDirections.actionSearchFragmentToProfileFragment(userId!!)
+                        findNavController().navigate(act)
 
                 } else {
                     Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
@@ -91,8 +80,8 @@ class SearchUser(var onBackPressed: OnBackPressed) : Fragment(), OnUserClickedLi
         userAdapter!!.dataSet = list
         userAdapter!!.notifyDataSetChanged()
     }
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
 
-    interface OnBackPressed {
-        fun onBackPressed()
-    }
 }

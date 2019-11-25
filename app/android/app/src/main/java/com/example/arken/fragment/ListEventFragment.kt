@@ -70,15 +70,15 @@ class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListen
 
         ArrayAdapter(
             context!!,
-            android.R.layout.simple_spinner_item, imp
+            R.layout.custom_spinner, imp
         ).also { adapter ->
             // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
             importanceSpinner.adapter = adapter
         }
 
         importanceSpinner.onItemSelectedListener = this
+        importanceSpinner.setSelection(3)
 
         currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
@@ -215,6 +215,8 @@ class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListen
 
         if (view.id == R.id.event_list_clear_button) {
             initDataset()
+            importanceSpinner.setSelection(3)
+            countryEditText.setText("")
         }
     }
 
@@ -241,6 +243,10 @@ class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListen
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     companion object {

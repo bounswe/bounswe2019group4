@@ -274,7 +274,8 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                         email_value_textView.text = profile.user?.email
                         followingList = profile.followings!!
                         followerList = profile.followers!!
-                    } else {
+                        pred_value_textView.text = "  "+ profile.user?.predictionRate
+                    }else{
                         user_type_textView.visibility = View.GONE
                         location_value_textView.visibility = View.GONE
                         email_value_textView.visibility = View.GONE
