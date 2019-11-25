@@ -13,6 +13,7 @@ import Events from "./Events/Events";
 import Event_Details from "./Events/Event_Details";
 
 import authService from "../factories/authFactory";
+import Profile_Others from "./Profile/Profile_Others";
 
 
 class Routes extends Component {
@@ -36,6 +37,7 @@ class Routes extends Component {
                     <Route path="/sign_up" render={() => { return <SignUp />; }} />
                     <Route path="/events/:id" render={(props) => { return <Event_Details{...props} />; }} />
                     <Route path="/events" render={() => { return <Events />; }} />
+                    <Route path="/profile/:id" render={(props) => { return <Profile_Others{...props} />; }} />
                     <Route path="/profile" render={
                         (props) => {
                             if(this.checkAuthorization()) {
