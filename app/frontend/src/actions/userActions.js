@@ -55,6 +55,32 @@ export function events(params) {
         payload: userService.events(params)
     };
 }
+
+export function profile(params) {
+    return {
+        type:"PROFILE",
+        payload: userService.profile(params)
+    };
+}
+export function portfolios(params) {
+    return {
+        type:"PORTFOLIOS",
+        payload: userService.portfolios(params)
+    };
+}
+
+export function follow(path) {
+    return {
+        type:"FOLLOW_USER",
+        payload: userService.follow(path)
+    };
+}
+export function unfollow(path) {
+    return {
+        type:"UNFOLLOW_USER",
+        payload: userService.unfollow(path)
+    };
+}
 export function users(params) {
     return {
         type:"USER_PROFILE",
