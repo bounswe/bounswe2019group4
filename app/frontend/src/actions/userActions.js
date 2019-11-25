@@ -68,3 +68,10 @@ export function portfolios(params) {
         payload: userService.portfolios(params)
     };
 }
+
+export function follow(params) {
+    return {
+        type:"FOLLOW",
+        payload: userService.follow(params)
+    };
+}

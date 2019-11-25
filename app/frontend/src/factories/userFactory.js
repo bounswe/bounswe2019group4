@@ -7,6 +7,7 @@ function userFactory() {
     this.events=path => baseRequest.get("/events"+path);
     this.profile = path => baseRequest.get("/profile/"+path);
     this.portfolios = path => baseRequest.get("/portfolios/"+path);
+    this.follow = path => baseRequest.get("/profile/"+path+"/follow")
 
 }
 
