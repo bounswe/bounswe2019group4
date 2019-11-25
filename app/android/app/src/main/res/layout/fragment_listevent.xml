@@ -57,7 +57,7 @@
 
         <Spinner
             android:id="@+id/importance_spinner"
-            android:layout_width="75dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/event_list_filter_country_editText"
             app:layout_constraintEnd_toStartOf="@id/guideline_right"
@@ -70,7 +70,6 @@
             style="@style/style_editText"
             android:layout_marginTop="10dp"
             android:hint="Country"
-            android:inputType="textPersonName"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@id/guideline_middle"
             app:layout_constraintStart_toStartOf="@id/guideline_left"
@@ -97,7 +96,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/event_list_filter_button"
             app:layout_constraintTop_toTopOf="@+id/event_list_filter_button"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_marginRight="12dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

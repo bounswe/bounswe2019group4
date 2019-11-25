@@ -11,15 +11,15 @@ import com.example.arken.model.Event
 import com.example.arken.model.User
 import com.example.arken.model.tradingEquipment.Current
 
-class SearchPagerAdapter(fragmentManager: FragmentManager, private val values: Array<String>, searchFragment: SearchFragment) :
+class SearchPagerAdapter(fragmentManager: FragmentManager, private val values: Array<String>) :
     FragmentStatePagerAdapter(fragmentManager) {
-    private val event = SearchEvent()
-    private val te = SearchTE()
-    private val article = SearchArticle()
-    private val user = SearchUser(searchFragment)
+    private var event = SearchEvent()
+    private var te = SearchTE()
+    private var article = SearchArticle()
+    private var user = SearchUser()
 
 
-    val fragmentArr= arrayOf(event, te, article, user)
+    var fragmentArr= arrayOf(event, te, article, user)
 
     // 2
     override fun getItem(position: Int): Fragment {
