@@ -80,8 +80,8 @@
             android:id="@+id/action_profileFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
         <action
-            android:id="@+id/action_profileFragment_to_articleDialogFragment"
-            app:destination="@id/articleDialogFragment" />
+            android:id="@+id/action_profileFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -94,9 +94,14 @@
             android:id="@+id/action_searchFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/articleDialogFragment"
-        android:name="com.example.arken.fragment.ArticleDialogFragment"
-        android:label="fragment_article_dialog"
-        tools:layout="@layout/fragment_article_dialog" />
+    <fragment
+        android:id="@+id/listArticleFragment"
+        android:name="com.example.arken.fragment.ListArticleFragment"
+        android:label="ListArticleFragment">
+        <argument
+            android:name="profile"
+            android:defaultValue="@null"
+            app:argType="com.example.arken.model.Profile"
+            app:nullable="true" />
+    </fragment>
 </navigation>

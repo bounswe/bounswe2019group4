@@ -71,8 +71,9 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
         article_button = view.findViewById(R.id.article_button)
 
         article_button.setOnClickListener {
-
-            findNavController().navigate(R.id.action_profileFragment_to_articleDialogFragment)
+            val act = ProfileFragmentDirections.actionProfileFragmentToListArticleFragment()
+            act.profile = profile
+            findNavController().navigate(act)
         }
         if (userId == null) {
             userId = args.userId
