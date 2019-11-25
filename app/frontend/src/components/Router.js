@@ -37,8 +37,8 @@ class Routes extends Component {
                     <Route path="/sign_up" render={() => { return <SignUp />; }} />
                     <Route path="/events/:id" render={(props) => { return <Event_Details{...props} />; }} />
                     <Route path="/events" render={() => { return <Events />; }} />
-                    <Route path="/profile/:id" render={(props) => { return <Profile_Others{...props} />; }} />
-                    <Route path="/profile" render={
+                    <Route exact path="/profile/:id" render={(props) => { return <Profile_Others{...props} />; }} />
+                    <Route exact path="/profile" render={
                         (props) => {
                             if(this.checkAuthorization()) {
                                 return <Profile {...props}/>;

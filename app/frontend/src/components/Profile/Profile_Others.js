@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Icon} from 'semantic-ui-react'
+import {Button, Icon, Menu} from 'semantic-ui-react'
 import {loadState} from '../../_core/localStorage'
 import {Form, Checkbox, Grid, Segment, Header, Container, List, Divider} from 'semantic-ui-react';
 import {connect} from 'react-redux';
@@ -18,10 +18,11 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            profile_Id:"",
-            index:0,
-            user: {},
+            follower:0,
+            following:0,
+            user:{},
             portfolios:[],
+            isPublic:false,
             tradingEqs:{}
 
 
@@ -32,7 +33,7 @@ class Profile extends Component {
         const localState = loadState();
         this.setState({user: localState.user});
         this.getProfile();
-        //console.log(this.state.portfolios);
+        console.log(this.props.match.params.id);
         this.state.portfolios.forEach(element =>{
             console.log(element);
             this.getPortfolios(element._id);
@@ -60,30 +61,33 @@ class Profile extends Component {
     }
 
     async getProfile() {
-        await this.props.profile(this.props.id).then(async result =>{
+        await this.props.profile(this.props.match.params.id).then(async result =>{
                 let newProfile = result.value
                 console.log(newProfile)
-                this.setState({user:newProfile})
+                this.setState({user:newProfile.user})
+                this.setState({following:newProfile.following})
+                this.setState({follower:newProfile.follower})
+                this.setState({isPublic:newProfile.user.isPublic})
                 this.setState({portfolios:(newProfile.portfolios)})
                 //console.log(this.state.portfolios)
             }
         )
 
-        let newTradingEqs = {}
-        for (let i=0;i<=portfolios.length;i++){
-
-            await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
-                    let newPortfolios = result.value
-                    newTradingEqs[i] = newPortfolios.tradingEqs
-                    //console.log(newPortfolios.tradingEqs)
-                    //console.log(i)
-                }
-            )
-
-        }
-        console.log(newTradingEqs)
-        //console.log(newTradingEqs[0])
-        this.setState({tradingEqs:newTradingEqs})
+        // let newTradingEqs = {}
+        // for (let i=0;i<=portfolios.length;i++){
+        //
+        //     await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
+        //             let newPortfolios = result.value
+        //             newTradingEqs[i] = newPortfolios.tradingEqs
+        //             //console.log(newPortfolios.tradingEqs)
+        //             //console.log(i)
+        //         }
+        //     )
+        //
+        // }
+        // console.log(newTradingEqs)
+        // //console.log(newTradingEqs[0])
+        // this.setState({tradingEqs:newTradingEqs})
 
     }
 
@@ -94,7 +98,7 @@ class Profile extends Component {
     render() {
 
 
-        const { user,portfolios,userLocal,tradingEqs } = this.state;
+        const { user,portfolios,tradingEqs,following,follower } = this.state;
 
 
         //console.log(portfolios)
@@ -124,34 +128,36 @@ class Profile extends Component {
                         <Image src={profilePhoto} size='middle'   rounded />
                         <Header textAlign='center'>
 
-                            {userLocal.name} {userLocal.surname}
+                            {user.name} {user.surname}
 
 
 
 
-                            {user.isPublic?<button className="ui right floated button">Follow</button>
-                                : null}
+                            {this.state.isPublic?
+                                null    :
+                                <button onClick={this.navigate} className="ui right floated button">Follow</button>
+                            }
 
 
                         </Header>
                         <small >
-                            Following {user.following} Follower {user.follower}
+                            Following {following} Follower {follower}
                         </small>
 
                         <ul >
-                            <li><strong>Name        :{userLocal.name}</strong></li>
-                            <li><strong>Surname     :{userLocal.surname}</strong></li>
+                            <li><strong>Name        :{user.name}</strong></li>
+                            <li><strong>Surname     :{user.surname}</strong></li>
+                            {this.state.isPublic?
+                                <li><strong>E-Mail      :{user.email}</strong></li>:null}
+                            <li><strong>Account Type:{user.isTrader ? 'Trader' : 'Normal'}</strong></li>
+                            {user.isTrader && <span>
+                            <li><strong>IBAN     :{user.iban}</strong></li>
 
-                            <li><strong>E-Mail      :{userLocal.email}</strong></li>
-                            <li><strong>Account Type:{userLocal.isTrader ? 'Trader' : 'Normal'}</strong></li>
-                            {userLocal.isTrader && <span>
-                            <li><strong>IBAN     :{userLocal.iban}</strong></li>
-
-                            <li><strong>TCKN      :{userLocal.tckn}</strong></li>
+                            <li><strong>TCKN      :{user.tckn}</strong></li>
 
 
                         </span>}
-                            <li><strong>Location:{userLocal.location}</strong></li>
+                            <li><strong>Location:{user.location}</strong></li>
 
 
 
@@ -171,7 +177,8 @@ class Profile extends Component {
                         </Header>
 
                         <ul>
-                            {portfolios.map((item,ind) => {
+                            {!user.isPublic? null :
+                                portfolios.map((item,ind) => {
 
                                 return (
                                     <div class="ui card">
@@ -219,8 +226,8 @@ class Profile extends Component {
 const dispatchToProps = dispatch => {
     return {
         profile: params => dispatch(userActions.profile(params)),
-        portfolios: params => dispatch(userActions.portfolios(params))
-
+        portfolios: params => dispatch(userActions.portfolios(params)),
+        follow:params => dispatch(userActions.follow(params))
     };
 };
 
