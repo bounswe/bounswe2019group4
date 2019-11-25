@@ -21,6 +21,13 @@ export function followTEq(params) {
     };
 }
 
+export function predictTE(params) {
+    return {
+        type: "PREDICT_TRADING_EQUIPMENT",
+        payload: tEquipmentService.predict(params)
+    };
+}
+
 export function unfollowTEq(params) {
     return {
         type: "UNFOLLOW_TRADING_EQUIPMENT",
