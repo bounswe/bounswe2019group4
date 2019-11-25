@@ -24,5 +24,9 @@
         app:layout_constraintTop_toBottomOf="@id/search_tab_view"
         android:id="@+id/search_view"
         android:background="@android:color/darker_gray"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/search_container"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

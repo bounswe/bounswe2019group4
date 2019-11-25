@@ -67,6 +67,9 @@
         android:id="@+id/profileFragment"
         android:name="com.example.arken.fragment.ProfileFragment"
         android:label="ProfileFragment" >
+        <argument
+            android:name="userId"
+            app:argType="string" />
         <action
             android:id="@+id/action_profileFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />

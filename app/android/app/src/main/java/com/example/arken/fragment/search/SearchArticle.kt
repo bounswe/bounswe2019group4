@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.arken.R
 
-class SearchArticle : Fragment(){
+class SearchArticle : Fragment(){ // Implement After Article Implemented
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -17,19 +17,19 @@ import com.example.arken.R
 import com.example.arken.model.Event
 import com.example.arken.model.ListEvent
 import com.example.arken.util.EventAdapter
-import com.example.arken.util.OnItemClickListener
+import com.example.arken.util.OnEventClickedListener
 import com.example.arken.util.RetroClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
+class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private lateinit var countryEditText: EditText
     private lateinit var importanceSpinner: Spinner
-    private lateinit var filterButton: Button
-    private lateinit var clearButton: Button
+    private lateinit var filterButton: ImageView
+    private lateinit var clearButton: ImageView
     private lateinit var currentLayoutManagerType: LayoutManagerType
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -178,7 +178,7 @@ class ListEventFragment : Fragment(), OnItemClickListener, View.OnClickListener,
 
 
     override fun onClick(view: View) {
-        if (view.id != R.id.event_list_filter_country_editText && view.id != R.id.importance_spinner) {
+        if (view.id != R.id.event_list_filter_country_editText) {
             val inputMethodManager =
                 activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)

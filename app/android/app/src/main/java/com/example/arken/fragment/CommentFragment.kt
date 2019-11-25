@@ -66,6 +66,7 @@ class CommentFragment : Fragment() {
         submitComment.setOnClickListener {
             Log.i("send ", " button")
             onCommentSubmittedListener?.onSubmit(commentBody.text.toString())
+            commentBody.setText("")
         }
     }
     interface OnCommentSubmitted{

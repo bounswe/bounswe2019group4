@@ -23,11 +23,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Dolar : "
-                android:textColor="#ffffff"
                 android:textSize="30sp"
+android:textColor="#ffffff"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,13 +50,14 @@
                 android:layout_height="60dp"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_check_circle_blue"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_currency_follow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_currency_follow" />
 
             <TextView
                 android:id="@+id/currencyTime"
@@ -133,8 +134,8 @@
 
             <ImageButton
                 android:id="@+id/prediction_upButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="8dp"
                 android:backgroundTint="#008F13"
                 android:scaleType="fitCenter"
@@ -145,8 +146,8 @@
 
             <ImageButton
                 android:id="@+id/prediction_downButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
@@ -170,7 +171,7 @@
                 android:id="@+id/currencyDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="Date     "
@@ -187,10 +188,10 @@
                 android:layout_height="0dp"
                 android:background="#000C0B0B"
                 android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/currencyDate"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/currencyRowOpen"

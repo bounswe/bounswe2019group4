@@ -15,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnItemClickListener) :
+class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnEventClickedListener) :
     RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     var totalPages: Int = 1
@@ -46,7 +46,7 @@ class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnIte
             background = v.findViewById(R.id.event_row_background)
         }
 
-        fun bind(event: Event, clickListener: OnItemClickListener) {
+        fun bind(event: Event, clickListener: OnEventClickedListener) {
             textView.text = event.Event
             country.text = event.Country
 
@@ -128,7 +128,7 @@ class EventAdapter(var dataSet: MutableList<Event>, val itemClickListener: OnIte
     }
 }
 
-interface OnItemClickListener {
+interface OnEventClickedListener {
     fun onItemClicked(event: Event)
     //fun onClick(view: View)
 }
