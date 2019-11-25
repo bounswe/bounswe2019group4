@@ -51,9 +51,12 @@ class ArticleDialogFragment : DialogFragment() {
                     LoginFragment.MY_PREFS_NAME,
                     Context.MODE_PRIVATE
                 )
-                    .getString("user-cookie", "defaultCookie")
-                , Article(text_editText.text.toString(),
-                    title_editText.text.toString()))
+                    .getString("user_cookie", "defaultCookie")
+                    , Article(
+                        text = text_editText.text.toString(),
+                        title = title_editText.text.toString()
+                    )
+                )
 
 
 
