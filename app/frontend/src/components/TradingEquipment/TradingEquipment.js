@@ -5,6 +5,7 @@ import CandleStickChart from "./TEqChart";
 import { timeParse } from "d3-time-format";
 import tradingEquipmentList from "../../utils/constants/tradingEquipment";
 
+import Comments from "../Comments"
 import authService from "../../factories/authFactory";
 
 
@@ -14,7 +15,7 @@ class TradingEquipment extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {tradingEquipment: [], selectedTE: "TRY"};
+        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[]};
     }
 
     componentWillMount() {
@@ -27,7 +28,7 @@ class TradingEquipment extends Component {
         promises.push(this.props.getTradingEquipmentDetail({currency: currentCurrency}));
 
         Promise.all(promises).then(result => {
-            this.setState({selectedTE: currentCurrency, tradingEquipment: result[0].action.payload.currencies, teDetail: this.parseData(result[1].action.payload.values.reverse()), convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
+            this.setState({selectedTE: currentCurrency, tradingEquipment: result[0].action.payload.currencies, teDetail: this.parseData(result[1].action.payload.values.reverse()), comments: result[1].action.payload.comments, convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
         })
     }
 
@@ -53,7 +54,7 @@ class TradingEquipment extends Component {
 
     onChange(e, data) {
         this.props.getTradingEquipmentDetail({currency: data.value}).then(result => {
-            this.setState({selectedTE: data.value, teDetail: this.parseData(result.action.payload.values.reverse()), convertedCurrency: result.action.payload.current.to, following: result.action.payload.following});
+            this.setState({selectedTE: data.value, comments: result.action.payload.comments, teDetail: this.parseData(result.action.payload.values.reverse()), convertedCurrency: result.action.payload.current.to, following: result.action.payload.following});
         })
     }
 
@@ -102,6 +103,7 @@ class TradingEquipment extends Component {
                     </Segment>
                 </Grid.Column>
                 <Grid.Column width={12}>
+                    <div style={{display:"flex",flexDirection:"column"}}>
                     <Segment textAlign={"left"}>
                         <Grid>
                         <Grid.Row>
@@ -124,6 +126,8 @@ class TradingEquipment extends Component {
                         </Grid>
                 {teDetail && <CandleStickChart type="hybrid" data={teDetail} convertedCurrency={convertedCurrency} />}
                     </Segment>
+                    <Comments type={"trading-equipment"} _id={this.state.selectedTE} resendComments={this.onChange.bind(this,{},{value:this.state.selectedTE})} data={this.state.comments}/>
+                    </div>
                 </Grid.Column>
             </Grid.Row>
             </Grid>

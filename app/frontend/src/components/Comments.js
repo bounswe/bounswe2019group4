@@ -54,7 +54,7 @@ class Comments extends Component{
     onSubmit=async ()=>{
 
         if(this.state.text!=="") {
-            let calendarID=this.props._id;
+            let calendarID=this.props._id;  //_id = ("USD") or calendarid of event
             let com;
             if(this.props.type==="event") {
                  com = {
@@ -62,7 +62,7 @@ class Comments extends Component{
                     related: calendarID,
                     about: "EVENT"
                 };
-            }else if(this.props.type==="treq"){
+            }else if(this.props.type==="trading-equipment"){
                 com = {
                     text: this.state.text,
                     related: calendarID,
