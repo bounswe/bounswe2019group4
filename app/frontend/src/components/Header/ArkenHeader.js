@@ -9,6 +9,7 @@ import UserHeaderComponent from './UserHeaderComponent';
 import authService from "../../factories/authFactory";
 
 import arkenLogo from "../../assets/arken_logo.png";
+import SearchBar from "../Search/Search";
 
 
 class ArkenHeader extends Component {
@@ -28,7 +29,6 @@ class ArkenHeader extends Component {
             return <GuestHeaderComponent/>
         }
     }
-
 
     render() {
         return (
@@ -62,7 +62,7 @@ class ArkenHeader extends Component {
                         Trading Equipment
                     </Menu.Item>
                 </Menu.Menu>
-
+                <SearchBar/>
                 {this.renderRightMenu()}
             </Menu>
         )

@@ -50,6 +50,12 @@ class Event_Details extends Component {
 
     }
 
+    componentDidUpdate(props) {
+        if(props.match.params.id !== this.props.match.params.id) {
+            this.getEvents();
+        }
+    }
+
 
 
      getEvents=async()=>{

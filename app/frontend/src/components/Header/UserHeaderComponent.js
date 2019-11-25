@@ -30,7 +30,7 @@ class UserHeaderComponent extends Component {
                 <Menu.Item
                     style={{display: "flex", alignItems: "center"}}
                     name="settings"
-                    onClick={this.navigate}
+                   // onClick={this.navigate}
                 >
                     <Dropdown trigger={<i className="fas fa-cog" style={{ margin: 10}} />} icon={null}>
                         <Dropdown.Menu>

@@ -17,14 +17,24 @@ class TradingEquipment extends Component {
         this.state = {tradingEquipment: [], selectedTE: "TRY"};
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const promises = [];
         promises.push(this.props.getTradingEquipment());
-        promises.push(this.props.getTradingEquipmentDetail({currency: "TRY"}));
+        let currentCurrency = "TRY";
+        if(this.props.location.state && this.props.location.state.currency) {
+            currentCurrency = this.props.location.state.currency;
+        }
+        promises.push(this.props.getTradingEquipmentDetail({currency: currentCurrency}));
 
         Promise.all(promises).then(result => {
-            this.setState({tradingEquipment: result[0].action.payload.currencies, teDetail: this.parseData(result[1].action.payload.values.reverse()), convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
+            this.setState({selectedTE: currentCurrency, tradingEquipment: result[0].action.payload.currencies, teDetail: this.parseData(result[1].action.payload.values.reverse()), convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
         })
+    }
+
+    componentWillReceiveProps(nextProps,nextContext) {
+        if(nextProps.location.state && nextProps.location.state.currency !== this.state.selectedTE) {
+            this.onChange({},{value: nextProps.location.state.currency});
+        }
     }
 
     parseData(data) {
