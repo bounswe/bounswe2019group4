@@ -21,11 +21,19 @@
     <string name="comment_button">Make Comment</string>
     <string name="comment">Write your comment here:</string>
     <string name="economic_events">Economic Events</string>
-
+    <string name="slider_desc_1">This is description 1</string>
+    <string name="slider_desc_2">This is description 2</string>
+    <string name="slider_desc_3">This is description 3</string>
+    <string name="slider_desc_4">This is description 4</string>
+    <string name="slider_desc_5">This is description 5</string>
+    <string name="already_have_account">Already have an account?</string>
     <integer-array name="importance">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </integer-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

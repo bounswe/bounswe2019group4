@@ -1,7 +1,7 @@
 package com.example.arken.model
 
 import java.io.Serializable
-import java.util.*
+import java.util.Date
 
 class Event(
     val _id: String?,

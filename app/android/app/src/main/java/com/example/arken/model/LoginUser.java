@@ -1,6 +1,7 @@
 package com.example.arken.model;
 
 public class LoginUser {
+    private String _id;
     private String email;
     private String password;
 
@@ -12,6 +13,8 @@ public class LoginUser {
     public String getEmail() {
         return email;
     }
+
+    public String getId() { return _id;}
 
     public void setEmail(String email) {
         this.email = email;

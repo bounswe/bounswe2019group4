@@ -53,6 +53,7 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
         val layout: NestedScrollView = view.findViewById(R.id.curBack)
         layout.setOnClickListener(this)
         anyChartView = view.findViewById(R.id.any_chart_view)
+        anyChartView.setBackgroundColor("#161c1d")
         currencyValue = view.findViewById(R.id.currencyValue)
         currencyName = view.findViewById(R.id.currencyName)
         currencyTime = view.findViewById(R.id.currencyTime)
@@ -94,9 +95,9 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
             currencyValueAdapter.setData(it)
             anyChartView.setChart(tradingEquipmentViewModel.setChart(2))
             if (it.following!!) {
-                followButton.setBackgroundColor(Color.BLUE)
+                followButton.setImageResource(R.drawable.ic_check_circle_blue)
             } else {
-                followButton.setBackgroundColor(Color.WHITE)
+                followButton.setImageResource(R.drawable.ic_check_circle)
             }
             currencyValueAdapter.notifyDataSetChanged()
 
@@ -204,9 +205,9 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
 
     fun follow(isFollowing: Boolean) {
         if (isFollowing) {
-            followButton.setBackgroundColor(Color.BLUE)
+            followButton.setImageResource(R.drawable.ic_check_circle_blue)
         } else {
-            followButton.setBackgroundColor(Color.WHITE)
+            followButton.setImageResource(R.drawable.ic_check_circle)
         }
     }
 }

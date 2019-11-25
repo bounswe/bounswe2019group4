@@ -137,7 +137,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                     if (response.isSuccessful()) { //events
                         User pr = response.body();
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                        editor.putString("userId",pr.get_id());
+                        editor.putString("userId", pr.get_id());
                         String cookie = response.headers().get("Set-Cookie");
                         editor.putString("user_cookie", cookie.split(";")[0]);
                         editor.commit();

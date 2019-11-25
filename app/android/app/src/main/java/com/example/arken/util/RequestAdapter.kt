@@ -9,7 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.FollowRequest
 
-class RequestAdapter(var dataSet: MutableList<FollowRequest>, val requestClickedListener: OnRequestClickedListener, val mode:Int) :
+class RequestAdapter(
+    var dataSet: MutableList<FollowRequest>,
+    val requestClickedListener: OnRequestClickedListener,
+    val mode: Int
+) :
     RecyclerView.Adapter<RequestAdapter.ViewHolder>() {
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -18,30 +22,33 @@ class RequestAdapter(var dataSet: MutableList<FollowRequest>, val requestClicked
         private val reject: ImageView = v.findViewById(R.id.user_pending_reject)
         private val userLocation: TextView = v.findViewById(R.id.user_country)
 
-        fun bind(req: FollowRequest, requestClickedListener: OnRequestClickedListener, position: Int, mode:Int) {
+        fun bind(
+            req: FollowRequest,
+            requestClickedListener: OnRequestClickedListener,
+            position: Int,
+            mode: Int
+        ) {
 
-            if(mode == 0){
-                userName.text = req.FollowingName + " "+ req.FollowingSurname
+            if (mode == 0) {
+                userName.text = req.FollowingName + " " + req.FollowingSurname
                 accept.visibility = View.VISIBLE
                 reject.visibility = View.VISIBLE
-            }
-            else if (mode == 1){
-                userName.text = req.FollowingName + " "+ req.FollowingSurname
+            } else if (mode == 1) {
+                userName.text = req.FollowingName + " " + req.FollowingSurname
                 accept.visibility = View.GONE
                 reject.visibility = View.GONE
-            }
-            else if (mode == 2){
-                userName.text = req.FollowedName + " "+ req.FollowedSurname
+            } else if (mode == 2) {
+                userName.text = req.FollowedName + " " + req.FollowedSurname
                 accept.visibility = View.GONE
                 reject.visibility = View.GONE
             }
             userLocation.visibility = View.GONE
 
-            accept.setOnClickListener{
+            accept.setOnClickListener {
                 requestClickedListener.onAcceptClicked(req._id!!, position)
             }
 
-            reject.setOnClickListener{
+            reject.setOnClickListener {
                 requestClickedListener.onRejectClicked(req._id!!, position)
             }
 
@@ -68,7 +75,7 @@ class RequestAdapter(var dataSet: MutableList<FollowRequest>, val requestClicked
         viewHolder.bind(user, requestClickedListener, position, mode)
     }
 
-    fun removeAt(position: Int){
+    fun removeAt(position: Int) {
         val req = dataSet[position]
         dataSet.remove(req)
     }
@@ -80,5 +87,5 @@ class RequestAdapter(var dataSet: MutableList<FollowRequest>, val requestClicked
 interface OnRequestClickedListener {
     fun onItemClicked(userId: String, position: Int)
     fun onAcceptClicked(followingId: String, position: Int)
-    fun onRejectClicked(followingId:String, position: Int)
+    fun onRejectClicked(followingId: String, position: Int)
 }

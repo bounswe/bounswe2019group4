@@ -2,7 +2,7 @@ package com.example.arken.model
 
 import java.io.Serializable
 
-class User (
+class User(
     val _id: String?,
     val isTrader: Boolean?,
     val isPublic: Boolean?,
@@ -13,4 +13,4 @@ class User (
     val predictionRate: String?,
     val iban: String?,
     val tckn: String?
-):Serializable
+) : Serializable

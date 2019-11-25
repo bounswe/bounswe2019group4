@@ -25,7 +25,7 @@
         <action
             android:id="@+id/action_eventListFragment_to_searchFragment"
             app:destination="@id/searchFragment"
-            app:popUpTo="@id/eventListFragment"/>
+            app:popUpTo="@id/eventListFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -58,7 +58,7 @@
     <fragment
         android:id="@+id/currencyFragment"
         android:name="com.example.arken.fragment.CurrencyFragment"
-        android:label="CurrencyFragment" >
+        android:label="CurrencyFragment">
         <argument
             android:name="codeOfCurrency"
             app:argType="string" />
@@ -79,6 +79,9 @@
         <action
             android:id="@+id/action_profileFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -90,5 +93,33 @@
         <action
             android:id="@+id/action_searchFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listArticleFragment"
+        android:name="com.example.arken.fragment.ListArticleFragment"
+        android:label="ListArticleFragment">
+        <argument
+            android:name="profile"
+            android:defaultValue="@null"
+            app:argType="com.example.arken.model.Profile"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_articleDialogFragment"
+            app:destination="@id/articleDialogFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_articleDetail"
+            app:destination="@id/articleDetail" />
+    </fragment>
+    <dialog
+        android:id="@+id/articleDialogFragment"
+        android:name="com.example.arken.fragment.ArticleDialogFragment"
+        android:label="ArticleDialogFragment" />
+    <fragment
+        android:id="@+id/articleDetail"
+        android:name="com.example.arken.fragment.ArticleDetail"
+        android:label="ArticleDetail">
+        <argument
+            android:name="articleId"
+            app:argType="string" />
     </fragment>
 </navigation>

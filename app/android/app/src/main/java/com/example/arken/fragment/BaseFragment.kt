@@ -154,7 +154,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 val act = ListEventFragmentDirections.actionEventListFragmentToProfileFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
-                val act = ListCurrentFragmentDirections.actionListCurrentFragmentToProfileFragment(id!!)
+                val act =
+                    ListCurrentFragmentDirections.actionListCurrentFragmentToProfileFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.eventFragment) {
                 findNavController(fragment!!).popBackStack()

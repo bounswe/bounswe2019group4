@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_marginLeft="16dp"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="28dp"
     android:layout_marginRight="16dp"
-    android:background="@drawable/shape_list">
+    android:background="@drawable/login_background">
 
     <RelativeLayout
         android:id="@+id/current_row_background"
@@ -23,7 +23,7 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="12dp"
             android:text="Element"
-            android:textColor="@color/colorDarkBlue"
+            android:textColor="@color/colorWhite"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:text="value"
-            android:textColor="@color/colorDarkBlue"
+            android:textColor="@color/colorRed"
             android:textStyle="bold" />
 
         <TextView
@@ -49,8 +49,8 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="12dp"
             android:text="date"
-            android:textColor="@color/colorDarkBlue"
-            android:textSize="16sp"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </RelativeLayout>
 </FrameLayout>

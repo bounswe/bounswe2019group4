@@ -13,4 +13,4 @@ class CurrencyValue(
     var value: String?,
     var Date: String?,
     var __v: Int?
-):Serializable
+) : Serializable

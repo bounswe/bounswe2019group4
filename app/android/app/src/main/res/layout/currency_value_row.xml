@@ -22,7 +22,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
@@ -38,8 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Open"
-            android:textColor="#ffffff"
             android:textAlignment="center"
+            android:textColor="#ffffff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/currencyRowValueHigh"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,8 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="High"
-            android:textColor="#ffffff"
             android:textAlignment="center"
+            android:textColor="#ffffff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/currencyRowValueLow"
             app:layout_constraintStart_toEndOf="@id/currencyRowValueOpen"
@@ -62,8 +61,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Low"
-            android:textColor="#ffffff"
             android:textAlignment="center"
+            android:textColor="#ffffff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/currencyRowValueClose"
             app:layout_constraintStart_toEndOf="@id/currencyRowValueHigh"
@@ -74,9 +73,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#ffffff"
             android:text="Close"
             android:textAlignment="center"
+            android:textColor="#ffffff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/currencyRowValueLow"

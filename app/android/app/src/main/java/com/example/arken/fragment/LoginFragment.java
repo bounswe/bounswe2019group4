@@ -133,10 +133,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         String cookie = response.headers().get("Set-Cookie");
                         editor.putString("user_cookie", cookie.split(";")[0]);
                         editor.commit();
-                     // Toast.makeText(getContext(), response.body().get_id(), Toast.LENGTH_SHORT).show();
+
                         Navigation.findNavController(signupButton).navigate(R.id.action_loginFragment_to_baseFragment);
-
-
                     } else {
 
                         String errorMessage = null;

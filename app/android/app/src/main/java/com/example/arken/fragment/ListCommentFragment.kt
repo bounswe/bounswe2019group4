@@ -28,7 +28,8 @@ import retrofit2.Response
     3) dataset yenileme
  */
 
-class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCommentDeletedListener {
+class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
+    OnCommentDeletedListener {
 
     private lateinit var recyclerView: RecyclerView
     private var dataset: MutableList<Comment> = mutableListOf()
@@ -47,7 +48,8 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
         ).apply { tag = TAG }
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
-        val userId = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE
+        val userId = activity!!.getSharedPreferences(
+            MY_PREFS_NAME, MODE_PRIVATE
         ).getString("userId", "defaultId")!!
 
         commentAdapter = CommentAdapter(dataset, userId, this)
@@ -57,16 +59,22 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
         recyclerView.adapter?.notifyDataSetChanged()
 
         Log.i("ListCommentFragment", "onCreateView")
-        if(userId!="defaultId"){
-            fragmentManager?.beginTransaction()?.add(R.id.fragment_make_comment, CommentFragment.newInstance(this), "comment")?.commit()
+        if (userId != "defaultId") {
+            fragmentManager?.beginTransaction()
+                ?.add(R.id.fragment_make_comment, CommentFragment.newInstance(this), "comment")
+                ?.commit()
         }
         return rootView
     }
 
     override fun onSubmit(comment: String) {
 
-        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
-        val call = RetroClient.getInstance().apiService.makeComment(userCookie, Comment(related, comment, about))
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            .getString("user_cookie", "")
+        val call = RetroClient.getInstance().apiService.makeComment(
+            userCookie,
+            Comment(related, comment, about)
+        )
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -85,15 +93,22 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
         })
 
     }
-    override fun onItemClicked(commentId: String, position:Int) {
-        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString("user_cookie", "")
-        if(about == "EVENT"){
-            val call: Call<ResponseBody> = RetroClient.getInstance().apiService.deleteEventComment(userCookie, commentId)
+
+    override fun onItemClicked(commentId: String, position: Int) {
+        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            .getString("user_cookie", "")
+        if (about == "EVENT") {
+            val call: Call<ResponseBody> =
+                RetroClient.getInstance().apiService.deleteEventComment(userCookie, commentId)
 
             call.enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
                     if (response.isSuccessful) {
-                        Toast.makeText(context, "Your comment is deleted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Your comment is deleted", Toast.LENGTH_SHORT)
+                            .show()
                         dataset.removeAt(position)
                         commentAdapter.dataSet = dataset
                         commentAdapter.notifyDataSetChanged()
@@ -108,12 +123,17 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
                 }
             })
         } else if (about == "TRADING-EQUIPMENT") {
-            val call: Call<ResponseBody> = RetroClient.getInstance().apiService.deleteTEComment(userCookie, commentId)
+            val call: Call<ResponseBody> =
+                RetroClient.getInstance().apiService.deleteTEComment(userCookie, commentId)
 
             call.enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
                     if (response.isSuccessful) {
-                        Toast.makeText(context, "Your comment is deleted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Your comment is deleted", Toast.LENGTH_SHORT)
+                            .show()
                         dataset.removeAt(position)
                         commentAdapter.dataSet = dataset
                         commentAdapter.notifyDataSetChanged()
@@ -129,10 +149,11 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
             })
         }
     }
-    fun initDataset(){
+
+    fun initDataset() {
         val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
             .getString("user_cookie", "")
-        if(about == "EVENT"){
+        if (about == "EVENT") {
             val call: Call<Event> = RetroClient.getInstance().apiService.getEvent(related)
 
             call.enqueue(object : Callback<Event> {
@@ -146,7 +167,8 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
                             commentAdapter.notifyDataSetChanged()
                         }
                     } else {
-                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
 
@@ -185,7 +207,7 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted, OnCo
     companion object {
         private val TAG = "RecyclerViewFragment"
         private val KEY_LAYOUT_MANAGER = "layoutManager"
-        fun newInstance(related:String, about:String): ListCommentFragment{
+        fun newInstance(related: String, about: String): ListCommentFragment {
             val instance = ListCommentFragment()
             instance.related = related
             instance.about = about
