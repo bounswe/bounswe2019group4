@@ -39,6 +39,7 @@ class SearchBar extends Component {
 
 
     handleResultSelect = (e, { result }) => {
+        console.log(result);
         if(result.Event) {
             history.push("/events/"+result.CalendarId);
         }
@@ -47,6 +48,9 @@ class SearchBar extends Component {
         }
         if(result.from) {
             history.push({pathname: "/trading-equipment", state: {currency: result.from}});
+        }
+        if(result.surname) {
+            history.push("/profile/"+result._id);
         }
     };
 

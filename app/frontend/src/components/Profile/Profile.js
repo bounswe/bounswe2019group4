@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Icon} from 'semantic-ui-react'
 import {loadState} from '../../_core/localStorage'
-import {Form, Checkbox, Grid, Segment, Header, Container, List, Divider} from 'semantic-ui-react';
+import { Label, Grid, Segment, Header, Rating, List, Divider} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import history from '../../_core/history';
 import * as userActions from '../../actions/userActions';
@@ -9,11 +9,12 @@ import Image from "semantic-ui-react/dist/commonjs/elements/Image";
 import profilePhoto from "./h2.jpg";
 import * as portfolios from "lodash";
 import { Card } from 'semantic-ui-react'
-import SegmentGroup from "semantic-ui-react/dist/commonjs/elements/Segment/SegmentGroup";
+import moment from 'moment';
+
+import ProfileCard from "./ProfileCard";
+import FriendsCard from "./FriendsCard";
 
 class Profile extends Component {
-
-
 
     constructor(props) {
         super(props);
@@ -23,8 +24,6 @@ class Profile extends Component {
             user: {},
             portfolios:[],
             tradingEqs:{}
-
-
         }
     }
     componentDidMount() {
@@ -39,10 +38,18 @@ class Profile extends Component {
             this.getPortfolios(element._id);
         })
 
+    }
 
+    acceptFollow(id) {
+        this.props.acceptFollow(id).then(()=> {
+            this.getProfile();
+        })
+    }
 
-
-
+    rejectFollow(id) {
+        this.props.rejectFollow(id).then(()=> {
+            this.getProfile();
+        })
     }
 
 
@@ -62,10 +69,10 @@ class Profile extends Component {
 
       async getProfile() {
         await this.props.profile(loadState().user._id).then(async result =>{
+            console.log(result.value);
             let newProfile = result.value
             console.log(newProfile.portfolios)
             this.setState({user:newProfile})
-            this.setState({portfolios:(newProfile.portfolios)})
             //console.log(this.state.portfolios)
             }
         )
@@ -79,7 +86,7 @@ class Profile extends Component {
 
 
         const { user,portfolios,userLocal,tradingEqs } = this.state;
-
+        console.log(user);
 
         //console.log(portfolios)
 
@@ -88,7 +95,7 @@ class Profile extends Component {
        // console.log(user)
 
         //console.log(JSON.parse(portfolios[0]));
-
+        const profileCardProps = {...user.user, following: user.following, followers: user.follower};
 
         const ButtonExampleFloated = () => (
             <div>
@@ -97,92 +104,112 @@ class Profile extends Component {
             </div>
         )
         return (
-                <>
 
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={3}>
+                            <Grid.Row relaxed>
+                                <ProfileCard user={profileCardProps}/>
+                            </Grid.Row>
+                            {user.followRequests && user.followRequests.length > 0 &&
+                            <Grid.Row relaxed>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%"}}>
+                                    <List divided relaxed textAlign="left">
+                                        <List.Header as="h3">Pending Requests</List.Header>
+                                        {user.followRequests.map(follower => {
+                                            return <List.Item>
+                                                <div>
+                                                <Icon name="user"/><span>{follower.FollowingName + " " + follower.FollowingSurname}</span>
+                                                <Label circular content="Reject" basic color="red" style={{float: "right"}} onClick={this.rejectFollow.bind(this,follower._id)} />
+                                                    <Label circular content="Accept" basic color="green" style={{float: "right"}} onClick={this.acceptFollow.bind(this,follower._id)} />
+                                                </div>
+                                            </List.Item>
+                                        })}
+                                    </List>
+                                </Segment>
+                            </Grid.Row>
+                            }
+                            <Grid.Row relaxed>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%"}}>
+                                <List animated divided relaxed textAlign="left">
+                                    <List.Header as="h3">{user.follower + " Followers"}</List.Header>
+                                    {user.followers && user.followers.map(follower => {
+                                        return <List.Item icon="user"
+                                                          onClick={()=>{history.push("/profile/"+follower.FollowingId)}}
+                                                          content={follower.FollowingName + " " + follower.FollowingSurname} />
+                                    })}
+                                </List>
+                                </Segment>
+                            </Grid.Row>
+                            <Grid.Row relaxed>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%"}}>
+                                    <List animated divided relaxed textAlign="left">
+                                        <List.Header as="h3">{user.following + " Following"}</List.Header>
+                                        {user.followings && user.followings.map(follower => {
+                                            return <List.Item icon="user"
+                                                              onClick={()=>{history.push("/profile/"+follower.FollowedId)}}
+                                                              content={follower.FollowedName + " " + follower.FollowedSurname} />
+                                        })}
+                                    </List>
+                                </Segment>
+                            </Grid.Row>
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+                            <Segment color="teal" style={{margin: 20, width: "100%"}}>
+                                <Header>Articles</Header>
+                                <Divider/>
+                                {user.articles && user.articles.length>0 ?
+                                    user.articles.map(article => {
+                                        return (
+                                            <Card style={{width: "100%"}}>
+                                                <Card.Content>
+                                                    <Card.Header>{article.title}</Card.Header>
+                                                    <Card.Meta type="date">{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
+                                                    <Card.Description>{article.text}</Card.Description>
+                                                </Card.Content>
+                                                <Card.Content extra>
+                                                    <Rating defaultRating={article.rateAverage} maxRating={5} disabled />{" by "+ article.numberOfRates + " votes"}
+                                                </Card.Content>
+                                        </Card>
+                                        )
+                                    }) : "No Article Created!"
+                                }
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column width={5}>
+                            <Grid.Row>
+                            <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%"}}>
+                                <List animated divided relaxed textAlign="left">
+                                    <List.Header as="h3">Followed Trading Equipment</List.Header>
+                                    {user.followingTradings && user.followingTradings.length >0 ? user.followingTradings.map(teq => {
+                                        return <List.Item icon="chart line"
+                                                          content={teq.TradingEq}/>
+                                    }): <List.Item content="No Trading Equipment Is Followed" />}
+                                </List>
+                            </Segment>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Segment color="teal" style={{margin: 20, width: "100%"}}>
+                                    <Header>Portfolios</Header>
+                                    <Divider/>
+                                    {user.portfolios && user.portfolios.length>0 ?
+                                        user.portfolios.map(portfolio => {
+                                            return (
+                                                <Card style={{width: "100%"}}>
+                                                    <Card.Content>
+                                                        <Card.Header>{portfolio.title}</Card.Header>
+                                                        <Card.Description>{portfolio.definition}</Card.Description>
+                                                    </Card.Content>
 
-            <Segment.Group horizontal >
-
-
-
-                <Segment raised piled padded compact textAlign='left' >
-                    <Image src={profilePhoto} size='middle'   rounded />
-                    <Header textAlign='center'>
-
-                        {userLocal.name} {userLocal.surname}
-
-                    </Header>
-                    <small >
-                        Following {user.following} - Follower {user.follower}
-                    </small>
-
-                    <ul >
-                        <li><strong>Name        :{userLocal.name}</strong></li>
-                        <li><strong>Surname     :{userLocal.surname}</strong></li>
-
-                        <li><strong>E-Mail      :{userLocal.email}</strong></li>
-                        <li><strong>Account Type:{userLocal.isTrader ? 'Trader' : 'Normal'}</strong></li>
-                        {userLocal.isTrader && <span>
-                            <li><strong>IBAN     :{userLocal.iban}</strong></li>
-
-                            <li><strong>TCKN      :{userLocal.tckn}</strong></li>
-
-
-                        </span>}
-                        <li><strong>Location:{userLocal.location}</strong></li>
-
-
-
-                    </ul>
-
-
-
-
-                </Segment>
-
-                <Segment raised piled padded compact textAlign='left'>
-
-                    <Header textAlign='Middle'>
-
-                        My Portfolios
-
-                    </Header>
-
-                    <ul>
-                        {portfolios.map((item,ind) => {
-
-                            return (
-                            <div class="ui card">
-                                <Card raised piled padded compact
-                                header={item.title}
-                                meta={item.date.substring(0,10)}
-                                description={item.definition}>
-                                </Card>
-                            </div>);
-
-                        })}
-                    </ul>
-
-
-
-
-                </Segment>
-
-
-                <Segment raised piled padded compact textAlign='left'>
-
-                    <Header textAlign='Middle'>
-
-                        Profit/Loss
-
-                    </Header>
-
-
-
-
-                </Segment>
-
-            </Segment.Group>
-                    </>
+                                                </Card>
+                                            )
+                                        }) : "No Portfolio Created!"
+                                    }
+                                </Segment>
+                            </Grid.Row>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
         )
     }
 
@@ -192,7 +219,9 @@ class Profile extends Component {
 const dispatchToProps = dispatch => {
     return {
         profile: params => dispatch(userActions.profile(params)),
-        portfolios: params => dispatch(userActions.portfolios(params))
+        portfolios: params => dispatch(userActions.portfolios(params)),
+        acceptFollow: params => dispatch(userActions.acceptFollow(params)),
+        rejectFollow: params => dispatch(userActions.rejectFollow(params))
 
     };
 };
