@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@android:color/white"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp">
-
+    android:background="@color/colorPrimaryDark">
+    <!--
     <TextView
         android:id="@+id/signup_nameTag_textView"
         android:layout_width="100dp"
@@ -157,7 +154,6 @@
         android:src="@drawable/ic_eye"
         app:layout_constraintEnd_toEndOf="@id/signup_password_editText"
         app:layout_constraintTop_toBottomOf="@id/signup_email_editText">
-
     </ImageView>
 
     <ImageView
@@ -228,7 +224,7 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_location"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText" />
 
     <TextView
         android:id="@+id/locationTextView"
@@ -318,5 +314,200 @@
         app:layout_constraintTop_toTopOf="@id/signup_location_button">
 
     </Button>
+-->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="42dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="42dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="200dp" />
+
+    <EditText
+        android:id="@+id/signup_name_editText"
+        android:hint="Name"
+        android:layout_marginTop ="10dp"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@id/guideline_middle"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/style_editText" />
+
+    <EditText
+        android:id="@+id/signup_surname_editText"
+        style="@style/style_editText"
+        android:layout_marginLeft="8dp"
+        android:hint="Surname"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toEndOf="@id/guideline_middle"
+        app:layout_constraintTop_toTopOf="@id/signup_name_editText" />
+
+    <EditText
+        android:id="@+id/signup_email_editText"
+        android:layout_marginTop="10dp"
+        style="@style/style_editText"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/signup_surname_editText" />
+
+    <EditText
+        android:id="@+id/signup_password_editText"
+        style="@style/style_editText"
+        android:layout_marginTop="10dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/signup_email_editText" />
+
+    <EditText
+        android:id="@+id/signup_password_editText2"
+        style="@style/style_editText"
+        android:layout_marginTop="10dp"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/signup_password_editText" />
+
+    <EditText
+        android:id="@+id/signup_location_editText"
+        style="@style/style_editText"
+        android:layout_marginTop="10dp"
+        android:hint="Location"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText" />
+
+    <EditText
+        android:id="@+id/signup_tckn_editText"
+        style="@style/style_editText"
+        android:layout_marginTop="10dp"
+        android:hint="TC Id"
+        android:visibility="gone"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/signup_password_editText2" />
+
+    <EditText
+        android:id="@+id/signup_iban_editText"
+        style="@style/style_editText"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:hint="IBAN"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/signup_tckn_editText" />
+
+    <Button
+        android:id="@+id/signup_signup_button"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/login_background"
+        android:ellipsize="none"
+        android:text="@string/buttonSignUp"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/signup_location_editText" />
+
+    <Switch
+        android:id="@+id/signup_isPublic_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toStartOf="@id/private_textView"
+        app:layout_constraintTop_toBottomOf="@id/signup_location_editText" />
+
+    <Switch
+        android:id="@+id/signup_isTrader_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.172"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/signup_location_editText" />
+
+    <ImageView
+        android:id="@+id/signup_password_eye_image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_eye"
+        app:layout_constraintEnd_toEndOf="@id/signup_password_editText"
+        app:layout_constraintTop_toBottomOf="@id/signup_email_editText"/>
+
+    <ImageView
+        android:id="@+id/signup_password_eye_image2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_eye"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintEnd_toEndOf="@id/signup_password_editText2"
+        app:layout_constraintTop_toBottomOf="@id/signup_password_editText"/>
+
+    <ImageButton
+        android:id="@+id/signup_location_button"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_place_white_48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@id/signup_iban_editText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toStartOf="@id/signup_isTrader_switch"
+        app:layout_constraintTop_toTopOf="@id/signup_isTrader_switch"
+        android:text="Basic"
+        android:textColor="@color/colorLightGray"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintStart_toEndOf="@id/signup_isTrader_switch"
+        app:layout_constraintTop_toTopOf="@id/signup_isTrader_switch"
+        android:text="Trader"
+        android:textColor="@color/colorLightGray"/>
+
+    <TextView
+        android:id="@+id/private_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        android:text="Private"
+        android:textColor="@color/colorLightGray"
+        app:layout_constraintTop_toTopOf="@id/signup_isPublic_switch"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

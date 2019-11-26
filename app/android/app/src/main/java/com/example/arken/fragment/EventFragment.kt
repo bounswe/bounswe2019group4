@@ -13,7 +13,6 @@ import com.example.arken.R
 
 class EventFragment : Fragment() {
     val args: EventFragmentArgs by navArgs()
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,7 +20,6 @@ class EventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_event, container, false)
-
 
         return view
     }
@@ -63,5 +61,12 @@ class EventFragment : Fragment() {
                 importanceStar3.setImageResource(R.drawable.ic_star_full)
             }
         }
+
+        fragmentManager?.beginTransaction()?.add(
+            R.id.list_comment_fragment,
+            ListCommentFragment.newInstance(event.CalendarId!!, "EVENT"),
+            "commentList"
+        )?.commit()
+
     }
 }

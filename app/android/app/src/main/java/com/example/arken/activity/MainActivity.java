@@ -11,6 +11,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class MainActivity extends FragmentActivity {
     private static GoogleSignInClient mGoogleSignInClient;
+    public static final String IMAGE_PREF = "imag_pref";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +22,9 @@ public class MainActivity extends FragmentActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
-    public static GoogleSignInClient getClient(){
+
+    public static GoogleSignInClient getClient() {
         return mGoogleSignInClient;
     }
+
 }
