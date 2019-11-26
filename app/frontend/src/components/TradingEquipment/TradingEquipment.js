@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Segment, Table, Grid, Dropdown, Button} from 'semantic-ui-react';
+import {Segment, Table, Grid, Dropdown, Button, Icon, Label} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import CandleStickChart from "./TEqChart";
 import { timeParse } from "d3-time-format";
@@ -15,7 +15,7 @@ class TradingEquipment extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[]};
+        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[],numUp:0,numDown:0};
     }
 
     componentWillMount() {
@@ -28,7 +28,7 @@ class TradingEquipment extends Component {
         promises.push(this.props.getTradingEquipmentDetail({currency: currentCurrency}));
 
         Promise.all(promises).then(result => {
-            this.setState({selectedTE: currentCurrency, tradingEquipment: result[0].action.payload.currencies, teDetail: this.parseData(result[1].action.payload.values.reverse()), comments: result[1].action.payload.comments, convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
+            this.setState({selectedTE: currentCurrency,currval:result[1].action.payload.current.rate,numUp:result[1].action.payload.numberOfUps,numDown:result[1].action.payload.numberOfDowns, tradingEquipment: result[0].action.payload.currencies, teDetail: this.parseData(result[1].action.payload.values.reverse()), comments: result[1].action.payload.comments, convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
         })
     }
 
@@ -54,7 +54,7 @@ class TradingEquipment extends Component {
 
     onChange(e, data) {
         this.props.getTradingEquipmentDetail({currency: data.value}).then(result => {
-            this.setState({selectedTE: data.value, comments: result.action.payload.comments, teDetail: this.parseData(result.action.payload.values.reverse()), convertedCurrency: result.action.payload.current.to, following: result.action.payload.following});
+            this.setState({selectedTE: data.value,currval:result.action.payload.current.rate,numUp:result.action.payload.numberOfUps,numDown:result.action.payload.numberOfDowns, comments: result.action.payload.comments, teDetail: this.parseData(result.action.payload.values.reverse()), convertedCurrency: result.action.payload.current.to, following: result.action.payload.following});
         })
     }
 
@@ -74,6 +74,30 @@ class TradingEquipment extends Component {
             })
         }
     }
+
+    predict=async(up)=>{
+
+       // alert(this.state.numDown)
+        let c;
+        if(up===1){
+            c={
+                value: this.state.currval,
+                prediction: "up",
+                tEq: this.state.selectedTE
+            }
+        }else{
+            c={
+                value: this.state.currval,
+                prediction: "down",
+                tEq: this.state.selectedTE
+            }
+        }
+        await this.props.predictTE(c).then(()=>{
+            this.onChange({},{value:this.state.selectedTE});
+
+        });
+
+    };
 
     render() {
         const {tradingEquipment, teDetail, selectedTE, convertedCurrency, following} = this.state;
@@ -107,7 +131,7 @@ class TradingEquipment extends Component {
                     <Segment textAlign={"left"}>
                         <Grid>
                         <Grid.Row>
-                            <Grid.Column width={14}>
+                            <Grid.Column width={10}>
                         <Dropdown
                             placeholder='Select Currency'
                             fluid
@@ -118,6 +142,31 @@ class TradingEquipment extends Component {
                             onChange={this.onChange.bind(this)}
                             renderLabel={item =>  item.value + "/" + item.text}
                         />
+                            </Grid.Column>
+                            <Grid.Column width={2}>
+                                <Button as='div' labelPosition='right'>
+                                    <Button disabled={!authService.isUserLoggedIn()} color='red' onClick={()=>this.predict(0)}>
+                                        <Icon name={"arrow down"}/>
+                                    </Button>
+                                    <Label as='a' basic color='#396D7C' pointing='left'>
+                                        <Icon color={"grey"} size={"large"}
+                                              style={{marginRight: 3}} name={"users"}/>
+                                        {this.state.numDown}
+                                    </Label>
+                                </Button>
+                            </Grid.Column>
+                            <Grid.Column width={2}>
+                                <Button as='div' labelPosition='left'>
+
+                                    <Label as='a' basic color='#396D7C' pointing='right'>
+                                        <Icon color={"grey"} size={"large"}
+                                              style={{marginRight: 3}} name={"users"}/>
+                                        {this.state.numUp}
+                                    </Label>
+                                    <Button disabled={!authService.isUserLoggedIn()} color='green' onClick={()=>this.predict(1)}>
+                                        <Icon name={"arrow up"}/>
+                                    </Button>
+                                </Button>
                             </Grid.Column>
                             <Grid.Column width={2}>
                                 {authService.isUserLoggedIn() && (!following ? <Button basic color="green" onClick={this.follow.bind(this)}> + Follow</Button> : <Button basic color="red" onClick={this.follow.bind(this)}> - Unfollow</Button>)}
@@ -140,7 +189,8 @@ const dispatchToProps = dispatch => {
         getTradingEquipment: () => dispatch(tradingEquipmentActions.getTEquipment()),
         getTradingEquipmentDetail: params => dispatch(tradingEquipmentActions.getTEquipmentDetails(params)),
         followTEq: params => dispatch(tradingEquipmentActions.followTEq(params)),
-        unfollowTEq: params => dispatch(tradingEquipmentActions.unfollowTEq(params))
+        unfollowTEq: params => dispatch(tradingEquipmentActions.unfollowTEq(params)),
+        predictTE:params=>dispatch(tradingEquipmentActions.predictTE(params))
     }
 };
 
