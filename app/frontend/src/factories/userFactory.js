@@ -10,6 +10,7 @@ function userFactory() {
     this.getArticle=path=>baseRequest.get("/articles"+path);
     this.rateArticle=(path,params)=>baseRequest.post("/articles"+path,params);
     this.editArticle=(path,params)=>baseRequest.patch("/articles"+path,params);
+    this.createArticle=(params)=>baseRequest.post("/articles",params);
     this.deleteComment=(path)=>baseRequest.delete("/comments"+path);
     this.profile = path => baseRequest.get("/profile/"+path);
     this.portfolios = path => baseRequest.get("/portfolios/"+path);
