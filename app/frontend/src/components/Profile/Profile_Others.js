@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Icon, Menu} from 'semantic-ui-react'
+import {Button, Icon, Menu, Rating} from 'semantic-ui-react'
 import {loadState} from '../../_core/localStorage'
 import {Form, Checkbox, Grid, Segment, Header, Container, List, Divider} from 'semantic-ui-react';
 import {connect} from 'react-redux';
@@ -10,6 +10,8 @@ import profilePhoto from "./h2.jpg";
 import * as portfolios from "lodash";
 import { Card } from 'semantic-ui-react'
 import SegmentGroup from "semantic-ui-react/dist/commonjs/elements/Segment/SegmentGroup";
+import ProfileCard from "./ProfileCard";
+import moment from 'moment';
 
 class Profile extends Component {
 
@@ -43,6 +45,14 @@ class Profile extends Component {
 
     }
 
+    componentDidUpdate(props) {
+        if(props.match.params.id === loadState().user._id) {
+            history.push("/profile");
+        }
+        if(props.match.params.id !== this.props.match.params.id) {
+            this.getProfile();
+        }
+    }
 
     async getPortfolios(i) {
         //let ikz = this.state.user.portfolios;
@@ -92,124 +102,112 @@ class Profile extends Component {
 
         const {newProfile, otherUser,portfolios,following,follower } = this.state;
 
+        const currentlyFollowing = newProfile.followStatus === "TRUE";
 
-        //console.log(portfolios)
+        const profileCardProps = {...newProfile.user};
 
-        //const { portfolios } = this.state;
-        //const portfolios = this.getData(user).then(data => console.log(data));
-        // console.log(user)
-
-        //console.log(JSON.parse(portfolios[0]));
-
-
-        const ButtonExampleFloated = () => (
-            <div>
-                <Button active floated='right'>Right Floated</Button>
-
-            </div>
-        )
         return (
-            <>
-
-
-                <Segment.Group horizontal >
-
-
-
-                    <Segment raised piled padded compact textAlign='left' >
-                        <Image src={profilePhoto} size='middle'   rounded />
-                        <Header textAlign='center'>
-
-                            {otherUser.name} {otherUser.surname}
-
-
-
-
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={3}>
+                            <Grid.Row relaxed>
+                                <ProfileCard user={profileCardProps}/>
+                            </Grid.Row>
                             {newProfile.followStatus === "FALSE" && newProfile.followStatus !== "PENDING"?
-                                <button onClick={this.followUser.bind(this, otherUser._id)} className="ui right floated button">Follow</button>
+                                <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="teal" onClick={this.followUser.bind(this, otherUser._id)}>Follow</Button>
                                 :null}
                             {newProfile.followStatus === "TRUE" && newProfile.followStatus !== "PENDING"?
-                                <button onClick={this.unFollowUser.bind(this, otherUser._id)} className="ui right floated button">Unfollow</button>:null
+                                <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="google plus" onClick={this.unFollowUser.bind(this, otherUser._id)}>Unfollow</Button>
+                                :null
                             }
-                            {newProfile.followStatus === "PENDING"? <button className="ui right floated button">Pending</button>
+                            {newProfile.followStatus === "PENDING"?
+                                <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="grey" disabled>Pending</Button>
                                 :null}
+                            {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
+                            <Grid.Row relaxed>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%"}}>
+                                    <List animated divided relaxed textAlign="left">
+                                        <List.Header as="h3">{newProfile.follower + " Followers"}</List.Header>
+                                        {newProfile.followers && newProfile.followers.map(follower => {
+                                            return <List.Item icon="user"
+                                                              onClick={()=>{history.push("/profile/"+follower.FollowingId)}}
+                                                              content={follower.FollowingName + " " + follower.FollowingSurname}/>
+                                        })}
+                                    </List>
+                                </Segment>
+                            </Grid.Row>
+                            }
+                            {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
+                            <Grid.Row relaxed>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%"}}>
+                                    <List animated divided relaxed textAlign="left">
+                                        <List.Header as="h3">{newProfile.following + " Following"}</List.Header>
+                                        {newProfile.followings && newProfile.followings.map(follower => {
+                                            return <List.Item icon="user"
+                                                              onClick={()=>{history.push("/profile/"+follower.FollowedId)}}
+                                                              content={follower.FollowedName + " " + follower.FollowedSurname} />
+                                        })}
+                                    </List>
+                                </Segment>
+                            </Grid.Row>
+                            }
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+                            <Segment color="teal" style={{margin: 20, width: "100%"}}>
+                                <Header>Articles</Header>
+                                <Divider/>
+                                {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.articles && newProfile.articles.length>0 ?
+                                    newProfile.articles.map(article => {
+                                        return (
+                                            <Card style={{width: "100%"}}>
+                                                <Card.Content>
+                                                    <Card.Header>{article.title}</Card.Header>
+                                                    <Card.Meta type="date">{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
+                                                    <Card.Description>{article.text}</Card.Description>
+                                                </Card.Content>
+                                                <Card.Content extra>
+                                                    <Rating defaultRating={article.rateAverage} maxRating={5} disabled />{" by "+ article.numberOfRates + " votes"}
+                                                </Card.Content>
+                                            </Card>
+                                        )
+                                    }) : (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? "Can't See User's Articles" : "No Article Created!"
+                                }
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column width={5}>
+                            <Grid.Row>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%"}}>
+                                    <List animated divided relaxed textAlign="left">
+                                        <List.Header as="h3">Followed Trading Equipment</List.Header>
+                                        {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.followingTradings && newProfile.followingTradings.length >0 ? newProfile.followingTradings.map(teq => {
+                                            return <List.Item icon="chart line"
+                                                              content={teq.TradingEq}/>
+                                        }): (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <List.Item content="Can't See Followed Trading Equipment" /> : <List.Item content="No Trading Equipment Is Followed" />}
+                                    </List>
+                                </Segment>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Segment color="teal" style={{margin: 20, width: "100%"}}>
+                                    <Header>Portfolios</Header>
+                                    <Divider/>
+                                    {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.portfolios && newProfile.portfolios.length>0 ?
+                                        newProfile.portfolios.map(portfolio => {
+                                            return (
+                                                <Card style={{width: "100%"}}>
+                                                    <Card.Content>
+                                                        <Card.Header>{portfolio.title}</Card.Header>
+                                                        <Card.Description>{portfolio.definition}</Card.Description>
+                                                    </Card.Content>
 
-
-                        </Header>
-                        <small >
-                            Following {following} Follower {follower}
-                        </small>
-
-                        <ul >
-                            <li><strong>Name        :{otherUser.name}</strong></li>
-                            <li><strong>Surname     :{otherUser.surname}</strong></li>
-                            {this.state.isPublic?
-                                <li><strong>E-Mail      :{otherUser.email}</strong></li>:null}
-                            <li><strong>Account Type:{otherUser.isTrader ? 'Trader' : 'Normal'}</strong></li>
-                            {otherUser.isTrader && <span>
-                            <li><strong>IBAN     :{otherUser.iban}</strong></li>
-
-                            <li><strong>TCKN      :{otherUser.tckn}</strong></li>
-
-
-                        </span>}
-
-                        <li><strong>Location:{otherUser.location}</strong></li>
-
-
-
-                        </ul>
-
-
-
-
-                    </Segment>
-
-                    <Segment raised piled padded compact textAlign='left'>
-
-                        <Header textAlign='Middle'>
-
-                            My Portfolios
-
-                        </Header>
-
-                        <ul>
-                            {!newProfile.followStatus? null:
-                                portfolios.map((item,ind) => {
-
-                                return (
-                                    <div class="ui card">
-                                        <Card raised piled padded compact
-                                              header={item.title}
-                                              meta={item.date.substring(0,10)}
-                                              description={item.definition}>
-                                        </Card>
-                                    </div>);
-
-                            })}
-                        </ul>
-
-
-
-
-                    </Segment>
-
-
-                    <Segment raised piled padded compact textAlign='left'>
-
-                        <Header textAlign='Middle'>
-
-                            Profit/Loss
-
-                        </Header>
-
-
-
-
-                    </Segment>
-
-                </Segment.Group>
-            </>
+                                                </Card>
+                                            )
+                                        }) : (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? "Can't See User's Portfolios" : "No Portfolio Created!"
+                                    }
+                                </Segment>
+                            </Grid.Row>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
         )
     }
 

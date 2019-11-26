@@ -15,6 +15,8 @@ function userFactory() {
     this.portfolios = path => baseRequest.get("/portfolios/"+path);
     this.follow = path => baseRequest.get("/profile/"+path+"/follow");
     this.unfollow = path => baseRequest.get("/profile/"+path+"/unfollow");
+    this.acceptFollow = params => baseRequest.get("/profile/accept/"+params);
+    this.rejectFollow = params => baseRequest.get("/profile/reject/"+params);
 
 }
 

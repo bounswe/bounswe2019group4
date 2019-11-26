@@ -122,3 +122,14 @@ export function editArticle(path,params) {
         payload: userService.editArticle(path,params)
     };
 }
+export function acceptFollow(path) {
+    return {
+        type:"ACCEPT_FOLLOW_REQUEST",
+        payload: userService.acceptFollow(path)
+    };
+}export function rejectFollow(path) {
+    return {
+        type:"REJECT_FOLLOW_REQUEST",
+        payload: userService.rejectFollow(path)
+    };
+}
