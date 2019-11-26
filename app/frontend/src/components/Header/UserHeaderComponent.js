@@ -3,6 +3,7 @@ import {Menu, Dropdown} from "semantic-ui-react";
 import * as userActions from "../../actions/userActions";
 import connect from "react-redux/es/connect/connect";
 import history from "../../_core/history";
+import SearchBar from "../Search/Search";
 
 class UserHeaderComponent extends Component {
 
@@ -19,6 +20,9 @@ class UserHeaderComponent extends Component {
     render() {
         return (
             <Menu.Menu position="right">
+                <Menu.Item position="right">
+                    <SearchBar/>
+                </Menu.Item>
                 <Menu.Item
                     style={{display: "flex", alignItems: "center"}}
                     name="profile"

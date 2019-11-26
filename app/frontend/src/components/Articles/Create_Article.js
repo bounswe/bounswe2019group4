@@ -57,8 +57,9 @@ class Create_Article extends Component {
             this.setState({editloading: true});
             await this.props.createArticle(param).then(async() => {
                 this.setState({editloading: false, dimmer: true});
-                setTimeout(() => this.setState({dimmer: false}), 2000);
-                //history.push("/profile")
+                setTimeout(() => {this.setState({dimmer: false});
+                history.push("/profile")
+                }, 2000);
             })
         }else{
             alert("Title or text should not be empty!");

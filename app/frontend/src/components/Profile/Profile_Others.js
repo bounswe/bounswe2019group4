@@ -159,7 +159,7 @@ class Profile extends Component {
                                 {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.articles && newProfile.articles.length>0 ?
                                     newProfile.articles.map(article => {
                                         return (
-                                            <Card style={{width: "100%"}}>
+                                            <Card style={{width: "100%"}} onClick={()=>{history.push("/articles/"+article._id)}}>
                                                 <Card.Content>
                                                     <Card.Header>{article.title}</Card.Header>
                                                     <Card.Meta type="date">{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
@@ -181,6 +181,7 @@ class Profile extends Component {
                                         <List.Header as="h3">Followed Trading Equipment</List.Header>
                                         {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.followingTradings && newProfile.followingTradings.length >0 ? newProfile.followingTradings.map(teq => {
                                             return <List.Item icon="chart line"
+                                                              onClick={()=>{history.push({pathname: "trading-equipment",state:{currency: teq.TradingEq}})}}
                                                               content={teq.TradingEq}/>
                                         }): (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <List.Item content="Can't See Followed Trading Equipment" /> : <List.Item content="No Trading Equipment Is Followed" />}
                                     </List>

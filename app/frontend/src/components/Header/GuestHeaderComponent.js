@@ -3,6 +3,7 @@ import {Menu, Form} from 'semantic-ui-react';
 import history from '../../_core/history';
 
 import SignInModal from '../SignIn/SignIn';
+import SearchBar from "../Search/Search";
 
 class GuestHeaderComponent extends Component {
     constructor(props) {
@@ -26,6 +27,9 @@ class GuestHeaderComponent extends Component {
         return (
             <Menu.Menu position="right">
                 <SignInModal openModal={this.state.openSignInModal} handleClose={this.closeSignInModal.bind(this)} />
+                <Menu.Item position="right">
+                    <SearchBar/>
+                </Menu.Item>
                 <Menu.Item
                     name="sign_in"
                     onClick={this.openSignInModal.bind(this)}
