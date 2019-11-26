@@ -1,9 +1,14 @@
 import React, { Component } from "react";
+import history from './_core/history';
 
 class EmptyPage extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+    componentWillMount(){
+        history.push("/events");
     }
 
     render() {
