@@ -156,12 +156,12 @@ class Profile extends Component {
                         </Grid.Column>
                         <Grid.Column width={8}>
                             <Segment color="teal" style={{margin: 20, width: "100%"}}>
-                                <Header>Articles</Header>
+                                <Header>Articles<Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/articles/new")}}>Add</Button></Header>
                                 <Divider/>
                                 {user.articles && user.articles.length>0 ?
                                     user.articles.map(article => {
                                         return (
-                                            <Card style={{width: "100%"}}>
+                                            <Card style={{width: "100%"}} onClick={()=>{history.push("/articles/"+article._id)}}>
                                                 <Card.Content>
                                                     <Card.Header>{article.title}</Card.Header>
                                                     <Card.Meta type="date">{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
@@ -183,6 +183,7 @@ class Profile extends Component {
                                     <List.Header as="h3">Followed Trading Equipment</List.Header>
                                     {user.followingTradings && user.followingTradings.length >0 ? user.followingTradings.map(teq => {
                                         return <List.Item icon="chart line"
+                                                          onClick={()=>{history.push({pathname: "trading-equipment",state:{currency: teq.TradingEq}})}}
                                                           content={teq.TradingEq}/>
                                     }): <List.Item content="No Trading Equipment Is Followed" />}
                                 </List>

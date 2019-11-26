@@ -66,7 +66,17 @@ class SearchBar extends Component {
                     Object.keys(result.action.payload).forEach(key => {
                         const finalResults = configureResults(key, result.action.payload[key]);
                         if(finalResults.length > 0) {
-                            results[key] = {name: key, results: finalResults};
+                            let name="";
+                            if(key==="users") {
+                                name="Users";
+                            } else if(key==="trading-equipments") {
+                                name="Trading Equipment";
+                            } else if(key==="events") {
+                                name="Events";
+                            } else {
+                                name="Articles";
+                            }
+                            results[key] = {name, results: finalResults};
                         }
                     });
                     this.setState({isLoading: false, results});

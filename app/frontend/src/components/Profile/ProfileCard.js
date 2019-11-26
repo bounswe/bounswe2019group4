@@ -1,6 +1,17 @@
 import React, {Component} from 'react';
 import {Card, Label, Image, Icon} from 'semantic-ui-react';
 
+const initialState={
+    name: "",
+    surname: "",
+    email: "",
+    predictionRate: "",
+    isPublic: false,
+    isTrader: false,
+    followers: 0,
+    following: 0
+}
+
 class ProfileCard extends Component {
     constructor(props){
         super(props);
@@ -17,7 +28,8 @@ class ProfileCard extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState(props.user);
+        const newState={...initialState,...props.user};
+        this.setState(newState);
     }
 
     render() {
@@ -43,10 +55,13 @@ class ProfileCard extends Component {
                         {isTrader ? "Trading User" : "Basic User"}
                     </Label>
                 </Card.Content>
+                {email &&
                 <Card.Content extra>
-                        <Icon name='mail' />
-                        {email}
+                    <Icon name='mail' />
+                    {email}
                 </Card.Content>
+                }
+
             </Card>
         )
     }

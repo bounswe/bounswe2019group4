@@ -62,7 +62,8 @@ class ArkenHeader extends Component {
                         Trading Equipment
                     </Menu.Item>
                 </Menu.Menu>
-                <SearchBar/>
+                <Menu.Menu position="right">
+                </Menu.Menu>
                 {this.renderRightMenu()}
             </Menu>
         )
