@@ -1,4 +1,5 @@
 const {findUserArticle} = require('../utils')
+const {findUserComments} = require('../utils')
 
   /*
     Get method for articles.
@@ -59,6 +60,9 @@ module.exports.postArticle = async (request, response) => {
   
     if(article){
       let yourRate = 0
+
+      comments = await findUserComments({ related : articleId, about : "ARTICLE"})
+
       if(request.session['user']){
         let userId = request.session['user']._id
         row = await ArticleUser.findOne({userId, articleId})
@@ -66,7 +70,7 @@ module.exports.postArticle = async (request, response) => {
           yourRate = row.rate
         }
       }
-      return response.send({...article[0], yourRate})
+      return response.send({...article[0], yourRate, comments})
     } else {
       return response.status(400).send({
         errmsg: "No such article."
