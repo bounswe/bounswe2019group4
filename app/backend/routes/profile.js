@@ -38,16 +38,22 @@ router.get('/:id/follow', [isAuthenticated, multipleModelBinder([
 router.get('/:id/unfollow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.unfollowUser)
 
 /*
-  Post endpoint for rejecting user following request.
+  Get endpoint for rejecting user following request.
   Check controller function for more detail
 */
 router.get('/accept/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.acceptRequest)
 
 /*
-  Post endpoint for rejecting user following request.
+  Get endpoint for rejecting user following request.
   Check controller function for more detail
 */
 router.get('/reject/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.rejectRequest)
+
+/*
+  Get endpoint for canceling user following request.
+  Check controller function for more detail
+*/
+router.get('/cancel/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.cancelRequest)
 
 
 /*
