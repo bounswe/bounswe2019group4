@@ -11,7 +11,7 @@ module.exports.getArticles = async (request, response) => {
   const skip = (parseInt(request.query.page || 1) - 1) * limit
 
   try {
-    articles = await Article.find({ }, undefined, {skip, limit}).sort({Date: -1})
+    articles = await Article.find({ }, undefined, {skip, limit}).sort({date: -1})
     const totalNumberOfArticles = await Article.countDocuments({})
     return response.send({
       totalNumberOfArticles,
