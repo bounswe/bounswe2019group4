@@ -33,9 +33,9 @@ class ArkenHeader extends Component {
     render() {
         return (
             <Menu
-                size="small"
+                size="huge"
                 inverted
-                style={{margin: "0px !important", height: "40px", background: "#396D7C"}}
+                style={{margin: "0px !important", height: "40px", background: "#1b1c1d"}}
             >
                 <Menu.Header
                     style={{display: "flex", alignItems: "center"}}

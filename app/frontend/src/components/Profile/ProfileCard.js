@@ -37,7 +37,7 @@ class ProfileCard extends Component {
 
         return(
             <Card style={{width: "100%", margin: 20}}>
-                <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
+                <Image src='https://cnam.ca/wp-content/uploads/2018/06/default-profile-300x300.gif' wrapped ui={false} />
                 <Card.Content>
                     <Card.Header>{name + " " + surname}</Card.Header>
                 </Card.Content>

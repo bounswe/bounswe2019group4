@@ -39,12 +39,7 @@ class Events extends Component {
             loading:false,
             startDate:new Date(),
             endDate:new Date()
-
-
-
         }
-
-
     }
 
     async componentDidMount() {
@@ -362,13 +357,12 @@ class Events extends Component {
 
             !loading?(
 
-                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
-                    <Segment  raised piled padded compact textAlign='left'>
-                        <Header textAlign='center'>
+                <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center", width: "100%", margin: 30, fontWeight: "bold", fontSize: 16}} >
+                        <Header textAlign='center' style={{color: "#ffffff"}}>
                             Events
 
                         </Header>
-                        <table className="ui blue table">
+                        <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
                             <thead>
                             <tr>
                                 <th>
@@ -526,10 +520,10 @@ class Events extends Component {
                                          totalPages={this.state.numPages}
                                          activePage={this.state.shownPage}
                                          onPageChange={this.updatePage}
+                                         style={{background: "rgba(0,0,0,0)", color: "#ffffff !important", fontWeight: "bold"}}
                             />
                         </div>
 
-                    </Segment>
 
                 </div>
             ):(<Loading/>)
