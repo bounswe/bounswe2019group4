@@ -229,6 +229,23 @@ module.exports.rejectRequest = async (request, response) => {
 }
 
 /*
+  Get method for canceling user follow request.
+*/
+module.exports.cancelRequest = async (request, response) => {
+  const UserFollow = request.models['UserFollow']
+  
+  await UserFollow.deleteOne({ FollowedId : request.params['id'], FollowingId: request.session['user']._id, status: false }, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+    
+    return response.sendStatus(204);
+  })
+}
+
+/*
   Patch method for editing profile details.
   It saves profile to database.
 */
