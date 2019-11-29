@@ -6,7 +6,7 @@ export default [
     {text: "CHF/EUR", value: "CHF"},
     {text: "CNY/EUR", value: "CNY"},
     {text: "DKK/EUR", value: "DKK"},
-    {text: "HKD/EUR", value: "HDK"},
+    {text: "HKD/EUR", value: "HKD"},
     {text: "IDR/EUR", value: "IDR"},
     {text: "INR/EUR", value: "INR"},
     {text: "JPY/EUR", value: "JPY"},
