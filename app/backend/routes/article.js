@@ -8,6 +8,12 @@ const { ArticleUser } = require('../models/article-user')
 const { validateBody } = require('../controllers/middleware')
 
 /*
+  Get endpoint for articles.
+  Check controller function for more detail
+*/
+router.get('/', modelBinder(Article, 'Article'), articleController.getArticles)
+
+/*
   Post endpoint for article.
   Check controller function for more detail
 */

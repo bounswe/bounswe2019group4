@@ -1,5 +1,29 @@
 const {findUserArticle} = require('../utils')
 
+  /*
+    Get method for articles.
+    It returns all articles in database.
+  */
+module.exports.getArticles = async (request, response) => {
+  let Article = request.models['Article']
+
+  const limit = parseInt(request.query.limit || 10)
+  const skip = (parseInt(request.query.page || 1) - 1) * limit
+
+  try {
+    articles = await Article.find({ }, undefined, {skip, limit}).sort({Date: -1})
+    const totalNumberOfArticles = await Article.countDocuments({})
+    return response.send({
+      totalNumberOfArticles,
+      totalNumberOfPages: Math.ceil(totalNumberOfArticles / limit),
+      articlesInPage: articles.length,
+      articles
+    }); 
+  } catch(e) {
+    console.log(e)
+  }
+}
+
 /*
   Post method for articles.
   It saves article to database.
