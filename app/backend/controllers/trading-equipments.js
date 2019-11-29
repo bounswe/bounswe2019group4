@@ -10,15 +10,20 @@ module.exports.getTradingEquipment = async (request, response) => {
   let Comment = request.models['Comment']
   let TradingEq = request.params['code'].toUpperCase()
   let following = false
+  let yourPrediction = "noVote"
 
   let TradingEqPrediction = request.models['TradingEquipmentPrediction']
   var currentDay = new Date();
   var day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
-
   // If user is logged in, control whether user follows that equipment or not.
   if(request.session['user']){
     UserId = request.session['user']._id
     result = await TradingEqFollow.findOne({UserId , TradingEq})
+    row = await TradingEqPrediction.find({UserId, TradingEq, Date: day_format})
+
+    if(row){
+      yourPrediction = row.Prediction
+    }
 
     if(result){
       following = true
@@ -44,6 +49,7 @@ module.exports.getTradingEquipment = async (request, response) => {
   }
 
   return response.send({
+    yourPrediction,
     following,
     current,
     comments,
