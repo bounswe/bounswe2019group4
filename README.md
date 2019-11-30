@@ -5,7 +5,7 @@
 
 </br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![commit activity badge](https://img.shields.io/github/commit-activity/m/bounswe/bounswe2019group4?color=0b397a&style=for-the-badge)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![commit activity badge](https://img.shields.io/github/commit-activity/m/bounswe/bounswe2019group4?color=0b397a&style=for-the-badge)&nbsp;
 ![opened issues](https://img.shields.io/github/issues-raw/bounswe/bounswe2019group4?color=24302d&style=for-the-badge)&nbsp;
 ![closed issues](https://img.shields.io/github/issues-closed-raw/bounswe/bounswe2019group4?color=03fcb1&style=for-the-badge)
 ![open pr](https://img.shields.io/github/issues-pr/bounswe/bounswe2019group4?color=blue&style=for-the-badge)
@@ -19,15 +19,15 @@ Check out our wiki page, <a href="../..wiki">here</a>.
 
 ## <div align="center"> ARKENSTONE - A Social Trading Platform </div>
 
- > :large_blue_diamond:&nbsp;  Welcome to an interactive trading platform full of people who are interested in trading and investing in financial markets worldwide.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp;  Welcome to an interactive trading platform full of people who are interested in trading and investing in financial markets worldwide.
 
-> :large_blue_diamond:&nbsp; Connect with other finance enthusiasts like you. Follow their portfolios, articles and interact with them to stay up to date with financial markets.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp; Connect with other finance enthusiasts like you. Follow their portfolios, articles and interact with them to stay up to date with financial markets.
 
-> :large_blue_diamond:&nbsp; Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp; Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.
 
-> :large_blue_diamond:&nbsp; Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp; Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely.
 
-> :large_blue_diamond:&nbsp; <strong>Arkenstone</strong> has a native web and native mobile (Android) application to make things easier for you. Earn wherever you go and whenever you want!
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp; <strong>Arkenstone</strong> has a native web and native mobile (Android) application to make things easier for you. Earn wherever you go and whenever you want!
 
 ---
 <p align="center">
@@ -39,6 +39,50 @@ Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <str
 </p>
 
 ---
+
+## <div align="center"> Design </div>
+
+## <div align="center"> Deployment </div>
+
+### <div align="center"> Backend </div>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Run `npm install` in /app/backend directory to install dependencies.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Development server can be started with `npm start`. It runs on [localhost, port 8080](http://localhost:8080).
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The API should be provided with a `secrets.js` file for it to run properly.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; API documentation can be found [here](https://documenter.getpostman.com/view/3191118/SVtTz9Pn?version=latest).
+
+
+### <div align="center"> Frontend </div>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Frontend is bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In the /app/frontend directory, run `npm start`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Application is run in the development mode.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The page will reload if you make edits.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You will also see any lint errors in the console.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If you run `npm run build` in app/frontend directory, this builds the app for production to the `build` folder.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It correctly bundles React in production mode and optimizes the build for the best performance.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The build is minified and the filenames include the hashes.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Application is ready to be deployed!
+
+### <div align="center"> Mobile </div>
+
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dependencies
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Android Studio 3.x
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Arkenstone mobile application uses the Gradle build system.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To build this project, use the `gradle build` command in app/android directory <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or use "Import Project" in Android Studio.
+
 
 ## Team  Members
 [<img src="https://avatars1.githubusercontent.com/u/11016390?s=400&v=4" width="180" height="180">][Bahadır Hocamoğlu][Bahadır Hocamoğlu]|[<img src="https://avatars1.githubusercontent.com/u/32465575?s=400&v=4" width="200" height="180">][Baturalp Yörük][Baturalp Yörük]|[<img src="https://avatars0.githubusercontent.com/u/32355806?s=400&v=4" width="180" height="180">][Cemal Aytekin][Cemal Aytekin]|[<img src="https://avatars3.githubusercontent.com/u/32391743?s=460&v=4" width="200" height="175">][Ege Başural][Ege Başural]|[<img src="https://avatars0.githubusercontent.com/u/42263185?s=400&v=4" width="200" height="180">][Elif Çalışkan][Elif Çalışkan]
