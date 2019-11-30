@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/ic_logo_darker_gray.png" width="400" />
+<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/ic_log_dark_gray.png" width="300" />
 </p>
 
 ![commit activity badge](https://img.shields.io/github/commit-activity/m/bounswe/bounswe2019group4?color=0b397a&style=for-the-badge)&nbsp;
@@ -8,17 +8,37 @@
 ![closed issues](https://img.shields.io/github/issues-closed-raw/bounswe/bounswe2019group4?color=03fcb1&style=for-the-badge)
 ![open pr](https://img.shields.io/github/issues-pr/bounswe/bounswe2019group4?color=blue&style=for-the-badge)
 
-## Who are we?
+---
+<p align="center">
+Check out our wiki page, <a href="../..wiki">here</a>.
+</p>
 
-We're a group of Computer Engineering students at Bogazici University and united for the purpose of developing new technologies which may become a corner stone in computer science. For more information look at our [wiki](../../wiki) page.
+---
 
-## Project Description
+## <div align="center"> ARKENSTONE - A Social Trading Platform </div>
 
-<strong>Arkenstone</strong>  is a social platform where people can track and trade indices, bonds, ETFs, funds, commodities, cryptocurrencies and stocks. It also gives people chance to share their ideas about investments, events and not only commenting but also rating predictions of other users. In addition, users can follow other users, make investments and predictions, search events that may have impact on prices and calculate profit/loss. The system also makes predictions and suggestions to users according to their historical data. You can reach full description from [here.](https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/project-description-Spring20182019_TradersPlatform.pdf)
+ > :large_blue_diamond:&nbsp;  Welcome to an interactive trading platform full of people who are interested in trading and investing in financial markets worldwide.
 
+> :large_blue_diamond:&nbsp; Connect with other finance enthusiasts like you. Follow their portfolios, articles and interact with them to stay up to date with financial markets.
+
+> :large_blue_diamond:&nbsp; Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.
+
+> :large_blue_diamond:&nbsp; Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely.
+
+> :large_blue_diamond:&nbsp; <strong>Arkenstone</strong> has a native web and native mobile (Android) application to make things easier for you. Earn wherever you go and whenever you want!
+
+---
+<p align="center">
+ You can reach full description from <a href="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/project-description-Spring20182019_TradersPlatform.pdf">here</a>.
+</p>
+
+<p align="center"> 
 Our <a href="http://dev.arkenstone.ml/" target="_blank">project website</a> is <strong>ONLINE. Check it out!</strong>   
+</p>
 
-## Team  members
+---
+
+## Team  Members
 [<img src="https://avatars1.githubusercontent.com/u/11016390?s=400&v=4" width="180" height="180">][Bahadır Hocamoğlu][Bahadır Hocamoğlu]|[<img src="https://avatars1.githubusercontent.com/u/32465575?s=400&v=4" width="200" height="180">][Baturalp Yörük][Baturalp Yörük]|[<img src="https://avatars0.githubusercontent.com/u/32355806?s=400&v=4" width="180" height="180">][Cemal Aytekin][Cemal Aytekin]|[<img src="https://avatars3.githubusercontent.com/u/32391743?s=460&v=4" width="200" height="175">][Ege Başural][Ege Başural]|[<img src="https://avatars0.githubusercontent.com/u/42263185?s=400&v=4" width="200" height="180">][Elif Çalışkan][Elif Çalışkan]
 -- | - | - | - | -
 
