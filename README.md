@@ -35,7 +35,7 @@ Check out our wiki page, <a href="../..wiki">here</a>.
 </p>
 
 <p align="center"> 
-Our <a href="http://dev.arkenstone.ml/" target="_blank">project website</a> is <strong>ONLINE. Check it out!</strong>   
+Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <strong>ONLINE. Check it out!</strong>   
 </p>
 
 ---
