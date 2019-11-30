@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetroClient {
-    private static final String BASE_URL = "http://api.dev.arkenstone.ml/";
+    private static final String BASE_URL = "https://api.dev.arkenstone.ml/";
     private Retrofit retrofit = null;
     private static RetroClient mInstance;
 

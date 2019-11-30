@@ -1,45 +1,51 @@
 package com.example.arken.fragment
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
-import com.example.arken.activity.MainActivity
 import com.example.arken.model.Event
 import com.example.arken.model.ListEvent
 import com.example.arken.util.EventAdapter
-import com.example.arken.util.OnItemClickListener
+import com.example.arken.util.OnEventClickedListener
 import com.example.arken.util.RetroClient
-import com.google.android.gms.tasks.OnCompleteListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 
-class ListEventFragment : Fragment(), OnItemClickListener {
+class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListener,
+    AdapterView.OnItemSelectedListener {
 
-
+    private lateinit var countryEditText: EditText
+    private lateinit var importanceSpinner: Spinner
+    private lateinit var filterButton: ImageView
+    private lateinit var clearButton: ImageView
     private lateinit var currentLayoutManagerType: LayoutManagerType
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var dataset: MutableList<Event>
     private lateinit var eventAdapter: EventAdapter
+    private lateinit var layout: ConstraintLayout
+    private var importance: Int? = 1
 
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         initDataset()
+        Log.i("ListEventFragment", "onCreate")
     }
 
     override fun onCreateView(
@@ -53,12 +59,31 @@ class ListEventFragment : Fragment(), OnItemClickListener {
         ).apply { tag = TAG }
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
-
-
+        countryEditText = rootView.findViewById(R.id.event_list_filter_country_editText)
+        importanceSpinner = rootView.findViewById(R.id.importance_spinner)
+        filterButton = rootView.findViewById(R.id.event_list_filter_button)
+        filterButton.setOnClickListener(this)
+        clearButton = rootView.findViewById(R.id.event_list_clear_button)
+        clearButton.setOnClickListener(this)
         layoutManager = LinearLayoutManager(activity)
+        val imp = arrayOf(1,2,3,"All")
+
+        ArrayAdapter(
+            context!!,
+            R.layout.custom_spinner, imp
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            // Apply the adapter to the spinner
+            importanceSpinner.adapter = adapter
+        }
+
+        importanceSpinner.onItemSelectedListener = this
+        importanceSpinner.setSelection(3)
 
         currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
+        layout = rootView.findViewById(R.id.listEventBase)
+        layout.setOnClickListener(this)
         if (savedInstanceState != null) {
 
             currentLayoutManagerType = savedInstanceState
@@ -72,6 +97,8 @@ class ListEventFragment : Fragment(), OnItemClickListener {
         recyclerView.adapter = eventAdapter
 
         setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER)
+
+        Log.i("ListEventFragment", "onCreateView")
 
         return rootView
     }
@@ -99,6 +126,7 @@ class ListEventFragment : Fragment(), OnItemClickListener {
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
 
+        Log.i("ListEventFragment", "onSaveInstanceState")
 
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, currentLayoutManagerType)
         super.onSaveInstanceState(savedInstanceState)
@@ -107,37 +135,9 @@ class ListEventFragment : Fragment(), OnItemClickListener {
 
     private fun initDataset() {
 
-        val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(1, 10)
-        dataset = mutableListOf(
-            Event(
-                "l", "k", "China"
-                , Date(), "House Price Index YoY", "i", ",", "l", "i", 2, ","
-            ),
-            Event(
-                "l", "k", "China"
-                , Date(), "Loan Prime Rate 5Y", "i", ",", "l", "i", 2, ","
-            ),
-            Event(
-                "l", "k", "China"
-                , Date(), "Loan Prime Rate 1Y", "i", ",", "l", "i", 3, ","
-            ),
-            Event(
-                "l", "k", "Canada"
-                , Date(), "Federal Election", "i", ",", "l", "i", 3, ","
-            ),
-            Event(
-                "l", "k", "Japan"
-                , Date(), "Balance of Trade", "i", ",", "l", "i", 3, ","
-            ),
-            Event(
-                "l", "k", "Japan"
-                , Date(), "Exports YoY", "i", ",", "l", "i", 2, ","
-            ),
-            Event(
-                "l", "k", "Japan"
-                , Date(), "Imports YoY", "i", ",", "l", "i", 1, ","
-            )
-        )
+        val call: Call<ListEvent> =
+            RetroClient.getInstance().apiService.getEvents(null, null, 1, 10)
+        dataset = mutableListOf()
         call.enqueue(object : Callback<ListEvent> {
             override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
                 if (response.isSuccessful) {
@@ -165,9 +165,67 @@ class ListEventFragment : Fragment(), OnItemClickListener {
         Navigation.findNavController(recyclerView).navigate(action)
     }
 
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        if(position!=3) {
+            importance = position + 1
+        }
+        else{
+            importance = null
+        }
+    }
+
+
+    override fun onClick(view: View) {
+        if (view.id != R.id.event_list_filter_country_editText) {
+            val inputMethodManager =
+                activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+        if (view.id == R.id.event_list_filter_button) {
+
+            val country = countryEditText.text.toString()
+
+            val call: Call<ListEvent> =
+                RetroClient.getInstance().apiService.getEvents(country, importance, 1, 10)
+
+            call.enqueue(object : Callback<ListEvent> {
+                override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
+                    if (response.isSuccessful) {
+                        val listEvent: ListEvent? = response.body()
+                        eventAdapter.dataSet = listEvent!!.events!!
+                        eventAdapter.totalPages = listEvent.totalNumberOfPages!!
+                        eventAdapter.page = 1
+                        eventAdapter.country = country
+                        eventAdapter.importance = importance
+                        eventAdapter.notifyDataSetChanged()
+                    } else {
+                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ListEvent>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        if (view.id == R.id.event_list_clear_button) {
+            initDataset()
+            importanceSpinner.setSelection(3)
+            countryEditText.setText("")
+        }
+    }
+
     override fun onResume() {
+
+        Log.i("ListEventFragment", "onResume")
         super.onResume()
-        val call: Call<ListEvent> = RetroClient.getInstance().apiService.getEventsAll(1, 10)
+        val call: Call<ListEvent> =
+            RetroClient.getInstance().apiService.getEvents(null, null, 1, 10)
         call.enqueue(object : Callback<ListEvent> {
             override fun onResponse(call: Call<ListEvent>, response: Response<ListEvent>) {
                 if (response.isSuccessful) {
@@ -185,6 +243,10 @@ class ListEventFragment : Fragment(), OnItemClickListener {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     companion object {

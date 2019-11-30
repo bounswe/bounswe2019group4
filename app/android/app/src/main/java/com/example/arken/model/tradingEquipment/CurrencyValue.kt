@@ -1,5 +1,7 @@
 package com.example.arken.model.tradingEquipment
 
+import java.io.Serializable
+
 class CurrencyValue(
     var _id: Id?,
     var code: String?,
@@ -11,4 +13,4 @@ class CurrencyValue(
     var value: String?,
     var Date: String?,
     var __v: Int?
-)
+) : Serializable

@@ -9,6 +9,8 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -29,7 +31,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyArqg0UbXAq0O_GfNqrdw10ZDWoUJEFyh4" />
+            android:value="AIzaSyCzhR-0hDmQnZgxp1-uh6MeIJ4ejGbIMuc" />
 
         <activity
             android:name=".activity.MapsActivity"

@@ -19,6 +19,13 @@
             android:id="@+id/action_eventListFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment"
             app:popUpTo="@+id/eventListFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@id/eventListFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -33,6 +40,86 @@
     <fragment
         android:id="@+id/listCurrentFragment"
         android:name="com.example.arken.fragment.ListCurrentFragment"
-        android:label="ListCurrentFragment" />
-
+        android:label="ListCurrentFragment" >
+        <action
+            android:id="@+id/action_listCurrentFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_currencyFragment"
+            app:destination="@id/currencyFragment"
+            app:popUpTo="@+id/listCurrentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currencyFragment"
+        android:name="com.example.arken.fragment.CurrencyFragment"
+        android:label="CurrencyFragment">
+        <argument
+            android:name="codeOfCurrency"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.arken.fragment.ProfileFragment"
+        android:label="ProfileFragment" >
+        <argument
+            android:name="userId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_profileFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.arken.fragment.search.SearchFragment"
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/action_searchFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listArticleFragment"
+        android:name="com.example.arken.fragment.ListArticleFragment"
+        android:label="ListArticleFragment">
+        <argument
+            android:name="profile"
+            android:defaultValue="@null"
+            app:argType="com.example.arken.model.Profile"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_articleDialogFragment"
+            app:destination="@id/articleDialogFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_articleDetail"
+            app:destination="@id/articleDetail" />
+    </fragment>
+    <dialog
+        android:id="@+id/articleDialogFragment"
+        android:name="com.example.arken.fragment.ArticleDialogFragment"
+        android:label="ArticleDialogFragment" />
+    <fragment
+        android:id="@+id/articleDetail"
+        android:name="com.example.arken.fragment.ArticleDetail"
+        android:label="ArticleDetail">
+        <argument
+            android:name="articleId"
+            app:argType="string" />
+    </fragment>
 </navigation>

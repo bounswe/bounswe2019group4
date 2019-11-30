@@ -4,99 +4,147 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_dark">
+    android:background="@color/colorPrimaryDark">
 
-    <LinearLayout
-        android:id="@+id/start_welcome_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/slideViewPager"
+        android:layout_width="410dp"
+        android:layout_height="360dp"
+        android:layout_above="@+id/start_login_button"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="80dp"
-        android:background="@android:color/transparent"
-        android:gravity="center_horizontal"
-        android:padding="20dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome to"
-            android:textColor="@android:color/white"
-            android:textSize="30sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Arken Stone"
-            android:textColor="@android:color/white"
-            android:textSize="50sp" />
+        app:layout_constraintVertical_bias="0.0">
 
-    </LinearLayout>
-
+    </androidx.viewpager.widget.ViewPager>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:background="@android:color/transparent"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/start_welcome_layout"
         android:id="@+id/start_login_button"
-        android:layout_marginTop="50dp">
-
-    </Button>
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/start_login_button"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="30dp"
-        android:background="@android:color/white"
-        android:id="@+id/start_line"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:textSize="20sp"
-        android:textAllCaps="false"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="72dp"
         android:background="@android:color/transparent"
-        android:textColor="@android:color/white"
+        android:text="Login Now!"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.767"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/start_line"
-        android:id="@+id/start_signup_button"
-        android:layout_marginTop="30dp">
+        app:layout_constraintTop_toBottomOf="@+id/start_signup_button"
+        app:layout_constraintVertical_bias="0.079">
+
     </Button>
 
-    <com.google.android.gms.common.SignInButton
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/start_signup_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="40dp"
-        android:id="@+id/signin_google_button"/>
-
-    <Button
+    <LinearLayout
+        android:id="@+id/dotsLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slideViewPager"
+        app:layout_constraintVertical_bias="0.087"></LinearLayout>
+
+    <Button
+        android:id="@+id/start_signup_button"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="72dp"
+        android:background="@drawable/login_background"
+        android:text="          Register Now"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dotsLayout"
+        app:layout_constraintVertical_bias="0.359" />
+
+
+
+    <Button
+        android:id="@+id/signup_guest_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
         android:text="Go on as a Guest"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:id="@+id/signup_guest_button"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@android:color/transparent"
-        />
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.26" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/already_have_account"
+        android:textColor="@color/colorLightGray"
+        app:layout_constraintBaseline_toBaselineOf="@+id/start_login_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/signin_google_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/login_background"
+        android:src="@drawable/googleg_standard_color_18"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.22"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.31" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/signup_guest_button"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toEndOf="@+id/signin_google_button"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.41000003" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="50dp"
+        android:layout_height="140dp"
+        android:elevation="8dp"
+        android:src="@drawable/ic_logo_without_font"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.29"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slideViewPager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

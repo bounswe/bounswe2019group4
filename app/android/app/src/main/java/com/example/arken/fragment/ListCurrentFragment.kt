@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
@@ -123,8 +124,9 @@ class ListCurrentFragment : Fragment(), OnCurrentClickListener {
 
     }
 
-    override fun onItemClicked() {
-
+    override fun onItemClicked(code: String) {
+        val action = ListCurrentFragmentDirections.actionListCurrentFragmentToCurrencyFragment(code)
+        Navigation.findNavController(recyclerView).navigate(action)
     }
 
     override fun onResume() {

@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#FF0099CC</color>
-    <color name="colorAccent">#D81B60</color>
     <color name="colorPriBlue">#1565c0</color>
     <color name="colorlightBlue">#5e92f3</color>
-    <color name="colorDarkBlue">#003c8f</color>
+    <color name="colorDarkBlue">#003C8F</color>
     <color name="darkBlueStar">#ffffff</color>
     <color name="grayBackground">#cfd8dc</color>
+    <color name="colorRed">#f54778</color>
+
+    <color name="colorPrimary">#1678c2</color>
+    <color name="colorPrimaryDark">#161c1d</color>
+    <color name="colorAccent">#009c95</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorLightGray">#cacbcd</color>
+    <color name="colorDarkerBlue">#022a61</color>
+    <color name="buttonShadowDark">#11639e</color>
+    <color name="buttonShadowLight">#3392d6</color>
+    <color name="colorMenu">#1c2021</color>
+
+    <!--colors for modern ui-->
+    <color name="whiteTextColor">#fff</color>
+    <color name="primaryTextColor">#00a5ff</color>
+    <color name="loginBkColor">#f0f0f0</color>
+
+    <!--colros for card-->
+    <color name="whiteCardColor">#fff</color>
+    <color name="colorBgGreen">#3CB371</color>
+
 </resources>

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,15 +27,17 @@ import com.example.arken.R;
 import com.example.arken.activity.MainActivity;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.GoogleUser;
-import com.example.arken.model.SignupUser;
+import com.example.arken.model.User;
 import com.example.arken.util.RetroClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
 
 public class GoogleSignupFragment extends Fragment implements View.OnClickListener {
     private String userName;
@@ -52,6 +52,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
     private ImageButton locationButton;
     private final int MAPS_ACTIVITY = 3;
     private EditText locationEditText;
+
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
@@ -98,16 +99,16 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != R.id.signup_google_iban_editText && view.getId() != R.id.signup_google_tckn_editText){
+        if (view.getId() != R.id.signup_google_iban_editText && view.getId() != R.id.signup_google_tckn_editText) {
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         }
         if (view.getId() == R.id.signup_google_submit_button) {
 
-            String location = "Turkey";
+            String location = String.valueOf(locationEditText.getText());
             Boolean isTrader = isTraderSwitch.isChecked();
-            if (isTrader){
+            if (isTrader) {
                 if (tcknEditText.getText().toString().trim().equals("")) {
                     tcknEditText.setError("Please enter your TC");
                     return;
@@ -117,22 +118,29 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                     return;
                 }
             }
-            Call<ResponseBody> call;
+            boolean isPrivate = !isPrivateSwitch.isChecked();
+            Call<User> call;
             if (isTrader) {
-                String tckn=String.valueOf(tcknEditText.getText());
-                String iban=String.valueOf(ibanEditText.getText());
+                String tckn = String.valueOf(tcknEditText.getText());
+                String iban = String.valueOf(ibanEditText.getText());
 
                 call = RetroClient.getInstance().getAPIService().signupGoogle(new GoogleUser(userName,
-                        userSurname, userEmail, googleId, location,isTrader,tckn,iban));
+                        userSurname, userEmail, googleId, location, isTrader, tckn, iban, isPrivate));
             } else {
                 call = RetroClient.getInstance().getAPIService().signupGoogle(new GoogleUser(userName,
-                        userSurname, userEmail, googleId, location));
+                        userSurname, userEmail, googleId, location, isPrivate));
             }
 
-            call.enqueue(new Callback<ResponseBody>() {
+            call.enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) { //events
+                        User pr = response.body();
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.putString("userId", pr.get_id());
+                        String cookie = response.headers().get("Set-Cookie");
+                        editor.putString("user_cookie", cookie.split(";")[0]);
+                        editor.commit();
                         Navigation.findNavController(submitButton).navigate(R.id.action_googleSignupFragment_to_baseFragment);
                     } else {
                         Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
@@ -140,7 +148,7 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(Call<User> call, Throwable t) {
                     Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -153,10 +161,11 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
         MainActivity.getClient().revokeAccess();
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode == Activity.RESULT_OK){
-            if(requestCode == MAPS_ACTIVITY){
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == MAPS_ACTIVITY) {
                 String location = data.getExtras().getString("location");
                 locationEditText.setText(location);
             }

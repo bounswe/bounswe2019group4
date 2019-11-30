@@ -4,8 +4,9 @@
     android:layout_height="100dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
-    android:layout_marginTop="8dp"
-    android:background="@drawable/shape_list">
+    android:layout_marginTop="28dp"
+    android:background="@drawable/login_background">
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,7 +25,7 @@
         android:layout_marginLeft="12dp"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="@color/colorDarkBlue"/>
+        android:textColor="@color/colorLightGray"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -64,7 +65,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:textStyle="bold"
-        android:textColor="@color/colorDarkBlue"/>
+        android:textColor="@color/colorRed"/>
 
 </RelativeLayout>
 </FrameLayout>
