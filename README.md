@@ -45,8 +45,8 @@ Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <str
 ## <div align="center"> Mobile Application </div>
 
 <p float="left">
-<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_welcoming_screen.png" width="200" height="200" /><img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_login_screen.png" width="400" />
-<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_trading_screen.png" width="400" />
+<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_welcoming_screen.png"  /><img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_login_screen.png" />
+<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_trading_screen.png" />
 </p>
 
 
