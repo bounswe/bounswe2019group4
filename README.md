@@ -5,7 +5,7 @@
 
 </br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![commit activity badge](https://img.shields.io/github/contributors/bounswe/bounswe2019group4?color=0b397a&style=for-the-badge)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![commit activity badge](https://img.shields.io/github/contributors/bounswe/bounswe2019group4?color=0b397a&style=for-the-badge)&nbsp;
 ![opened issues](https://img.shields.io/github/issues-raw/bounswe/bounswe2019group4?color=24302d&style=for-the-badge)&nbsp;
 ![closed issues](https://img.shields.io/github/issues-closed-raw/bounswe/bounswe2019group4?color=03fcb1&style=for-the-badge)
 ![open pr](https://img.shields.io/github/issues-pr/bounswe/bounswe2019group4?color=blue&style=for-the-badge)
@@ -31,7 +31,7 @@ Check out our wiki page, <a href="../..wiki">here</a>.
 
 ---
 <p align="center">
- You can reach full description from <a href="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/project-description-Spring20182019_TradersPlatform.pdf">here</a>.
+ You can reach the full description from <a href="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/project-description-Spring20182019_TradersPlatform.pdf">here</a>.
 </p>
 
 <p align="center"> 
@@ -41,6 +41,22 @@ Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <str
 ---
 
 ## <div align="center"> Design </div>
+
+## <div align="center"> Mobile Application </div>
+
+<p float="left">
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_welcoming_screen.png" width="400" /><img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_login_screen.png" width="400" />
+
+</p>
+
+<p float="left">
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_trading_screen.png" width="400 "height="403"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_events_screen.png" width="187.1" height="385" />
+</p>
+
+---
+
 
 ## <div align="center"> Deployment </div>
 
