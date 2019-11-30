@@ -5,7 +5,7 @@
 
 </br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![commit activity badge](https://img.shields.io/github/commit-activity/m/bounswe/bounswe2019group4?color=0b397a&style=for-the-badge)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![commit activity badge](https://img.shields.io/github/contributors/bounswe/bounswe2019group4?color=0b397a&style=for-the-badge)&nbsp;
 ![opened issues](https://img.shields.io/github/issues-raw/bounswe/bounswe2019group4?color=24302d&style=for-the-badge)&nbsp;
 ![closed issues](https://img.shields.io/github/issues-closed-raw/bounswe/bounswe2019group4?color=03fcb1&style=for-the-badge)
 ![open pr](https://img.shields.io/github/issues-pr/bounswe/bounswe2019group4?color=blue&style=for-the-badge)
