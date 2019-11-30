@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.article
 
 import android.content.Context
 import android.content.SharedPreferences

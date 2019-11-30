@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater

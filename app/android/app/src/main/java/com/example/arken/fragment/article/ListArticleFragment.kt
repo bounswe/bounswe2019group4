@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.article
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,7 +33,10 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val rootView =
-            inflater.inflate(R.layout.fragment_listarticle, container, false).apply { tag = TAG }
+            inflater.inflate(R.layout.fragment_listarticle, container, false).apply {
+                tag =
+                    TAG
+            }
 
         recyclerView = rootView.findViewById(R.id.articleRecyclerView)
         createArticleButton = rootView.findViewById(R.id.articleCreate)
@@ -44,7 +47,8 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
 
         layoutManager = LinearLayoutManager(activity)
 
-        currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
+        currentLayoutManagerType =
+            LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
         if (savedInstanceState != null) {
 
@@ -76,7 +80,8 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
         }
 
         layoutManager = LinearLayoutManager(activity)
-        currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
+        currentLayoutManagerType =
+            LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
 
         with(recyclerView) {
@@ -99,7 +104,10 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
     }
 
     override fun onArticleItemClicked(id: String) {
-        val action = ListArticleFragmentDirections.actionListArticleFragmentToArticleDetail(id)
+        val action =
+            ListArticleFragmentDirections.actionListArticleFragmentToArticleDetail(
+                id
+            )
         Navigation.findNavController(recyclerView).navigate(action)
     }
 }

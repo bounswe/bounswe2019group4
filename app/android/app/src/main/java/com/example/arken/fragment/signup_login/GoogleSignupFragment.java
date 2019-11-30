@@ -1,4 +1,4 @@
-package com.example.arken.fragment;
+package com.example.arken.fragment.signup_login;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -37,7 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
+import static com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME;
 
 public class GoogleSignupFragment extends Fragment implements View.OnClickListener {
     private String userName;

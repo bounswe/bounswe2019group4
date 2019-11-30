@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
-import com.example.arken.fragment.LoginFragment
+import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.tradingEquipment.Currency
 import com.example.arken.model.tradingEquipment.Current
 import com.example.arken.util.CurrencyAdapter

@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.tEq
 
 import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.anychart.AnyChartView
 import com.example.arken.R
+import com.example.arken.fragment.comment.ListCommentFragment
 import com.example.arken.model.tradingEquipment.Currency
 import com.example.arken.util.CurrencyValueAdapter
 import com.example.arken.viewModel.TradingEquipmentViewModel
@@ -137,7 +138,10 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
         tradingEquipmentViewModel.setData(name, prefs.getString("user_cookie", null))
         fragmentManager?.beginTransaction()?.add(
             R.id.list_comment_fragment_currency,
-            ListCommentFragment.newInstance(name, "TRADING-EQUIPMENT"),
+            ListCommentFragment.newInstance(
+                name,
+                "TRADING-EQUIPMENT"
+            ),
             "commentList"
         )?.commit()
 

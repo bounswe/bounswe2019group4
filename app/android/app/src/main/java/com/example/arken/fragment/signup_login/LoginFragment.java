@@ -1,4 +1,4 @@
-package com.example.arken.fragment;
+package com.example.arken.fragment.signup_login;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

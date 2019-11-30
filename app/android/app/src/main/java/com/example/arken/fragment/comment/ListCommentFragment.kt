@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.comment
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
-import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
+import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.Comment
 import com.example.arken.model.Event
 import com.example.arken.model.tradingEquipment.Currency

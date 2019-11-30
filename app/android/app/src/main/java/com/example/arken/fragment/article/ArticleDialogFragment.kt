@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.article
 
 
 import android.content.Context
@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.example.arken.R
+import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.Article
 import com.example.arken.util.RetroClient
 import okhttp3.ResponseBody

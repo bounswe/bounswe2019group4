@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.profile
 
 
 import android.content.Context.MODE_PRIVATE
@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
-import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
+import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.FollowRequest
 import com.example.arken.model.Profile
 import com.example.arken.util.OnRequestClickedListener

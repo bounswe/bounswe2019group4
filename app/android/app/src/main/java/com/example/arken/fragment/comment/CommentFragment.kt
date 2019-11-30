@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.comment
 
 import android.content.Context
 import android.os.Bundle
@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.arken.R
+import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.Profile
 import com.example.arken.util.RetroClient
 import retrofit2.Call

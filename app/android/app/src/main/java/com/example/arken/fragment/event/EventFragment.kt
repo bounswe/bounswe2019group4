@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.event
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
+import com.example.arken.fragment.comment.ListCommentFragment
 
 class EventFragment : Fragment() {
     val args: EventFragmentArgs by navArgs()
@@ -64,7 +65,10 @@ class EventFragment : Fragment() {
 
         fragmentManager?.beginTransaction()?.add(
             R.id.list_comment_fragment,
-            ListCommentFragment.newInstance(event.CalendarId!!, "EVENT"),
+            ListCommentFragment.newInstance(
+                event.CalendarId!!,
+                "EVENT"
+            ),
             "commentList"
         )?.commit()
 

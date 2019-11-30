@@ -39,7 +39,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.arken.fragment.LoginFragment.MY_PREFS_NAME;
+import static com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME;
 
 public class StartFragment extends Fragment implements View.OnClickListener {
     private Button loginButton;

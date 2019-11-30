@@ -13,8 +13,10 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.activity.MainActivity
-import com.example.arken.fragment.LoginFragment.MY_PREFS_NAME
+import com.example.arken.fragment.event.ListEventFragmentDirections
 import com.example.arken.fragment.search.SearchFragmentDirections
+import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
+import com.example.arken.fragment.tEq.ListCurrentFragmentDirections
 import com.example.arken.util.MenuAdapter
 import com.example.arken.util.OnMenuItemClickListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn

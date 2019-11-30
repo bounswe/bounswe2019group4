@@ -1,4 +1,4 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.tEq
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -46,14 +46,18 @@ class ListCurrentFragment : Fragment(), OnCurrentClickListener {
         val rootView = inflater.inflate(
             R.layout.fragment_tequipments,
             container, false
-        ).apply { tag = TAG }
+        ).apply {
+            tag =
+                TAG
+        }
 
         recyclerView = rootView.findViewById(R.id.recyclerViewcurrent)
 
 
         layoutManager = LinearLayoutManager(activity)
 
-        currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
+        currentLayoutManagerType =
+            LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
         if (savedInstanceState != null) {
 
@@ -84,7 +88,8 @@ class ListCurrentFragment : Fragment(), OnCurrentClickListener {
         }
 
         layoutManager = LinearLayoutManager(activity)
-        currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
+        currentLayoutManagerType =
+            LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
 
         with(recyclerView) {
@@ -125,7 +130,10 @@ class ListCurrentFragment : Fragment(), OnCurrentClickListener {
     }
 
     override fun onItemClicked(code: String) {
-        val action = ListCurrentFragmentDirections.actionListCurrentFragmentToCurrencyFragment(code)
+        val action =
+            ListCurrentFragmentDirections.actionListCurrentFragmentToCurrencyFragment(
+                code
+            )
         Navigation.findNavController(recyclerView).navigate(action)
     }
 

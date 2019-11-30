@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/eventListFragment"
-        android:name="com.example.arken.fragment.ListEventFragment"
+        android:name="com.example.arken.fragment.event.ListEventFragment"
         android:label="fragment_event_list"
         tools:layout="@layout/fragment_listevent">
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
-        android:name="com.example.arken.fragment.EventFragment"
+        android:name="com.example.arken.fragment.event.EventFragment"
         android:label="EventFragment">
         <argument
             android:name="eventToShow"
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/listCurrentFragment"
-        android:name="com.example.arken.fragment.ListCurrentFragment"
+        android:name="com.example.arken.fragment.tEq.ListCurrentFragment"
         android:label="ListCurrentFragment" >
         <action
             android:id="@+id/action_listCurrentFragment_to_profileFragment"
@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/currencyFragment"
-        android:name="com.example.arken.fragment.CurrencyFragment"
+        android:name="com.example.arken.fragment.tEq.CurrencyFragment"
         android:label="CurrencyFragment">
         <argument
             android:name="codeOfCurrency"
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.arken.fragment.ProfileFragment"
+        android:name="com.example.arken.fragment.profile.ProfileFragment"
         android:label="ProfileFragment" >
         <argument
             android:name="userId"
@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/listArticleFragment"
-        android:name="com.example.arken.fragment.ListArticleFragment"
+        android:name="com.example.arken.fragment.article.ListArticleFragment"
         android:label="ListArticleFragment">
         <argument
             android:name="profile"
@@ -112,11 +112,11 @@
     </fragment>
     <dialog
         android:id="@+id/articleDialogFragment"
-        android:name="com.example.arken.fragment.ArticleDialogFragment"
+        android:name="com.example.arken.fragment.article.ArticleDialogFragment"
         android:label="ArticleDialogFragment" />
     <fragment
         android:id="@+id/articleDetail"
-        android:name="com.example.arken.fragment.ArticleDetail"
+        android:name="com.example.arken.fragment.article.ArticleDetail"
         android:label="ArticleDetail">
         <argument
             android:name="articleId"

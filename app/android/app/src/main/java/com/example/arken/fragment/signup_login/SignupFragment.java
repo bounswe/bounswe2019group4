@@ -1,4 +1,4 @@
-package com.example.arken.fragment;
+package com.example.arken.fragment.signup_login;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,18 +19,23 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
 import com.example.arken.R;
 import com.example.arken.activity.MapsActivity;
 import com.example.arken.model.SignupUser;
 import com.example.arken.util.RetroClient;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
