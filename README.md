@@ -63,7 +63,7 @@ Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <str
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The API should be provided with a `secrets.js` file for it to run properly.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; API documentation can be found [here](https://documenter.getpostman.com/view/3191118/SVtTz9Pn?version=latest).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; API documentation can be found [here](https://documenter.getpostman.com/view/3191118/SW7Xa9Vu?version=latest).
 
 
 ### <div align="center"> Frontend </div>
