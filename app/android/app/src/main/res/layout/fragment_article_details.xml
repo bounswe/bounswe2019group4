@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-    <TextView
+    <EditText
+
         android:id="@+id/article_detail_title"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -29,7 +30,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/article_detail_title">
 
-        <TextView
+        <EditText
+
             android:id="@+id/article_detail_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,5 +70,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/edit_article_button" />
 
-
+    <Button
+        android:id="@+id/articleeditsave"
+        android:visibility="gone"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/login_background"
+        android:text="Save"
+        android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/articleRecyclerView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
