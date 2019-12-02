@@ -1,6 +1,7 @@
 package com.example.arken.util;
 
 import com.example.arken.model.Article;
+import com.example.arken.model.ArticleCreateRequest;
 import com.example.arken.model.Comment;
 import com.example.arken.model.Email;
 import com.example.arken.model.Event;
@@ -23,6 +24,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -141,5 +143,11 @@ public interface APIService {
     @DELETE("articles/{id}")
     Call<ResponseBody> deleteArticle(
             @Header("Cookie") String userCookie, @Path("id") String articleId
+    );
+
+    @Headers({"Content-Type: application/json"})
+    @PATCH("articles/{id}")
+    Call<ResponseBody> editArticle(
+            @Header("Cookie") String userCookie, @Path("id") String articleId, @Body ArticleCreateRequest articleCreateRequest
     );
 }

@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
 import com.example.arken.model.Article
+import com.example.arken.model.ArticleCreateRequest
 import com.example.arken.util.RetroClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -82,7 +83,7 @@ class ArticleDetail : Fragment() {
         if (userId == prefs.getString("userId", "")) {
             editButton.visibility = View.VISIBLE
             deleteButton.visibility = View.VISIBLE
-            editButton.setOnClickListener { }
+            editButton.setOnClickListener { edit()}
             deleteButton.setOnClickListener {
                 val call: Call<ResponseBody> =
                     RetroClient.getInstance().apiService.deleteArticle(
@@ -118,8 +119,36 @@ class ArticleDetail : Fragment() {
         deleteButton.visibility = View.GONE
         saveButton.visibility=View.VISIBLE
         saveButton.setOnClickListener {
+            val call: Call<ResponseBody> =
+                RetroClient.getInstance().apiService.editArticle(
+                    prefs.getString("user_cookie", null),
+                    args.articleId, ArticleCreateRequest(text.text.toString() , title.text.toString() as String)
+                )
 
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.isSuccessful) {
+                        editButton.visibility = View.VISIBLE
+                        deleteButton.visibility = View.VISIBLE
+                        saveButton.visibility=View.GONE
+                        title.keyListener = null
+                        text.keyListener = null
+                    } else {
+                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
         }
         title.keyListener = title.getTag() as KeyListener
+        text.keyListener = text.getTag() as KeyListener
+
     }
 }
