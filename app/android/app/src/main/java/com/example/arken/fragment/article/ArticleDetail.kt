@@ -30,12 +30,13 @@ class ArticleDetail : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView =
-            inflater.inflate(R.layout.fragment_article_details, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_article_details, container, false)
         title = rootView.findViewById(R.id.article_detail_title)
         text = rootView.findViewById(R.id.article_detail_text)
-
-
+        editButton = rootView.findViewById(R.id.edit_article_button)
+        editButton.setOnClickListener { }
+        deleteButton = rootView.findViewById(R.id.delete_article_button)
+        deleteButton.setOnClickListener { }
         return rootView
     }
 

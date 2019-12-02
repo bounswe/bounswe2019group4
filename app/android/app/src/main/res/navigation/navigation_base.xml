@@ -105,7 +105,8 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_listArticleFragment_to_articleDialogFragment"
-            app:destination="@id/articleDialogFragment" />
+            app:destination="@id/articleDialogFragment"
+            app:popUpTo="@+id/listArticleFragment" />
         <action
             android:id="@+id/action_listArticleFragment_to_articleDetail"
             app:destination="@id/articleDetail" />
@@ -113,7 +114,12 @@
     <dialog
         android:id="@+id/articleDialogFragment"
         android:name="com.example.arken.fragment.article.ArticleDialogFragment"
-        android:label="ArticleDialogFragment" />
+        android:label="ArticleDialogFragment" >
+        <action
+            android:id="@+id/action_articleDialogFragment_to_articleDetail"
+            app:destination="@id/articleDetail"
+            app:popUpTo="@+id/listArticleFragment" />
+    </dialog>
     <fragment
         android:id="@+id/articleDetail"
         android:name="com.example.arken.fragment.article.ArticleDetail"
