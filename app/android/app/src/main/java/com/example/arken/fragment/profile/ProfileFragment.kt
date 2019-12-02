@@ -293,7 +293,12 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                         }
                     } else if (userCookie != "") {
                         pendingReqText.visibility = View.VISIBLE
-                        pendingReqText.text = "Pending Requests: " + profile.followRequest
+                        if(profile.followRequest==null){
+                            pendingReqText.text = "Pending Requests: " + 0
+                        }
+                        else {
+                            pendingReqText.text = "Pending Requests: " + profile.followRequest
+                        }
                         article_button.visibility = View.VISIBLE
                         pendingReqList = profile.followRequests
                     }
