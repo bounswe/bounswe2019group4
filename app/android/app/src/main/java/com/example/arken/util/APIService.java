@@ -136,4 +136,10 @@ public interface APIService {
     Call<Article> getArticle(
             @Header("Cookie") String userCookie, @Path("id") String article
     );
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("articles/{id}")
+    Call<ResponseBody> deleteArticle(
+            @Header("Cookie") String userCookie, @Path("id") String articleId
+    );
 }

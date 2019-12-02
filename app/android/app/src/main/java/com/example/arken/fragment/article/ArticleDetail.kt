@@ -10,10 +10,12 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
 import com.example.arken.model.Article
 import com.example.arken.util.RetroClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,9 +36,7 @@ class ArticleDetail : Fragment() {
         title = rootView.findViewById(R.id.article_detail_title)
         text = rootView.findViewById(R.id.article_detail_text)
         editButton = rootView.findViewById(R.id.edit_article_button)
-        editButton.setOnClickListener { }
         deleteButton = rootView.findViewById(R.id.delete_article_button)
-        deleteButton.setOnClickListener { }
         return rootView
     }
 
@@ -55,7 +55,7 @@ class ArticleDetail : Fragment() {
                     val article: Article? = response.body()
                     title.text = article?.title
                     text.text = article?.text
-
+setVisibility(article!!.userId!!)
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
                         .show()
@@ -66,5 +66,36 @@ class ArticleDetail : Fragment() {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun setVisibility(userId:String){
+        if(userId== prefs.getString("userId","")){
+            editButton.visibility=View.VISIBLE
+            deleteButton.visibility=View.VISIBLE
+            editButton.setOnClickListener { }
+            deleteButton.setOnClickListener {
+                val call: Call<ResponseBody> =
+                RetroClient.getInstance().apiService.deleteArticle(
+                    prefs.getString("user_cookie", null),
+                    args.articleId
+                )
+
+                call.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            findNavController().popBackStack()
+
+                        } else {
+                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                }) }
+
+        }
     }
 }
