@@ -1,5 +1,6 @@
 package com.example.arken.fragment.article
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
+import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.Article
 import com.example.arken.util.ArticleAdapter
 import com.example.arken.util.OnArticleClickListener
@@ -21,7 +23,7 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
     val args: ListArticleFragmentArgs by navArgs()
     private lateinit var currentLayoutManagerType: LayoutManagerType
     private lateinit var recyclerView: RecyclerView
-    private var dataset: MutableList<Article> = mutableListOf()
+    private var dataset: MutableList<Article>? = mutableListOf()
     private lateinit var articleAdapter: ArticleAdapter
     private lateinit var createArticleButton: Button
     private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -103,6 +105,16 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
         private val KEY_LAYOUT_MANAGER = "layoutManager"
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val userId = activity!!.getSharedPreferences(
+            LoginFragment.MY_PREFS_NAME,
+            Context.MODE_PRIVATE
+        ).getString("userId", "")!!
+        if (userId!=args.profile!!.user!!._id){
+            createArticleButton.visibility=View.GONE
+        }
+    }
     override fun onArticleItemClicked(id: String) {
         val action =
             ListArticleFragmentDirections.actionListArticleFragmentToArticleDetail(
