@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.Article
+import com.example.arken.model.ListArticle
 import com.example.arken.model.Profile
 import com.example.arken.util.ArticleAdapter
 import com.example.arken.util.OnArticleClickListener
@@ -67,7 +68,7 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
 
 
 
-        articleAdapter = ArticleAdapter(args.profile?.articles as MutableList<Article>, this)
+        articleAdapter = ArticleAdapter( this)
         recyclerView.adapter = articleAdapter
         articleAdapter.notifyDataSetChanged()
 
@@ -117,9 +118,10 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
             LoginFragment.MY_PREFS_NAME,
             Context.MODE_PRIVATE
         ).getString("userId", "")!!
-        if (userId!=args.profile!!.user!!._id){
+        if(args.profile!=null){
+        if (userId!=args.profile?.user!!._id){
             createArticleButton.visibility=View.GONE
-        }
+        }}
     }
     override fun onArticleItemClicked(id: String) {
         val action =
@@ -131,7 +133,10 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
 
     override fun onResume() {
         super.onResume()
-        getProfile()
+        if(args.profile==null){
+getArticlesAll()
+        }else{
+        getProfile()}
     }
 
     fun getProfile() {
@@ -161,5 +166,29 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
             }
         })
 
+    }
+
+    fun getArticlesAll(){
+        val call: Call<ListArticle> =
+            RetroClient.getInstance().apiService.getArticles(1,10)
+
+        call.enqueue(object : Callback<ListArticle> {
+            override fun onResponse(call: Call<ListArticle>, response: Response<ListArticle>) {
+                if (response.isSuccessful) {
+                    val listArticle = response.body()!!
+                    dataset=listArticle.articles as MutableList<Article>
+                    articleAdapter.dataSet=dataset!!
+                    articleAdapter.totalPages = listArticle.totalNumberOfPages!!
+                    articleAdapter.page = 1
+                    articleAdapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ListArticle>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

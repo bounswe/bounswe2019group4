@@ -7,6 +7,7 @@ import com.example.arken.model.Email;
 import com.example.arken.model.Event;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
+import com.example.arken.model.ListArticle;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.Profile;
@@ -16,6 +17,8 @@ import com.example.arken.model.User;
 import com.example.arken.model.tradingEquipment.Currency;
 import com.example.arken.model.tradingEquipment.ListCurrency;
 import com.example.arken.model.tradingEquipment.Prediction;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -150,4 +153,9 @@ public interface APIService {
     Call<ResponseBody> editArticle(
             @Header("Cookie") String userCookie, @Path("id") String articleId, @Body ArticleCreateRequest articleCreateRequest
     );
+
+    @Headers({"Content-Type: application/json"})
+    @GET("articles")
+    Call<ListArticle> getArticles(
+            @Query("page") Integer s, @Query("limit") Integer k);
 }

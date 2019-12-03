@@ -26,6 +26,9 @@
             android:id="@+id/action_eventListFragment_to_searchFragment"
             app:destination="@id/searchFragment"
             app:popUpTo="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -54,6 +57,9 @@
             android:id="@+id/action_listCurrentFragment_to_currencyFragment"
             app:destination="@id/currencyFragment"
             app:popUpTo="@+id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
     </fragment>
     <fragment
         android:id="@+id/currencyFragment"
