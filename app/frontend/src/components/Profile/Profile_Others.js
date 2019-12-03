@@ -12,6 +12,7 @@ import { Card } from 'semantic-ui-react'
 import SegmentGroup from "semantic-ui-react/dist/commonjs/elements/Segment/SegmentGroup";
 import ProfileCard from "./ProfileCard";
 import moment from 'moment';
+import user from "../../reducers/user";
 
 class Profile extends Component {
 
@@ -95,6 +96,12 @@ class Profile extends Component {
         })
     }
 
+    cancelFollowRequest(id) {
+        this.props.cancelFollow(id).then(()=> {
+            this.getProfile();
+        })
+    }
+
 
 
     render() {
@@ -121,7 +128,7 @@ class Profile extends Component {
                                 :null
                             }
                             {newProfile.followStatus === "PENDING"?
-                                <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="grey" disabled>Pending</Button>
+                                <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="grey" onClick={this.unFollowUser.bind(this, otherUser._id)}>Cancel Request</Button>
                                 :null}
                             {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
                             <Grid.Row relaxed>
@@ -220,7 +227,8 @@ const dispatchToProps = dispatch => {
         profile: params => dispatch(userActions.profile(params)),
         portfolios: params => dispatch(userActions.portfolios(params)),
         follow:params => dispatch(userActions.follow(params)),
-        unfollow:params => dispatch(userActions.unfollow(params))
+        unfollow:params => dispatch(userActions.unfollow(params)),
+        cancelFollow: params => dispatch(userActions.cancelFollow(params))
     };
 };
 
