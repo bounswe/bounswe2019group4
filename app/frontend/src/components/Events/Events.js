@@ -22,7 +22,7 @@ class Events extends Component {
             shown:[],
             shownPage:1,
             totalNumOfEvents:0,
-            eventPerPage:8,
+            eventPerPage:15,
             dateDir:false,
             impDir:false,
             dropdownItems:[],
@@ -358,10 +358,7 @@ class Events extends Component {
             !loading?(
 
                 <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center", width: "100%", margin: 30, fontWeight: "bold", fontSize: 16}} >
-                        <Header textAlign='center' style={{color: "#ffffff"}}>
-                            Events
 
-                        </Header>
                         <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
                             <thead>
                             <tr>
@@ -489,7 +486,6 @@ class Events extends Component {
                                 }else{
                                     src=OneStar;
                                 }
-
                                 return(
                                     <tr>
                                         <td>
