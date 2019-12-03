@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-image: url("./assets/background3.jpg") !important;
-  background: #1b1c1d;
+  background-attachment: fixed !important;
 }
 
 code {

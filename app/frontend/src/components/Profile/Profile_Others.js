@@ -125,11 +125,12 @@ class Profile extends Component {
                                 :null}
                             {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%"}}>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
                                     <List animated divided relaxed textAlign="left">
-                                        <List.Header as="h3">{newProfile.follower + " Followers"}</List.Header>
+                                        <List.Header as="h3" style={{color: "#c9c9c9"}}>{newProfile.follower + " Followers"}</List.Header>
                                         {newProfile.followers && newProfile.followers.map(follower => {
                                             return <List.Item icon="user"
+                                                              style={{color: "#c9c9c9"}}
                                                               onClick={()=>{history.push("/profile/"+follower.FollowingId)}}
                                                               content={follower.FollowingName + " " + follower.FollowingSurname}/>
                                         })}
@@ -139,11 +140,12 @@ class Profile extends Component {
                             }
                             {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%"}}>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%", background: "rgba(255,255,255,0.15)"}}>
                                     <List animated divided relaxed textAlign="left">
-                                        <List.Header as="h3">{newProfile.following + " Following"}</List.Header>
+                                        <List.Header as="h3" style={{color: "#c9c9c9"}}>{newProfile.following + " Following"}</List.Header>
                                         {newProfile.followings && newProfile.followings.map(follower => {
                                             return <List.Item icon="user"
+                                                              style={{color: "#c9c9c9"}}
                                                               onClick={()=>{history.push("/profile/"+follower.FollowedId)}}
                                                               content={follower.FollowedName + " " + follower.FollowedSurname} />
                                         })}
@@ -153,20 +155,21 @@ class Profile extends Component {
                             }
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <Segment color="teal" style={{margin: 20, width: "100%"}}>
-                                <Header>Articles</Header>
+                            <Segment color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
+                                <Header style={{color: "#c9c9c9"}}>Articles</Header>
                                 <Divider/>
                                 {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.articles && newProfile.articles.length>0 ?
                                     newProfile.articles.map(article => {
                                         return (
-                                            <Card style={{width: "100%"}} onClick={()=>{history.push("/articles/"+article._id)}}>
+                                            <Card style={{width: "100%", background: "rgba(255,255,255,0.15)"}} onClick={()=>{history.push("/articles/"+article._id)}}>
                                                 <Card.Content>
-                                                    <Card.Header>{article.title}</Card.Header>
-                                                    <Card.Meta type="date">{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
-                                                    <Card.Description>{article.text}</Card.Description>
+                                                    <Card.Header style={{color: "#c9c9c9"}}>{article.title}</Card.Header>
+                                                    <Card.Meta type="date" style={{color: "#c9c9c9"}}>{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
+                                                    <Card.Description style={{color: "#c9c9c9"}}>{article.text}</Card.Description>
                                                 </Card.Content>
                                                 <Card.Content extra>
-                                                    <Rating defaultRating={article.rateAverage} maxRating={5} disabled />{" by "+ article.numberOfRates + " votes"}
+                                                    <Rating defaultRating={article.rateAverage} maxRating={5} disabled icon="star inverted"/>
+                                                    <span style={{color: "#c9c9c9"}}>{" by "+ article.numberOfRates + " votes"}</span>
                                                 </Card.Content>
                                             </Card>
                                         )
@@ -176,11 +179,12 @@ class Profile extends Component {
                         </Grid.Column>
                         <Grid.Column width={5}>
                             <Grid.Row>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%"}}>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
                                     <List animated divided relaxed textAlign="left">
-                                        <List.Header as="h3">Followed Trading Equipment</List.Header>
+                                        <List.Header as="h3" style={{color: "#c9c9c9"}}>Followed Trading Equipment</List.Header>
                                         {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.followingTradings && newProfile.followingTradings.length >0 ? newProfile.followingTradings.map(teq => {
                                             return <List.Item icon="chart line"
+                                                              style={{color: "#c9c9c9"}}
                                                               onClick={()=>{history.push({pathname: "trading-equipment",state:{currency: teq.TradingEq}})}}
                                                               content={teq.TradingEq}/>
                                         }): (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <List.Item content="Can't See Followed Trading Equipment" /> : <List.Item content="No Trading Equipment Is Followed" />}
@@ -188,9 +192,9 @@ class Profile extends Component {
                                 </Segment>
                             </Grid.Row>
                             <Grid.Row>
-                                <Segment color="teal" style={{margin: 20, width: "100%"}}>
-                                    <Header>Portfolios</Header>
-                                    <Divider/>
+                                <Segment color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
+                                    <Header style={{color: "#c9c9c9"}}>Portfolios</Header>
+                                    <Divider style={{color: "#c9c9c9"}}/>
                                     {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.portfolios && newProfile.portfolios.length>0 ?
                                         newProfile.portfolios.map(portfolio => {
                                             return (

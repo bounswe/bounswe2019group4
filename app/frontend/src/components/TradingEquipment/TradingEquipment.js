@@ -15,7 +15,7 @@ class TradingEquipment extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[],numUp:0,numDown:0};
+        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[],numUp:0,numDown:0, vote: "noVote"};
     }
 
     componentWillMount() {
@@ -104,9 +104,8 @@ class TradingEquipment extends Component {
         return (
             <Grid columns={2} divided>
             <Grid.Row>
-                <Grid.Column width={4}>
-                    <Segment textAlign={"center"}>
-                <Table basic="very" celled >
+                <Grid.Column width={3} style={{margin: 20}}>
+                <Table basic="very" celled inverted style={{background: "rgba(0,0,0,0)"}} >
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Parity</Table.HeaderCell>
@@ -118,21 +117,20 @@ class TradingEquipment extends Component {
                             return (
                                 <Table.Row>
                                     <Table.Cell>{tEq.from + "/" + tEq.to}</Table.Cell>
-                                    <Table.Cell>{tEq.rate}</Table.Cell>
+                                    <Table.Cell>{Math.round(parseFloat(tEq.rate)*10000)/10000}</Table.Cell>
                                 </Table.Row>
                             )
                         })}
                     </Table.Body>
                 </Table>
-                    </Segment>
                 </Grid.Column>
-                <Grid.Column width={12}>
+                <Grid.Column width={12} style={{margin: 20}}>
                     <div style={{display:"flex",flexDirection:"column"}}>
-                    <Segment textAlign={"left"}>
                         <Grid>
                         <Grid.Row>
                             <Grid.Column width={10}>
                         <Dropdown
+                            style={{background: "rgba(255,255,255,0.2)", color: "#FFFFFF"}}
                             placeholder='Select Currency'
                             fluid
                             search
@@ -143,38 +141,44 @@ class TradingEquipment extends Component {
                             renderLabel={item =>  item.value + "/" + item.text}
                         />
                             </Grid.Column>
-                            <Grid.Column width={2}>
-                                <Button as='div' labelPosition='right'>
-                                    <Button disabled={!authService.isUserLoggedIn()} color='red' onClick={()=>this.predict(0)}>
-                                        <Icon name={"arrow down"}/>
-                                    </Button>
-                                    <Label as='a' basic color='#396D7C' pointing='left'>
-                                        <Icon color={"grey"} size={"large"}
-                                              style={{marginRight: 3}} name={"users"}/>
-                                        {this.state.numDown}
-                                    </Label>
-                                </Button>
-                            </Grid.Column>
-                            <Grid.Column width={2}>
-                                <Button as='div' labelPosition='left'>
+                            <Grid.Column width={4} style={{display: "flex", flexDirection: "column", justifyContent: "center"}}>
+                                <div style={{display: "flex", justifyContent: "center"}}>
+                                    <Grid.Column width={8}>
+                                        <Button as='div' labelPosition='right'>
+                                            <Button disabled={!authService.isUserLoggedIn()} color='red' onClick={()=>this.predict(0)}>
+                                                <Icon name={"arrow down"}/>
+                                            </Button>
+                                            <Label as='a' basic color='#396D7C' pointing='left'>
+                                                <Icon color={"grey"} size={"large"}
+                                                      style={{marginRight: 3}} name={"users"}/>
+                                                {this.state.numDown}
+                                            </Label>
+                                        </Button>
+                                    </Grid.Column>
+                                    <Grid.Column width={8}>
+                                        <Button as='div' labelPosition='left'>
 
-                                    <Label as='a' basic color='#396D7C' pointing='right'>
-                                        <Icon color={"grey"} size={"large"}
-                                              style={{marginRight: 3}} name={"users"}/>
-                                        {this.state.numUp}
-                                    </Label>
-                                    <Button disabled={!authService.isUserLoggedIn()} color='green' onClick={()=>this.predict(1)}>
-                                        <Icon name={"arrow up"}/>
-                                    </Button>
-                                </Button>
+                                            <Label as='a' basic color='#396D7C' pointing='right'>
+                                                <Icon color={"grey"} size={"large"}
+                                                      style={{marginRight: 3}} name={"users"}/>
+                                                {this.state.numUp}
+                                            </Label>
+                                            <Button disabled={!authService.isUserLoggedIn()} color='green' onClick={()=>this.predict(1)}>
+                                                <Icon name={"arrow up"}/>
+                                            </Button>
+                                        </Button>
+                                    </Grid.Column>
+                                 </div>
+                                <Grid.Row>
+                                    <span style={{color: "rgba(255,255,255,0.8)"}}>{Math.round(this.state.numUp*1000/(this.state.numUp+this.state.numDown))/10 +"% Up from "+ (this.state.numUp+this.state.numDown) + " votes"}</span>
+                                </Grid.Row>
                             </Grid.Column>
                             <Grid.Column width={2}>
                                 {authService.isUserLoggedIn() && (!following ? <Button basic color="green" onClick={this.follow.bind(this)}> + Follow</Button> : <Button basic color="red" onClick={this.follow.bind(this)}> - Unfollow</Button>)}
                             </Grid.Column>
                         </Grid.Row>
                         </Grid>
-                {teDetail && <CandleStickChart type="hybrid" data={teDetail} convertedCurrency={convertedCurrency} />}
-                    </Segment>
+                {teDetail && <div style={{textAlign: "left"}}><CandleStickChart type="hybrid" data={teDetail} convertedCurrency={convertedCurrency} /></div>}
                     <Comments type={"trading-equipment"} _id={this.state.selectedTE} resendComments={this.onChange.bind(this,{},{value:this.state.selectedTE})} data={this.state.comments}/>
                     </div>
                 </Grid.Column>
