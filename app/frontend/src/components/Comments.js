@@ -113,7 +113,7 @@ class Comments extends Component{
                                     {normalizeDate(item.date)}
                                     </div>
                                     </div>
-                                    {user.loggedIn&&user._id===item.userId?(
+                                    {user && user.loggedIn&&user._id===item.userId?(
 
                                                     <Popup
                                                         flowing
@@ -175,7 +175,7 @@ class Comments extends Component{
             </div>
                 <Segment >
 
-                    {this.state.user.loggedIn?
+                    {this.state.user&&this.state.user.loggedIn?
                         (<Form >
                             <Form.TextArea maxLength={1000} style={{borderWidth:1,borderColor:"gray"}} value={this.state.text}  onChange={(item)=>this.setState({rest:1000-item.target.value.length,text:item.target.value})}/>
 
