@@ -134,9 +134,16 @@ export function acceptFollow(path) {
         type:"ACCEPT_FOLLOW_REQUEST",
         payload: userService.acceptFollow(path)
     };
-}export function rejectFollow(path) {
+}
+export function rejectFollow(path) {
     return {
         type:"REJECT_FOLLOW_REQUEST",
         payload: userService.rejectFollow(path)
+    };
+}
+export function cancelFollow(path) {
+    return {
+        type:"CANCEL_FOLLOW_REQUEST",
+        payload: userService.cancelFollow(path)
     };
 }
