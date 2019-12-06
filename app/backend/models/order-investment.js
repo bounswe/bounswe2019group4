@@ -25,6 +25,11 @@ let OrderInvestment = mongoose.model('OrderInvestment', {
   rate: {
     type: Number,
     require: true
+  },
+
+  compare: {
+    type: String,
+    require: true
   }
 });
 

@@ -73,7 +73,7 @@ router.get('/order', [
   Check controller function for more detail
 */
 router.post('/order', [
-  validateBody(['currency', 'amount', 'type', 'rate']),
+  validateBody(['currency', 'amount', 'type', 'rate', 'compare']),
   isAuthenticated,
   isTrader,
   modelBinder(OrderInvestment, 'OrderInvestment')], investmentController.createOrder)

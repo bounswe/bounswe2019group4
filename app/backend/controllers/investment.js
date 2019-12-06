@@ -218,6 +218,7 @@ module.exports.createOrder = async (request, response) => {
   let currency = request.body.currency.toUpperCase()
 
   let type = request.body.type.toUpperCase()
+  let compare = request.body.compare.toUpperCase()
 
   if(type != "BUY" && type != "SELL"){
     return response.status(400).send({
@@ -225,10 +226,18 @@ module.exports.createOrder = async (request, response) => {
     })
   }
 
+  if(compare != "HIGHER" && compare != "LOWER"){
+    return response.status(400).send({
+      errmsg: "Compare of order must either HIGHER or LOWER"
+    })
+  }
+
   let order = new OrderInvestment({
     ...request.body,
     userId: request.session['user']._id,
-    type: type
+    type: type,
+    compare: compare,
+    currency: currency
   })
 
   order.save().then(doc => {
