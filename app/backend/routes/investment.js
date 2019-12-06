@@ -9,6 +9,15 @@ const { InvestmentHistory } = require('../models/investment-history')
 const { validateBody } = require('../controllers/middleware')
 
 /*
+  Get endpoint for investment history of that user.
+  Check controller function for more detail
+*/
+router.get('/', [
+  isAuthenticated,
+  isTrader,
+  modelBinder(InvestmentHistory, 'InvestmentHistory')], investmentController.getHistory)
+
+/*
   Post endpoint for deposit money.
   Check controller function for more detail
 */
@@ -20,7 +29,6 @@ router.post('/deposit', [
   [InvestmentHistory, 'InvestmentHistory'],
   [UserAccount, 'UserAccount']
 ])], investmentController.depositMoney)
-
 
 /*
   Post endpoint for invest for equipment.

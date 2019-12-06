@@ -1,6 +1,28 @@
 const { checkIBAN } = require('../utils')
 
   /*
+    Get method for list all investment history of such user.
+  */
+module.exports.getHistory = async (request, response) => {
+  let InvestmentHistory = request.models['InvestmentHistory']
+
+  const limit = parseInt(request.query.limit || 10)
+  const skip = (parseInt(request.query.page || 1) - 1) * limit
+
+  try {
+    histories = await InvestmentHistory.find({userId: request.session['user']._id}, undefined, {skip, limit}).sort({date: -1})
+    const totalNumberOfHistories = await InvestmentHistory.countDocuments({userId: request.session['user']._id})
+    return response.send({
+      totalNumberOfHistories,
+      totalNumberOfPages: Math.ceil(totalNumberOfHistories / limit),
+      historiesInPage: histories.length,
+      histories
+    }); 
+  } catch(e) {
+    console.log(e)
+  }
+}
+  /*
     Post method for deposit money into account.
     It adds money to your account.
   */
