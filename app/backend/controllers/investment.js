@@ -22,6 +22,7 @@ module.exports.getHistory = async (request, response) => {
     console.log(e)
   }
 }
+
   /*
     Post method for deposit money into account.
     It adds money to your account.
@@ -193,6 +194,19 @@ module.exports.sell = async (request, response) => {
       return response.status(400).send(error);
     })
   }
+}
+
+  /*
+    Get method for list all investment history of such user.
+  */
+module.exports.getOrders = async (request, response) => {
+  let OrderInvestment = request.models['OrderInvestment']
+
+  const limit = parseInt(request.query.limit || 10)
+  const skip = (parseInt(request.query.page || 1) - 1) * limit
+
+  orders = await OrderInvestment.find({userId: request.session['user']._id})
+  return response.send({orders})
 }
 
   /*

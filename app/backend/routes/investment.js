@@ -59,6 +59,14 @@ router.post('/sell', [
   [InvestmentHistory, 'InvestmentHistory']
 ])], investmentController.sell)
 
+/*
+  Get endpoint for listing order investments.
+  Check controller function for more detail
+*/
+router.get('/order', [
+  isAuthenticated,
+  isTrader,
+  modelBinder(OrderInvestment, 'OrderInvestment')], investmentController.getOrders)
 
 /*
   Post endpoint for order investment.
