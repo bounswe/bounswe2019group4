@@ -131,7 +131,7 @@ getEventsFromAPI = schedule.scheduleJob('*/30 * * * *', function() {
   Get method for Trading Equipments.
   Using 3rd party API, it saves trading equipments to database.
 */
-getTradingEquipmentsFromAPI = schedule.scheduleJob('0 0 23 * *', function() {
+getTradingEquipmentsFromAPI = schedule.scheduleJob('0 23 * * *', function() {
   isOnlyToday = true
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
@@ -349,7 +349,7 @@ module.exports.findUserArticle = async spec => {
     }}))
 }
 
-resultPredictions = schedule.scheduleJob('0 0 23 * *', async function() {
+resultPredictions = schedule.scheduleJob('0 23 * * *', async function() {
 
   // Get currencies
   const currencies = await CurrentTradingEquipment.find()
