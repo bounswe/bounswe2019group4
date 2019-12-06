@@ -32,5 +32,18 @@ router.post('/buy', [
   [UserAccount, 'UserAccount']
 ])], investmentController.buy)
 
+/*
+  Post endpoint for sell equipment.
+  Check controller function for more detail
+*/
+router.post('/sell', [
+  validateBody(['currency', 'amount']),
+  isAuthenticated,
+  isTrader,
+  multipleModelBinder([
+  [CurrentTradingEquipment, 'CurrentTradingEquipment'],
+  [UserAccount, 'UserAccount']
+])], investmentController.sell)
+
 
 module.exports = router
