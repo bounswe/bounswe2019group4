@@ -223,3 +223,20 @@ module.exports.createOrder = async (request, response) => {
     return response.status(400).send()
   })
 }
+
+  /*
+    Delete method for deleting an order investment.
+  */
+module.exports.deleteOrder = async (request, response) => {
+  let OrderInvestment = request.models['OrderInvestment']
+
+  OrderInvestment.deleteOne({_id: request.params['id'], userId: request.session['user']._id}, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+
+    return response.send(204);
+  })
+}

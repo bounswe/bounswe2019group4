@@ -70,5 +70,14 @@ router.post('/order', [
   isTrader,
   modelBinder(OrderInvestment, 'OrderInvestment')], investmentController.createOrder)
 
+/*
+  Post endpoint for order investment.
+  Check controller function for more detail
+*/
+router.delete('/order/:id', [
+  isAuthenticated,
+  isTrader,
+  modelBinder(OrderInvestment, 'OrderInvestment')], investmentController.deleteOrder)
+
 
 module.exports = router
