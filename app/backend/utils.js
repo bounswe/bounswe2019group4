@@ -3,6 +3,7 @@ const IBAN = require('iban');
 const commonPassword = require('common-password');
 const request = require('request');
 const levenstein = require('leven')
+const schedule = require('node-schedule');
 
 const {UserFollow} = require('./models/user-follow')
 const {User} = require('./models/user')
@@ -25,31 +26,22 @@ module.exports.scheduleAPICalls = function(){
   /*
   Get method for events in every 30 minutes
   */
-  setInterval( () => {
-    getEventsFromAPI()
-  }, 30*60*1000);
+  getEventsFromAPI
 
   /*
   Get method for trading equipments every day
   */
-  setInterval( () => {
-    getTradingEquipmentsFromAPI(true)
-  }, 24*60*60*1000);
+  getTradingEquipmentsFromAPI
 
   /*
   Get method for current trading equipments values in every two hours
   */
-  setInterval( () => {
-    getCurrentTradingEquipmentsFromAPI()
-  }, 2*60*60*1000);
-
+  getCurrentTradingEquipmentsFromAPI
+  
   /*
   Result prediction method that find results everyday
   */
-  setInterval( () => {
-    resultPredictions();
-  }, 24*60*60*1000);
-
+  resultPredictions
 }
 
 /*
@@ -77,7 +69,7 @@ module.exports.checkIBAN = function(iban){
   Sum of first 10 digits mode 10 must be equals to 11th digit.
   And 10th digit is tested using TCKN test. 
 */
-module.exports.checkTCKN = function(value) {
+module.exports.checkTCKN = function(value) {  
   value = value.toString();
   
   var isEleven = /^[0-9]{11}$/.test(value);
@@ -108,8 +100,7 @@ module.exports.checkTCKN = function(value) {
   Get method for events.
   Using 3rd party API, it saves events to database.
 */
-function getEventsFromAPI() {
-
+getEventsFromAPI = schedule.scheduleJob('*/30 * * * *', function() {
   request(url, (error, response, body) => {
     // If there is an error
     if(error){
@@ -134,14 +125,14 @@ function getEventsFromAPI() {
     }
 
   })
-}
+});
 
 /*
   Get method for Trading Equipments.
   Using 3rd party API, it saves trading equipments to database.
 */
-function getTradingEquipmentsFromAPI(isOnlyToday) {
-
+getTradingEquipmentsFromAPI = schedule.scheduleJob('0 0 23 * *', function() {
+  isOnlyToday = true
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
     let currencies = contents.split('\n'); // form an array consist of currencies
@@ -225,14 +216,14 @@ function getTradingEquipmentsFromAPI(isOnlyToday) {
     start();
   })
   
-}
+});
 
 
 /*
   Get method for Trading Equipments.
   Using 3rd party API, it saves current trading equipments values to database.
 */
-async function getCurrentTradingEquipmentsFromAPI() {
+getCurrentTradingEquipmentsFromAPI = schedule.scheduleJob('0 */2 * * *', async function() {
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
     let currencies = contents.split('\n'); // form an array consist of currencies
@@ -295,7 +286,7 @@ async function getCurrentTradingEquipmentsFromAPI() {
     }
     start();
   })
-}
+});
 
 // async for each funtion
 async function asyncForEach(array, callback) {
@@ -358,7 +349,7 @@ module.exports.findUserArticle = async spec => {
     }}))
 }
 
-async function resultPredictions() {
+resultPredictions = schedule.scheduleJob('0 0 23 * *', async function() {
 
   // Get currencies
   const currencies = await CurrentTradingEquipment.find()
@@ -441,7 +432,7 @@ async function resultPredictions() {
     });
 
   }
-}
+});
 
 module.exports.filterData = (data, fields, keyword, max_ = 1) => {
   keyword = keyword.toLowerCase()
