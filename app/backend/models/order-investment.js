@@ -12,7 +12,7 @@ let OrderInvestment = mongoose.model('OrderInvestment', {
     require: true
   },
 
-  equipment:{
+  currency:{
     type: String,
     require: true
   },

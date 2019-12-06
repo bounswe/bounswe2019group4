@@ -6,6 +6,7 @@ const {isAuthenticated, isTrader} = require('../controllers/auth')
 const { UserAccount } = require('../models/user-account')
 const { CurrentTradingEquipment } = require('../models/current-trading-eq')
 const { InvestmentHistory } = require('../models/investment-history')
+const { OrderInvestment } = require('../models/order-investment')
 const { validateBody } = require('../controllers/middleware')
 
 /*
@@ -57,6 +58,17 @@ router.post('/sell', [
   [UserAccount, 'UserAccount'],
   [InvestmentHistory, 'InvestmentHistory']
 ])], investmentController.sell)
+
+
+/*
+  Post endpoint for order investment.
+  Check controller function for more detail
+*/
+router.post('/order', [
+  validateBody(['currency', 'amount', 'type', 'rate']),
+  isAuthenticated,
+  isTrader,
+  modelBinder(OrderInvestment, 'OrderInvestment')], investmentController.createOrder)
 
 
 module.exports = router

@@ -194,3 +194,32 @@ module.exports.sell = async (request, response) => {
     })
   }
 }
+
+  /*
+    Post method for creating an order investment.
+  */
+module.exports.createOrder = async (request, response) => {
+  let OrderInvestment = request.models['OrderInvestment']
+  
+  let currency = request.body.currency.toUpperCase()
+
+  let type = request.body.type.toUpperCase()
+
+  if(type != "BUY" && type != "SELL"){
+    return response.status(400).send({
+      errmsg: "Type of order must either BUY or SELL"
+    })
+  }
+
+  let order = new OrderInvestment({
+    ...request.body,
+    userId: request.session['user']._id,
+    type: type
+  })
+
+  order.save().then(doc => {
+    return response.status(204).send()
+  }).catch(error => {
+    return response.status(400).send()
+  })
+}
