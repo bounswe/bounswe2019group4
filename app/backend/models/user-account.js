@@ -2,6 +2,12 @@ const {mongoose} =  require('../db');  // The mongodb connector library
 
 let UserAccount = mongoose.model('UserAccount', {
 
+  userId: {
+    type: String,
+    require: true,
+    unique: true
+  },
+
   EUR: {
     type: Number,
     default: 0
