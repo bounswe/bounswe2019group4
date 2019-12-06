@@ -6,6 +6,7 @@ const { checkIBAN } = require('../utils')
   */
 module.exports.depositMoney = async (request, response) => {
   let UserAccount = request.models['UserAccount']
+  let InvestmentHistory = request.models['InvestmentHistory']
 
   if(!checkIBAN(request.body.iban)){
     return response.status(400).send({ errmsg: 'Enter valid IBAN.' })
@@ -22,6 +23,18 @@ module.exports.depositMoney = async (request, response) => {
 
     account.save()
       .then(doc => {
+        let history = new InvestmentHistory({
+          userId: request.session['user']._id,
+          text: request.body.amount + " " + currency+ " deposited to account.",
+          date: new Date()
+        })
+
+        history.save().then(doc => {
+
+        }).catch(error => {
+          console.log(error)
+        })
+
       return response.status(200).send(doc);
     }).catch(error => {
       return response.status(400).send(error);
@@ -30,6 +43,18 @@ module.exports.depositMoney = async (request, response) => {
     currentAmount = row[currency]
     newAmount = currentAmount + request.body.amount
     UserAccount.updateOne({userId: request.session['user']._id, [currency]: newAmount}).then(async doc => {
+
+      let history = new InvestmentHistory({
+          userId: request.session['user']._id,
+          text: request.body.amount + " " + currency+ " deposited to account.",
+          date: new Date()
+        })
+
+        history.save().then(doc => {
+
+        }).catch(error => {
+          console.log(error)
+        })        
       account = await UserAccount.findOne({userId : request.session['user']._id})
       return response.status(200).send(account)
     }).catch(error => {
@@ -46,6 +71,7 @@ module.exports.depositMoney = async (request, response) => {
 module.exports.buy = async (request, response) => {
   let UserAccount = request.models['UserAccount']
   let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
+  let InvestmentHistory = request.models['InvestmentHistory']
 
   let currency = request.body.currency.toUpperCase()
 
@@ -72,6 +98,18 @@ module.exports.buy = async (request, response) => {
     }
     
     UserAccount.updateOne({userId: request.session['user']._id, [currency]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
+      let history = new InvestmentHistory({
+        userId: request.session['user']._id,
+        text: request.body.amount + " " + currency+ " bougth.",
+        date: new Date()
+      })
+
+      history.save().then(doc => {
+
+      }).catch(error => {
+        console.log(error)
+      })
+
       account = await UserAccount.findOne({userId : request.session['user']._id})
       return response.status(200).send(account)
     }).catch(error => {
@@ -87,6 +125,7 @@ module.exports.buy = async (request, response) => {
 module.exports.sell = async (request, response) => {
   let UserAccount = request.models['UserAccount']
   let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
+  let InvestmentHistory = request.models['InvestmentHistory']
 
   let currency = request.body.currency.toUpperCase()
 
@@ -114,6 +153,18 @@ module.exports.sell = async (request, response) => {
 
     
     UserAccount.updateOne({userId: request.session['user']._id, [currency]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
+      let history = new InvestmentHistory({
+        userId: request.session['user']._id,
+        text: request.body.amount + " " + currency+ " sold.",
+        date: new Date()
+      })
+
+      history.save().then(doc => {
+
+      }).catch(error => {
+        console.log(error)
+      })
+
       account = await UserAccount.findOne({userId : request.session['user']._id})
       return response.status(200).send(account)
     }).catch(error => {

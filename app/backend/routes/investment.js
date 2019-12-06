@@ -5,6 +5,7 @@ const {modelBinder, multipleModelBinder} = require('../controllers/db')
 const {isAuthenticated, isTrader} = require('../controllers/auth')
 const { UserAccount } = require('../models/user-account')
 const { CurrentTradingEquipment } = require('../models/current-trading-eq')
+const { InvestmentHistory } = require('../models/investment-history')
 const { validateBody } = require('../controllers/middleware')
 
 /*
@@ -15,8 +16,10 @@ router.post('/deposit', [
   validateBody(['amount', 'iban', 'currency']),
   isAuthenticated,
   isTrader,
-  modelBinder(UserAccount, 'UserAccount')
-  ], investmentController.depositMoney)
+  multipleModelBinder([
+  [InvestmentHistory, 'InvestmentHistory'],
+  [UserAccount, 'UserAccount']
+])], investmentController.depositMoney)
 
 
 /*
@@ -29,7 +32,8 @@ router.post('/buy', [
   isTrader,
   multipleModelBinder([
   [CurrentTradingEquipment, 'CurrentTradingEquipment'],
-  [UserAccount, 'UserAccount']
+  [UserAccount, 'UserAccount'],
+  [InvestmentHistory, 'InvestmentHistory']
 ])], investmentController.buy)
 
 /*
@@ -42,7 +46,8 @@ router.post('/sell', [
   isTrader,
   multipleModelBinder([
   [CurrentTradingEquipment, 'CurrentTradingEquipment'],
-  [UserAccount, 'UserAccount']
+  [UserAccount, 'UserAccount'],
+  [InvestmentHistory, 'InvestmentHistory']
 ])], investmentController.sell)
 
 
