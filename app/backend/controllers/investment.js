@@ -8,10 +8,13 @@ module.exports.getHistory = async (request, response) => {
   let UserAccount = request.models['UserAccount']
   let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
 
+  // It contains main page of investments.
+  // It finds user's investment history, current exchange rates, and user's account.
   histories = await InvestmentHistory.find({userId: request.session['user']._id}).sort({date: -1})
   currentRates = await CurrentTradingEquipment.find({})
   account = await UserAccount.findOne({userId: request.session['user']._id})
 
+  // If user has no account yet, it returns empty account.
   if(!account){
     account = new UserAccount({
       userId: request.session['user']._id
@@ -33,13 +36,16 @@ module.exports.depositMoney = async (request, response) => {
   let UserAccount = request.models['UserAccount']
   let InvestmentHistory = request.models['InvestmentHistory']
 
+  // If IBAN is not valid, it rejects.
   if(!checkIBAN(request.body.iban)){
     return response.status(400).send({ errmsg: 'Enter valid IBAN.' })
   }
 
   let currency = request.body.currency.toUpperCase()
 
+  // Find user account.
   row = await UserAccount.findOne({userId : request.session['user']._id})
+  // If user has no account yet, create new.
   if(!row){
     let account = new UserAccount({
       userId: request.session['user']._id,
@@ -48,6 +54,7 @@ module.exports.depositMoney = async (request, response) => {
 
     account.save()
       .then(doc => {
+        // Add this action to investment history.
         let history = new InvestmentHistory({
           userId: request.session['user']._id,
           text: request.body.amount + " " + currency+ " deposited to account.",
@@ -65,10 +72,13 @@ module.exports.depositMoney = async (request, response) => {
       return response.status(400).send(error);
     });
   } else{
+    // If user has already an account.
     currentAmount = row[currency]
     newAmount = currentAmount + request.body.amount
+    // It updated related currency's value.
     UserAccount.updateOne({userId: request.session['user']._id, [currency]: newAmount}).then(async doc => {
 
+      // Add this action to investment history.
       let history = new InvestmentHistory({
           userId: request.session['user']._id,
           text: request.body.amount + " " + currency+ " deposited to account.",
@@ -100,12 +110,15 @@ module.exports.buy = async (request, response) => {
 
   let currency = request.body.currency.toUpperCase()
 
+  // Find user's account.
   row = await UserAccount.findOne({userId : request.session['user']._id})
+  // If user has no account yet, it rejects. User must have account in order to buy a currency
   if(!row){
     return response.status(400).send({
       errmsg: "User has no account yet!"
     });
   } else{
+    // It makes some calculations, finds the amount of decreasing in EUR using exchange rates.
     let EUR_AMOUNT = row['EUR']
     let TEQ_AMOUNT = row[currency]
 
@@ -116,6 +129,7 @@ module.exports.buy = async (request, response) => {
     let FINAL_EUR = EUR_AMOUNT - DECREASE_EUR
     let FINAL_TEQ = TEQ_AMOUNT + request.body.amount
 
+    // If user has no enought monet, it rejects
     if(FINAL_EUR < 0){
       return response.status(400).send({
         errmsg: "Not enough money in EUR."
@@ -123,6 +137,8 @@ module.exports.buy = async (request, response) => {
     }
     
     UserAccount.updateOne({userId: request.session['user']._id, [currency]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
+      
+      // It adds this action to history.
       let history = new InvestmentHistory({
         userId: request.session['user']._id,
         text: request.body.amount + " " + currency+ " bougth.",
@@ -144,8 +160,8 @@ module.exports.buy = async (request, response) => {
 }
 
   /*
-    Post method for buy currency.
-    It buys that currency and adds into your account.
+    Post method for sell currency.
+    It sell that currency and deletes from your account.
   */
 module.exports.sell = async (request, response) => {
   let UserAccount = request.models['UserAccount']
@@ -154,15 +170,19 @@ module.exports.sell = async (request, response) => {
 
   let currency = request.body.currency.toUpperCase()
 
+  // Find user's account.
   row = await UserAccount.findOne({userId : request.session['user']._id})
+  // If user has no account yet, it rejects. User must have account in order to buy a currency
   if(!row){
     return response.status(400).send({
       errmsg: "User has no account yet!"
     });
   } else{
+    // It makes some calculations, finds the amount of increasing in EUR using exchange rates.
     let EUR_AMOUNT = row['EUR']
     let TEQ_AMOUNT = row[currency]
 
+    // If user has no enough money, it rejects
     if(request.body.amount > TEQ_AMOUNT){
       return response.status(400).send({
         errmsg: "Not enough money in " + currency
@@ -178,6 +198,8 @@ module.exports.sell = async (request, response) => {
 
     
     UserAccount.updateOne({userId: request.session['user']._id, [currency]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
+      
+      // It adds this action to history.
       let history = new InvestmentHistory({
         userId: request.session['user']._id,
         text: request.body.amount + " " + currency+ " sold.",

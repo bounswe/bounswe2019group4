@@ -1,5 +1,9 @@
 const {mongoose} =  require('../db');  // The mongodb connector library
 
+/*
+  Model in order to keep user's order investments.
+  User can set order for specific value of trading equipments.
+*/
 let OrderInvestment = mongoose.model('OrderInvestment', {
 
   userId: {
