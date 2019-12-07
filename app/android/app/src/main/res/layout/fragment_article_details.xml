@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-    <TextView
+    <EditText
+
         android:id="@+id/article_detail_title"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -24,15 +25,16 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/edit_article_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/article_detail_title">
 
-        <TextView
+        <EditText
+
             android:id="@+id/article_detail_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="24dp"
             android:layout_marginBottom="32dp"
             android:lineSpacingMultiplier="1.5"
@@ -40,7 +42,47 @@
             android:textSize="16sp" />
     </ScrollView>
 
+    <Button
+        android:id="@+id/edit_article_button"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        android:layout_height="40dp"
+        android:layout_marginEnd="3dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Edit Article"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/delete_article_button"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/delete_article_button"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="3dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Delete Article"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/edit_article_button" />
 
-
+    <Button
+        android:id="@+id/articleeditsave"
+        android:visibility="gone"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/login_background"
+        android:text="Save"
+        android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/articleRecyclerView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

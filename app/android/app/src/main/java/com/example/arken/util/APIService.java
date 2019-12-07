@@ -1,11 +1,13 @@
 package com.example.arken.util;
 
 import com.example.arken.model.Article;
+import com.example.arken.model.ArticleCreateRequest;
 import com.example.arken.model.Comment;
 import com.example.arken.model.Email;
 import com.example.arken.model.Event;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
+import com.example.arken.model.ListArticle;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.Profile;
@@ -16,6 +18,8 @@ import com.example.arken.model.tradingEquipment.Currency;
 import com.example.arken.model.tradingEquipment.ListCurrency;
 import com.example.arken.model.tradingEquipment.Prediction;
 
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,6 +27,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -136,4 +141,21 @@ public interface APIService {
     Call<Article> getArticle(
             @Header("Cookie") String userCookie, @Path("id") String article
     );
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("articles/{id}")
+    Call<ResponseBody> deleteArticle(
+            @Header("Cookie") String userCookie, @Path("id") String articleId
+    );
+
+    @Headers({"Content-Type: application/json"})
+    @PATCH("articles/{id}")
+    Call<ResponseBody> editArticle(
+            @Header("Cookie") String userCookie, @Path("id") String articleId, @Body ArticleCreateRequest articleCreateRequest
+    );
+
+    @Headers({"Content-Type: application/json"})
+    @GET("articles")
+    Call<ListArticle> getArticles(
+            @Query("page") Integer s, @Query("limit") Integer k);
 }

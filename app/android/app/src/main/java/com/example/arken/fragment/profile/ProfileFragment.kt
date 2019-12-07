@@ -258,7 +258,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
                     profile = response.body()!!
-
+                    article_button.visibility = View.VISIBLE
                     name_textView.text = profile.user?.name
                     surname_textView.text = profile.user?.surname
                     followerCountText.text = "" + profile.follower

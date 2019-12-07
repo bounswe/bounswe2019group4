@@ -1,6 +1,5 @@
 package com.example.arken.fragment.article
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +10,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.arken.R
 import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.Article
+import com.example.arken.model.Profile
 import com.example.arken.util.RetroClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -24,7 +26,7 @@ import retrofit2.Response
  * A simple [Fragment] subclass.
  */
 class ArticleDialogFragment : DialogFragment() {
-
+private lateinit var profile:Profile
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,7 +67,7 @@ class ArticleDialogFragment : DialogFragment() {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
                             Toast.makeText(context, "Article Created.", Toast.LENGTH_SHORT).show()
-
+                            getProfile()
 
                         } else {
                             Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
@@ -78,6 +80,7 @@ class ArticleDialogFragment : DialogFragment() {
                 })
 
 
+
             }
         })
 
@@ -85,6 +88,36 @@ class ArticleDialogFragment : DialogFragment() {
 
         return rootView
     }
+    fun getProfile() {
 
+        val userCookie = activity!!.getSharedPreferences(
+            LoginFragment.MY_PREFS_NAME,
+            Context.MODE_PRIVATE
+        )
+            .getString("user_cookie", "")
+        val call: Call<Profile> =
+            RetroClient.getInstance().apiService.getProfile(userCookie, activity!!.getSharedPreferences(
+                LoginFragment.MY_PREFS_NAME,
+                Context.MODE_PRIVATE
+            )
+                .getString("userId", ""))
+
+        call.enqueue(object : Callback<Profile> {
+            override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
+                if (response.isSuccessful) {
+                    profile = response.body()!!
+                    val acton = ArticleDialogFragmentDirections.actionArticleDialogFragmentToArticleDetail(profile.articles.last()._id!!)
+                    findNavController().navigate(acton)
+                } else {
+                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Profile>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    }
 
 }
