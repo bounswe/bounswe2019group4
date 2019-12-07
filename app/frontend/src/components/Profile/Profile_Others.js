@@ -173,7 +173,8 @@ class Profile extends Component {
                                                 </Card.Content>
                                             </Card>
                                         )
-                                    }) : (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? "Can't See User's Articles" : "No Article Created!"
+                                    }) : (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <span style={{color: "#c9c9c9"}}>Can't See User's Articles</span>
+                                        : <span style={{color: "#c9c9c9"}}>No Article Created!</span>
                                 }
                             </Segment>
                         </Grid.Column>
@@ -187,7 +188,7 @@ class Profile extends Component {
                                                               style={{color: "#c9c9c9"}}
                                                               onClick={()=>{history.push({pathname: "trading-equipment",state:{currency: teq.TradingEq}})}}
                                                               content={teq.TradingEq}/>
-                                        }): (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <List.Item content="Can't See Followed Trading Equipment" /> : <List.Item content="No Trading Equipment Is Followed" />}
+                                        }): (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <List.Item style={{color: "#c9c9c9"}} content="Can't See Followed Trading Equipment" /> : <List.Item style={{color: "#c9c9c9"}} content="No Trading Equipment Is Followed" />}
                                     </List>
                                 </Segment>
                             </Grid.Row>
@@ -198,15 +199,16 @@ class Profile extends Component {
                                     {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.portfolios && newProfile.portfolios.length>0 ?
                                         newProfile.portfolios.map(portfolio => {
                                             return (
-                                                <Card style={{width: "100%"}}>
+                                                <Card style={{width: "100%"}} style={{color: "#c9c9c9"}}>
                                                     <Card.Content>
-                                                        <Card.Header>{portfolio.title}</Card.Header>
-                                                        <Card.Description>{portfolio.definition}</Card.Description>
+                                                        <Card.Header style={{color: "#c9c9c9"}}>{portfolio.title}</Card.Header>
+                                                        <Card.Description style={{color: "#c9c9c9"}}>{portfolio.definition}</Card.Description>
                                                     </Card.Content>
 
                                                 </Card>
                                             )
-                                        }) : (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? "Can't See User's Portfolios" : "No Portfolio Created!"
+                                        }) : (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <span style={{color: "#c9c9c9"}}>Can't See User's Portfolios</span>
+                                            : <span style={{color: "#c9c9c9"}}>No Portfolio Created!</span>
                                     }
                                 </Segment>
                             </Grid.Row>

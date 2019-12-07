@@ -170,7 +170,7 @@ class TradingEquipment extends Component {
                                     </Grid.Column>
                                  </div>
                                 <Grid.Row>
-                                    <span style={{color: "rgba(255,255,255,0.8)"}}>{Math.round(this.state.numUp*1000/(this.state.numUp+this.state.numDown))/10 +"% Up from "+ (this.state.numUp+this.state.numDown) + " votes"}</span>
+                                    <span style={{color: "rgba(255,255,255,0.8)"}}>{Math.round(this.state.numUp*1000/(this.state.numUp+this.state.numDown+0.000000000001))/10 +"% Up from "+ (this.state.numUp+this.state.numDown) + " votes"}</span>
                                 </Grid.Row>
                             </Grid.Column>
                             <Grid.Column width={2}>
