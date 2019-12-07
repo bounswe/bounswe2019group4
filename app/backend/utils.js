@@ -13,6 +13,9 @@ const {TradingEquipmentPrediction} = require('./models/trading-eq-prediction');
 const {Comment} = require('./models/comment');
 const {Article} = require('./models/article');
 const {CurrentTradingEquipment} = require('./models/current-trading-eq');
+const {OrderInvestment} = require('./models/order-investment');
+const { UserAccount } = require('./models/user-account');
+const { InvestmentHistory } = require('./models/investment-history');
 const { tradingEquipmentKey } = require('./secrets');
 
 const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest";
@@ -42,6 +45,11 @@ module.exports.scheduleAPICalls = function(){
   Result prediction method that find results every 2 hours.
   */
   resultPredictions
+  
+  /*
+  Handle investment orders method that handles every 2 hours.
+  */
+  handleInvestmentOrders
 }
 
 /*
@@ -214,10 +222,8 @@ getTradingEquipmentsFromAPI = schedule.scheduleJob('0 23 * * *', function() {
       });
     }
     start();
-  })
-  
+  })  
 });
-
 
 /*
   Get method for Trading Equipments.
@@ -287,6 +293,117 @@ getCurrentTradingEquipmentsFromAPI = schedule.scheduleJob('0 */2 * * *', async f
     start();
   })
 });
+
+handleInvestmentOrders = schedule.scheduleJob('4 */2 * * *', async function() {
+  orders = await OrderInvestment.find({})
+
+  for(i = 0; i < orders.length; i++){
+    let RELATED_TEQ = orders[i].currency
+    let RATE = orders[i].rate
+    let COMPARE = orders[i].compare
+    let AMOUNT = orders[i].amount
+    let TYPE = orders[i].type
+    let USER_ID = orders[i].userId
+    let ORDER_ID = orders[i]._id
+
+    currentExchange = await CurrentTradingEquipment.findOne({from : RELATED_TEQ})
+    if(currentExchange.rate >= RATE && COMPARE == "HIGHER"){
+      if(TYPE == "BUY"){
+        buyEquipment(ORDER_ID, USER_ID, currentExchange.rate, RELATED_TEQ, AMOUNT)
+      } else if(TYPE == "SELL"){
+        sellEquipment(ORDER_ID, USER_ID, currentExchange.rate, RELATED_TEQ, AMOUNT)
+      }
+    } else if(currentExchange.rate <= RATE && COMPARE == "LOWER"){
+      if(TYPE == "BUY"){
+        buyEquipment(ORDER_ID, USER_ID, currentExchange.rate, RELATED_TEQ, AMOUNT)
+      } else if(TYPE == "SELL"){
+        sellEquipment(ORDER_ID, USER_ID, currentExchange.rate, RELATED_TEQ, AMOUNT)
+      }
+    }
+  }
+});
+
+async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
+  OrderInvestment.deleteOne({_id: ORDER_ID, userId: USER_ID}, (err, results) => {
+    if(err){
+      console.log(err)
+    }
+  })
+
+  row = await UserAccount.findOne({userId : USER_ID})
+  if(!row){
+    return;
+  }
+
+  let EUR_AMOUNT = row['EUR']
+  let TEQ_AMOUNT = row[TEQ]
+
+  let DECREASE_EUR = RATE * AMOUNT
+
+  let FINAL_EUR = EUR_AMOUNT - DECREASE_EUR
+  let FINAL_TEQ = TEQ_AMOUNT + AMOUNT
+
+  if(FINAL_EUR < 0){
+    return;
+  }
+
+  UserAccount.updateOne({userId: USER_ID, [TEQ]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
+    let history = new InvestmentHistory({
+      userId: USER_ID,
+      text: AMOUNT + " " + TEQ+ " bougth.",
+      date: new Date()
+    })
+
+    history.save().then(doc => {
+
+    }).catch(error => {
+      console.log(error)
+    })
+    }).catch(error => {
+      console.log(error)
+  })
+}
+
+async function sellEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
+  OrderInvestment.deleteOne({_id: ORDER_ID, userId: USER_ID}, (err, results) => {
+    if(err){
+      console.log(err)
+    }
+  })
+
+  row = await UserAccount.findOne({userId : USER_ID})
+  if(!row){
+    return;
+  }
+
+  let EUR_AMOUNT = row['EUR']
+  let TEQ_AMOUNT = row[TEQ]
+
+  if(AMOUNT > TEQ_AMOUNT){
+    return;
+  }
+
+  let INCREASE_EUR = RATE * AMOUNT
+
+  let FINAL_EUR = EUR_AMOUNT + INCREASE_EUR
+  let FINAL_TEQ = TEQ_AMOUNT - AMOUNT
+
+  UserAccount.updateOne({userId: USER_ID, [TEQ]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
+    let history = new InvestmentHistory({
+      userId: USER_ID,
+      text: AMOUNT + " " + TEQ+ " sold.",
+      date: new Date()
+    })
+
+    history.save().then(doc => {
+
+    }).catch(error => {
+      console.log(error)
+    })
+    }).catch(error => {
+      console.log(error)
+  })
+}
 
 // async for each funtion
 async function asyncForEach(array, callback) {
