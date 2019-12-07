@@ -80,7 +80,10 @@ router.post('/order', [
   validateBody(['currency', 'amount', 'type', 'rate', 'compare']),
   isAuthenticated,
   isTrader,
-  modelBinder(OrderInvestment, 'OrderInvestment')], investmentController.createOrder)
+  multipleModelBinder([
+  [CurrentTradingEquipment, 'CurrentTradingEquipment'],
+  [OrderInvestment, 'OrderInvestment'],
+])], investmentController.createOrder)
 
 /*
   Post endpoint for order investment.

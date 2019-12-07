@@ -110,6 +110,12 @@ module.exports.buy = async (request, response) => {
 
   let currency = request.body.currency.toUpperCase()
 
+  if(currency == "EUR"){
+    return response.status(400).send({
+      errmsg: "User can not buy EUR."
+    })
+  }
+
   // Find user's account.
   row = await UserAccount.findOne({userId : request.session['user']._id})
   // If user has no account yet, it rejects. User must have account in order to buy a currency
@@ -169,6 +175,12 @@ module.exports.sell = async (request, response) => {
   let InvestmentHistory = request.models['InvestmentHistory']
 
   let currency = request.body.currency.toUpperCase()
+
+  if(currency == "EUR"){
+    return response.status(400).send({
+      errmsg: "User can not sell EUR."
+    })
+  }
 
   // Find user's account.
   row = await UserAccount.findOne({userId : request.session['user']._id})
@@ -238,8 +250,15 @@ module.exports.getOrders = async (request, response) => {
   */
 module.exports.createOrder = async (request, response) => {
   let OrderInvestment = request.models['OrderInvestment']
-  
+  let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
+
   let currency = request.body.currency.toUpperCase()
+
+  if(currency == "EUR"){
+    return response.status(400).send({
+      errmsg: "User can not order for EUR."
+    })
+  }
 
   let type = request.body.type.toUpperCase()
   let compare = request.body.compare.toUpperCase()
@@ -253,6 +272,20 @@ module.exports.createOrder = async (request, response) => {
   if(compare != "HIGHER" && compare != "LOWER"){
     return response.status(400).send({
       errmsg: "Compare of order must either HIGHER or LOWER"
+    })
+  }
+
+  let currentTeq = await CurrentTradingEquipment.findOne({from: currency, to: 'EUR'})
+
+  if(parseFloat(currentTeq.rate) > request.body.rate && compare == "HIGHER"){
+    return response.status(400).send({
+      errmsg: "Exchange rate is already higher than given rate."
+    })
+  }
+
+  if(parseFloat(currentTeq.rate) < request.body.rate && compare == "LOWER"){
+    return response.status(400).send({
+      errmsg: "Exchange rate is already lower than given rate."
     })
   }
 
