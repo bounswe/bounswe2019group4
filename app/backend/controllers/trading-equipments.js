@@ -20,16 +20,14 @@ module.exports.getTradingEquipment = async (request, response) => {
     UserId = request.session['user']._id
     result = await TradingEqFollow.findOne({UserId , TradingEq})
     row = await TradingEqPrediction.find({UserId, TradingEq, Date: day_format})
-
     if(row){
-      yourPrediction = row.Prediction
+      yourPrediction = row[0].Prediction
     }
 
     if(result){
       following = true
     }
   }
-
   current = await CurrentTradingEquipment.findOne({ from : TradingEq});
 
   comments = await findUserComments({ related : TradingEq, about : "TRADING-EQUIPMENT"})
@@ -152,6 +150,7 @@ module.exports.predictTradingEq = async (request, response) => {
         UserId: UserId,
         TradingEq: TradingEq,
         Date: day_format,
+        DateWithTime: currentDay,
         Prediction: prediction_value,
         CurrentValue: value,
         Result: ""
