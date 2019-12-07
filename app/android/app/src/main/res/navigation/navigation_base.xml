@@ -99,6 +99,15 @@
         <action
             android:id="@+id/action_searchFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_articleDetail"
+            app:destination="@id/articleDetail" />
+        <action
+            android:id="@+id/action_searchFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_currencyFragment"
+            app:destination="@id/currencyFragment" />
     </fragment>
     <fragment
         android:id="@+id/listArticleFragment"
