@@ -12,6 +12,12 @@ module.exports.getHistory = async (request, response) => {
   currentRates = await CurrentTradingEquipment.find({})
   account = await UserAccount.findOne({userId: request.session['user']._id})
 
+  if(!account){
+    account = new UserAccount({
+      userId: request.session['user']._id
+    })
+  }
+
   return response.send({
     histories,
     currentRates,
