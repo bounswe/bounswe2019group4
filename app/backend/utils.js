@@ -3,6 +3,7 @@ const IBAN = require('iban');
 const commonPassword = require('common-password');
 const request = require('request');
 const levenstein = require('leven')
+const schedule = require('node-schedule');
 
 const {UserFollow} = require('./models/user-follow')
 const {User} = require('./models/user')
@@ -28,31 +29,27 @@ module.exports.scheduleAPICalls = function(){
   /*
   Get method for events in every 30 minutes
   */
-  setInterval( () => {
-    getEventsFromAPI()
-  }, 30*60*1000);
+  getEventsFromAPI
 
   /*
   Get method for trading equipments every day
   */
-  setInterval( () => {
-    getTradingEquipmentsFromAPI(true)
-  }, 24*60*60*1000);
+  getTradingEquipmentsFromAPI
 
   /*
   Get method for current trading equipments values in every two hours
   */
-  setInterval( () => {
-    getCurrentTradingEquipmentsFromAPI()
-  }, 2*60*60*1000);
-
+  getCurrentTradingEquipmentsFromAPI
+  
   /*
-  Result prediction method that find results everyday
+  Result prediction method that find results every 2 hours.
   */
-  setInterval( () => {
-    resultPredictions();
-  }, 24*60*60*1000);
-
+  resultPredictions
+  
+  /*
+  Handle investment orders method that handles every 2 hours.
+  */
+  handleInvestmentOrders
 }
 
 /*
@@ -80,7 +77,7 @@ module.exports.checkIBAN = function(iban){
   Sum of first 10 digits mode 10 must be equals to 11th digit.
   And 10th digit is tested using TCKN test. 
 */
-module.exports.checkTCKN = function(value) {
+module.exports.checkTCKN = function(value) {  
   value = value.toString();
   
   var isEleven = /^[0-9]{11}$/.test(value);
@@ -111,8 +108,7 @@ module.exports.checkTCKN = function(value) {
   Get method for events.
   Using 3rd party API, it saves events to database.
 */
-function getEventsFromAPI() {
-
+getEventsFromAPI = schedule.scheduleJob('*/30 * * * *', function() {
   request(url, (error, response, body) => {
     // If there is an error
     if(error){
@@ -137,14 +133,14 @@ function getEventsFromAPI() {
     }
 
   })
-}
+});
 
 /*
   Get method for Trading Equipments.
   Using 3rd party API, it saves trading equipments to database.
 */
-function getTradingEquipmentsFromAPI(isOnlyToday) {
-
+getTradingEquipmentsFromAPI = schedule.scheduleJob('0 23 * * *', function() {
+  isOnlyToday = true
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
     let currencies = contents.split('\n'); // form an array consist of currencies
@@ -226,15 +222,14 @@ function getTradingEquipmentsFromAPI(isOnlyToday) {
       });
     }
     start();
-  })
-}
-
+  })  
+});
 
 /*
   Get method for Trading Equipments.
   Using 3rd party API, it saves current trading equipments values to database.
 */
-async function getCurrentTradingEquipmentsFromAPI() {
+getCurrentTradingEquipmentsFromAPI = schedule.scheduleJob('0 */2 * * *', async function() {
   // read currencies from file
   fs.readFile('./currencies.txt', 'utf8', function(err, contents) {
     let currencies = contents.split('\n'); // form an array consist of currencies
@@ -297,11 +292,9 @@ async function getCurrentTradingEquipmentsFromAPI() {
     }
     start();
   })
-  await waitFor(18*13*1000)
-  handleInvestmentOrders()
-}
+});
 
-async function handleInvestmentOrders(){
+handleInvestmentOrders = schedule.scheduleJob('4 */2 * * *', async function() {
   orders = await OrderInvestment.find({})
 
   for(i = 0; i < orders.length; i++){
@@ -314,7 +307,6 @@ async function handleInvestmentOrders(){
     let ORDER_ID = orders[i]._id
 
     currentExchange = await CurrentTradingEquipment.findOne({from : RELATED_TEQ})
-
     if(currentExchange.rate >= RATE && COMPARE == "HIGHER"){
       if(TYPE == "BUY"){
         buyEquipment(ORDER_ID, USER_ID, currentExchange.rate, RELATED_TEQ, AMOUNT)
@@ -329,7 +321,7 @@ async function handleInvestmentOrders(){
       }
     }
   }
-}
+});
 
 async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   OrderInvestment.deleteOne({_id: ORDER_ID, userId: USER_ID}, (err, results) => {
@@ -474,90 +466,80 @@ module.exports.findUserArticle = async spec => {
     }}))
 }
 
-async function resultPredictions() {
-
+resultPredictions = schedule.scheduleJob('2 */2 * * *', async function() {
   // Get currencies
   const currencies = await CurrentTradingEquipment.find()
 
-  var currentDay = new Date();
-  currentDay.setDate(currentDay.getDate()-1)
-  day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
+  var ONE_DAY = 24 * 60 * 60 * 1000;
+  const data = await TradingEquipmentPrediction.find()
 
-  // get today's all prediction data
-  const data = await TradingEquipmentPrediction.find().where('Date').equals(day_format)
+  for(const element of data){
+    if(((new Date) - element.DateWithTime) > ONE_DAY){
+      let TradingEq = element.TradingEq;
+      // get the current value of the predicted currency
+      const currency =  currencies.filter(function(c) {
+        return c.from == TradingEq;
+      });
 
-  // for each prediction
-  for (const element of data) {
+      let currentValue = currency[0].rate;
+      if(element.Result != "")
+        continue;
 
-    let TradingEq = element.TradingEq;
-    // get the current value of the predicted currency
-    const currency =  currencies.filter(function(c) {
-      return c.from == TradingEq;
-    });
+      // check whether the value at the prediction time is higher or lower than the current value and determine prediction result accordingly
+      if(element.CurrentValue > currentValue){
+        if(element.Prediction == "down")
+          element.Result = "true"
+        else
+          element.Result = "false"
+      } else if(element.CurrentValue < currentValue){
+        if(element.Prediction == "down")
+          element.Result = "false"
+        else
+          element.Result = "true"
+      } else if(element.CurrentValue == currentValue)
+          element.Result = "nochange"
 
-    let currentValue = currency[0].rate;
-    if(element.Result != "")
-      continue;
-
-    // check whether the value at the prediction time is higher or lower than the current value and determine prediction result accordingly
-    if(element.CurrentValue > currentValue){
-      if(element.Prediction == "down")
-        element.Result = "true"
-      else
-        element.Result = "false"
-    } else if(element.CurrentValue < currentValue){
-      if(element.Prediction == "down")
-        element.Result = "false"
-      else
-        element.Result = "true"
-    } else if(element.CurrentValue == currentValue)
-        element.Result = "nochange"
-
-
-    // update database with the results
-    await TradingEquipmentPrediction.updateOne({_id:element._id},{ Result: element.Result }) 
-    .then(doc => {
-
-    }).catch(error => {
+      // now update prediction rate of users
+      let UserId = element.UserId;
+      let user = await User.findOne({_id: UserId})
       
-    });
-
-    // now update prediction rate of users
-    let UserId = element.UserId;
-    let user = await User.findOne({_id: UserId})
-    
-    if(!user)
-      continue;
-    
-    let predictionRate = user.predictionRate;
-
-    // there is no previous prediction data. Now start with 0/0
-    if(predictionRate == null || predictionRate == undefined)
-      predictionRate = "0/0"
-    
-    
-    let temp = predictionRate.split('/')
-    let leftSide = parseInt(temp[0]);
-    let rightSide = parseInt(temp[1]);
-
-    if(element.Result == "true")
-      leftSide+=1;
-    
-    if(element.Result == "true" || element.Result == "false")
-      rightSide+=1
-
-    predictionRate = leftSide+"/"+rightSide;
-
-    // update database with the updated prediction rates
-    await User.updateOne({_id:UserId},{ predictionRate: predictionRate }) 
-    .then(doc => {
-
-    }).catch(error => {
+      if(!user)
+        continue;
       
-    });
+      let predictionRate = user.predictionRate;
 
+      // there is no previous prediction data. Now start with 0/0
+      if(predictionRate == null || predictionRate == undefined)
+        predictionRate = "0/0"
+      
+      let temp = predictionRate.split('/')
+      let leftSide = parseInt(temp[0]);
+      let rightSide = parseInt(temp[1]);
+
+      if(element.Result == "true")
+        leftSide+=1;
+      
+      if(element.Result == "true" || element.Result == "false")
+        rightSide+=1
+
+      predictionRate = leftSide+"/"+rightSide;
+
+      // update database with the updated prediction rates
+      await User.updateOne({_id:UserId},{ predictionRate: predictionRate }) 
+      .then(doc => {
+
+      }).catch(error => {
+        
+      });
+
+      TradingEquipmentPrediction.deleteOne({ _id: element._id}, (err, results) => {
+        if (err) {
+          
+        }
+      });
+    }
   }
-}
+});
 
 module.exports.filterData = (data, fields, keyword, max_ = 1) => {
   keyword = keyword.toLowerCase()

@@ -67,6 +67,6 @@ app.use(/.*/, (request, response, nextHandler) => {
 
 scheduleAPICalls(); // schedule API Calls that are implemented in utils.js
 
-const PORT = parseInt(process.argv[2]) || 8080  // optionally runs on the port given to the command 'yarn dev'
+const PORT = process.env && process.env.PORT ? process.env.PORT : 8080  // optionally runs on the port given to the command 'yarn dev'
 console.log(`Listening on port ${PORT}`)
 app.listen(PORT)    // the app watches for incoming requests on given port
