@@ -16,7 +16,11 @@ const { validateBody } = require('../controllers/middleware')
 router.get('/', [
   isAuthenticated,
   isTrader,
-  modelBinder(InvestmentHistory, 'InvestmentHistory')], investmentController.getHistory)
+  multipleModelBinder([
+  [InvestmentHistory, 'InvestmentHistory'],
+  [UserAccount, 'UserAccount'],
+  [CurrentTradingEquipment, 'CurrentTradingEquipment']
+])], investmentController.getHistory)
 
 /*
   Post endpoint for deposit money.

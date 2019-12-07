@@ -5,22 +5,18 @@ const { checkIBAN } = require('../utils')
   */
 module.exports.getHistory = async (request, response) => {
   let InvestmentHistory = request.models['InvestmentHistory']
+  let UserAccount = request.models['UserAccount']
+  let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
 
-  const limit = parseInt(request.query.limit || 10)
-  const skip = (parseInt(request.query.page || 1) - 1) * limit
+  histories = await InvestmentHistory.find({userId: request.session['user']._id}).sort({date: -1})
+  currentRates = await CurrentTradingEquipment.find({})
+  account = await UserAccount.findOne({userId: request.session['user']._id})
 
-  try {
-    histories = await InvestmentHistory.find({userId: request.session['user']._id}, undefined, {skip, limit}).sort({date: -1})
-    const totalNumberOfHistories = await InvestmentHistory.countDocuments({userId: request.session['user']._id})
-    return response.send({
-      totalNumberOfHistories,
-      totalNumberOfPages: Math.ceil(totalNumberOfHistories / limit),
-      historiesInPage: histories.length,
-      histories
-    }); 
-  } catch(e) {
-    console.log(e)
-  }
+  return response.send({
+    histories,
+    currentRates,
+    account
+  })
 }
 
   /*
