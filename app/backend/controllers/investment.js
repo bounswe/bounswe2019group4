@@ -72,29 +72,20 @@ module.exports.depositMoney = async (request, response) => {
       return response.status(400).send(error);
     });
   } else{
-    // If user has already an account.
-    currentAmount = row[currency]
-    newAmount = currentAmount + request.body.amount
-    // It updated related currency's value.
-    UserAccount.updateOne({userId: request.session['user']._id, [currency]: newAmount}).then(async doc => {
-
-      // Add this action to investment history.
-      let history = new InvestmentHistory({
-          userId: request.session['user']._id,
-          text: request.body.amount + " " + currency+ " deposited to account.",
-          date: new Date()
-        })
-
-        history.save().then(doc => {
-
-        }).catch(error => {
-          console.log(error)
-        })        
-      account = await UserAccount.findOne({userId : request.session['user']._id})
-      return response.status(200).send(account)
-    }).catch(error => {
-      return response.status(400).send(error);
+    // If user has already an account, update the user's balance
+    row[currency] += request.body.amount
+    await row.save()
+    
+    // Add this action to investment history.
+    const history = new InvestmentHistory({
+      userId: request.session['user']._id,
+      text: request.body.amount + " " + currency+ " deposited to account.",
+      date: new Date()
     })
+    await history.save()
+    
+    account = await UserAccount.findOne({userId : request.session['user']._id})
+    return response.status(200).send(account)
   }
 }
 
