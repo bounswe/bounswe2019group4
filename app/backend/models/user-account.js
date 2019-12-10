@@ -21,19 +21,9 @@ let UserAccount = mongoose.model('UserAccount', {
   USD: {
     type: Number,
     default: 0
-  },  
-
-  CAD: {
-    type: Number,
-    default: 0
   },
 
   AUD: {
-    type: Number,
-    default: 0
-  },
-
-  CHF: {
     type: Number,
     default: 0
   },
@@ -43,17 +33,7 @@ let UserAccount = mongoose.model('UserAccount', {
     default: 0
   },
 
-  DKK: {
-    type: Number,
-    default: 0
-  },
-
   HKD: {
-    type: Number,
-    default: 0
-  },
-
-  IDR: {
     type: Number,
     default: 0
   },
@@ -68,27 +48,52 @@ let UserAccount = mongoose.model('UserAccount', {
     default: 0
   },
 
-  KRW: {
-    type: Number,
-    default: 0
-  },
-
-  KWD: {
-    type: Number,
-    default: 0
-  },
-
-  NOK: {
-    type: Number,
-    default: 0
-  },
-
   AED: {
     type: Number,
     default: 0
   },
 
-  MXN: {
+  LTC: {
+    type: Number,
+    default: 0
+  },
+
+  XRP: {
+    type: Number,
+    default: 0
+  },
+
+  ETH: {
+    type: Number,
+    default: 0
+  },
+
+  BTC: {
+    type: Number,
+    default: 0
+  },
+
+  FB: {
+    type: Number,
+    default: 0
+  },
+
+  AMZN: {
+    type: Number,
+    default: 0
+  },
+
+  AAPL: {
+    type: Number,
+    default: 0
+  },
+
+  MSFT: {
+    type: Number,
+    default: 0
+  },
+
+  GOOG: {
     type: Number,
     default: 0
   }
