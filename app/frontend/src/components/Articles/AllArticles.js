@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Button, Dropdown, Header, Icon, Pagination, Popup, Segment} from 'semantic-ui-react';
+import {Button, Dropdown, Header, Icon, Pagination, Popup, Segment,Label} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
@@ -214,7 +214,7 @@ class AllArticles extends Component {
         for (let i of this.state.events) {
             let date=new Date(i.normalDate);
 
-            if ((value1.includes(i.title) || empty1)// && (value2.includes(i.Event) || empty2)&&(value3.includes(i.Importance)||empty3)
+            if ((value1.includes(i.title) || empty1) && (value2.includes(i.author) || empty2)//&&(value3.includes(i.Importance)||empty3)
                 &&(compareDates(this.state.startDate,date)&&compareDates(date,this.state.endDate))
 
             ) {
@@ -348,15 +348,6 @@ class AllArticles extends Component {
                                     <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
                                         Rating
 
-                                        <Dropdown
-                                            style={{marginLeft:5}}
-                                            placeholder='All'
-                                            multiple
-                                            search
-                                            selection
-                                            options={this.state.dropdown4Items}
-                                            onChange={this.onSourceChange}
-                                        />
 
 
                                     </div>
@@ -381,7 +372,15 @@ class AllArticles extends Component {
                                             {article.normalDate}
                                         </td>
                                         <td>
-                                            {article.rateAverage} by {article.numberOfRates} users
+                                            <div style={{display:"flex",flexDirection:"row"}}>
+                                            <Label color={"yellow"} >
+                                                {article.rateAverage}
+                                            </Label>
+                                            <Label>
+                                            <Icon name='users' />
+                                                {article.numberOfRates}
+                                            </Label>
+                                            </div>
                                         </td>
 
                                     </tr>)
