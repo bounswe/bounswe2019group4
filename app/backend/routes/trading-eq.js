@@ -55,7 +55,7 @@ router.post('/prediction', [
   Get endpoint for previously set alerts for trading equipment.
   Check controller function for more detail
 */
-router.get('/alert', [
+router.get('/alert/show', [
   isAuthenticated,
   modelBinder(TradingEquipmentAlert, 'TradingEquipmentAlert')], tradingEquipmentController.getAlerts)
 
