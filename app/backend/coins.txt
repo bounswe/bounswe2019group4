@@ -1,0 +1,4 @@
+BTC,Bitcoin
+ETH,Ethereum
+XRP,Ripple
+LTC,Litecoin
