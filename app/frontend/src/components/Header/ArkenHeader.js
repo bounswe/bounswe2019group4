@@ -56,11 +56,18 @@ class ArkenHeader extends Component {
                         Events
                     </Menu.Item>
                     <Menu.Item
+                        name="articles"
+                        onClick={this.navigate}
+                    >
+                        Articles
+                    </Menu.Item>
+                    <Menu.Item
                         name="trading-equipment"
                         onClick={this.navigate}
                     >
                         Trading Equipment
                     </Menu.Item>
+
                 </Menu.Menu>
                 <Menu.Menu position="right">
                 </Menu.Menu>
