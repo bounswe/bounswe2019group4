@@ -50,6 +50,11 @@ module.exports.scheduleAPICalls = function(){
   Handle investment orders method that handles every 2 hours.
   */
   handleInvestmentOrders
+
+  /*
+  Get method for coins every day
+  */
+  getCoinsFromAPI
 }
 
 /*
@@ -136,8 +141,8 @@ getEventsFromAPI = schedule.scheduleJob('*/30 * * * *', function() {
 });
 
 /*
-  Get method for Trading Equipments.
-  Using 3rd party API, it saves trading equipments to database.
+  Get method for Currency Trading Equipments.
+  Using 3rd party API, it saves currencies to database.
 */
 getTradingEquipmentsFromAPI = schedule.scheduleJob('0 23 * * *', function() {
   isOnlyToday = true
@@ -226,8 +231,8 @@ getTradingEquipmentsFromAPI = schedule.scheduleJob('0 23 * * *', function() {
 });
 
 /*
-  Get method for Trading Equipments.
-  Using 3rd party API, it saves current trading equipments values to database.
+  Get method for Currency Trading Equipments.
+  Using 3rd party API, it saves current currency values to database.
 */
 getCurrentTradingEquipmentsFromAPI = schedule.scheduleJob('0 */2 * * *', async function() {
   // read currencies from file
@@ -553,3 +558,91 @@ module.exports.filterData = (data, fields, keyword, max_ = 1) => {
     }).length > 0
   })
 }
+
+/*
+  Get method for Coin Trading Equipments.
+  Using 3rd party API, it saves coins to database.
+*/
+getCoinsFromAPI = schedule.scheduleJob('0 23 * * *', function() {
+  isOnlyToday = true
+  // read coins from file
+  fs.readFile('./coins.txt', 'utf8', function(err, contents) {
+    let coins = contents.split('\n'); // form an array consist of currencies
+    func = "DIGITAL_CURRENCY_DAILY"
+    const start = async () => {
+      await asyncForEach(coins, async (coin) => {
+        await waitFor(13*1000)              // wait 13 second to complete. Because the limit is 5 request per minute
+        from_symbol = coin.split(',')[0]    // coin code
+        name = coin.split(',')[1]           // coin name
+        if(!from_symbol)
+         return
+  
+        // Take the EUR value for every coin
+        to_symbol = 'EUR'
+  
+        // form the request url
+        let trading_eq_url = trading_eq_url_base + "function=" + func + "&symbol="+from_symbol+"&market="+to_symbol+"&outputsize=full&apikey="+tradingEquipmentKey;
+        
+        // make the request
+        await request(trading_eq_url, (error, response, body) => {
+          // If there is an error
+          if(error){
+            console.log(error)
+            return
+          }
+      
+          else{
+            const obj = JSON.parse(body);
+            // get te time series from the json
+            let time_series = obj["Time Series (Digital Currency Daily)"];
+
+            var currentDay = new Date();
+            var day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
+  
+            // save all the days until until_day
+            while(time_series && day_format >= until_day){
+  
+              let temp = time_series[day_format];
+  
+              // if there is no info for the current day, continue with the previous day
+              if(!temp){
+                currentDay.setDate(currentDay.getDate()-1);
+                day_format = currentDay.toISOString().slice(0,10);
+                continue;
+              }
+              
+              // construct the equipment
+              let trading_eq = new TradingEquipment({
+                _id: {code: from_symbol, Date: day_format},
+                code : from_symbol,
+                name : name,
+                open : temp["1a. open (EUR)"],
+                high : temp["2a. high (EUR)"],
+                low : temp["3a. low (EUR)"],
+                close : temp["4a. close (EUR)"],
+                value : to_symbol,
+                Date : day_format
+              });
+                        
+              // set current day as previous day
+              currentDay.setDate(currentDay.getDate()-1);
+              day_format = currentDay.toISOString().slice(0,10);
+  
+              // save the equipment
+              trading_eq.save().then(doc => {
+                
+              }).catch(err => {
+                //console.log(err);
+              });
+
+              if(isOnlyToday)
+                break;
+            }
+          }
+        });
+      });
+    }
+    start();
+  })  
+});
+
