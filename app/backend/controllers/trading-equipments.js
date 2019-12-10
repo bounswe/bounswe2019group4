@@ -237,3 +237,20 @@ module.exports.setAlert = async (request, response) => {
     return response.status(400).send()
   })
 }
+
+  /*
+    Delete method for deleting an order investment.
+  */
+module.exports.deleteAlert = async (request, response) => {
+  let TradingEquipmentAlert = request.models['TradingEquipmentAlert']
+
+  TradingEquipmentAlert.deleteOne({_id: request.params['id'], userId: request.session['user']._id}, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+
+    return response.send(204);
+  })
+}

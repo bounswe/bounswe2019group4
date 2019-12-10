@@ -71,4 +71,14 @@ router.post('/alert', [
   [TradingEquipmentAlert, 'TradingEquipmentAlert'],
 ])], tradingEquipmentController.setAlert)
 
+/*
+  Delete endpoint for alerts.
+  Check controller function for more detail
+*/
+router.delete('/alert/:id', [
+  isAuthenticated,
+  modelBinder(TradingEquipmentAlert, 'TradingEquipmentAlert')], tradingEquipmentController.deleteAlert)
+
+
+
 module.exports = router
