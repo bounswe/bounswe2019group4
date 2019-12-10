@@ -16,6 +16,7 @@ import TradingEquipment from "./TradingEquipment/TradingEquipment";
 import Create_Article from "./Articles/Create_Article";
 import authService from "../factories/authFactory";
 import Profile_Others from "./Profile/Profile_Others";
+import HomePage from "./HomePage/HomePage";
 
 
 class Routes extends Component {
@@ -43,6 +44,7 @@ class Routes extends Component {
                     <Route path="/articles/:id" render={(props) => { return <Article_Details{...props} />; }} />
                     <Route path="/trading-equipment" render={(props) => { return <TradingEquipment {...props} />; }} />
                     <Route exact path="/profile/:id" render={(props) => { return <Profile_Others{...props} />; }} />
+                    <Route path="/home" render={() => { return <HomePage  />; }} />
                     <Route exact path="/profile" render={
                         (props) => {
                             if(this.checkAuthorization()) {
