@@ -740,12 +740,15 @@ getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
   
         // Take the EUR value for every stock
         to_symbol = 'EUR'
+        to_name = "EURO"
   
         // form the request url
         let trading_eq_url = trading_eq_url_base + "function=" + func + "&symbol="+from_symbol+"&market="+to_symbol+"&outputsize=full&apikey="+tradingEquipmentKey;
         
         // make the request
         await request(trading_eq_url, (error, response, body) => {
+          first_time = true
+
           // If there is an error
           if(error){
             console.log(error)
@@ -784,6 +787,24 @@ getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
                 value : to_symbol,
                 Date : day_format
               });
+
+              if(first_time){
+                teq = new CurrentTradingEquipment({
+                  from : from_symbol,
+                  fromName : name,
+                  rate : temp["4. close"],
+                  Date: day_format,
+                  to : to_symbol,
+                  toName : to_name
+                });
+
+                teq.save().then(doc => {
+                  
+                }).catch(err => {
+                  //console.log(err);
+                });
+                first_time = false
+              }
                         
               // set current day as previous day
               currentDay.setDate(currentDay.getDate()-1);
@@ -806,3 +827,4 @@ getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
     start();
   })  
 });
+
