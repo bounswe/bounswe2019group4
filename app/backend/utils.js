@@ -17,6 +17,7 @@ const {OrderInvestment} = require('./models/order-investment');
 const {TradingEquipmentAlert} = require('./models/trading-eq-alert');
 const { UserAccount } = require('./models/user-account');
 const { InvestmentHistory } = require('./models/investment-history');
+const { Notification } = require('./models/notification');
 const { tradingEquipmentKey } = require('./secrets');
 
 const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest";
@@ -345,7 +346,7 @@ handleInvestmentOrders = schedule.scheduleJob('25 */2 * * *', async function() {
   }
 });
 
-handleTeqAlerts = schedule.scheduleJob('30 */2 * * *', async function() {
+handleTeqAlerts = schedule.scheduleJob('0 * * * * *', async function() {
   alerts = await TradingEquipmentAlert.find({})
 
   for(i = 0; i < alerts.length; i++){
@@ -356,15 +357,33 @@ handleTeqAlerts = schedule.scheduleJob('30 */2 * * *', async function() {
     let ALERT_ID = alerts[i]._id
 
     currentExchange = await CurrentTradingEquipment.findOne({from : RELATED_TEQ})
+    let to = "EUR"
+    if(RELATED_TEQ == 'EUR')
+      to = "USD"
+
     if(currentExchange.rate >= RATE && COMPARE == "HIGHER"){
-      //SEND NOTIFICATION
+      let notification = new Notification({
+        userId: USER_ID,
+        text: RELATED_TEQ + "/" + to +" has value more than " +RATE +", it is now " + currentExchange.rate +".",
+        date: new Date()
+      })
+      
+      await notification.save()
+
       TradingEquipmentAlert.deleteOne({_id: ALERT_ID, userId: USER_ID}, (err, results) => {
         if(err){
           console.log(err)
         }
       })
     } else if(currentExchange.rate <= RATE && COMPARE == "LOWER"){
-      //SEND NOTIFICATION
+      let notification = new Notification({
+        userId: USER_ID,
+        text: RELATED_TEQ + "/" + to + " has value less than " +RATE +", it is now " + currentExchange.rate +".",
+        date: new Date()
+      })
+      
+      await notification.save()
+
       TradingEquipmentAlert.deleteOne({_id: ALERT_ID, userId: USER_ID}, (err, results) => {
         if(err){
           console.log(err)
