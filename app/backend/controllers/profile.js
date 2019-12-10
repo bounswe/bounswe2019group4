@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 let { User } = require('./../models/user.js');  // The connection to the User model in the database
+let { Notification } = require('./../models/notification.js'); 
 
 const {findUserFollows, checkPassword, checkIBAN, checkTCKN} = require('../utils')
 /*
@@ -196,7 +197,18 @@ module.exports.acceptRequest = async (request, response) => {
 
     // Save it into user-follow table
     req.save() 
-      .then(doc => {
+      .then(async doc => {
+
+        user = await User.findOne({ _id : request.session['user']._id })
+
+        let notification = new Notification({
+          userId: req.FollowingId,
+          text: user.name + " " + user.surname + " has accepted your follow request.",
+          date: new Date()
+        })
+      
+        await notification.save()
+
         return response.status(204).send();
       }).catch(error => {
         return response.status(400).send(error);
