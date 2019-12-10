@@ -143,7 +143,20 @@ module.exports.followUser = async (request, response) => {
       }
 
     follow.save()
-      .then(doc => {
+      .then(async doc => {
+        let text = request.session['user'].name + " " + request.session['user'].surname + " followed you."
+
+        if(follow.status == false)
+          text = request.session['user'].name + " " + request.session['user'].surname + " wants to follow you."
+
+        let notification = new Notification({
+          userId: followedId,
+          text: text,
+          date: new Date()
+        })
+      
+        await notification.save()
+        
         return response.status(204).send();
       }).catch(error => {
         return response.status(400).send(error);
@@ -198,12 +211,9 @@ module.exports.acceptRequest = async (request, response) => {
     // Save it into user-follow table
     req.save() 
       .then(async doc => {
-
-        user = await User.findOne({ _id : request.session['user']._id })
-
         let notification = new Notification({
           userId: req.FollowingId,
-          text: user.name + " " + user.surname + " has accepted your follow request.",
+          text: request.session['user'].name + " " + request.session['user'].surname + " has accepted your follow request.",
           date: new Date()
         })
       
