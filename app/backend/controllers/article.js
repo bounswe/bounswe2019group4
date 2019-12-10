@@ -1,6 +1,6 @@
 const {findUserArticle} = require('../utils')
 const {findUserComments} = require('../utils')
-
+const {User} = require('../models/user')
   /*
     Get method for articles.
     It returns all articles in database.
@@ -12,12 +12,20 @@ module.exports.getArticles = async (request, response) => {
   const skip = (parseInt(request.query.page || 1) - 1) * limit
 
   try {
-    articles = await Article.find({ }, undefined, {skip, limit}).sort({date: -1})
+    rows = await Article.find({ }, undefined, {skip, limit}).sort({date: -1}).lean()
+
+    articles = await Promise.all(rows.map(async el => {
+    const user = await User.findOne({_id: el.userId})
+    return {
+      ...el,
+      username: user.name,
+      usersurname: user.surname
+    }}))
     const totalNumberOfArticles = await Article.countDocuments({})
     return response.send({
       totalNumberOfArticles,
       totalNumberOfPages: Math.ceil(totalNumberOfArticles / limit),
-      articlesInPage: articles.length,
+      articlesInPage: rows.length,
       articles
     }); 
   } catch(e) {
