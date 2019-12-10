@@ -178,3 +178,53 @@ module.exports.predictTradingEq = async (request, response) => {
     })
   }
 }
+
+  /*
+    Post method for setting alert for trading equipment.
+  */
+module.exports.setAlert = async (request, response) => {
+  let TradingEquipmentAlert = request.models['TradingEquipmentAlert']
+  let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
+
+  let currency = request.body.currency.toUpperCase()
+
+  let compare = request.body.compare.toUpperCase()
+
+  if(compare != "HIGHER" && compare != "LOWER"){
+    return response.status(400).send({
+      errmsg: "Compare of order must either HIGHER or LOWER"
+    })
+  }
+
+  let to = 'EUR'
+
+  if(currency == 'EUR')
+    to = 'USD'
+
+  let currentTeq = await CurrentTradingEquipment.findOne({from: currency, to: to})
+
+  if(parseFloat(currentTeq.rate) > request.body.rate && compare == "HIGHER"){
+    return response.status(400).send({
+      errmsg: "Exchange rate is already higher than given rate."
+    })
+  }
+
+  if(parseFloat(currentTeq.rate) < request.body.rate && compare == "LOWER"){
+    return response.status(400).send({
+      errmsg: "Exchange rate is already lower than given rate."
+    })
+  }
+
+  let alert = new TradingEquipmentAlert({
+    ...request.body,
+    userId: request.session['user']._id,
+    compare: compare,
+    currency: currency
+  })
+
+  alert.save().then(doc => {
+    return response.status(204).send()
+  }).catch(error => {
+    return response.status(400).send()
+  })
+}

@@ -7,6 +7,7 @@ const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
 const { TradingEquipmentPrediction } = require('../models/trading-eq-prediction')
 const { TradingEquipment } = require('../models/trading-eq')
 const { CurrentTradingEquipment } = require('../models/current-trading-eq')
+const { TradingEquipmentAlert } = require('../models/trading-eq-alert')
 const { Comment } = require('../models/comment')
 const {validateBody} = require('../controllers/middleware')
 
@@ -49,5 +50,17 @@ router.post('/prediction', [
   modelBinder(TradingEquipmentPrediction, 'TradingEquipmentPrediction')],
   validateBody(['tEq', 'value', 'prediction']),
   tradingEquipmentController.predictTradingEq)
+
+/*
+  Post endpoint for set alerts for trading equipment.
+  Check controller function for more detail
+*/
+router.post('/alert', [
+  validateBody(['currency','rate', 'compare']),
+  isAuthenticated,
+  multipleModelBinder([
+  [CurrentTradingEquipment, 'CurrentTradingEquipment'],
+  [TradingEquipmentAlert, 'TradingEquipmentAlert'],
+])], tradingEquipmentController.setAlert)
 
 module.exports = router
