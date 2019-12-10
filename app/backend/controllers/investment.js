@@ -84,8 +84,7 @@ module.exports.depositMoney = async (request, response) => {
     })
     await history.save()
     
-    account = await UserAccount.findOne({userId : request.session['user']._id})
-    return response.status(200).send(account)
+    return response.status(200).send(row)
   }
 }
 
@@ -132,27 +131,26 @@ module.exports.buy = async (request, response) => {
         errmsg: "Not enough money in EUR."
       })
     }
-    
-    UserAccount.updateOne({userId: request.session['user']._id, [currency]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
+
+    row[currency] = FINAL_TEQ
+    row['EUR'] = FINAL_EUR
+
+    await row.save()
       
-      // It adds this action to history.
-      let history = new InvestmentHistory({
-        userId: request.session['user']._id,
-        text: request.body.amount + " " + currency+ " bougth.",
-        date: new Date()
-      })
-
-      history.save().then(doc => {
-
-      }).catch(error => {
-        console.log(error)
-      })
-
-      account = await UserAccount.findOne({userId : request.session['user']._id})
-      return response.status(200).send(account)
-    }).catch(error => {
-      return response.status(400).send(error);
+    // It adds this action to history.
+    let history = new InvestmentHistory({
+      userId: request.session['user']._id,
+      text: request.body.amount + " " + currency+ " bougth.",
+      date: new Date()
     })
+
+    history.save().then(doc => {
+
+    }).catch(error => {
+      console.log(error)
+    })
+
+    return response.status(200).send(row)
   }
 }
 
@@ -199,27 +197,25 @@ module.exports.sell = async (request, response) => {
     let FINAL_EUR = EUR_AMOUNT + INCREASE_EUR
     let FINAL_TEQ = TEQ_AMOUNT - request.body.amount
 
-    
-    UserAccount.updateOne({userId: request.session['user']._id, [currency]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
+    row[currency] = FINAL_TEQ
+    row['EUR'] = FINAL_EUR
+
+    await row.save()
       
-      // It adds this action to history.
-      let history = new InvestmentHistory({
-        userId: request.session['user']._id,
-        text: request.body.amount + " " + currency+ " sold.",
-        date: new Date()
-      })
-
-      history.save().then(doc => {
-
-      }).catch(error => {
-        console.log(error)
-      })
-
-      account = await UserAccount.findOne({userId : request.session['user']._id})
-      return response.status(200).send(account)
-    }).catch(error => {
-      return response.status(400).send(error);
+    // It adds this action to history.
+    let history = new InvestmentHistory({
+      userId: request.session['user']._id,
+      text: request.body.amount + " " + currency+ " sold.",
+      date: new Date()
     })
+
+    history.save().then(doc => {
+
+    }).catch(error => {
+      console.log(error)
+    })
+
+    return response.status(200).send(row)
   }
 }
 
