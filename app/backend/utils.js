@@ -347,20 +347,21 @@ async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
     return;
   }
 
-  UserAccount.updateOne({userId: USER_ID, [TEQ]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
-    let history = new InvestmentHistory({
-      userId: USER_ID,
-      text: AMOUNT + " " + TEQ+ " bougth.",
-      date: new Date()
-    })
+  row[TEQ] = FINAL_TEQ
+  row['EUR'] = FINAL_EUR
 
-    history.save().then(doc => {
+  await row.save()
 
-    }).catch(error => {
-      console.log(error)
-    })
-    }).catch(error => {
-      console.log(error)
+  let history = new InvestmentHistory({
+    userId: USER_ID,
+    text: AMOUNT + " " + TEQ+ " bougth.",
+    date: new Date()
+  })
+
+  history.save().then(doc => {
+
+  }).catch(error => {
+    console.log(error)
   })
 }
 
@@ -388,20 +389,21 @@ async function sellEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   let FINAL_EUR = EUR_AMOUNT + INCREASE_EUR
   let FINAL_TEQ = TEQ_AMOUNT - AMOUNT
 
-  UserAccount.updateOne({userId: USER_ID, [TEQ]: FINAL_TEQ, 'EUR': FINAL_EUR}).then(async doc => {
-    let history = new InvestmentHistory({
-      userId: USER_ID,
-      text: AMOUNT + " " + TEQ+ " sold.",
-      date: new Date()
-    })
+  row[TEQ] = FINAL_TEQ
+  row['EUR'] = FINAL_EUR
 
-    history.save().then(doc => {
+  await row.save()
 
-    }).catch(error => {
-      console.log(error)
-    })
-    }).catch(error => {
-      console.log(error)
+  let history = new InvestmentHistory({
+    userId: USER_ID,
+    text: AMOUNT + " " + TEQ+ " sold.",
+    date: new Date()
+  })
+
+  history.save().then(doc => {
+
+  }).catch(error => {
+    console.log(error)
   })
 }
 
