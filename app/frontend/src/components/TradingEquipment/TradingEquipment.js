@@ -105,7 +105,7 @@ class TradingEquipment extends Component {
             <Grid columns={2} divided>
             <Grid.Row>
                 <Grid.Column width={3} style={{margin: 20}}>
-                <Table basic="very" celled inverted style={{background: "rgba(0,0,0,0)"}} >
+                <Table basic="very" celled inverted style={{background: "#161C1D"}} >
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Parity</Table.HeaderCell>

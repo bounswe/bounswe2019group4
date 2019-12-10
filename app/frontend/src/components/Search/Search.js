@@ -90,6 +90,7 @@ class SearchBar extends Component {
 
         return (
                     <Search
+                        style={{marginTop:2}}
                         category
                         categoryRenderer={categoryRenderer}
                         loading={isLoading}

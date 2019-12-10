@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Header, Icon, Pagination, Segment,Dropdown,Popup,Button,Rating} from 'semantic-ui-react';
+import {Header, Icon, Pagination, Segment,Dropdown,Popup,Button} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
@@ -11,7 +11,7 @@ import Loading from "../Loading";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 
-class Events extends Component {
+class AllArticles extends Component {
 
     constructor(props) {
         super(props);
@@ -22,7 +22,7 @@ class Events extends Component {
             shown:[],
             shownPage:1,
             totalNumOfEvents:0,
-            eventPerPage:15,
+            eventPerPage:8,
             dateDir:false,
             impDir:false,
             dropdownItems:[],
@@ -39,7 +39,12 @@ class Events extends Component {
             loading:false,
             startDate:new Date(),
             endDate:new Date()
+
+
+
         }
+
+
     }
 
     async componentDidMount() {
@@ -259,76 +264,76 @@ class Events extends Component {
         let value3=this.state.drImp;
         let value4=this.state.drSrc;
 
-            let empty1 = value1.length === 0;
-            let empty2 = value2.length === 0;
-            let empty3 = value3.length === 0;
-            let empty4 = value4.length===0;
-            for (let i of this.state.events) {
-                let date=new Date(i.normalDate);
+        let empty1 = value1.length === 0;
+        let empty2 = value2.length === 0;
+        let empty3 = value3.length === 0;
+        let empty4 = value4.length===0;
+        for (let i of this.state.events) {
+            let date=new Date(i.normalDate);
 
-                if ((value1.includes(i.Country) || empty1) && (value2.includes(i.Event) || empty2)&&(value3.includes(i.Importance)||empty3)&&
-                    (compareDates(this.state.startDate,date)&&compareDates(date,this.state.endDate))&&
-                    (value4.includes(i.Source)||empty4)
+            if ((value1.includes(i.Country) || empty1) && (value2.includes(i.Event) || empty2)&&(value3.includes(i.Importance)||empty3)&&
+                (compareDates(this.state.startDate,date)&&compareDates(date,this.state.endDate))&&
+                (value4.includes(i.Source)||empty4)
 
-                ) {
-                    list.push(i);
-                }
+            ) {
+                list.push(i);
             }
+        }
 
         this.setState({events2:list},()=>{this.setState(
             {shownPage:1},this.setShownEvents);
             this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
         })
 
-};
+    };
 
 
     onCountryChange=async(e,{value})=>{
         this.setState({drCo:value},this.onDropdownsChange);
 
-/*
-        let list=[];
-        if(value.length>0) {
-            for (let i of this.state.events) {
-                if (value.includes(i.Country)) {
-                    list.push(i);
+        /*
+                let list=[];
+                if(value.length>0) {
+                    for (let i of this.state.events) {
+                        if (value.includes(i.Country)) {
+                            list.push(i);
+                        }
+                    }
+                }else{
+                    list=this.state.events;
                 }
-            }
-        }else{
-            list=this.state.events;
-        }
 
-        //await this.changeEvents2();
-        //this.setState({shownPage:1},this.setShownEvents)
-        this.setState({events2:list},()=>{this.setState(
-            {shownPage:1},this.setShownEvents);
-            this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
-        })
+                //await this.changeEvents2();
+                //this.setState({shownPage:1},this.setShownEvents)
+                this.setState({events2:list},()=>{this.setState(
+                    {shownPage:1},this.setShownEvents);
+                    this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
+                })
 
-*/
+        */
 
     };
     onEventChange=async(e,{value})=>{
         this.setState({drEv:value},this.onDropdownsChange);
-/*
-        let list=[];
-        if(value.length>0) {
-            for (let i of this.state.events) {
-                if (value.includes(i.Event)) {
-                    list.push(i);
+        /*
+                let list=[];
+                if(value.length>0) {
+                    for (let i of this.state.events) {
+                        if (value.includes(i.Event)) {
+                            list.push(i);
+                        }
+                    }
+                }else{
+                    list=this.state.events;
                 }
-            }
-        }else{
-            list=this.state.events;
-        }
 
-        //await this.changeEvents2();
-        //this.setState({shownPage:1},this.setShownEvents)
-        this.setState({events2:list},()=>{this.setState(
-            {shownPage:1},this.setShownEvents);
-            this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
-        })
-*/
+                //await this.changeEvents2();
+                //this.setState({shownPage:1},this.setShownEvents)
+                this.setState({events2:list},()=>{this.setState(
+                    {shownPage:1},this.setShownEvents);
+                    this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
+                })
+        */
 
 
     };
@@ -357,9 +362,13 @@ class Events extends Component {
 
             !loading?(
 
-                <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center", width: "100%", margin: 30, fontWeight: "bold", fontSize: 16}} >
+                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
+                    <Segment  raised piled padded compact textAlign='left'>
+                        <Header textAlign='center'>
+                            Events
 
-                        <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
+                        </Header>
+                        <table className="ui blue table">
                             <thead>
                             <tr>
                                 <th>
@@ -403,35 +412,35 @@ class Events extends Component {
 
                                         Date
                                         <Button.Group style={{marginLeft:6,marginRight:20}}>
-                                        <Button onClick={this.sortEventsByDate}>
-                                            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                                            <Button onClick={this.sortEventsByDate}>
+                                                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
 
                                                     {this.state.dateDir?
                                                         (<Icon name={"angle down"}/>):(<Icon name={"angle up"}/>)
                                                     }
 
-                                            </div>
-                                        </Button>
-
-
-                                        <Popup trigger={
-                                            <Button>
-                                            <Icon name={"filter"}/>
+                                                </div>
                                             </Button>
-                                        } flowing hoverable>
-                                            <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:5}}>
 
-                                                <DatePicker
-                                                    selected={this.state.startDate}
-                                                    onChange={this.startDateChange}
-                                                />
-                                                to
-                                                <DatePicker
-                                                    selected={this.state.endDate}
-                                                    onChange={this.endDateChange}
-                                                />
-                                            </div>
-                                        </Popup>
+
+                                            <Popup trigger={
+                                                <Button>
+                                                    <Icon name={"filter"}/>
+                                                </Button>
+                                            } flowing hoverable>
+                                                <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:5}}>
+
+                                                    <DatePicker
+                                                        selected={this.state.startDate}
+                                                        onChange={this.startDateChange}
+                                                    />
+                                                    to
+                                                    <DatePicker
+                                                        selected={this.state.endDate}
+                                                        onChange={this.endDateChange}
+                                                    />
+                                                </div>
+                                            </Popup>
                                         </Button.Group>
                                     </div>
 
@@ -480,12 +489,13 @@ class Events extends Component {
                                 const imp=event.Importance;
                                 var src;
                                 if(imp===3){
-                                    src=(<Rating defaultRating={0} maxRating={3} disabled />);
+                                    src=ThreeStar;
                                 }else if(imp===2){
                                     src=TwoStar;
                                 }else{
                                     src=OneStar;
                                 }
+
                                 return(
                                     <tr>
                                         <td>
@@ -502,7 +512,7 @@ class Events extends Component {
                                             {event.Source}
                                         </td>
                                         <td>
-                                            {<Rating defaultRating={imp} maxRating={3} disabled icon='star' style={{color:"white"}} />}
+                                            {<img style={{width:"50px"}} src={src} alt='stars'/>}
                                         </td>
                                     </tr>)
                             })}
@@ -516,10 +526,10 @@ class Events extends Component {
                                          totalPages={this.state.numPages}
                                          activePage={this.state.shownPage}
                                          onPageChange={this.updatePage}
-                                         style={{background: "rgba(0,0,0,0)", color: "#ffffff !important", fontWeight: "bold"}}
                             />
                         </div>
 
+                    </Segment>
 
                 </div>
             ):(<Loading/>)
