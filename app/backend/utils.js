@@ -14,6 +14,7 @@ const {Comment} = require('./models/comment');
 const {Article} = require('./models/article');
 const {CurrentTradingEquipment} = require('./models/current-trading-eq');
 const {OrderInvestment} = require('./models/order-investment');
+const {TradingEquipmentAlert} = require('./models/trading-eq-alert');
 const { UserAccount } = require('./models/user-account');
 const { InvestmentHistory } = require('./models/investment-history');
 const { tradingEquipmentKey } = require('./secrets');
@@ -50,6 +51,11 @@ module.exports.scheduleAPICalls = function(){
   Handle investment orders method that handles every 2 hours.
   */
   handleInvestmentOrders
+
+    /*
+  Handle alerts  method that handles every 2 hours.
+  */
+  handleTeqAlerts
 
   /*
   Get method for coins every day
@@ -310,7 +316,7 @@ getCurrentTradingEquipmentsFromAPI = schedule.scheduleJob('0 */2 * * *', async f
   })
 });
 
-handleInvestmentOrders = schedule.scheduleJob('4 */2 * * *', async function() {
+handleInvestmentOrders = schedule.scheduleJob('25 */2 * * *', async function() {
   orders = await OrderInvestment.find({})
 
   for(i = 0; i < orders.length; i++){
@@ -335,6 +341,35 @@ handleInvestmentOrders = schedule.scheduleJob('4 */2 * * *', async function() {
       } else if(TYPE == "SELL"){
         sellEquipment(ORDER_ID, USER_ID, currentExchange.rate, RELATED_TEQ, AMOUNT)
       }
+    }
+  }
+});
+
+handleTeqAlerts = schedule.scheduleJob('30 */2 * * *', async function() {
+  alerts = await TradingEquipmentAlert.find({})
+
+  for(i = 0; i < alerts.length; i++){
+    let RELATED_TEQ = alerts[i].currency
+    let RATE = alerts[i].rate
+    let COMPARE = alerts[i].compare
+    let USER_ID = alerts[i].userId
+    let ALERT_ID = alerts[i]._id
+
+    currentExchange = await CurrentTradingEquipment.findOne({from : RELATED_TEQ})
+    if(currentExchange.rate >= RATE && COMPARE == "HIGHER"){
+      //SEND NOTIFICATION
+      TradingEquipmentAlert.deleteOne({_id: ALERT_ID, userId: USER_ID}, (err, results) => {
+        if(err){
+          console.log(err)
+        }
+      })
+    } else if(currentExchange.rate <= RATE && COMPARE == "LOWER"){
+      //SEND NOTIFICATION
+      TradingEquipmentAlert.deleteOne({_id: ALERT_ID, userId: USER_ID}, (err, results) => {
+        if(err){
+          console.log(err)
+        }
+      })    
     }
   }
 });

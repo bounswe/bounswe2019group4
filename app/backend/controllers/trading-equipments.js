@@ -178,3 +178,79 @@ module.exports.predictTradingEq = async (request, response) => {
     })
   }
 }
+
+  /*
+    Get method for list all alerts  of such user.
+  */
+module.exports.getAlerts = async (request, response) => {
+  let TradingEquipmentAlert = request.models['TradingEquipmentAlert']
+  alerts = await TradingEquipmentAlert.find({userId: request.session['user']._id})
+  return response.send({alerts})
+}
+
+  /*
+    Post method for setting alert for trading equipment.
+  */
+module.exports.setAlert = async (request, response) => {
+  let TradingEquipmentAlert = request.models['TradingEquipmentAlert']
+  let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
+
+  let currency = request.body.currency.toUpperCase()
+
+  let compare = request.body.compare.toUpperCase()
+
+  if(compare != "HIGHER" && compare != "LOWER"){
+    return response.status(400).send({
+      errmsg: "Compare of order must either HIGHER or LOWER"
+    })
+  }
+
+  let to = 'EUR'
+
+  if(currency == 'EUR')
+    to = 'USD'
+
+  let currentTeq = await CurrentTradingEquipment.findOne({from: currency, to: to})
+
+  if(parseFloat(currentTeq.rate) > request.body.rate && compare == "HIGHER"){
+    return response.status(400).send({
+      errmsg: "Exchange rate is already higher than given rate."
+    })
+  }
+
+  if(parseFloat(currentTeq.rate) < request.body.rate && compare == "LOWER"){
+    return response.status(400).send({
+      errmsg: "Exchange rate is already lower than given rate."
+    })
+  }
+
+  let alert = new TradingEquipmentAlert({
+    ...request.body,
+    userId: request.session['user']._id,
+    compare: compare,
+    currency: currency
+  })
+
+  alert.save().then(doc => {
+    return response.status(204).send()
+  }).catch(error => {
+    return response.status(400).send()
+  })
+}
+
+  /*
+    Delete method for deleting an order investment.
+  */
+module.exports.deleteAlert = async (request, response) => {
+  let TradingEquipmentAlert = request.models['TradingEquipmentAlert']
+
+  TradingEquipmentAlert.deleteOne({_id: request.params['id'], userId: request.session['user']._id}, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+
+    return response.send(204);
+  })
+}
