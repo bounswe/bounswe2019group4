@@ -55,6 +55,11 @@ module.exports.scheduleAPICalls = function(){
   Get method for coins every day
   */
   getCoinsFromAPI
+
+  /*
+  Get method for current coin values in every two hours
+  */
+  getCurrentCoinsFromAPI
 }
 
 /*
@@ -646,3 +651,65 @@ getCoinsFromAPI = schedule.scheduleJob('0 23 * * *', function() {
   })  
 });
 
+/*
+  Get method for Coin Trading Equipments.
+  Using 3rd party API, it saves current coin values to database.
+*/
+getCurrentCoinsFromAPI = schedule.scheduleJob('0 */2 * * *', async function() {
+  // read currencies from file
+  fs.readFile('./coins.txt', 'utf8', function(err, contents) {
+    let coins = contents.split('\n'); // form an array consist of currencies
+    func = "CURRENCY_EXCHANGE_RATE"
+    const start = async () => {
+      await asyncForEach(coins, async (coin) => {
+        await waitFor(13*1000)                  // wait 13 second to complete. Because the limit is 5 request per minute
+        from_symbol = coin.split(',')[0]    // coin code
+        from_name = coin.split(',')[1]    // coin name
+        
+        if(!from_symbol)
+         return
+  
+        // Take the EUR value for every coin
+        to_symbol = 'EUR'
+        to_name = 'EURO'    // currency name
+        
+        // form the request url
+        let trading_eq_url = trading_eq_url_base + "function=" + func + "&from_currency="+from_symbol+"&to_currency="+to_symbol+"&apikey="+tradingEquipmentKey;
+        // make the request
+        await request(trading_eq_url, async (error, response, body) => {
+          // If there is an error
+          if(error){
+            console.log(error)
+            return
+          }
+          else{
+            const obj = JSON.parse(body);
+            let result = obj["Realtime Currency Exchange Rate"];
+            if(result){
+              await CurrentTradingEquipment.findOne({ from : from_symbol}, function(err, teq){
+                if(!teq){
+                  teq = new CurrentTradingEquipment({
+                    from : from_symbol,
+                    fromName : from_name,
+                    to : to_symbol,
+                    toName : to_name
+                  });
+                }
+
+                teq.rate = result['5. Exchange Rate'];
+                teq.Date = result['6. Last Refreshed'];
+
+                teq.save().then(doc => {
+                  
+                }).catch(err => {
+                  //console.log(err);
+                });
+              });
+            }
+          }
+        });
+      });
+    }
+    start();
+  })
+});
