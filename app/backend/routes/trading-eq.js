@@ -27,7 +27,7 @@ router.get('/:code', multipleModelBinder([
   Get endpoint for information of all trading equipment's current values.
   Check controller function for more detail
 */
-router.get('', modelBinder(CurrentTradingEquipment, 'CurrentTradingEquipment'), tradingEquipmentController.getCurrentValues)
+router.get('/', modelBinder(CurrentTradingEquipment, 'CurrentTradingEquipment'), tradingEquipmentController.getCurrentValues)
 
 /*
   Post endpoint for following specific trading equipment.
@@ -50,6 +50,14 @@ router.post('/prediction', [
   modelBinder(TradingEquipmentPrediction, 'TradingEquipmentPrediction')],
   validateBody(['tEq', 'value', 'prediction']),
   tradingEquipmentController.predictTradingEq)
+
+/*
+  Get endpoint for previously set alerts for trading equipment.
+  Check controller function for more detail
+*/
+router.get('/alert', [
+  isAuthenticated,
+  modelBinder(TradingEquipmentAlert, 'TradingEquipmentAlert')], tradingEquipmentController.getAlerts)
 
 /*
   Post endpoint for set alerts for trading equipment.

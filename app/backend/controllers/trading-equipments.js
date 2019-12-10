@@ -180,6 +180,15 @@ module.exports.predictTradingEq = async (request, response) => {
 }
 
   /*
+    Get method for list all alerts  of such user.
+  */
+module.exports.getAlerts = async (request, response) => {
+  let TradingEquipmentAlert = request.models['TradingEquipmentAlert']
+  alerts = await TradingEquipmentAlert.find({userId: request.session['user']._id})
+  return response.send({alerts})
+}
+
+  /*
     Post method for setting alert for trading equipment.
   */
 module.exports.setAlert = async (request, response) => {
