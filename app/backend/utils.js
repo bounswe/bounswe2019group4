@@ -482,7 +482,7 @@ module.exports.findUserArticle = async spec => {
     }}))
 }
 
-resultPredictions = schedule.scheduleJob('2 */2 * * *', async function() {
+resultPredictions = schedule.scheduleJob('20 */2 * * *', async function() {
   // Get currencies
   const currencies = await CurrentTradingEquipment.find()
 
