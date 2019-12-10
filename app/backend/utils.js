@@ -574,7 +574,7 @@ module.exports.filterData = (data, fields, keyword, max_ = 1) => {
   Get method for Coin Trading Equipments.
   Using 3rd party API, it saves coins to database.
 */
-getCoinsFromAPI = schedule.scheduleJob('0 21 * * *', function() {
+getCoinsFromAPI = schedule.scheduleJob('4 23 * * *', function() {
   isOnlyToday = true
   // read coins from file
   fs.readFile('./coins.txt', 'utf8', function(err, contents) {
@@ -661,7 +661,7 @@ getCoinsFromAPI = schedule.scheduleJob('0 21 * * *', function() {
   Get method for Coin Trading Equipments.
   Using 3rd party API, it saves current coin values to database.
 */
-getCurrentCoinsFromAPI = schedule.scheduleJob('0 */2 * * *', async function() {
+getCurrentCoinsFromAPI = schedule.scheduleJob('10 */2 * * *', async function() {
   // read currencies from file
   fs.readFile('./coins.txt', 'utf8', function(err, contents) {
     let coins = contents.split('\n'); // form an array consist of currencies
@@ -724,7 +724,7 @@ getCurrentCoinsFromAPI = schedule.scheduleJob('0 */2 * * *', async function() {
   Get method for Stocks Trading Equipments.
   Using 3rd party API, it saves stocks to database.
 */
-getStocksFromAPI = schedule.scheduleJob('0 19 * * *', function() {
+getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
   isOnlyToday = true
   // read coins from file
   fs.readFile('./stocks.txt', 'utf8', function(err, contents) {
