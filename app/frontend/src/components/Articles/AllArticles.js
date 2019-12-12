@@ -93,8 +93,9 @@ class AllArticles extends Component {
         let key=1;
         for(let i of this.state.events ){
             let check=false;
+            let author=i.username+" "+i.usersurname;
             for(let j of dropdownItems){
-                if(j.value.trim()===i.author.trim()){
+                if(j.value.trim()===author.trim()){
                     check=true;
                     break;
                 }
@@ -102,8 +103,8 @@ class AllArticles extends Component {
             if(!check){
                 let newitem={
                     key:key,
-                    text:i.author,
-                    value:i.author
+                    text:author,
+                    value:author
 
                 };
                 dropdownItems.push(newitem);
@@ -138,7 +139,7 @@ class AllArticles extends Component {
                 this.setState({events: result.value.articles});
             }).then(async()=>{
                 this.updateDates();
-                await this.getAuthors()
+               // await this.getAuthors()
             }).then(()=>{
 
                 this.setState({events2:this.state.events});
@@ -149,6 +150,7 @@ class AllArticles extends Component {
         });
     }
 
+    /*
     async getAuthors(){
 
         for (let i of this.state.events) {
@@ -159,6 +161,8 @@ class AllArticles extends Component {
 
         }
     }
+
+     */
 
     sortfunc=(f,g)=>{
         let dateDir=this.state.dateDir;
@@ -365,7 +369,7 @@ class AllArticles extends Component {
                                             <Link to={"/articles/"+article._id}>{article.title}</Link>
                                         </td>
                                         <td>
-                                            <Link to={"/profile/"+article.userId}>{article.author}</Link>
+                                            <Link to={"/profile/"+article.userId}>{article.username+" "+article.usersurname}</Link>
 
                                         </td>
                                         <td>
