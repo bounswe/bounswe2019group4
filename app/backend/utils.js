@@ -421,7 +421,15 @@ async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   row['EUR'] = FINAL_EUR
 
   await row.save()
-
+  
+  let notification = new Notification({
+    userId: USER_ID,
+    text: "Buy order executed. " + AMOUNT + " " + TEQ+ " bougth.",
+    date: new Date()
+  })
+ 
+  await notification.save()
+  
   let history = new InvestmentHistory({
     userId: USER_ID,
     text: AMOUNT + " " + TEQ+ " bougth.",
@@ -463,6 +471,14 @@ async function sellEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   row['EUR'] = FINAL_EUR
 
   await row.save()
+
+  let notification = new Notification({
+    userId: USER_ID,
+    text: "Sell order executed. " + AMOUNT + " " + TEQ+ " sold.",
+    date: new Date()
+  })
+ 
+  await notification.save()
 
   let history = new InvestmentHistory({
     userId: USER_ID,
@@ -845,21 +861,27 @@ getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
               });
 
               if(first_time){
-                teq = new CurrentTradingEquipment({
-                  from : from_symbol,
-                  fromName : name,
-                  rate : temp["4. close"],
-                  Date: day_format,
-                  to : to_symbol,
-                  toName : to_name
-                });
+                CurrentTradingEquipment.findOne({ from : from_symbol}, function(err, teq){
+                  if(!teq){
+                    teq = new CurrentTradingEquipment({
+                      from : from_symbol,
+                      fromName : name,
+                      to : to_symbol,
+                      toName : to_name
+                    });
+                  }
 
-                teq.save().then(doc => {
-                  
-                }).catch(err => {
-                  //console.log(err);
+                  teq.rate = temp["4. close"]
+                  teq.Date = day_format
+
+                  teq.save().then(doc => {
+                      
+                  }).catch(err => {
+
+                  });
+                  first_time = false
                 });
-                first_time = false
+                
               }
                         
               // set current day as previous day
@@ -883,4 +905,3 @@ getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
     start();
   })  
 });
-
