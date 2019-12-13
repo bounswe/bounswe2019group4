@@ -421,7 +421,15 @@ async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   row['EUR'] = FINAL_EUR
 
   await row.save()
-
+  
+  let notification = new Notification({
+    userId: USER_ID,
+    text: "Buy order executed. " + AMOUNT + " " + TEQ+ " bougth.",
+    date: new Date()
+  })
+ 
+  await notification.save()
+  
   let history = new InvestmentHistory({
     userId: USER_ID,
     text: AMOUNT + " " + TEQ+ " bougth.",
@@ -463,6 +471,14 @@ async function sellEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   row['EUR'] = FINAL_EUR
 
   await row.save()
+
+  let notification = new Notification({
+    userId: USER_ID,
+    text: "Sell order executed. " + AMOUNT + " " + TEQ+ " sold.",
+    date: new Date()
+  })
+ 
+  await notification.save()
 
   let history = new InvestmentHistory({
     userId: USER_ID,
