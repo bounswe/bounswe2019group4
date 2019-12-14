@@ -57,7 +57,7 @@ router.post('/unfollow', [isAuthenticated, modelBinder(TradingEquipmentFollow, '
   Get endpoint for previously set alerts for trading equipment.
   Check controller function for more detail
 */
-router.get('/alert/show', [
+router.get('/alert', [
   isAuthenticated,
   modelBinder(TradingEquipmentAlert, 'TradingEquipmentAlert')], tradingEquipmentController.getAlerts)
 
