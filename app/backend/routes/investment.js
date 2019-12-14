@@ -10,6 +10,15 @@ const { OrderInvestment } = require('../models/order-investment')
 const { validateBody } = require('../controllers/middleware')
 
 /*
+  Get endpoint for listing order investments.
+  Check controller function for more detail
+*/
+router.get('/order', [
+  isAuthenticated,
+  isTrader,
+  modelBinder(OrderInvestment, 'OrderInvestment')], investmentController.getOrders)
+
+/*
   Get endpoint for investment history of that user.
   Check controller function for more detail
 */
@@ -62,15 +71,6 @@ router.post('/sell', [
   [UserAccount, 'UserAccount'],
   [InvestmentHistory, 'InvestmentHistory']
 ])], investmentController.sell)
-
-/*
-  Get endpoint for listing order investments.
-  Check controller function for more detail
-*/
-router.get('/order', [
-  isAuthenticated,
-  isTrader,
-  modelBinder(OrderInvestment, 'OrderInvestment')], investmentController.getOrders)
 
 /*
   Post endpoint for order investment.
