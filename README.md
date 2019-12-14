@@ -70,7 +70,7 @@ Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <str
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Frontend is bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In the /app/frontend directory, run `npm start`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In the /app/frontend directory, run `npm install` then `npm start`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Application is run in the development mode.<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
