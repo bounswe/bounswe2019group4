@@ -28,6 +28,7 @@ import Loading from "../Loading";
 import Comments from "../Comments"
 import {Link} from "react-router-dom";
 import axios from "axios"
+import {colorBG, colorDarkerBlue, colorLightgrey, colorPrimary} from "../../utils/constants/Colors";
 class Event_Details extends Component {
 
     constructor(props) {
@@ -81,12 +82,12 @@ class Event_Details extends Component {
 
             event?(
                 <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-                    <Segment raised padded compact  style={{display:"flex",width:"70%"}}>
+                    <Segment  raised padded compact  style={{display:"flex",width:"70%",backgroundColor:colorBG,borderWidth:2,borderColor:colorDarkerBlue,borderRadius:20}}>
                         <Grid columns={2} relaxed={"very"}>
                             <Grid.Column>
-                <Segment  textAlign="left" style={{display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
+                <Segment  textAlign="left" style={{display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:colorBG,color:"white"}}>
                     {<Image size="medium" src={news} />}
-                    <Header textAlign='center'>
+                    <Header style={{color:"white"}} textAlign='center'>
 
                         {event.Event}
                     </Header>
@@ -110,7 +111,7 @@ class Event_Details extends Component {
                                     <List.Item>
                                         <List.Icon name={"attention"}/>
                                         < List.Content >
-                                        < Rating defaultRating={event.Importance} maxRating={3} disabled />
+                                        < Rating defaultRating={event.Importance} maxRating={3} icon={"star"} disabled />
 
                                         </List.Content>
                                     </List.Item>
@@ -121,9 +122,9 @@ class Event_Details extends Component {
                     </List>
 
 
-                    <Segment style={{borderWidth:2}} textAlign="center">
+                    <Segment style={{borderWidth:2,backgroundColor:colorBG,color:"white",borderColor:colorDarkerBlue,borderRadius:20}} textAlign="center">
                         <h4>Values</h4>
-                    <Table fixed  className="ui table">
+                    <Table fixed className="ui table">
                         <thead>
                         <tr>
                             <th>Actual</th>

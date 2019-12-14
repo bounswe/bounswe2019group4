@@ -5,6 +5,7 @@ import {normalizeDate} from "./Events/Events";
 import {loadState} from "../_core/localStorage";
 import * as userActions from "../actions/userActions";
 import {connect} from "react-redux";
+import {colorBG, colorDarkerBlue, colorPrimary} from "../utils/constants/Colors";
 
 
 class Comments extends Component{
@@ -92,17 +93,17 @@ class Comments extends Component{
         const comments  = this.props.data;
         let user=this.state.user;
         return(
-            <Segment loading={this.state.loading} style={{borderRadius:10,borderWidth:2,backgroundColor:"#f5f5f5"}}>
+            <Segment  loading={this.state.loading} style={{borderRadius:10,borderWidth:2,background: "rgba(0,0,0,0)"}}>
 
                 <Header as='h4' inverted block style={{borderRadius:10}} textAlign={"left"}>
                     Comments
                 </Header>
-            <div id={"cgroup"} style={{overflow:"auto",height:"250px",backgroundColor:"#fcfcfc",borderRadius:10,borderWidth:2,borderColor:"black"}}>
+            <div id={"cgroup"} style={{overflow:"auto",height:"250px",backgroundColor:"#fcfcfc",borderRadius:10,borderWidth:2,borderColor:"white"}}>
 
 
                 {comments.length>0?comments.map(item=>(
 
-                        <div style={{backgroundColor:"#F0F0F0"}}>
+                        <div style={{backgroundColor:colorBG,borderWidth:2,borderColor:colorDarkerBlue}}>
 
                                 <div style={{display:"flex",marginLeft:10,marginRight:20}}>
                                     <div style={{display:"flex",flex:1}}>
@@ -173,7 +174,7 @@ class Comments extends Component{
                 ):<h3 style={{color:"gray"}}>No comments yet</h3>}
 
             </div>
-                <Segment >
+                <Segment style={{backgroundColor:colorBG}} >
 
                     {this.state.user&&this.state.user.loggedIn?
                         (<Form >
@@ -184,12 +185,14 @@ class Comments extends Component{
                                 <div style={{display:"flex",flexDirection:"row",justifyContent:"center",flex:3}}>
 
                                     <Button onClick={this.onSubmit} content='Send Comment'
+                                            style={{borderRadius:30}}
+                                            inverted
                                             labelPosition='left'
                                             icon={'edit'}
                                             basic color={"black"}
                                     />
                                 </div>
-                                <div style={{fontSize:14,display:"flex",flexDirection:"row",justifyContent:"flex-end",alignItems:"flex-start",flex:3}}>
+                                <div style={{fontSize:14,color:"white",display:"flex",flexDirection:"row",justifyContent:"flex-end",alignItems:"flex-start",flex:3}}>
                                     {this.state.rest}
                                 </div>
                             </div>

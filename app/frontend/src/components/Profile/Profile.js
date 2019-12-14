@@ -13,6 +13,7 @@ import moment from 'moment';
 
 import ProfileCard from "./ProfileCard";
 import FriendsCard from "./FriendsCard";
+import {colorAccent, colorBG, colorPrimary} from "../../utils/constants/Colors";
 
 class Profile extends Component {
 
@@ -143,7 +144,7 @@ class Profile extends Component {
                                 </Segment>
                             </Grid.Row>
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%", background: "rgba(255,255,255,0.15)"}}>
+                                <Segment textAlign="left"  style={{margin: 20, width:"100%", background: "rgba(255,255,255,0.15)"}}>
                                     <List animated divided relaxed textAlign="left">
                                         <List.Header as="h3" style={{color: "#c9c9c9"}}>{user.following + " Following"}</List.Header>
                                         {user.followings && user.followings.map(follower => {
@@ -157,7 +158,7 @@ class Profile extends Component {
                             </Grid.Row>
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <Segment color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
+                            <Segment style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                 <Header style={{color: "#c9c9c9"}}>Articles<Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/articles/new")}}>Add</Button></Header>
                                 <Divider/>
                                 {user.articles && user.articles.length>0 ?
@@ -180,7 +181,7 @@ class Profile extends Component {
                         </Grid.Column>
                         <Grid.Column width={5}>
                             <Grid.Row>
-                            <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
+                            <Segment textAlign="left"  style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                 <List animated divided relaxed textAlign="left">
                                     <List.Header as="h3" style={{color: "#c9c9c9"}}>Followed Trading Equipment</List.Header>
                                     {user.followingTradings && user.followingTradings.length >0 ? user.followingTradings.map(teq => {
@@ -193,7 +194,7 @@ class Profile extends Component {
                             </Segment>
                             </Grid.Row>
                             <Grid.Row>
-                                <Segment color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
+                                <Segment  style={{ margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <Header style={{color: "#c9c9c9"}}>Portfolios</Header>
                                     <Divider style={{color: "#c9c9c9"}} />
                                     {user.portfolios && user.portfolios.length>0 ?
