@@ -52,6 +52,8 @@ app.use('/investments/', require('./routes/investment'))     // includes investe
 
 app.use('/notifications/', require('./routes/notification'))  // includes notification endpoints to the main app
 
+app.use('/recommendations/', require('./routes/recommendation'))  // includes recommendation endpoints to the main app
+
 // catch-all error handler for debugging
 app.use((err, req, res, next) => {
     console.log(err.stack)  // logs the error
