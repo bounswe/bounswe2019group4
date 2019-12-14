@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -28,6 +29,7 @@ import retrofit2.Response
 class ListArticleFragment : Fragment(), OnArticleClickListener {
 
     val args: ListArticleFragmentArgs by navArgs()
+    private lateinit var header: TextView
     private lateinit var currentLayoutManagerType: LayoutManagerType
     private lateinit var recyclerView: RecyclerView
     private var dataset: MutableList<Article>? = mutableListOf()
@@ -48,6 +50,7 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
             }
 
         recyclerView = rootView.findViewById(R.id.articleRecyclerView)
+        header=rootView.findViewById(R.id.article_list_header)
         createArticleButton = rootView.findViewById(R.id.articleCreate)
         createArticleButton.setOnClickListener {
             Navigation.findNavController(rootView)
@@ -119,9 +122,13 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
             Context.MODE_PRIVATE
         ).getString("userId", "")!!
         if(args.profile!=null){
-        if (userId!=args.profile?.user!!._id){
+        if (userId!=args.profile!!.user!!._id){
             createArticleButton.visibility=View.GONE
-        }}
+            header.text="${args.profile!!.user!!.name}'s Articles"
+        }}else{
+            createArticleButton.visibility=View.GONE
+header.text="Articles"
+        }
     }
     override fun onArticleItemClicked(id: String) {
         val action =
