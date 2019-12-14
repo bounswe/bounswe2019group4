@@ -21,10 +21,33 @@ module.exports.getHistory = async (request, response) => {
     })
   }
 
+  let totalProfit = 0
+  for(i = 0;i < histories.length; i++){
+    item = histories[i]
+    if(item.type == "BUY" || item.type == "SELL"){
+        CURRENCY = item.currency
+        RATE = item.fromRate
+        AMOUNT = item.amount
+
+        EXCHANGE = await CurrentTradingEquipment.findOne({from: CURRENCY, to: 'EUR'})
+        CURRENT_RATE = EXCHANGE.rate
+        CURR_EUR = CURRENT_RATE * AMOUNT
+        PREVIOUS_EUR = RATE * AMOUNT
+  
+        if(item.type == "BUY")
+          item.profit = (CURR_EUR - PREVIOUS_EUR)
+        else
+          item.profit = -(CURR_EUR - PREVIOUS_EUR)
+
+        totalProfit += item.profit
+    }
+  }
+
   return response.send({
     histories,
     currentRates,
-    account
+    account,
+    totalProfit
   })
 }
 
