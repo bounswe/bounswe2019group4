@@ -51,25 +51,10 @@ class SearchTE : Fragment(), OnCurrentClickListener {
             Context.MODE_PRIVATE
         ).getString("user_cookie", "")
 
-        val call: Call<Currency> =
-            RetroClient.getInstance().apiService.getCurrency(userCookie, code)
 
-        call.enqueue(object : Callback<Currency> {
-            override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
-                if (response.isSuccessful) {
-                    recyclerView.hideKeyboard()
-                    val act = SearchFragmentDirections.actionSearchFragmentToCurrencyFragment(code!!)
-                    findNavController().navigate(act)
+        val act = SearchFragmentDirections.actionSearchFragmentToCurrencyFragment(code!!)
+        findNavController().navigate(act)
 
-                } else {
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Currency>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     fun setDataset(list: MutableList<Current>) {
