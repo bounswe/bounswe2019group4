@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
@@ -26,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ListArticleFragment : Fragment(), OnArticleClickListener {
+class ListArticleFragment : Fragment(), OnArticleClickListener{
 
     val args: ListArticleFragmentArgs by navArgs()
     private lateinit var header: TextView
@@ -38,6 +36,7 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
     private lateinit var layoutManager: RecyclerView.LayoutManager
 
     enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,9 +47,8 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
                 tag =
                     TAG
             }
-
         recyclerView = rootView.findViewById(R.id.articleRecyclerView)
-        header=rootView.findViewById(R.id.article_list_header)
+        header = rootView.findViewById(R.id.article_list_header)
         createArticleButton = rootView.findViewById(R.id.articleCreate)
         createArticleButton.setOnClickListener {
             Navigation.findNavController(rootView)
@@ -71,7 +69,7 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
 
 
 
-        articleAdapter = ArticleAdapter( this)
+        articleAdapter = ArticleAdapter(this)
         recyclerView.adapter = articleAdapter
         articleAdapter.notifyDataSetChanged()
 
@@ -121,15 +119,17 @@ class ListArticleFragment : Fragment(), OnArticleClickListener {
             LoginFragment.MY_PREFS_NAME,
             Context.MODE_PRIVATE
         ).getString("userId", "")!!
-        if(args.profile!=null){
-        if (userId!=args.profile!!.user!!._id){
-            createArticleButton.visibility=View.GONE
-            header.text="${args.profile!!.user!!.name}'s Articles"
-        }}else{
-            createArticleButton.visibility=View.GONE
-header.text="Articles"
+        if (args.profile != null) {
+            if (userId != args.profile!!.user!!._id) {
+                createArticleButton.visibility = View.GONE
+                header.text = "${args.profile!!.user!!.name}'s Articles"
+            }
+        } else {
+            createArticleButton.visibility = View.GONE
+            header.text = "Articles"
         }
     }
+
     override fun onArticleItemClicked(id: String) {
         val action =
             ListArticleFragmentDirections.actionListArticleFragmentToArticleDetail(
@@ -140,10 +140,11 @@ header.text="Articles"
 
     override fun onResume() {
         super.onResume()
-        if(args.profile==null){
-getArticlesAll()
-        }else{
-        getProfile()}
+        if (args.profile == null) {
+            getArticlesAll()
+        } else {
+            getProfile()
+        }
     }
 
     fun getProfile() {
@@ -160,8 +161,8 @@ getArticlesAll()
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
                     val profile = response.body()!!
-                    dataset=profile.articles as MutableList<Article>
-                    articleAdapter.dataSet=dataset!!
+                    dataset = profile.articles as MutableList<Article>
+                    articleAdapter.dataSet = dataset!!
                     articleAdapter.notifyDataSetChanged()
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
@@ -175,16 +176,16 @@ getArticlesAll()
 
     }
 
-    fun getArticlesAll(){
+    fun getArticlesAll() {
         val call: Call<ListArticle> =
-            RetroClient.getInstance().apiService.getArticles(1,10)
+            RetroClient.getInstance().apiService.getArticles(1, 10)
 
         call.enqueue(object : Callback<ListArticle> {
             override fun onResponse(call: Call<ListArticle>, response: Response<ListArticle>) {
                 if (response.isSuccessful) {
                     val listArticle = response.body()!!
-                    dataset=listArticle.articles as MutableList<Article>
-                    articleAdapter.dataSet=dataset!!
+                    dataset = listArticle.articles as MutableList<Article>
+                    articleAdapter.dataSet = dataset!!
                     articleAdapter.totalPages = listArticle.totalNumberOfPages!!
                     articleAdapter.page = 1
                     articleAdapter.notifyDataSetChanged()
