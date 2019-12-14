@@ -63,9 +63,9 @@ module.exports.recommend = async (request, response) => {
   }
 
   let rateCut = 4
-  let counter = 0
-  while(articleRecommends.length < 6 && counter < 5){
-    counter++
+  let count = 0
+  while(articleRecommends.length < 6 && count < 5){
+    count++
     articles = await Article.find().select('text title rateAverage')
     for(i = 0; i < articles.length; i++){
         article = articles[i]
@@ -77,6 +77,6 @@ module.exports.recommend = async (request, response) => {
     }
     rateCut -= 0.5
   }
-  
+
   response.send({userRecommends, articleRecommends})
 }
