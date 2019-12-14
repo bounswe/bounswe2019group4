@@ -26,5 +26,25 @@ module.exports.recommend = async (request, response) => {
     }
   }
 
+  let predictionCut = 0.8
+  let counter = 0
+  while(userRecommends.length < 6 && counter < 5){
+    counter++
+    users = await User.find().select('name surname location predictionRate')
+    for(i = 0; i < users.length; i++){
+        user = users[i]
+        if(!recommendedUserIds.includes(user._id) && user._id != request.session['user']._id){
+            followStatus = await UserFollow.findOne({FollowingId: userId, FollowedId: user._id, status: true})
+            if(!followStatus){
+                if((user.predictionRate != "0/0" && eval(user.predictionRate) > predictionCut)){
+                    userRecommends.push(user)
+                    recommendedUserIds.push(user._id)
+                }
+            }
+        }
+    }
+    predictionCut -= 0.1
+  }
+
   response.send({userRecommends, articleRecommends})
 }
