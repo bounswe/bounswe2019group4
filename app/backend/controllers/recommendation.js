@@ -46,5 +46,21 @@ module.exports.recommend = async (request, response) => {
     predictionCut -= 0.1
   }
 
+  let articleRecommends = []
+  let recommendedArticleIds = []
+  let myFollowings = await UserFollow.find({FollowingId: userId, status: true})
+  for( i = 0; i < myFollowings.length; i++){
+    follow = myFollowings[i]
+    userArticles = await Article.find().select('text title rateAverage').where('userId').equals(follow.FollowedId)
+    for(j = 0; j < userArticles.length; j++){
+        article = userArticles[j]
+        rateStatus = await ArticleUser.findOne({userId : userId, articleId: article._id})
+        if(!rateStatus && article.rateAverage > 2){
+            recommendedArticleIds.push(article._id)
+            articleRecommends.push(article)
+        }
+    }
+  }
+
   response.send({userRecommends, articleRecommends})
 }
