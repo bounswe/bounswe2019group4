@@ -620,6 +620,21 @@ resultPredictions = schedule.scheduleJob('20 */2 * * *', async function() {
 
       predictionRate = leftSide+"/"+rightSide;
 
+      let NOTIFICATION_TEXT = "Your prediction is neither true nor  false for " + TradingEq + "."
+      if(element.Result == "true"){
+        NOTIFICATION_TEXT= "Your prediction is true for " + TradingEq + "."
+      } else if(element.Result == "false"){
+        NOTIFICATION_TEXT= "Your prediction is false for " + TradingEq + "."
+      }
+
+      let notification = new Notification({
+        userId: UserId,
+        text: NOTIFICATION_TEXT,
+        date: new Date()
+      })
+ 
+      await notification.save()
+
       // update database with the updated prediction rates
       await User.updateOne({_id:UserId},{ predictionRate: predictionRate }) 
       .then(doc => {
