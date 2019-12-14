@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Event
@@ -50,12 +49,9 @@ class SearchEvent : Fragment(), OnEventClickedListener {
 
         call.enqueue(object : Callback<EventWithComment> {
             override fun onResponse(call: Call<EventWithComment>, response: Response<EventWithComment>) {
-                if (response.isSuccessful) { //TODO: Here it clicks and get the response but it shows null in fields
+                if (response.isSuccessful) {
                     recyclerView.hideKeyboard()
-                    val act = SearchFragmentDirections.actionSearchFragmentToEventFragment() // HERE THE DIFFERENCE
-                    //IS actionSearchFragmentToEventFragment method is not taking an argument compared to others.
-                    // The reason is that in event's OnItemClicked method, it gets to the detailed one with
-                    // event parameter on action (act.eventToShow = event) (as seen below), not inside the method...
+                    val act = SearchFragmentDirections.actionSearchFragmentToEventFragment()
                     var evenResponse : EventWithComment =response.body()!!
                     act.eventToShow = evenResponse.event
                     Navigation.findNavController(recyclerView).navigate(act)
