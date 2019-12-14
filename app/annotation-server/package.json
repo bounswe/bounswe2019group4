@@ -1,0 +1,19 @@
+{
+  "name": "annotation-server",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/bounswe/bounswe2019group4",
+  "author": "boun-swe2019-group4",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
