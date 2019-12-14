@@ -433,7 +433,11 @@ async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   let history = new InvestmentHistory({
     userId: USER_ID,
     text: AMOUNT + " " + TEQ+ " bougth.",
-    date: new Date()
+    date: new Date(),
+    type: "BUY",
+    amount: AMOUNT,
+    currency: TEQ,
+    fromRate: RATE
   })
 
   history.save().then(doc => {
@@ -483,7 +487,11 @@ async function sellEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   let history = new InvestmentHistory({
     userId: USER_ID,
     text: AMOUNT + " " + TEQ+ " sold.",
-    date: new Date()
+    date: new Date(),
+    type: "SELL",
+    amount: AMOUNT,
+    currency: TEQ,
+    fromRate: RATE
   })
 
   history.save().then(doc => {

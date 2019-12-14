@@ -58,7 +58,11 @@ module.exports.depositMoney = async (request, response) => {
         let history = new InvestmentHistory({
           userId: request.session['user']._id,
           text: request.body.amount + " " + currency+ " deposited to account.",
-          date: new Date()
+          date: new Date(),
+          type: "DEPOSIT",
+          amount: request.body.amount,
+          currency: currency,
+          fromRate: 0
         })
 
         history.save().then(doc => {
@@ -80,7 +84,11 @@ module.exports.depositMoney = async (request, response) => {
     const history = new InvestmentHistory({
       userId: request.session['user']._id,
       text: request.body.amount + " " + currency+ " deposited to account.",
-      date: new Date()
+      date: new Date(),
+      type: "DEPOSIT",
+      amount: request.body.amount,
+      currency: currency,
+      fromRate: 0
     })
     await history.save()
     
@@ -141,7 +149,11 @@ module.exports.buy = async (request, response) => {
     let history = new InvestmentHistory({
       userId: request.session['user']._id,
       text: request.body.amount + " " + currency+ " bougth.",
-      date: new Date()
+      date: new Date(),
+      type: "BUY",
+      amount: request.body.amount,
+      currency: currency,
+      fromRate: EXCHANGE_RATE
     })
 
     history.save().then(doc => {
@@ -206,7 +218,11 @@ module.exports.sell = async (request, response) => {
     let history = new InvestmentHistory({
       userId: request.session['user']._id,
       text: request.body.amount + " " + currency+ " sold.",
-      date: new Date()
+      date: new Date(),
+      type: "SELL",
+      amount: request.body.amount,
+      currency: currency,
+      fromRate: EXCHANGE_RATE  
     })
 
     history.save().then(doc => {

@@ -20,6 +20,32 @@ let InvestmentHistory = mongoose.model('InvestmentHistory', {
   date:{
     type: Date,
     require: true
+  },
+
+  profit: {
+    type:Number,
+    require: true,
+    default: 0
+  },
+
+  type: {
+    type: String,
+    require: true
+  },
+
+  amount: {
+    type: Number,
+    require: true
+  },
+
+  currency: {
+    type: String,
+    require: true
+  },
+
+  fromRate: {
+    type: Number,
+    require: true
   }
 });
 
