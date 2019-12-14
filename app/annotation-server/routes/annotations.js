@@ -1,8 +1,13 @@
 const { Router } = require("express");
 
-const { retrieveAnnotation } = require("../controllers/annotations");
+const { validateRequestBody } = require("../controllers/middleware");
+const {
+  retrieveAnnotation,
+  createAnnotation
+} = require("../controllers/annotations");
 
 const router = Router();
-router.get("/", retrieveAnnotation);
+router.get("/:id", retrieveAnnotation);
+router.post("/", validateRequestBody([]), createAnnotation);
 
 module.exports = router;
