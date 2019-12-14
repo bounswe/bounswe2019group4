@@ -5,6 +5,8 @@ const {modelBinder, multipleModelBinder} = require('../controllers/db')
 const {isAuthenticated} = require('../controllers/auth')
 const { Article } = require('../models/article')
 const {User} = require('../models/user')
+const { UserFollow } = require('../models/user-follow')
+const { ArticleUser } = require('../models/article-user')
 
 /*
   Get endpoint for recommendations.
@@ -15,6 +17,8 @@ router.get('/', [
     multipleModelBinder(
         [[User, 'User'],
         [Article, 'Article'],
+        [UserFollow, 'UserFollow'],
+        [ArticleUser, 'ArticleUser']
     ])], recommendationController.recommend)
 
 module.exports = router
