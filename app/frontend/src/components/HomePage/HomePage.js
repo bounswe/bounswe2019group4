@@ -6,7 +6,7 @@ import image2 from "./slide_image_2.png"
 import image3 from "./slide_image_3.png"
 import image4 from "./slide_image_4.png"
 import image5 from "./slide_image_5.png"
-
+import {loadState} from "../../_core/localStorage";
 import "./normalize.css";
 import "./style-animations.css";
 import "./styles.css"
@@ -17,10 +17,11 @@ import history from "../../_core/history";
 
 class HomePage extends Component {
 
-    constructor(props) {
-        super(props);
-    }
 
+
+    state={
+user:{}
+    };
     navigateSignUp(e) {
         history.push("/sign_up");
     }
@@ -30,11 +31,12 @@ class HomePage extends Component {
     }
 
     componentDidMount() {
-
+        this.setState({user:loadState().user})
     }
 
     render() {
 
+        const {user}=this.state;
         const slides = [
             { title: 'Welcome to Arkenstone',
                 description: 'Arkenstone is an interactive trading platform with full of people who are interested in trading and investing in financial markets worldwide',
@@ -46,7 +48,7 @@ class HomePage extends Component {
                 description: 'Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.'
                 ,images:image3},
             { title: 'Discover',
-                description: 'Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely',
+                description: 'Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely',
                 images:image4},
             { title: 'Keep in Touch',
                 description: 'Arkenstone has a native Web and  Mobile(Android) platform to make things easier for you. Earn wherever you go and whenever you want!',
@@ -54,19 +56,19 @@ class HomePage extends Component {
         ];
         return (
 
-            <Slider className="slider-wrapper" autoplay={2000} infinite={true} >
+            <Slider className="slider-wrapper" autoplay={3500} infinite={true} >
                 {slides.map((slide, index) =>
                     <div key={index} className="inner slider-content">
 
                     <h1 style={{color: "#1678C2",fontSize: "30px"}}>{slide.title}</h1>
                     <img src={slide.images} width={300} height={300} mode='fit'/>
                     <p  style={{color: "#FFFFFF", fontSize: "20px" }} >{slide.description}</p>
-                        {console.log(localStorage.getItem("user"))}
-                        {!JSON.parse(localStorage.getItem("state")).user.loggedIn ? <button  name="sign_up"
+                        {!user||!user.loggedin ? <button  name="sign_up"
                              onClick={this.navigateSignUp}>Register</button> :
                             <button  name="events" onClick={this.navigateEvents}>Events</button> }
                 </div>)}
             </Slider>
+
         )
     }
 }
