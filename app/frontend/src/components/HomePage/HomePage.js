@@ -39,7 +39,7 @@ class HomePage extends Component {
             { title: 'Discover',
                 description: 'Find out what is happening in financial markets all arround the world. Search and read about economic events to invest wisely',
                 images:image4},
-            { title: '',
+            { title: 'Keep in Touch',
                 description: 'Arkenstone has a native Web and  Mobile(Andriod) platform to make things easier for you. Earn wherever you go and whenever you want!',
                 images:image5}
         ];
