@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
+
 const { jsonld } = require("./controllers/middleware");
 const routes = require("./routes");
 
@@ -10,7 +12,7 @@ app.use(
     origin: /.*/
   })
 );
-
+app.use(bodyParser.raw({ type: "*/*" }));
 app.use(jsonld);
 
 app.use(routes);
