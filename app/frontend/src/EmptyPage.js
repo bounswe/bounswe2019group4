@@ -8,7 +8,7 @@ class EmptyPage extends Component {
     }
 
     componentWillMount(){
-        history.push("/events");
+        history.push("/home");
     }
 
     render() {
