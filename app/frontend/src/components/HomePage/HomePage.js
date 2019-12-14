@@ -48,7 +48,7 @@ user:{}
                 description: 'Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.'
                 ,images:image3},
             { title: 'Discover',
-                description: 'Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world.Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely',
+                description: 'Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely',
                 images:image4},
             { title: 'Keep in Touch',
                 description: 'Arkenstone has a native Web and  Mobile(Android) platform to make things easier for you. Earn wherever you go and whenever you want!',
