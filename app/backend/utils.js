@@ -433,7 +433,11 @@ async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   let history = new InvestmentHistory({
     userId: USER_ID,
     text: AMOUNT + " " + TEQ+ " bougth.",
-    date: new Date()
+    date: new Date(),
+    type: "BUY",
+    amount: AMOUNT,
+    currency: TEQ,
+    fromRate: RATE
   })
 
   history.save().then(doc => {
@@ -483,7 +487,11 @@ async function sellEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   let history = new InvestmentHistory({
     userId: USER_ID,
     text: AMOUNT + " " + TEQ+ " sold.",
-    date: new Date()
+    date: new Date(),
+    type: "SELL",
+    amount: AMOUNT,
+    currency: TEQ,
+    fromRate: RATE
   })
 
   history.save().then(doc => {
@@ -611,6 +619,21 @@ resultPredictions = schedule.scheduleJob('20 */2 * * *', async function() {
         rightSide+=1
 
       predictionRate = leftSide+"/"+rightSide;
+
+      let NOTIFICATION_TEXT = "Your prediction is neither true nor  false for " + TradingEq + "."
+      if(element.Result == "true"){
+        NOTIFICATION_TEXT= "Your prediction is true for " + TradingEq + "."
+      } else if(element.Result == "false"){
+        NOTIFICATION_TEXT= "Your prediction is false for " + TradingEq + "."
+      }
+
+      let notification = new Notification({
+        userId: UserId,
+        text: NOTIFICATION_TEXT,
+        date: new Date()
+      })
+ 
+      await notification.save()
 
       // update database with the updated prediction rates
       await User.updateOne({_id:UserId},{ predictionRate: predictionRate }) 
@@ -872,7 +895,7 @@ getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
                   }
 
                   teq.rate = temp["4. close"]
-                  teq.Date = day_format
+                  teq.Date = js_yyyy_mm_dd_hh_mm_ss()
 
                   teq.save().then(doc => {
                       
@@ -905,3 +928,14 @@ getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
     start();
   })  
 });
+
+function js_yyyy_mm_dd_hh_mm_ss () {
+  now = new Date();
+  year = "" + now.getFullYear();
+  month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+  day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+  hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+  minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+  second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+  return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+}

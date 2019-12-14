@@ -21,10 +21,33 @@ module.exports.getHistory = async (request, response) => {
     })
   }
 
+  let totalProfit = 0
+  for(i = 0;i < histories.length; i++){
+    item = histories[i]
+    if(item.type == "BUY" || item.type == "SELL"){
+        CURRENCY = item.currency
+        RATE = item.fromRate
+        AMOUNT = item.amount
+
+        EXCHANGE = await CurrentTradingEquipment.findOne({from: CURRENCY, to: 'EUR'})
+        CURRENT_RATE = EXCHANGE.rate
+        CURR_EUR = CURRENT_RATE * AMOUNT
+        PREVIOUS_EUR = RATE * AMOUNT
+  
+        if(item.type == "BUY")
+          item.profit = (CURR_EUR - PREVIOUS_EUR)
+        else
+          item.profit = -(CURR_EUR - PREVIOUS_EUR)
+
+        totalProfit += item.profit
+    }
+  }
+
   return response.send({
     histories,
     currentRates,
-    account
+    account,
+    totalProfit
   })
 }
 
@@ -58,7 +81,11 @@ module.exports.depositMoney = async (request, response) => {
         let history = new InvestmentHistory({
           userId: request.session['user']._id,
           text: request.body.amount + " " + currency+ " deposited to account.",
-          date: new Date()
+          date: new Date(),
+          type: "DEPOSIT",
+          amount: request.body.amount,
+          currency: currency,
+          fromRate: 0
         })
 
         history.save().then(doc => {
@@ -80,7 +107,11 @@ module.exports.depositMoney = async (request, response) => {
     const history = new InvestmentHistory({
       userId: request.session['user']._id,
       text: request.body.amount + " " + currency+ " deposited to account.",
-      date: new Date()
+      date: new Date(),
+      type: "DEPOSIT",
+      amount: request.body.amount,
+      currency: currency,
+      fromRate: 0
     })
     await history.save()
     
@@ -141,7 +172,11 @@ module.exports.buy = async (request, response) => {
     let history = new InvestmentHistory({
       userId: request.session['user']._id,
       text: request.body.amount + " " + currency+ " bougth.",
-      date: new Date()
+      date: new Date(),
+      type: "BUY",
+      amount: request.body.amount,
+      currency: currency,
+      fromRate: EXCHANGE_RATE
     })
 
     history.save().then(doc => {
@@ -206,7 +241,11 @@ module.exports.sell = async (request, response) => {
     let history = new InvestmentHistory({
       userId: request.session['user']._id,
       text: request.body.amount + " " + currency+ " sold.",
-      date: new Date()
+      date: new Date(),
+      type: "SELL",
+      amount: request.body.amount,
+      currency: currency,
+      fromRate: EXCHANGE_RATE  
     })
 
     history.save().then(doc => {
