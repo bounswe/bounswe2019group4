@@ -357,10 +357,10 @@ class Events extends Component {
 
             !loading?(
                 <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center"}}>
-                <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center", width: "90%", fontWeight: "bold", fontSize: 16}} >
+                <div style={{fontWeight: "bold", fontSize: 16,margin:20}} >
 
 
-                        <table className="ui fixed table inverted" style={{background: "rgba(255,255,255,0)"}}>
+                        <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
 
                             <thead>
                             <tr>
