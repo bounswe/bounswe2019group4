@@ -42,7 +42,7 @@ class SignInModal extends Component {
     signIn() {
         const {email, password} = this.state;
         this.props.signIn({email, password}).then(result => {
-            history.push("/");
+            window.location.reload();
             this.resetFields(this.props.handleClose);
         });
     }
