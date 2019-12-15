@@ -146,9 +146,8 @@ class TradingEquipment extends Component {
                     <div style={{display:"flex",flexDirection:"column"}}>
                         <Grid>
                             <Grid.Row>
-                                <Grid.Column width={10}>
+                                <Grid.Column width={9}>
                                     <Dropdown
-                                        style={{background: "rgba(255,255,255,0.2)", color: "#FFFFFF"}}
                                         placeholder='Select Currency'
                                         fluid
                                         search
@@ -159,40 +158,39 @@ class TradingEquipment extends Component {
                                         renderLabel={item =>  item.value + "/" + item.text}
                                     />
                                 </Grid.Column>
-                                <Grid.Column width={4} style={{display: "flex", flexDirection: "column", justifyContent: "center"}}>
-                                    <div style={{display: "flex", justifyContent: "center"}}>
-                                        <Grid.Column width={8}>
-                                            <Button as='div' labelPosition='right'>
-                                                <Button disabled={!authService.isUserLoggedIn()} color='red' onClick={()=>this.predict(0)}>
-                                                    <Icon name={"arrow down"}/>
-                                                </Button>
-                                                <Label as='a' basic color='#396D7C' pointing='left'>
-                                                    <Icon color={"grey"} size={"large"}
-                                                          style={{marginRight: 3}} name={"users"}/>
-                                                    {this.state.numDown}
-                                                </Label>
-                                            </Button>
-                                        </Grid.Column>
-                                        <Grid.Column width={8}>
-                                            <Button as='div' labelPosition='left'>
-
-                                                <Label as='a' basic color='#396D7C' pointing='right'>
-                                                    <Icon color={"grey"} size={"large"}
-                                                          style={{marginRight: 3}} name={"users"}/>
-                                                    {this.state.numUp}
-                                                </Label>
-                                                <Button disabled={!authService.isUserLoggedIn()} color='green' onClick={()=>this.predict(1)}>
-                                                    <Icon name={"arrow up"}/>
-                                                </Button>
-                                            </Button>
-                                        </Grid.Column>
-                                    </div>
-                                    <Grid.Row>
-                                        <span style={{color: "rgba(255,255,255,0.8)"}}>{Math.round(this.state.numUp*1000/(this.state.numUp+this.state.numDown+0.000000000001))/10 +"% Up from "+ (this.state.numUp+this.state.numDown) + " votes"}</span>
-                                    </Grid.Row>
+                                <Grid.Column width={2}>
+                                    <Button as='div' labelPosition='right'>
+                                        <Button disabled={!loggedin} color='red' onClick={()=>this.predict(0)}>
+                                            <div style={{display:"flex",flexDirection:"row"}}>
+                                                <Icon name={"arrow down"}/>
+                                                {loggedin&&yourVote==="down"&&<Icon name={"check circle outline"} />}
+                                            </div>
+                                        </Button>
+                                        <Label as='a' basic color='#396D7C' pointing='left'>
+                                            <Icon color={"grey"} size={"large"}
+                                                  style={{marginRight: 3}} name={"users"}/>
+                                            {this.state.numDown}
+                                        </Label>
+                                    </Button>
                                 </Grid.Column>
                                 <Grid.Column width={2}>
-                                    {authService.isUserLoggedIn() && (!following ? <Button basic color="green" onClick={this.follow.bind(this)}> + Follow</Button> : <Button basic color="red" onClick={this.follow.bind(this)}> - Unfollow</Button>)}
+                                    <Button as='div' labelPosition='left'>
+
+                                        <Label as='a' basic color='#396D7C' pointing='right'>
+                                            <Icon color={"grey"} size={"large"}
+                                                  style={{marginRight: 3}} name={"users"}/>
+                                            {this.state.numUp}
+                                        </Label>
+                                        <Button disabled={!loggedin} color='green' onClick={()=>this.predict(1)}>
+                                            <div style={{display:"flex",flexDirection:"row"}}>
+                                                <Icon name={"arrow up"}/>
+                                                {loggedin&&yourVote==="up"&&<Icon name={"check circle outline"} />}
+                                            </div>
+                                        </Button>
+                                    </Button>
+                                </Grid.Column>
+                                <Grid.Column width={3} style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
+                                    {loggedin && (!following ? <Button basic color="green" onClick={this.follow.bind(this)}> + Follow</Button> : <Button basic color="red" onClick={this.follow.bind(this)}> - Unfollow</Button>)}
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
