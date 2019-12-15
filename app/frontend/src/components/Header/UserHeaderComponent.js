@@ -19,13 +19,14 @@ class UserHeaderComponent extends Component {
     interval=null;
     componentDidMount() {
         this.getNotifs();
-        this.interval=setInterval(this.getNotifs,5000);
+        //this.interval=setInterval(this.getNotifs,5000);
     }
     componentWillUnmount() {
-        clearInterval(this.interval);
+        //clearInterval(this.interval);
     }
 
     getNotifs=async()=>{
+
         await this.props.getNotif().then(result=>{
             let notifs=result.value.notifications;
             this.setState({notifications:notifs});
@@ -128,9 +129,10 @@ class UserHeaderComponent extends Component {
                     name="notifications"
 
                 >
-                    <Dropdown  trigger={ <i className="fas fa-bell" style={{ margin: 10}} />
+                    <Dropdown  trigger={ <i className="fas fa-bell" style={{ margin: 10}} /> }
+                               onClick={this.getNotifs}
+                               icon={null}>
 
-                    } icon={null}>
                         <Dropdown.Menu style={{overflowY:"auto",maxHeight:200}}>
                             {this.state.notifications.map(item=>
                                 this.renderNotif(item)
