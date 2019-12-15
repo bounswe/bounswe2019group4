@@ -147,7 +147,7 @@ class TradingEquipment extends Component {
                     <Segment textAlign={"left"}>
                         <Grid>
                         <Grid.Row>
-                            <Grid.Column width={10}>
+                            <Grid.Column width={9}>
                         <Dropdown
                             placeholder='Select Currency'
                             fluid
@@ -190,7 +190,7 @@ class TradingEquipment extends Component {
                                     </Button>
                                 </Button>
                             </Grid.Column>
-                            <Grid.Column width={2}>
+                            <Grid.Column width={3} style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
                                 {loggedin && (!following ? <Button basic color="green" onClick={this.follow.bind(this)}> + Follow</Button> : <Button basic color="red" onClick={this.follow.bind(this)}> - Unfollow</Button>)}
                             </Grid.Column>
                         </Grid.Row>
