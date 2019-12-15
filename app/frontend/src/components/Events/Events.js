@@ -368,7 +368,7 @@ class Events extends Component {
                             Events
 
                         </Header>
-                        <table className="ui blue table">
+                        <table className="ui blue table fixed">
                             <thead>
                             <tr>
                                 <th>

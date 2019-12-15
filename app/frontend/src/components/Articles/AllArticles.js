@@ -270,7 +270,7 @@ class AllArticles extends Component {
                             Articles
 
                         </Header>
-                        <table className="ui blue table">
+                        <table className="ui blue table fixed">
                             <thead>
                             <tr>
                                 <th>
