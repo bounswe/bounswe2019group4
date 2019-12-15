@@ -6,6 +6,7 @@ import com.example.arken.model.ArticleRateRequest;
 import com.example.arken.model.Comment;
 import com.example.arken.model.Email;
 import com.example.arken.model.Event;
+import com.example.arken.model.EventWithComment;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
 import com.example.arken.model.ListArticle;
@@ -93,7 +94,7 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("events/{id}")
-    Call<Event> getEvent(@Path("id") String k);
+    Call<EventWithComment> getEvent(@Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
     @GET("profile/{id}")
