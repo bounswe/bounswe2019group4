@@ -128,7 +128,7 @@ class TradingEquipment extends Component {
                                         <div style={{fontSize:12}}>
                                         {
                                             tEq.status==="up"?<Icon  color={"green"} name={"arrow up"}/>:
-                                                tEq.status==="down"?<Icon color={"red"} name={"arrow up"}/>:
+                                                tEq.status==="down"?<Icon color={"red"} name={"arrow down"}/>:
                                                     <Icon name={"arrows alternate horizontal"}/>
                                         }
                                            {tEq.change}
