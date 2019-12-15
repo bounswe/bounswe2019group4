@@ -54,9 +54,10 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
             R.drawable.ic_trading_eq,
             R.drawable.ic_search,
             R.drawable.ic_person_white,
+            R.drawable.ic_event,
             R.drawable.ic_logout
         )
-        val stringArr = arrayOf("Events", "Trading Eq", "Search", "Profile", "Log Out")
+        val stringArr = arrayOf("Events", "Trading Eq", "Search", "Profile", "Article", "Log Out")
         val adapter = MenuAdapter(imageArr, stringArr, isLogged, this)
 
         recyclerView!!.adapter = adapter
@@ -173,8 +174,19 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(act)
             }
         } else if (index == 4) {
-            signOutPressed()
-        }
+            val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+                .getString("userId", "defaultId")
+            if (findNavController(fragment!!).currentDestination!!.id == R.id.eventListFragment) {
+                val act = ListEventFragmentDirections.actionEventListFragmentToListArticleFragment()
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
+                val act =
+                    ListCurrentFragmentDirections.actionListCurrentFragmentToListArticleFragment()
+                findNavController(fragment!!).navigate(act)
+            }
+        } else if (index == 5) {
+                signOutPressed()
+            }
 
     }
 }
