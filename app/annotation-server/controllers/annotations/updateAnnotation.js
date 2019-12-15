@@ -6,8 +6,8 @@ module.exports = async (req, res, next) => {
       return res.sendStatus(405);
     }
     await Annotation.updateOne({ id: req.body.id }, req.body);
-    Annotation.updateOne()
-    res.json();
+    const doc = await Annotation.findOne({ id: req.body.id }).lean();
+    res.json(doc);
   } catch (error) {
     res.sendStatus(400);
   }
