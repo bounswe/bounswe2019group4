@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Header, Icon, Pagination, Segment,Dropdown,Popup,Button} from 'semantic-ui-react';
+import {Header, Icon, Pagination, Segment,Dropdown,Popup,Button,Rating} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
@@ -22,7 +22,7 @@ class Events extends Component {
             shown:[],
             shownPage:1,
             totalNumOfEvents:0,
-            eventPerPage:8,
+            eventPerPage:15,
             dateDir:false,
             impDir:false,
             dropdownItems:[],
@@ -39,12 +39,7 @@ class Events extends Component {
             loading:false,
             startDate:new Date(),
             endDate:new Date()
-
-
-
         }
-
-
     }
 
     async componentDidMount() {
@@ -362,13 +357,11 @@ class Events extends Component {
 
             !loading?(
 
-                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
-                    <Segment  raised piled padded compact textAlign='left'>
-                        <Header textAlign='center'>
-                            Events
+                <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center", width: "100%", margin: 30, fontWeight: "bold", fontSize: 16}} >
 
-                        </Header>
-                        <table className="ui blue table fixed">
+
+                        <table className="ui fixed table inverted" style={{background: "rgba(255,255,255,0)"}}>
+
                             <thead>
                             <tr>
                                 <th>
@@ -489,13 +482,12 @@ class Events extends Component {
                                 const imp=event.Importance;
                                 var src;
                                 if(imp===3){
-                                    src=ThreeStar;
+                                    src=(<Rating defaultRating={0} maxRating={3} disabled />);
                                 }else if(imp===2){
                                     src=TwoStar;
                                 }else{
                                     src=OneStar;
                                 }
-
                                 return(
                                     <tr>
                                         <td>
@@ -512,7 +504,7 @@ class Events extends Component {
                                             {event.Source}
                                         </td>
                                         <td>
-                                            {<img style={{width:"50px"}} src={src} alt='stars'/>}
+                                            {<Rating defaultRating={imp} maxRating={3} disabled icon='star' style={{color:"white"}} />}
                                         </td>
                                     </tr>)
                             })}
@@ -526,10 +518,10 @@ class Events extends Component {
                                          totalPages={this.state.numPages}
                                          activePage={this.state.shownPage}
                                          onPageChange={this.updatePage}
+                                         style={{background: "rgba(0,0,0,0)", color: "#ffffff !important", fontWeight: "bold"}}
                             />
                         </div>
 
-                    </Segment>
 
                 </div>
             ):(<Loading/>)

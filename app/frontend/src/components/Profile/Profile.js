@@ -13,6 +13,7 @@ import moment from 'moment';
 
 import ProfileCard from "./ProfileCard";
 import FriendsCard from "./FriendsCard";
+import {colorAccent, colorBG, colorPrimary} from "../../utils/constants/Colors";
 
 class Profile extends Component {
 
@@ -109,11 +110,11 @@ class Profile extends Component {
                     <Grid.Row>
                         <Grid.Column width={3}>
                             <Grid.Row relaxed>
-                                <ProfileCard user={profileCardProps}/>
+                                <ProfileCard user={profileCardProps} style={{background: "rgba(255,255,255,0.5)"}}/>
                             </Grid.Row>
                             {user.followRequests && user.followRequests.length > 0 &&
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%"}}>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.5)"}}>
                                     <List divided relaxed textAlign="left">
                                         <List.Header as="h3">Pending Requests</List.Header>
                                         {user.followRequests.map(follower => {
@@ -130,11 +131,12 @@ class Profile extends Component {
                             </Grid.Row>
                             }
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%"}}>
+                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%", background: "rgba(255,255,255,0.15)"}}>
                                 <List animated divided relaxed textAlign="left">
-                                    <List.Header as="h3">{user.follower + " Followers"}</List.Header>
+                                    <List.Header as="h3" style={{color: "#c9c9c9"}}>{user.follower + " Followers"}</List.Header>
                                     {user.followers && user.followers.map(follower => {
                                         return <List.Item icon="user"
+                                                          style={{color: "#c9c9c9"}}
                                                           onClick={()=>{history.push("/profile/"+follower.FollowingId)}}
                                                           content={follower.FollowingName + " " + follower.FollowingSurname} />
                                     })}
@@ -142,11 +144,12 @@ class Profile extends Component {
                                 </Segment>
                             </Grid.Row>
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%"}}>
+                                <Segment textAlign="left"  style={{margin: 20, width:"100%", background: "rgba(255,255,255,0.15)"}}>
                                     <List animated divided relaxed textAlign="left">
-                                        <List.Header as="h3">{user.following + " Following"}</List.Header>
+                                        <List.Header as="h3" style={{color: "#c9c9c9"}}>{user.following + " Following"}</List.Header>
                                         {user.followings && user.followings.map(follower => {
                                             return <List.Item icon="user"
+                                                              style={{color: "#c9c9c9"}}
                                                               onClick={()=>{history.push("/profile/"+follower.FollowedId)}}
                                                               content={follower.FollowedName + " " + follower.FollowedSurname} />
                                         })}
@@ -155,8 +158,8 @@ class Profile extends Component {
                             </Grid.Row>
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <Segment color="teal" style={{margin: 20, width: "100%"}}>
-                                <Header>Articles<Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/articles/new")}}>Add</Button></Header>
+                            <Segment style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                                <Header style={{color: "#c9c9c9"}}>Articles<Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/articles/new")}}>Add</Button></Header>
                                 <Divider/>
                                 {user.articles && user.articles.length>0 ?
                                     user.articles.map(article => {
@@ -172,27 +175,30 @@ class Profile extends Component {
                                                 </Card.Content>
                                         </Card>
                                         )
-                                    }) : "No Article Created!"
+                                    }) : <span style={{color: "#c9c9c9"}}>No Article Created!</span>
                                 }
                             </Segment>
                         </Grid.Column>
                         <Grid.Column width={5}>
                             <Grid.Row>
-                            <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%"}}>
+                            <Segment textAlign="left"  style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                 <List animated divided relaxed textAlign="left">
-                                    <List.Header as="h3">Followed Trading Equipment</List.Header>
+                                    <List.Header as="h3" style={{color: "#c9c9c9"}}>Followed Trading Equipment</List.Header>
                                     {user.followingTradings && user.followingTradings.length >0 ? user.followingTradings.map(teq => {
                                         return <List.Item icon="chart line"
+                                                          style={{color: "#c9c9c9"}}
                                                           onClick={()=>{history.push({pathname: "trading-equipment",state:{currency: teq.TradingEq}})}}
+
                                                           content={teq.TradingEq==="EUR"?(teq.TradingEq+"/USD"):(teq.TradingEq+"/EUR")}/>
-                                    }): <List.Item content="No Trading Equipment Is Followed" />}
+                                    }): <List.Item style={{color: "#c9c9c9"}} content="No Trading Equipment Is Followed" />}
+
                                 </List>
                             </Segment>
                             </Grid.Row>
                             <Grid.Row>
-                                <Segment color="teal" style={{margin: 20, width: "100%"}}>
-                                    <Header>Portfolios</Header>
-                                    <Divider/>
+                                <Segment  style={{ margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                                    <Header style={{color: "#c9c9c9"}}>Portfolios</Header>
+                                    <Divider style={{color: "#c9c9c9"}} />
                                     {user.portfolios && user.portfolios.length>0 ?
                                         user.portfolios.map(portfolio => {
                                             return (
@@ -204,7 +210,7 @@ class Profile extends Component {
 
                                                 </Card>
                                             )
-                                        }) : "No Portfolio Created!"
+                                        }) : <span style={{color: "#c9c9c9"}}>No Portfolio Created!</span>
                                     }
                                 </Segment>
                             </Grid.Row>

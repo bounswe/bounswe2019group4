@@ -36,19 +36,19 @@ class ProfileCard extends Component {
         const {name, surname, email, predictionRate, isPublic, isTrader, followers, following} = this.state;
 
         return(
-            <Card style={{width: "100%", margin: 20}}>
-                <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
+            <Card style={{width: "100%", margin: 20, background: "rgba(255,255,255,0.15)"}}>
+                <Image src='https://cnam.ca/wp-content/uploads/2018/06/default-profile-300x300.gif' wrapped ui={false} />
                 <Card.Content>
-                    <Card.Header>{name + " " + surname}</Card.Header>
+                    <Card.Header style={{color: "#c9c9c9"}}>{name + " " + surname}</Card.Header>
                 </Card.Content>
                 <Card.Content extra>
-                    <Label basic color='red' horizontal>
+                    <Label basic color='red' horizontal >
                         Prediction Rate
                     </Label>
-                    <span className='date'>{predictionRate}</span>
+                    <span className='date' style={{color: "#c9c9c9"}}>{predictionRate}</span>
                 </Card.Content>
                 <Card.Content extra>
-                    <Label color={isPublic ? "green" : "red"} horizontal>
+                    <Label color={isPublic ? "green" : "red"} horizontal >
                         {isPublic ? "Public Profile": "Private Profile"}
                     </Label>
                     <Label color="grey" horizontal>
@@ -57,8 +57,9 @@ class ProfileCard extends Component {
                 </Card.Content>
                 {email &&
                 <Card.Content extra>
-                    <Icon name='mail' />
-                    {email}
+                    <Icon inverted name='mail' />
+                    <span style={{color: "#c9c9c9"}}>{email}</span>
+
                 </Card.Content>
                 }
 

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 import GuestHeaderComponent from './GuestHeaderComponent';
 import UserHeaderComponent from './UserHeaderComponent';
-
+import {colorBG} from "../../utils/constants/Colors";
 import authService from "../../factories/authFactory";
 
 import arkenLogo from "../../assets/arken_logo.png";
@@ -33,9 +33,9 @@ class ArkenHeader extends Component {
     render() {
         return (
             <Menu
-                size="small"
-                inverted
-                style={{margin: "0px !important", height: "40px", background: "#396D7C"}}
+                size="huge"
+
+                style={{margin: "0px !important", height: "70px", background: "#101617"}}
             >
                 <Menu.Header
                     style={{display: "flex", alignItems: "center"}}

@@ -35,12 +35,16 @@ class CandleStickChart extends React.Component {
                          xScale={scaleTime()}
                          xExtents={xExtents}>
                 <Chart id={1} yExtents={d => [d.high, d.low]}>
-                    <XAxis axisAt="bottom" orient="bottom" ticks={6}/>
-                    <YAxis axisAt="left" orient="left" ticks={5} />
+                    <XAxis axisAt="bottom" orient="bottom" ticks={6} stroke="#FFFFFF" tickStroke="#FFFFFF" opacity={0.5}/>
+                    <YAxis axisAt="left" orient="left" ticks={5} inverted={true} tickStroke="#FFFFFF" />
                     <Label x={yAxisLabelX} y={yAxisLabelY}
                            rotate={-90}
-                           fontSize="12" text={convertedCurrency} />
-                    <CandlestickSeries width={timeIntervalBarWidth(utcDay)}/>
+                           fontSize="12"
+                           color="#FFFFFF"
+                           text={convertedCurrency} />
+                    <CandlestickSeries width={timeIntervalBarWidth(utcDay)} stroke={d => d.close > d.open ? "#6BA583" : "#DB0000"}
+                                       wickStroke={d => d.close > d.open ? "#6BA583" : "#DB0000"}
+                                       fill={d => d.close > d.open ? "#6BA583" : "#DB0000"}/>
                 </Chart>
             </ChartCanvas>
         );

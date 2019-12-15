@@ -15,7 +15,7 @@ class TradingEquipment extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[],numUp:0,numDown:0};
+        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[],numUp:0,numDown:0, vote: "noVote"};
     }
 
     componentWillMount() {
@@ -110,9 +110,8 @@ class TradingEquipment extends Component {
         return (
             <Grid columns={2} divided>
             <Grid.Row>
-                <Grid.Column width={4}>
-                    <Segment textAlign={"center"}>
-                <Table basic="very" celled >
+                <Grid.Column width={3} style={{margin: 20}}>
+                <Table basic="very" celled inverted style={{background: "#161C1D"}} >
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Parity</Table.HeaderCell>
@@ -124,6 +123,7 @@ class TradingEquipment extends Component {
                             return (
                                 <Table.Row>
                                     <Table.Cell>{tEq.from + "/" + tEq.to}</Table.Cell>
+
                                     <Table.Cell>{tEq.rate}
                                         <div style={{fontSize:12}}>
                                         {
@@ -135,20 +135,20 @@ class TradingEquipment extends Component {
                                         </div>
 
                                     </Table.Cell>
+
                                 </Table.Row>
                             )
                         })}
                     </Table.Body>
                 </Table>
-                    </Segment>
                 </Grid.Column>
-                <Grid.Column width={12}>
+                <Grid.Column width={12} style={{margin: 20}}>
                     <div style={{display:"flex",flexDirection:"column"}}>
-                    <Segment textAlign={"left"}>
                         <Grid>
                         <Grid.Row>
                             <Grid.Column width={9}>
                         <Dropdown
+                            style={{background: "rgba(255,255,255,0.2)", color: "#FFFFFF"}}
                             placeholder='Select Currency'
                             fluid
                             search
@@ -159,6 +159,7 @@ class TradingEquipment extends Component {
                             renderLabel={item =>  item.value + "/" + item.text}
                         />
                             </Grid.Column>
+
                             <Grid.Column width={2}>
                                 <Button as='div' labelPosition='right'>
                                     <Button disabled={!loggedin} color='red' onClick={()=>this.predict(0)}>
@@ -189,6 +190,7 @@ class TradingEquipment extends Component {
                                         </div>
                                     </Button>
                                 </Button>
+
                             </Grid.Column>
                             <Grid.Column width={3} style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
                                 {loggedin && (!following ? <Button basic color="green" onClick={this.follow.bind(this)}> + Follow</Button> : <Button basic color="red" onClick={this.follow.bind(this)}> - Unfollow</Button>)}
@@ -199,6 +201,7 @@ class TradingEquipment extends Component {
                 {teDetail && <CandleStickChart type="hybrid" data={teDetail} convertedCurrency={convertedCurrency} />}
 
                     </Segment>
+
                     <Comments type={"trading-equipment"} _id={this.state.selectedTE} resendComments={this.onChange.bind(this,{},{value:this.state.selectedTE})} data={this.state.comments}/>
                     </div>
                 </Grid.Column>

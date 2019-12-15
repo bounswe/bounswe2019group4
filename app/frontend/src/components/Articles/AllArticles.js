@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
 import {Button, Dropdown, Header, Icon, Pagination, Popup, Segment,Label} from 'semantic-ui-react';
+
 import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
@@ -11,6 +12,7 @@ import Loading from "../Loading";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import {normalizeDate,compareDates} from "../Events/Events";
+
 
 class AllArticles extends Component {
 
@@ -33,8 +35,10 @@ class AllArticles extends Component {
                 {key:2,value:2,text:"2",image:TwoStar},
                 {key:3,value:3,text:"3",image:ThreeStar}
             ],
+
             drTitle:[],
             drAuthor:[],
+
             loading:false,
             startDate:new Date(),
             endDate:new Date()
@@ -51,6 +55,7 @@ class AllArticles extends Component {
         const localState = loadState();
         this.setState({user: localState.user});
         await this.getArticles();
+
         this.setShownEvents();
         this.sortEventsByDate();
         await this.setInitialDates();
@@ -63,12 +68,14 @@ class AllArticles extends Component {
     };
 
     getTitlesForDropdown=()=>{
+
         let dropdownItems=[];
         let key=1;
         for(let i of this.state.events ){
             let check=false;
             for(let j of dropdownItems){
                 if(j.value.trim()===i.title.trim()){
+
                     check=true;
                     break;
                 }
@@ -76,8 +83,10 @@ class AllArticles extends Component {
             if(!check){
                 let newitem={
                     key:key,
+
                     text:i.title,
                     value:i.title
+
 
                 };
                 dropdownItems.push(newitem);
@@ -87,16 +96,20 @@ class AllArticles extends Component {
         dropdownItems.sort((a,b)=>{
             return ('' + a.value).localeCompare(b.value);
         });
+
         this.setState({titleItems:dropdownItems});
     };
     getAuthorsForDropdown=()=>{
+
         let dropdownItems=[];
         let key=1;
         for(let i of this.state.events ){
             let check=false;
+
             let author=i.username+" "+i.usersurname;
             for(let j of dropdownItems){
                 if(j.value.trim()===author.trim()){
+
                     check=true;
                     break;
                 }
@@ -104,8 +117,10 @@ class AllArticles extends Component {
             if(!check){
                 let newitem={
                     key:key,
+
                     text:author,
                     value:author
+
 
                 };
                 dropdownItems.push(newitem);
@@ -115,7 +130,9 @@ class AllArticles extends Component {
         dropdownItems.sort((a,b)=>{
             return ('' + a.value).localeCompare(b.value);
         });
+
         this.setState({authorItems:dropdownItems});
+
     };
 
     setShownEvents(){
@@ -165,6 +182,7 @@ class AllArticles extends Component {
 
      */
 
+
     sortfunc=(f,g)=>{
         let dateDir=this.state.dateDir;
         let a=new Date(f.normalDate);
@@ -178,7 +196,9 @@ class AllArticles extends Component {
 
     };
 
+
     sortEventsByDate=()=>{
+
         let dateDir=this.state.dateDir;
         let newevents=this.state.events2;
         let newevents2=this.state.events;
@@ -197,9 +217,11 @@ class AllArticles extends Component {
 
         let newevents=this.state.events.slice();
 
+
         let i;
         for(i=0;i<newevents.length;i++) {
             let d=newevents[i].date;
+
             newevents[i].normalDate=normalizeDate(d);
         }
         this.setState({events:newevents});
@@ -212,6 +234,7 @@ class AllArticles extends Component {
 
     onDropdownsChange=async()=>{
         let list=[];
+
         let value1=this.state.drTitle;
         let value2=this.state.drAuthor;
         let empty1 = value1.length === 0;
@@ -236,6 +259,7 @@ class AllArticles extends Component {
 
 
 
+
     onTitleChange=async(e,{value})=>{
         this.setState({drTitle:value},this.onDropdownsChange);
 
@@ -245,7 +269,6 @@ class AllArticles extends Component {
 
 
     };
-
 
     startDateChange=(date)=>{
         this.setState({startDate:date},this.onDropdownsChange);
@@ -268,16 +291,20 @@ class AllArticles extends Component {
                 <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
                     <Segment  raised piled padded compact textAlign='left'>
                         <Header textAlign='center'>
+
                             Articles
 
                         </Header>
                         <table className="ui blue table fixed">
+
                             <thead>
                             <tr>
                                 <th>
                                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
+
                                         Article
+
 
                                         <Dropdown
                                             style={{marginLeft:5}}
@@ -286,15 +313,19 @@ class AllArticles extends Component {
                                             multiple
                                             search
                                             selection
+
                                             options={this.state.titleItems}
                                             onChange={this.onTitleChange}
+
                                         />
                                     </div>
                                 </th>
                                 <th>
                                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
+
                                         Author
+
 
                                         <Dropdown
                                             style={{marginLeft:5}}
@@ -303,8 +334,10 @@ class AllArticles extends Component {
                                             multiple
                                             search
                                             selection
+
                                             options={this.state.authorItems}
                                             onChange={this.onAuthorChange}
+
                                         />
 
                                     </div>
@@ -351,6 +384,7 @@ class AllArticles extends Component {
 
                                 <th>
 
+
                                         Rating
 
 
@@ -361,9 +395,11 @@ class AllArticles extends Component {
                             <tbody>
                             {shown.map(function(article) {
 
+
                                 return(
                                     <tr>
                                         <td>
+
                                             <Link to={"/articles/"+article._id}>{article.title}</Link>
                                         </td>
                                         <td>
@@ -384,6 +420,7 @@ class AllArticles extends Component {
                                             </Label>
                                             </div>
                                         </td>
+
 
                                     </tr>)
                             })}
@@ -412,10 +449,12 @@ class AllArticles extends Component {
 
 const dispatchToProps = dispatch => {
     return {
+
         articles: params => dispatch(userActions.getAllArticles(params)),
         authors:params=>dispatch(userActions.profile(params))
     };
 };
 
 export default connect(null, dispatchToProps)(AllArticles);
+
 
