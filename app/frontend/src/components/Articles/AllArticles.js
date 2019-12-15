@@ -3,15 +3,12 @@ import {loadState} from '../../_core/localStorage'
 import {Button, Dropdown, Header, Icon, Pagination, Popup, Segment,Label} from 'semantic-ui-react';
 
 import {connect} from 'react-redux';
-import OneStar from '../../assets/onestar.png'
-import TwoStar from '../../assets/twostar.png'
-import ThreeStar from '../../assets/threestar.png'
 import {Link} from 'react-router-dom'
 import * as userActions from '../../actions/userActions';
 import Loading from "../Loading";
-import DatePicker from "react-datepicker"
+import DatePicker, {getDefaultLocale, registerLocale, setDefaultLocale} from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import {normalizeDate,compareDates} from "../Events/Events";
+import {normalizeDate, compareDates, normalizeDateToTR} from "../Events/Events";
 
 
 class AllArticles extends Component {
@@ -30,15 +27,8 @@ class AllArticles extends Component {
             impDir:false,
             dropdownItems:[],
             dropdown2Items:[],
-            dropdown3Items:[
-                {key:1,value:1,text:"1",image:OneStar},
-                {key:2,value:2,text:"2",image:TwoStar},
-                {key:3,value:3,text:"3",image:ThreeStar}
-            ],
-
             drTitle:[],
             drAuthor:[],
-
             loading:false,
             startDate:new Date(),
             endDate:new Date()
@@ -166,28 +156,14 @@ class AllArticles extends Component {
         });
     }
 
-    /*
-    async getAuthors(){
-
-        for (let i of this.state.events) {
-            await this.props.authors("/"+i.userId).then(res=>{
-                i.author=res.value.user.name + " " + res.value.user.surname;
-
-            })
-
-        }
-    }
-
-     */
-
 
     sortfunc=(f,g)=>{
         let dateDir=this.state.dateDir;
-        let a=f.Date;
-        let b=g.Date;
+        let a=new Date(f.normalDate);
+        let b=new Date(g.normalDate);
         let c=f.Importance;
         let d=g.Importance;
-        if(a===b) {
+        if(a.getTime()===b.getTime()) {
             return d-c;
         }
         return dateDir?a-b:b-a;
@@ -221,6 +197,7 @@ class AllArticles extends Component {
             let d=newevents[i].date;
 
             newevents[i].normalDate=normalizeDate(d);
+            newevents[i].normalDateTr=normalizeDateToTR(d);
         }
         this.setState({events:newevents});
 
@@ -239,7 +216,6 @@ class AllArticles extends Component {
         let empty2 = value2.length === 0;
         for (let i of this.state.events) {
             let date=new Date(i.normalDate);
-
             if ((value1.includes(i.title) || empty1) && (value2.includes(i.username+" "+i.usersurname) || empty2)//&&(value3.includes(i.Importance)||empty3)
                 &&(compareDates(this.state.startDate,date)&&compareDates(date,this.state.endDate))
 
@@ -361,11 +337,14 @@ class AllArticles extends Component {
                                                 <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:5}}>
 
                                                     <DatePicker
+                                                        locale={"pt-BR"}
+                                                        dateFormat={"P"}
                                                         selected={this.state.startDate}
                                                         onChange={this.startDateChange}
                                                     />
                                                     to
                                                     <DatePicker
+
                                                         selected={this.state.endDate}
                                                         onChange={this.endDateChange}
                                                     />
@@ -401,7 +380,7 @@ class AllArticles extends Component {
 
                                         </td>
                                         <td>
-                                            {article.normalDate}
+                                            {article.normalDateTr}
                                         </td>
                                         <td>
                                             <div style={{display:"flex",flexDirection:"row"}}>

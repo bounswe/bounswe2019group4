@@ -8,8 +8,9 @@ import ThreeStar from '../../assets/threestar.png'
 import {Link} from 'react-router-dom'
 import * as userActions from '../../actions/userActions';
 import Loading from "../Loading";
-import DatePicker from "react-datepicker"
+import DatePicker, {registerLocale} from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
+
 
 class Events extends Component {
 
@@ -174,18 +175,7 @@ class Events extends Component {
         });
     }
 
-    sortfunc=(f,g)=>{
-        let dateDir=this.state.dateDir;
-        let a=new Date(f.normalDate);
-        let b=new Date(g.normalDate);
-        let c=f.Importance;
-        let d=g.Importance;
-        if(a.getTime()===b.getTime()) {
-            return d-c;
-        }
-        return dateDir?a-b:b-a;
 
-    };
 
     /*
     sortfunc2=(f,g)=>{
@@ -243,6 +233,7 @@ class Events extends Component {
         for(i=0;i<newevents.length;i++) {
             let d=newevents[i].Date;
             newevents[i].normalDate=normalizeDate(d);
+            newevents[i].normalDateTr=normalizeDateToTR(d);
         }
         this.setState({events:newevents});
 
@@ -424,11 +415,13 @@ class Events extends Component {
                                             <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:5}}>
 
                                                 <DatePicker
+                                                    locale={"tr"}
                                                     selected={this.state.startDate}
                                                     onChange={this.startDateChange}
                                                 />
                                                 to
                                                 <DatePicker
+                                                    locale={"tr"}
                                                     selected={this.state.endDate}
                                                     onChange={this.endDateChange}
                                                 />
@@ -498,7 +491,7 @@ class Events extends Component {
 
                                         </td>
                                         <td>
-                                            {event.normalDate}
+                                            {event.normalDateTr}
                                         </td>
                                         <td>
                                             {event.Source}
@@ -540,6 +533,19 @@ const dispatchToProps = dispatch => {
 };
 
 export function normalizeDate(date){
+
+    const dat = new Date(date);
+    const formatOptions = {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    };
+    return dat.toLocaleDateString('en-us', formatOptions);
+}
+export function normalizeDateToTR(date){
 
     const dat = new Date(date);
     const formatOptions = {
