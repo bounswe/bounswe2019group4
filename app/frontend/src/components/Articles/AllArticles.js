@@ -10,6 +10,7 @@ import * as userActions from '../../actions/userActions';
 import Loading from "../Loading";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
+import {normalizeDate,compareDates} from "../Events/Events";
 
 class AllArticles extends Component {
 
@@ -416,45 +417,5 @@ const dispatchToProps = dispatch => {
     };
 };
 
-export function normalizeDate(date){
-
-    const dat = new Date(date);
-    const formatOptions = {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    };
-    return dat.toLocaleDateString('en-US', formatOptions);
-}
-export function compareDates(a,b) { //date a <= date b
-    let c=a.getFullYear();
-    let d=b.getFullYear();
-
-    let m1=a.getMonth();
-    let m2=b.getMonth();
-    let d1=a.getDate();
-    let d2=b.getDate();
-
-
-    if(c>d) {
-
-        return false;
-    }
-    else if(c===d){
-
-        if(m1>m2)
-            return false;
-        else if(m1===m2){
-            if(d1>d2)
-                return false;
-        }
-    }
-    return true;
-
-
-}
 export default connect(null, dispatchToProps)(AllArticles);
 

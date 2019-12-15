@@ -557,7 +557,7 @@ export function normalizeDate(date){
         minute: '2-digit',
         hour12: false
     };
-    return dat.toLocaleDateString('en-US', formatOptions);
+    return dat.toLocaleDateString('tr', formatOptions);
 }
 export function compareDates(a,b) { //date a <= date b
     let c=a.getFullYear();
