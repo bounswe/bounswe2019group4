@@ -16,6 +16,7 @@ import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.fragment.tEq.ListCurrentFragmentDirections
 import com.example.arken.model.Comment
 import com.example.arken.model.Event
+import com.example.arken.model.EventWithComment
 import com.example.arken.model.tradingEquipment.Currency
 import com.example.arken.util.CommentAdapter
 import com.example.arken.util.OnCommentClickedListener
@@ -151,15 +152,15 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
         val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
             .getString("user_cookie", "")
         if (about == "EVENT") {
-            val call: Call<Event> = RetroClient.getInstance().apiService.getEvent(related)
+            val call: Call<EventWithComment> = RetroClient.getInstance().apiService.getEvent(related)
 
-            call.enqueue(object : Callback<Event> {
-                override fun onResponse(call: Call<Event>, response: Response<Event>) {
+            call.enqueue(object : Callback<EventWithComment> {
+                override fun onResponse(call: Call<EventWithComment>, response: Response<EventWithComment>) {
                     if (response.isSuccessful) {
-                        val callEvent: Event? = response.body()
+                        val callEvent: EventWithComment? = response.body()
                         if (callEvent != null) {
                             var comments = callEvent.comments
-                            dataset = comments
+                            dataset = comments as MutableList<Comment>
                             commentAdapter.dataSet = dataset
                             commentAdapter.notifyDataSetChanged()
                         }
@@ -169,7 +170,7 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                     }
                 }
 
-                override fun onFailure(call: Call<Event>, t: Throwable) {
+                override fun onFailure(call: Call<EventWithComment>, t: Throwable) {
                     Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })

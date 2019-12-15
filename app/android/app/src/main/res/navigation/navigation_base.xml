@@ -26,6 +26,9 @@
             android:id="@+id/action_eventListFragment_to_searchFragment"
             app:destination="@id/searchFragment"
             app:popUpTo="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -54,6 +57,9 @@
             android:id="@+id/action_listCurrentFragment_to_currencyFragment"
             app:destination="@id/currencyFragment"
             app:popUpTo="@+id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
     </fragment>
     <fragment
         android:id="@+id/currencyFragment"
@@ -93,6 +99,20 @@
         <action
             android:id="@+id/action_searchFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />
+        <action
+
+            android:id="@+id/action_searchFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+      <action
+            android:id="@+id/action_searchFragment_to_articleDetail"
+            app:destination="@id/articleDetail" />
+        <action
+            android:id="@+id/action_searchFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_currencyFragment"
+            app:destination="@id/currencyFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/listArticleFragment"
@@ -105,15 +125,33 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_listArticleFragment_to_articleDialogFragment"
-            app:destination="@id/articleDialogFragment" />
+            app:destination="@id/articleDialogFragment"
+            app:popUpTo="@+id/listArticleFragment" />
         <action
             android:id="@+id/action_listArticleFragment_to_articleDetail"
             app:destination="@id/articleDetail" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
     </fragment>
     <dialog
         android:id="@+id/articleDialogFragment"
         android:name="com.example.arken.fragment.article.ArticleDialogFragment"
-        android:label="ArticleDialogFragment" />
+        android:label="ArticleDialogFragment" >
+        <action
+            android:id="@+id/action_articleDialogFragment_to_articleDetail"
+            app:destination="@id/articleDetail"
+            app:popUpTo="@+id/listArticleFragment" />
+    </dialog>
     <fragment
         android:id="@+id/articleDetail"
         android:name="com.example.arken.fragment.article.ArticleDetail"
@@ -121,5 +159,20 @@
         <argument
             android:name="articleId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_articleDetail_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_articleDetail_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_articleDetail_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_articleDetail_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_articleDetail_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
     </fragment>
 </navigation>

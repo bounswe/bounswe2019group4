@@ -1,14 +1,18 @@
 package com.example.arken.fragment.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Event
+import com.example.arken.model.EventWithComment
 import com.example.arken.util.EventAdapter
 import com.example.arken.util.OnEventClickedListener
 import com.example.arken.util.RetroClient
@@ -41,19 +45,23 @@ class SearchEvent : Fragment(), OnEventClickedListener {
 
     override fun onItemClicked(event: Event) {
 
-        val call: Call<Event> = RetroClient.getInstance().apiService.getEvent(event._id)
+        val call: Call<EventWithComment> = RetroClient.getInstance().apiService.getEvent(event.CalendarId)
 
-        call.enqueue(object : Callback<Event> {
-            override fun onResponse(call: Call<Event>, response: Response<Event>) {
+        call.enqueue(object : Callback<EventWithComment> {
+            override fun onResponse(call: Call<EventWithComment>, response: Response<EventWithComment>) {
                 if (response.isSuccessful) {
-
+                    recyclerView.hideKeyboard()
+                    val act = SearchFragmentDirections.actionSearchFragmentToEventFragment()
+                    var evenResponse : EventWithComment =response.body()!!
+                    act.eventToShow = evenResponse.event
+                    Navigation.findNavController(recyclerView).navigate(act)
 
                 } else {
                     Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<Event>, t: Throwable) {
+            override fun onFailure(call: Call<EventWithComment>, t: Throwable) {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
@@ -65,6 +73,10 @@ class SearchEvent : Fragment(), OnEventClickedListener {
         }
         eventAdapter!!.dataSet = list
         eventAdapter!!.notifyDataSetChanged()
+    }
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
 }

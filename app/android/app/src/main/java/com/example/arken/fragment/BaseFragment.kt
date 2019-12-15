@@ -13,6 +13,8 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.activity.MainActivity
+import com.example.arken.fragment.article.ArticleDetailDirections
+import com.example.arken.fragment.article.ListArticleFragmentDirections
 import com.example.arken.fragment.event.ListEventFragmentDirections
 import com.example.arken.fragment.search.SearchFragmentDirections
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
@@ -53,10 +55,11 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
             R.drawable.ic_event,
             R.drawable.ic_trading_eq,
             R.drawable.ic_search,
+            R.drawable.ic_event,
             R.drawable.ic_person_white,
             R.drawable.ic_logout
         )
-        val stringArr = arrayOf("Events", "Trading Eq", "Search", "Profile", "Log Out")
+        val stringArr = arrayOf("Events", "Trading Eq", "Search", "Article", "Profile", "Log Out")
         val adapter = MenuAdapter(imageArr, stringArr, isLogged, this)
 
         recyclerView!!.adapter = adapter
@@ -117,6 +120,10 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
                 findNavController(fragment!!).popBackStack()
                 findNavController(fragment!!).navigate(R.id.action_listCurrentFragment_to_eventListFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listArticleFragment) {
+                findNavController(fragment!!).navigate(R.id.action_listArticleFragment_to_eventListFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
+                findNavController(fragment!!).navigate(R.id.action_articleDetail_to_eventListFragment)
             }
         } else if (index == 1) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -134,6 +141,10 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_searchFragment_to_listCurrentFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
                 findNavController(fragment!!).popBackStack()
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listArticleFragment) {
+                findNavController(fragment!!).navigate(R.id.action_listArticleFragment_to_listCurrentFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
+                findNavController(fragment!!).navigate(R.id.action_articleDetail_to_listCurrentFragment)
             }
         } else if (index == 2) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -148,8 +159,12 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
                 findNavController(fragment!!).popBackStack()
                 findNavController(fragment!!).navigate(R.id.action_listCurrentFragment_to_searchFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listArticleFragment) {
+                findNavController(fragment!!).navigate(R.id.action_listArticleFragment_to_searchFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
+                findNavController(fragment!!).navigate(R.id.action_articleDetail_to_searchFragment)
             }
-        } else if (index == 3) {
+        } else if (index == 4) {
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
                 .getString("userId", "defaultId")
             if (findNavController(fragment!!).currentDestination!!.id == R.id.eventListFragment) {
@@ -171,8 +186,39 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 val act =
                     ListCurrentFragmentDirections.actionListCurrentFragmentToProfileFragment(id!!)
                 findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listArticleFragment) {
+                val act =
+                    ListArticleFragmentDirections.actionListArticleFragmentToProfileFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
+                val act =
+                    ArticleDetailDirections.actionArticleDetailToProfileFragment(id!!)
+                findNavController(fragment!!).navigate(act)
             }
-        } else if (index == 4) {
+        } else if (index == 3) {
+            val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+                .getString("userId", "defaultId")
+            if (findNavController(fragment!!).currentDestination!!.id == R.id.eventListFragment) {
+                val act = ListEventFragmentDirections.actionEventListFragmentToListArticleFragment()
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
+                val act =
+                    ListCurrentFragmentDirections.actionListCurrentFragmentToListArticleFragment()
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.eventFragment) {
+                findNavController(fragment!!).popBackStack()
+                findNavController(fragment!!).navigate(R.id.action_eventListFragment_to_listArticleFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.profileFragment) {
+                findNavController(fragment!!).navigate(R.id.action_profileFragment_to_listArticleFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.searchFragment) {
+                findNavController(fragment!!).navigate(R.id.action_searchFragment_to_listArticleFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
+                findNavController(fragment!!).popBackStack()
+                findNavController(fragment!!).navigate(R.id.action_listCurrentFragment_to_listArticleFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
+                findNavController(fragment!!).navigate(R.id.action_articleDetail_to_eventListFragment)
+            }
+        } else if (index == 5) {
             signOutPressed()
         }
 
