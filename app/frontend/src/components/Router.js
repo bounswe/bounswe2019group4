@@ -16,7 +16,7 @@ import TradingEquipment from "./TradingEquipment/TradingEquipment";
 import Create_Article from "./Articles/Create_Article";
 import authService from "../factories/authFactory";
 import Profile_Others from "./Profile/Profile_Others";
-
+import AllArticles from "./Articles/AllArticles";
 
 class Routes extends Component {
 
@@ -41,6 +41,7 @@ class Routes extends Component {
                     <Route path="/events" render={() => { return <Events />; }} />
                     <Route path="/articles/new" render={(props) => { return <Create_Article {...props} />; }} />
                     <Route path="/articles/:id" render={(props) => { return <Article_Details{...props} />; }} />
+                    <Route path="/articles" render={(props) => {return <AllArticles{...props} />; }} />
                     <Route path="/trading-equipment" render={(props) => { return <TradingEquipment {...props} />; }} />
                     <Route exact path="/profile/:id" render={(props) => { return <Profile_Others{...props} />; }} />
                     <Route exact path="/profile" render={

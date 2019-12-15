@@ -110,6 +110,12 @@ export function getArticleDetails(params) {
     };
 }
 
+export function getAllArticles(params) {
+    return {
+        type:"ALL_ARTICLES",
+        payload: userService.getArticle(params)
+    };
+}
 export function rateArticle(path,params) {
     return {
         type:"ARTICLE_RATE",
