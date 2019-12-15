@@ -40,7 +40,7 @@ class UserHeaderComponent extends Component {
         })
     }
     renderNotif=(item)=>{
-        if(item.text.includes("followed")){
+        if(item.text.includes("follow")){
             return(
                 <Dropdown.Item name={"profile"} onClick={this.navigate}>
                     <Icon color={"green"} name={"user"}/>
