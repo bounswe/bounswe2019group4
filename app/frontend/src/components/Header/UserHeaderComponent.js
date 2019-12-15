@@ -107,6 +107,16 @@ class UserHeaderComponent extends Component {
                         {normalizeDate(item.date)}
                     </div>
                 </Dropdown.Item>)
+        }else{
+            return(
+                <Dropdown.Item name={"profile"} onClick={this.navigate}>
+                    <Icon name={"info"}/>
+                    {item.text}
+                    <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
+                        {normalizeDate(item.date)}
+                    </div>
+                </Dropdown.Item>
+            )
         }
     };
 
