@@ -131,7 +131,7 @@ class TradingEquipment extends Component {
                                                 tEq.status==="down"?<Icon color={"red"} name={"arrow down"}/>:
                                                     <Icon name={"arrows alternate horizontal"}/>
                                         }
-                                           {tEq.change}
+                                           {tEq.change?("%"+parseFloat(tEq.change).toFixed(2)):"No info"}
                                         </div>
 
                                     </Table.Cell>
