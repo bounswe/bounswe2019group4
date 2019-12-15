@@ -12,7 +12,7 @@ import com.example.arken.model.Comment
 class CommentAdapter(
     var dataSet: MutableList<Comment>,
     val userId: String,
-    val deletedListener: OnCommentDeletedListener
+    val deletedListener: OnCommentClickedListener
 ) :
     RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
@@ -25,7 +25,7 @@ class CommentAdapter(
         fun bind(
             comment: Comment,
             userId: String,
-            deletedListener: OnCommentDeletedListener,
+            deletedListener: OnCommentClickedListener,
             position: Int
         ) {
             userName.text = comment.username + " " + comment.usersurname
@@ -39,6 +39,9 @@ class CommentAdapter(
 
             deleteButton.setOnClickListener {
                 deletedListener.onItemClicked(comment._id!!, position)
+            }
+            userName.setOnClickListener{
+                deletedListener.onUserNameClicked(comment.userId!!)
             }
         }
     }
@@ -64,6 +67,7 @@ class CommentAdapter(
     override fun getItemCount() = dataSet.size
 }
 
-interface OnCommentDeletedListener {
+interface OnCommentClickedListener {
     fun onItemClicked(commentId: String, position: Int)
+    fun onUserNameClicked(userId: String)
 }
