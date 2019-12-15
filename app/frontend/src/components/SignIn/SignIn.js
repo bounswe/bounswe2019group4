@@ -42,7 +42,14 @@ class SignInModal extends Component {
     signIn() {
         const {email, password} = this.state;
         this.props.signIn({email, password}).then(result => {
-            window.location.reload();
+            let arr=window.location.toString().split("/");
+            let url=arr[arr.length-1];
+            if(url!=="sign_up") {
+                window.location.reload();
+            }
+            else{
+                history.push("/");
+            }
             this.resetFields(this.props.handleClose);
         });
     }
