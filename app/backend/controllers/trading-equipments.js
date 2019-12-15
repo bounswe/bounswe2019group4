@@ -19,9 +19,9 @@ module.exports.getTradingEquipment = async (request, response) => {
   if(request.session['user']){
     UserId = request.session['user']._id
     result = await TradingEqFollow.findOne({UserId , TradingEq})
-    row = await TradingEqPrediction.find({UserId, TradingEq, Date: day_format})
+    row = await TradingEqPrediction.findOne({UserId, TradingEq, Date: day_format})
     if(row){
-      yourPrediction = row[0].Prediction
+      yourPrediction = row.Prediction
     }
 
     if(result){
