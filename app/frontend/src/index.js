@@ -3,12 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import configureStore from './store';
+import store from './store';
 import { Provider } from 'react-redux'
+import {saveState} from "./_core/localStorage";
 
+
+store.subscribe(() => {
+    saveState({
+        user: store.getState().user
+    });
+});
 
 ReactDOM.render(
-    <Provider store={configureStore()}>
+    <Provider store={store}>
         <App />
     </Provider>,
     document.getElementById('root'));
