@@ -148,6 +148,7 @@ class TradingEquipment extends Component {
                             <Grid.Row>
                                 <Grid.Column width={9}>
                                     <Dropdown
+                                        style={{background: "rgba(255,255,255,0.2)", color: "#FFFFFF"}}
                                         placeholder='Select Currency'
                                         fluid
                                         search

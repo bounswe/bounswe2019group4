@@ -356,8 +356,8 @@ class Events extends Component {
         return (
 
             !loading?(
-
-                <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center", width: "100%", margin: 30, fontWeight: "bold", fontSize: 16}} >
+                <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center"}}>
+                <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center", width: "90%", fontWeight: "bold", fontSize: 16}} >
 
 
                         <table className="ui fixed table inverted" style={{background: "rgba(255,255,255,0)"}}>
@@ -381,7 +381,7 @@ class Events extends Component {
                                         />
                                     </div>
                                 </th>
-                                <th>
+                                <th >
                                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
                                         Country
@@ -400,7 +400,7 @@ class Events extends Component {
                                     </div>
 
                                 </th>
-                                <th>
+                                <th  class={"two wide"}>
                                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
                                         Date
@@ -440,7 +440,7 @@ class Events extends Component {
                                 </th>
 
                                 <th>
-                                    <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
                                         Source
 
                                         <Dropdown
@@ -457,7 +457,7 @@ class Events extends Component {
                                     </div>
 
                                 </th>
-                                <th>
+                                <th class={"four wide"}>
                                     <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
                                         Importance
 
@@ -523,6 +523,7 @@ class Events extends Component {
                         </div>
 
 
+                </div>
                 </div>
             ):(<Loading/>)
 

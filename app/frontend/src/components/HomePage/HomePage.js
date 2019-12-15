@@ -63,7 +63,7 @@ user:{}
                     <h1 style={{color: "#1678C2",fontSize: "30px"}}>{slide.title}</h1>
                     <img src={slide.images} width={300} height={300} mode='fit'/>
                     <p  style={{color: "#FFFFFF", fontSize: "20px" }} >{slide.description}</p>
-                        {!user||!user.loggedin ? <button  name="sign_up"
+                        {!user||!user.loggedIn ? <button  name="sign_up"
                              onClick={this.navigateSignUp}>Register</button> :
                             <button  name="events" onClick={this.navigateEvents}>Events</button> }
                 </div>)}
