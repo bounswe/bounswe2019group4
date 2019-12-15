@@ -184,7 +184,7 @@ class Profile extends Component {
                                     {user.followingTradings && user.followingTradings.length >0 ? user.followingTradings.map(teq => {
                                         return <List.Item icon="chart line"
                                                           onClick={()=>{history.push({pathname: "trading-equipment",state:{currency: teq.TradingEq}})}}
-                                                          content={teq.TradingEq}/>
+                                                          content={teq.TradingEq==="EUR"?(teq.TradingEq+"/USD"):(teq.TradingEq+"/EUR")}/>
                                     }): <List.Item content="No Trading Equipment Is Followed" />}
                                 </List>
                             </Segment>
