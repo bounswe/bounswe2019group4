@@ -16,10 +16,13 @@ class UserHeaderComponent extends Component {
     }
 
 
-
+    interval=null;
     componentDidMount() {
         this.getNotifs();
-        setInterval(this.getNotifs,5000);
+        this.interval=setInterval(this.getNotifs,5000);
+    }
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     getNotifs=async()=>{
