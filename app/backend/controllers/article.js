@@ -18,6 +18,7 @@ module.exports.getArticles = async (request, response) => {
     const user = await User.findOne({_id: el.userId})
     return {
       ...el,
+      rateAverage: Math.round(el.rateAverage * 10) / 10,
       username: user.name,
       usersurname: user.surname
     }}))
