@@ -19,6 +19,7 @@ function userFactory() {
     this.acceptFollow = params => baseRequest.get("/profile/accept/"+params);
     this.rejectFollow = params => baseRequest.get("/profile/reject/"+params);
     this.cancelFollow = params => baseRequest.get("/profile/cancel/"+params);
+    this.getNotification= ()=> baseRequest.get("/notifications");
 }
 
 export default new userFactory();
