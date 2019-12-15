@@ -349,12 +349,7 @@ class AllArticles extends Component {
                                 </th>
 
                                 <th>
-                                    <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
                                         Rating
-
-
-
-                                    </div>
 
                                 </th>
 
