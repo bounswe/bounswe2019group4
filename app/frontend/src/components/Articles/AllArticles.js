@@ -86,8 +86,6 @@ class AllArticles extends Component {
 
                     text:i.title,
                     value:i.title
-
-
                 };
                 dropdownItems.push(newitem);
                 key++;
@@ -185,11 +183,11 @@ class AllArticles extends Component {
 
     sortfunc=(f,g)=>{
         let dateDir=this.state.dateDir;
-        let a=new Date(f.normalDate);
-        let b=new Date(g.normalDate);
+        let a=f.Date;
+        let b=g.Date;
         let c=f.Importance;
         let d=g.Importance;
-        if(a.getTime()===b.getTime()) {
+        if(a===b) {
             return d-c;
         }
         return dateDir?a-b:b-a;
@@ -242,7 +240,7 @@ class AllArticles extends Component {
         for (let i of this.state.events) {
             let date=new Date(i.normalDate);
 
-            if ((value1.includes(i.title) || empty1) && (value2.includes(i.author) || empty2)//&&(value3.includes(i.Importance)||empty3)
+            if ((value1.includes(i.title) || empty1) && (value2.includes(i.username+" "+i.usersurname) || empty2)//&&(value3.includes(i.Importance)||empty3)
                 &&(compareDates(this.state.startDate,date)&&compareDates(date,this.state.endDate))
 
             ) {
@@ -289,17 +287,13 @@ class AllArticles extends Component {
             !loading?(
 
                 <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
-                    <Segment  raised piled padded compact textAlign='left'>
-                        <Header textAlign='center'>
+                    <div style={{fontWeight: "bold", fontSize: 16,margin:20}} >
 
-                            Articles
-
-                        </Header>
-                        <table className="ui blue table fixed">
+                        <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
 
                             <thead>
-                            <tr>
-                                <th>
+                            <tr >
+                                <th className={"four wide"}>
                                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
 
@@ -320,7 +314,7 @@ class AllArticles extends Component {
                                         />
                                     </div>
                                 </th>
-                                <th>
+                                <th className={"four wide"}>
                                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
 
@@ -343,7 +337,7 @@ class AllArticles extends Component {
                                     </div>
 
                                 </th>
-                                <th>
+                                <th className={"two wide"}>
                                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
                                         Date
@@ -382,7 +376,7 @@ class AllArticles extends Component {
 
                                 </th>
 
-                                <th>
+                                <th className={"two wide"}>
 
 
                                         Rating
@@ -434,10 +428,11 @@ class AllArticles extends Component {
                                          totalPages={this.state.numPages}
                                          activePage={this.state.shownPage}
                                          onPageChange={this.updatePage}
+                                         style={{background: "rgba(0,0,0,0)", color: "#ffffff !important", fontWeight: "bold"}}
                             />
                         </div>
 
-                    </Segment>
+                    </div>
 
                 </div>
             ):(<Loading/>)
