@@ -32,6 +32,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
     private lateinit var location_value_textView: TextView
     private lateinit var user_type_textView: TextView
     private lateinit var article_button: Button
+    private lateinit var notification_button: Button
     private lateinit var email_value_textView: TextView
     private lateinit var pred_value_textView: TextView
     private lateinit var profile: Profile
@@ -69,12 +70,18 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
         followingCountText = view.findViewById(R.id.following_value_textView)
         pendingReqText = view.findViewById(R.id.profile_pending_req)
         article_button = view.findViewById(R.id.article_button)
+        notification_button = view.findViewById(R.id.notification_button)
 
         article_button.setOnClickListener {
             val act = ProfileFragmentDirections.actionProfileFragmentToListArticleFragment()
             act.profile = profile
             findNavController().navigate(act)
         }
+
+        notification_button.setOnClickListener {
+
+        }
+
         if (userId == null) {
             userId = args.userId
         }
