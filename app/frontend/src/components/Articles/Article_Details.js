@@ -23,6 +23,7 @@ import * as userActions from '../../actions/userActions';
 import {normalizeDate} from "../Events/Events";
 import Loading from "../Loading";
 import article_photo from "../../assets/article_photo.png"
+import Comments from "../Comments";
 class Article_Details extends Component {
 
     constructor(props) {
@@ -55,7 +56,7 @@ class Article_Details extends Component {
     }
 
 
-    async getArticle(){
+    getArticle=async()=>{
 
         await this.props.article("/"+this.props.match.params.id).then(async result=> {
                 let newarticle=result.value;
@@ -97,8 +98,9 @@ class Article_Details extends Component {
 
     render() {
         const article  = this.state.article;
+        const comments=article?article.comments:[];
         let rating=article?article.rateAverage:0;
-            rating=rating.toFixed(1);
+            rating=rating?rating.toFixed(1):0;
         let user=this.state.user;
         let active=this.state.dimmer;
         return (
@@ -252,6 +254,7 @@ class Article_Details extends Component {
                                         }
                                     </div>
                                 </Segment>
+                                <Comments type={"article"} _id={this.props.match.params.id} resendComments={this.getArticle}  data={comments}/>
                             </Grid.Column>
 
                         </Grid>
