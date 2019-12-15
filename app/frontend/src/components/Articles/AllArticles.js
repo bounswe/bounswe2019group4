@@ -349,7 +349,9 @@ class AllArticles extends Component {
                                 </th>
 
                                 <th>
+
                                         Rating
+
 
                                 </th>
 

@@ -153,3 +153,9 @@ export function cancelFollow(path) {
         payload: userService.cancelFollow(path)
     };
 }
+export function getNotif() {
+    return {
+        type:"GET_NOTIFICATIONS",
+        payload: userService.getNotification()
+    };
+}
