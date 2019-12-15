@@ -28,7 +28,11 @@ class TradingEquipment extends Component {
         promises.push(this.props.getTradingEquipmentDetail({currency: currentCurrency}));
 
         Promise.all(promises).then(result => {
-            this.setState({selectedTE: currentCurrency,currval:result[1].action.payload.current.rate,numUp:result[1].action.payload.numberOfUps,numDown:result[1].action.payload.numberOfDowns,yourVote:result[1].action.payload.yourPrediction, tradingEquipment: result[0].action.payload.currencies, teDetail: this.parseData(result[1].action.payload.values.reverse()), comments: result[1].action.payload.comments, convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
+            this.setState({selectedTE: currentCurrency,currval:result[1].action.payload.current.rate,
+                numUp:result[1].action.payload.numberOfUps,numDown:result[1].action.payload.numberOfDowns,
+                yourVote:result[1].action.payload.yourPrediction, tradingEquipment: result[0].action.payload.currencies,
+                teDetail: this.parseData(result[1].action.payload.values.reverse()), comments: result[1].action.payload.comments,
+                convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
         })
     }
 
@@ -120,7 +124,17 @@ class TradingEquipment extends Component {
                             return (
                                 <Table.Row>
                                     <Table.Cell>{tEq.from + "/" + tEq.to}</Table.Cell>
-                                    <Table.Cell>{tEq.rate}</Table.Cell>
+                                    <Table.Cell>{tEq.rate}
+                                        <div style={{fontSize:12}}>
+                                        {
+                                            tEq.status==="up"?<Icon  color={"green"} name={"arrow up"}/>:
+                                                tEq.status==="down"?<Icon color={"red"} name={"arrow up"}/>:
+                                                    <Icon name={"arrows alternate horizontal"}/>
+                                        }
+                                           {tEq.change}
+                                        </div>
+
+                                    </Table.Cell>
                                 </Table.Row>
                             )
                         })}
