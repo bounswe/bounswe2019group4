@@ -438,7 +438,7 @@ async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   
   let notification = new Notification({
     userId: USER_ID,
-    text: "Buy order executed. " + AMOUNT + " " + TEQ+ " bougth.",
+    text: "Buy order executed. " + AMOUNT + " " + TEQ+ " bought.",
     date: new Date()
   })
  
@@ -446,7 +446,7 @@ async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   
   let history = new InvestmentHistory({
     userId: USER_ID,
-    text: AMOUNT + " " + TEQ+ " bougth.",
+    text: AMOUNT + " " + TEQ+ " bought.",
     date: new Date(),
     type: "BUY",
     amount: AMOUNT,
