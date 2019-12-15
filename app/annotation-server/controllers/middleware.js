@@ -9,7 +9,7 @@ module.exports.jsonld = async (req, res, next) => {
   res.set("Vary", "Accept");
   res.set(
     "Link",
-    `Link: <https://${req.hostname}/annotations/>; rel="http://www.w3.org/ns/oa#annotationService"`
+    `Link: <http://www.w3.org/TR/annotation-protocol/>; rel="http://www.w3.org/ns/ldp#constrainedBy"`
   );
   res.set("Allow", "GET, OPTIONS, PUT, HEAD, DELETE, PATCH");
 
