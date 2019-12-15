@@ -1,5 +1,4 @@
-const { Annotation } = require("../../models");
-
+const { Annotation, ETag } = require("../../models");
 const { siteUrl } = require("../../utils");
 
 module.exports = async (req, res, next) => {
@@ -9,4 +8,9 @@ module.exports = async (req, res, next) => {
   doc = await doc.save();
 
   res.status(201).json(doc);
+  await ETag.updateOne(
+    { etag: res._headers.etag },
+    { annotationId: doc._id },
+    { upsert: true }
+  );
 };

@@ -13,7 +13,7 @@ module.exports.jsonld = async (req, res, next) => {
   );
   res.set("Allow", "GET, OPTIONS, PUT, HEAD, DELETE, PATCH");
 
-  if (req.method == "GET") {
+  if (req.method == "GET" || req.method == "DELETE") {
     next();
   } else if (isCorrectContentType) {
     if (req.body) {
