@@ -17,7 +17,7 @@
         android:background="@color/colorWhite">
 
         <TextView
-            android:id="@+id/portfolio_title"
+            android:id="@+id/portfolio_TE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Portfolio"
