@@ -27,6 +27,7 @@
     <string name="slider_desc_4">This is description 4</string>
     <string name="slider_desc_5">This is description 5</string>
     <string name="already_have_account">Already have an account?</string>
+    <string name="portfolios">Portfolios</string>
     <integer-array name="importance">
         <item>1</item>
         <item>2</item>
