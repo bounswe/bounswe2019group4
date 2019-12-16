@@ -22,7 +22,7 @@ class AllArticles extends Component {
             shown:[],
             shownPage:1,
             totalNumOfEvents:0,
-            eventPerPage:8,
+            eventPerPage:10,
             dateDir:false,
             impDir:false,
             dropdownItems:[],
