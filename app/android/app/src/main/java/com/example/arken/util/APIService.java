@@ -5,7 +5,6 @@ import com.example.arken.model.ArticleCreateRequest;
 import com.example.arken.model.ArticleRateRequest;
 import com.example.arken.model.Comment;
 import com.example.arken.model.Email;
-import com.example.arken.model.Event;
 import com.example.arken.model.EventWithComment;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
@@ -16,11 +15,14 @@ import com.example.arken.model.Profile;
 import com.example.arken.model.SearchResult;
 import com.example.arken.model.SignupUser;
 import com.example.arken.model.User;
+import com.example.arken.model.investment.Account;
+import com.example.arken.model.investment.Deposit;
+import com.example.arken.model.investment.Investment;
+import com.example.arken.model.investment.ListOrder;
+import com.example.arken.model.investment.Order;
 import com.example.arken.model.tradingEquipment.Currency;
 import com.example.arken.model.tradingEquipment.ListCurrency;
 import com.example.arken.model.tradingEquipment.Prediction;
-
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -143,6 +145,7 @@ public interface APIService {
     Call<Article> getArticle(
             @Header("Cookie") String userCookie, @Path("id") String article
     );
+
     @Headers({"Content-Type: application/json"})
     @GET("profile/cancel/{id}")
     Call<ResponseBody> cancelReq(@Header("Cookie") String userCookie, @Path("id") String k);
@@ -163,7 +166,36 @@ public interface APIService {
     @GET("articles")
     Call<ListArticle> getArticles(
             @Query("page") Integer s, @Query("limit") Integer k);
+
     @Headers({"Content-Type: application/json"})
     @POST("articles/{id}/rate")
-    Call<ResponseBody> rateArticle( @Header("Cookie") String userCookie,@Path("id") String id, @Body ArticleRateRequest articleRateRequest);
+    Call<ResponseBody> rateArticle(@Header("Cookie") String userCookie, @Path("id") String id, @Body ArticleRateRequest articleRateRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("investment")
+    Call<Investment> getInvestment(@Header("Cookie") String userCookie);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("order")
+    Call<ListOrder> getOrder(@Header("Cookie") String userCookie);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("deposit")
+    Call<ListOrder> depositMoney(@Header("Cookie") String userCookie, @Body Deposit deposit);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("order")
+    Call<ResponseBody> sendOrder(@Header("Cookie") String userCookie, @Body Order order);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("sell")
+    Call<Account> sellTeq(@Header("Cookie") String userCookie, @Body Deposit sell);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("buy")
+    Call<Account> buyTeq(@Header("Cookie") String userCookie, @Body Deposit buy);
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("order/{id}")
+    Call<ResponseBody> deleteOrder(@Header("Cookie") String userCookie, @Path("id") String orderId);
 }
