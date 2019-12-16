@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import EmptyPage from "../EmptyPage";
 import history from "../_core/history";
-
 import SignUp from "../components/SignUp/SignUp";
 import SignUpGoogle from "../components/SignUp/SignUpGoogle";
 import SignUpComplete from "../components/SignUp/SignUpComplete";
