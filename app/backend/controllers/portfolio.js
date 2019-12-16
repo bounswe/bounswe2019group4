@@ -80,11 +80,12 @@ module.exports.editPortfolio = async (request, response) => {
   const userId = request.session['user']._id
   const title = request.body["title"];
   const definition = request.body["definition"];
+  const isPrivate = request.body["isPrivate"];
   const PortfolioId = request.params['id'];
 
   portfolio = await Portfolio.findOne({ _id : PortfolioId, userId: userId});
   if(portfolio){
-    Portfolio.updateOne({_id:PortfolioId, userId: userId},{ title: title, definition: definition}) 
+    Portfolio.updateOne({_id:PortfolioId, userId: userId},{ title: title, definition: definition, isPrivate: isPrivate}) 
       .then( doc => {
         return response.status(204).send()
       }).catch(error => {
@@ -168,30 +169,6 @@ module.exports.removeTradingEq = async (request, response) => {
     }     
     return response.status(204).send(); 
   });
-}
-
-
-/*
-  Patch method for sharing portfolios.
-*/
-module.exports.sharePortfolio = async (request, response) => {
-  let Portfolio = request.models['Portfolio']
-  const userId = request.session['user']._id
-  const PortfolioId = request.params['id'];
-
-  portfolio = await Portfolio.findOne({ _id : PortfolioId, userId : userId});
-  if(portfolio){
-    Portfolio.updateOne({_id:PortfolioId, userId: userId},{ isPrivate: false}) 
-      .then( doc => {
-        return response.status(204).send();
-      }).catch(error => {
-        return response.status(400).send(error);
-      });
-  } else {
-    return response.status(400).send({
-      errmsg: "No such portfolio."
-    })
-  }
 }
 
 /*
