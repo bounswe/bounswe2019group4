@@ -322,7 +322,7 @@ class Events extends Component {
 
             !loading?(
                 <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center"}}>
-                <div style={{fontWeight: "bold", fontSize: 16}} >
+                <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20}} >
 
 
                         <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
