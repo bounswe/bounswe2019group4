@@ -1,5 +1,6 @@
 package com.example.arken.model.investment
 
+import com.example.arken.model.investment.enums.Type
 import java.util.*
 
 class TransactionHistory (

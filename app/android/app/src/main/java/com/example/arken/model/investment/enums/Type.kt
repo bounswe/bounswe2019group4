@@ -1,4 +1,4 @@
-package com.example.arken.model.investment
+package com.example.arken.model.investment.enums
 
 enum class Type {
     DEPOSIT,
