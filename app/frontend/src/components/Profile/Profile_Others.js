@@ -47,7 +47,7 @@ class Profile extends Component {
     }
 
     componentDidUpdate(props) {
-        if(props.match.params.id === loadState().user._id) {
+        if(loadState().user&&props.match.params.id === loadState().user._id) {
             history.push("/profile");
         }
         if(props.match.params.id !== this.props.match.params.id) {
@@ -193,8 +193,8 @@ class Profile extends Component {
                                         {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.followingTradings && newProfile.followingTradings.length >0 ? newProfile.followingTradings.map(teq => {
                                             return <List.Item icon="chart line"
                                                               style={{color: "#c9c9c9"}}
-                                                              onClick={()=>{history.push({pathname: "trading-equipment",state:{currency: teq.TradingEq}})}}
-                                                              content={teq.TradingEq}/>
+                                                              onClick={()=>{history.push({pathname: "/trading-equipment",state:{currency: teq.TradingEq}})}}
+                                                              content={teq.TradingEq==="EUR"?(teq.TradingEq+"/USD"):(teq.TradingEq+"/EUR")}/>
                                         }): (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <List.Item style={{color: "#c9c9c9"}} content="Can't See Followed Trading Equipment" /> : <List.Item style={{color: "#c9c9c9"}} content="No Trading Equipment Is Followed" />}
                                     </List>
                                 </Segment>
