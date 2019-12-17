@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
 import {Header, Icon, Pagination, Segment,Dropdown,Popup,Button,Rating} from 'semantic-ui-react';
 import {connect} from 'react-redux';
+import Star from "../../assets/star.png"
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
 import ThreeStar from '../../assets/threestar.png'
@@ -426,7 +427,7 @@ class Events extends Component {
 
                                 </th>
                                 <th class={"four wide"}>
-                                    <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
                                         Importance
 
                                         <Dropdown
@@ -448,13 +449,17 @@ class Events extends Component {
                             {shown.map(function(event) {
 
                                 const imp=event.Importance;
-                                var src;
-                                if(imp===3){
-                                    src=(<Rating defaultRating={0} maxRating={3} disabled />);
+
+                                let items=[];
+                                if(imp===1){
+                                    items=[1]
+                                    //src=OneStar;
                                 }else if(imp===2){
-                                    src=TwoStar;
+                                    items=[1,2]
+                                    //src=TwoStar;
                                 }else{
-                                    src=OneStar;
+                                    items=[1,2,3]
+                                    //src=ThreeStar;
                                 }
                                 return(
                                     <tr>
@@ -472,7 +477,12 @@ class Events extends Component {
                                             {event.Source}
                                         </td>
                                         <td>
-                                            {<Rating defaultRating={imp} maxRating={3} disabled icon='star' style={{color:"white"}} />}
+                                            {
+                                                items.map(item=><img style={{width:20,height:20}} src={Star}/>)
+
+                                            }
+
+
                                         </td>
                                     </tr>)
                             })}
