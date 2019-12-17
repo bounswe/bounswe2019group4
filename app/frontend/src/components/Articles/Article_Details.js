@@ -196,7 +196,7 @@ class Article_Details extends Component {
                                                 >
                                                     <Form.TextArea
                                                         label={"Title"}
-                                                        style={{borderWidth: 1, borderColor: "gray"}}
+                                                        style={{borderWidth: 1, borderColor: "gray",height:60}}
                                                         value={this.state.titletext}
                                                         onChange={(item) => this.setState({
                                                             titletext: item.target.value
@@ -204,7 +204,7 @@ class Article_Details extends Component {
                                                     />
                                                     <Form.TextArea
                                                                     label={"Text"}
-                                                                   style={{borderWidth: 1, borderColor: "gray"}}
+                                                                   style={{borderWidth: 1, borderColor: "gray",height:500}}
                                                                    value={this.state.text}
                                                                    onChange={(item) => this.setState({
                                                                        text: item.target.value
