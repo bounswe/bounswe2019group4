@@ -45,7 +45,7 @@ class TradingEquipment extends Component {
     }
     getAlerts=async()=>{
         this.props.getAlerts().then(result=>{
-            this.setState({alerts:result.value.alerts});
+            this.setState({alerts:result.value.alerts.reverse()});
         });
     };
 
