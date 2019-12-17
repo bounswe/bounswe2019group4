@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Segment, Table, Grid, Dropdown, Button, Icon, Label} from 'semantic-ui-react';
+import {Segment, Table, Grid, Dropdown, Button, Icon, Label, Popup,Form,Radio} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import CandleStickChart from "./TEqChart";
 import { timeParse } from "d3-time-format";
@@ -10,12 +10,13 @@ import authService from "../../factories/authFactory";
 
 
 import * as tradingEquipmentActions from '../../actions/tradingEquipmentActions';
+import {loadState} from "../../_core/localStorage";
 
 class TradingEquipment extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[],numUp:0,numDown:0, vote: "noVote"};
+        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[],numUp:0,numDown:0, vote: "noVote",alerttext:"",value:"lower",alerts:[]};
     }
 
     componentWillMount() {
@@ -28,12 +29,13 @@ class TradingEquipment extends Component {
         promises.push(this.props.getTradingEquipmentDetail({currency: currentCurrency}));
 
         Promise.all(promises).then(result => {
-            this.setState({selectedTE: currentCurrency,currval:result[1].action.payload.current.rate,
+            this.setState({selectedTE: currentCurrency,currval:result[1].action.payload.current.rate,alerttext:result[1].action.payload.current.rate,
                 numUp:result[1].action.payload.numberOfUps,numDown:result[1].action.payload.numberOfDowns,
                 yourVote:result[1].action.payload.yourPrediction, tradingEquipment: result[0].action.payload.currencies,
                 teDetail: this.parseData(result[1].action.payload.values.reverse()), comments: result[1].action.payload.comments,
                 convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
         })
+        this.getAlerts();
     }
 
     componentWillReceiveProps(nextProps,nextContext) {
@@ -41,6 +43,11 @@ class TradingEquipment extends Component {
             this.onChange({},{value: nextProps.location.state.currency});
         }
     }
+    getAlerts=async()=>{
+        this.props.getAlerts().then(result=>{
+            this.setState({alerts:result.value.alerts});
+        });
+    };
 
     parseData(data) {
         const parseDate = timeParse("%Y-%m-%d");
@@ -58,7 +65,7 @@ class TradingEquipment extends Component {
 
     onChange(e, data) {
         this.props.getTradingEquipmentDetail({currency: data.value}).then(result => {
-            this.setState({selectedTE: data.value,currval:result.action.payload.current.rate,numUp:result.action.payload.numberOfUps,numDown:result.action.payload.numberOfDowns, comments: result.action.payload.comments, teDetail: this.parseData(result.action.payload.values.reverse()), convertedCurrency: result.action.payload.current.to, following: result.action.payload.following,yourVote:result.action.payload.yourPrediction});
+            this.setState({selectedTE: data.value,currval:result.action.payload.current.rate,alerttext:result.action.payload.current.rate,numUp:result.action.payload.numberOfUps,numDown:result.action.payload.numberOfDowns, comments: result.action.payload.comments, teDetail: this.parseData(result.action.payload.values.reverse()), convertedCurrency: result.action.payload.current.to, following: result.action.payload.following,yourVote:result.action.payload.yourPrediction});
         })
     }
 
@@ -102,11 +109,36 @@ class TradingEquipment extends Component {
         });
 
     };
+    handleChange = (e, { value }) => this.setState({ value })
+handleAlertChange=(value)=>{
+
+    this.setState({alerttext:value.target.value});
+}
+
+setAlert=async()=>{
+        if(this.state.alerttext.trim()!=="") {
+            let params = {
+                currency: this.state.selectedTE,
+                rate: parseFloat(this.state.alerttext),
+                compare: this.state.value
+            };
+            this.props.setAlert(params).then(() => {
+                this.getAlerts()
+            });
+        }else{
+            alert("Please set a limit for the alert.")
+        }
+};
+    deleteAlert=async(id)=>{
+        this.props.deleteAlert(id).then(()=>{
+            this.getAlerts();
+        });
+    };
 
     render() {
 
         const loggedin=authService.isUserLoggedIn();
-        const {tradingEquipment, teDetail, selectedTE, convertedCurrency, following,yourVote} = this.state;
+        const {tradingEquipment, teDetail, selectedTE, convertedCurrency, following,yourVote,currval} = this.state;
         return (
             <Grid columns={2} divided>
             <Grid.Row>
@@ -146,7 +178,7 @@ class TradingEquipment extends Component {
                     <div style={{display:"flex",flexDirection:"column"}}>
                         <Grid>
                             <Grid.Row>
-                                <Grid.Column width={9}>
+                                <Grid.Column width={5}>
                                     <Dropdown
                                         style={{background: "rgba(255,255,255,0.2)", color: "#FFFFFF"}}
                                         placeholder='Select Currency'
@@ -158,6 +190,67 @@ class TradingEquipment extends Component {
                                         onChange={this.onChange.bind(this)}
                                         renderLabel={item =>  item.value + "/" + item.text}
                                     />
+                                </Grid.Column>
+                                <Grid.Column width={1}>
+                                   {loadState().user!==null&&loadState().user.loggedIn&&
+                                   <Popup trigger={
+                                        <Button>
+                                            <Icon name={"bell"}/>
+                                        </Button>
+                                    } on={"click"}
+                                           position='bottom center'
+                                    >
+                                        <Form>
+
+                                            <Form.Field>
+                                                Alert me when <b>{this.state.selectedTE+"/"+(this.state.selectedTE==="EUR"?"USD":"EUR")}</b> has rate
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <Radio
+                                                    label='Lower'
+                                                    name='radioGroup'
+                                                    value="lower"
+                                                    checked={this.state.value === "lower"}
+                                                    onChange={this.handleChange}
+                                                />
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <Radio
+                                                    label='Higher'
+                                                    name='radioGroup'
+                                                    value="higher"
+                                                    checked={this.state.value === "higher"}
+                                                    onChange={this.handleChange}
+                                                />
+                                            </Form.Field>
+                                            <Form.Field label='than' control='input' type='number' value={this.state.alerttext}  onChange={this.handleAlertChange} />
+                                            <Form.Button onClick={this.setAlert}>Set Alert</Form.Button>
+                                        </Form>
+
+                                    </Popup>}
+
+                                </Grid.Column>
+                                <Grid.Column width={2}>
+                                    <Popup trigger={
+                                        <Button>My Alerts</Button>
+                                    } on={"click"}
+                                           position='bottom center'
+                                    >
+                                        {
+                                            this.state.alerts.map(item=>{
+                                                if(item.currency===this.state.selectedTE){
+                                                return(
+                                                <div style={{display:"flex",flexDirection:"row",margin:10,borderWidth:1,borderRadius:10,borderColor:"black"}}>
+                                                <h5>Alert when {item.currency}/{item.currency==="EUR"?"USD":"EUR"} is {item.compare} than {item.rate}</h5>
+                                                    <Button size={"mini"} color={"red"} onClick={()=>this.deleteAlert(item._id)}>X</Button>
+                                                </div>)} else {return null}
+                                            }
+                                            )
+
+                                        }
+
+                                    </Popup>
+
                                 </Grid.Column>
                                 <Grid.Column width={2}>
                                     <Button as='div' labelPosition='right'>
@@ -175,6 +268,7 @@ class TradingEquipment extends Component {
                                     </Button>
                                 </Grid.Column>
                                 <Grid.Column width={2}>
+
                                     <Button as='div' labelPosition='left'>
 
                                         <Label as='a' basic color='#396D7C' pointing='right'>
@@ -211,7 +305,10 @@ const dispatchToProps = dispatch => {
         getTradingEquipmentDetail: params => dispatch(tradingEquipmentActions.getTEquipmentDetails(params)),
         followTEq: params => dispatch(tradingEquipmentActions.followTEq(params)),
         unfollowTEq: params => dispatch(tradingEquipmentActions.unfollowTEq(params)),
-        predictTE:params=>dispatch(tradingEquipmentActions.predictTE(params))
+        predictTE:params=>dispatch(tradingEquipmentActions.predictTE(params)),
+        setAlert:params=>dispatch(tradingEquipmentActions.setAlert(params)),
+        getAlerts:params=>dispatch(tradingEquipmentActions.getAlerts(params)),
+        deleteAlert:params=>dispatch(tradingEquipmentActions.deleteAlert(params))
     }
 };
 
