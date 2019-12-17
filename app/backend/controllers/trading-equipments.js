@@ -163,6 +163,15 @@ module.exports.predictTradingEq = async (request, response) => {
         return response.status(400).send(error);
       });
 
+    } else if(row.Prediction == prediction_value) {
+      TradingEqPrediction.deleteOne({ UserId, TradingEq, Date: day_format }, (err, results) => {
+        if(err){
+          return response.status(404).send({
+            errmsg: "Failed."
+          })
+        }
+        return response.send(204);
+      })
     } else{
       // User already made a prediction for that currency. Change the prediction and update database
       TradingEqPrediction.updateOne({_id:row._id},{ Prediction: prediction_value, CurrentValue: value, value }) 
