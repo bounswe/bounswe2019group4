@@ -34,8 +34,10 @@ class TradingEquipment extends Component {
                 yourVote:result[1].action.payload.yourPrediction, tradingEquipment: result[0].action.payload.currencies,
                 teDetail: this.parseData(result[1].action.payload.values.reverse()), comments: result[1].action.payload.comments,
                 convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
-        })
-        this.getAlerts();
+        });
+        if(loadState().user.loggedIn) {
+            this.getAlerts();
+        }
     }
 
     componentWillReceiveProps(nextProps,nextContext) {
@@ -195,9 +197,10 @@ setAlert=async()=>{
                                         renderLabel={item =>  item.value + "/" + item.text}
                                     />
                                 </Grid.Column>
+                                {loadState().user !== null && loadState().user.loggedIn &&
                                 <Grid.Column width={1}>
-                                   {loadState().user!==null&&loadState().user.loggedIn&&
-                                   <Popup trigger={
+
+                                    <Popup trigger={
                                         <Button>
                                             <Icon name={"bell"}/>
                                         </Button>
@@ -207,7 +210,9 @@ setAlert=async()=>{
                                         <Form>
 
                                             <Form.Field>
-                                                Alert me when <b>{this.state.selectedTE+"/"+(this.state.selectedTE==="EUR"?"USD":"EUR")}</b> has rate
+                                                Alert me
+                                                when <b>{this.state.selectedTE + "/" + (this.state.selectedTE === "EUR" ? "USD" : "EUR")}</b> has
+                                                rate
                                             </Form.Field>
                                             <Form.Field>
                                                 <Radio
@@ -227,13 +232,16 @@ setAlert=async()=>{
                                                     onChange={this.handleChange}
                                                 />
                                             </Form.Field>
-                                            <Form.Field label='than' control='input' type='number' step={0.01} value={this.state.alerttext}  onChange={this.handleAlertChange} />
+                                            <Form.Field label='than' control='input' type='number' step={0.01}
+                                                        value={this.state.alerttext} onChange={this.handleAlertChange}/>
                                             <Form.Button onClick={this.setAlert}>Set Alert</Form.Button>
                                         </Form>
 
-                                    </Popup>}
+                                    </Popup>
 
                                 </Grid.Column>
+                                }
+                                {loadState().user !== null && loadState().user.loggedIn &&
                                 <Grid.Column width={2}>
                                     <Popup trigger={
                                         <Button>My Alerts</Button>
@@ -241,27 +249,41 @@ setAlert=async()=>{
                                            position='bottom center'
 
                                     >
-                                        <Checkbox label={"Show All"} checked={this.state.showAll} onChange={this.showAllAlerts} />
-                                        <div style={{overflowY:"auto",maxHeight:300}}>
-                                        {
-                                            this.state.alerts.map(item=>{
-                                                if(this.state.showAll||item.currency===this.state.selectedTE){
-                                                return(
-                                                <Segment style={{display:"flex",flexDirection:"row",margin:10,borderWidth:1,borderRadius:10,borderColor:"black"}}>
-                                                    <div style={{width:300,marginRight:20}}   >
-                                                <h5>Alert when {item.currency}/{item.currency==="EUR"?"USD":"EUR"} is {item.compare} than {item.rate}</h5>
-                                                    </div>
-                                                    <Button size={"mini"} color={"red"} onClick={()=>this.deleteAlert(item._id)}>X</Button>
-                                                </Segment>)} else {return null}
-                                            }
-                                            )
+                                        <Checkbox label={"Show All"} checked={this.state.showAll}
+                                                  onChange={this.showAllAlerts}/>
+                                        <div style={{overflowY: "auto", maxHeight: 300}}>
+                                            {
+                                                this.state.alerts.map(item => {
+                                                        if (this.state.showAll || item.currency === this.state.selectedTE) {
+                                                            return (
+                                                                <Segment style={{
+                                                                    display: "flex",
+                                                                    flexDirection: "row",
+                                                                    margin: 10,
+                                                                    borderWidth: 1,
+                                                                    borderRadius: 10,
+                                                                    borderColor: "black"
+                                                                }}>
+                                                                    <div style={{width: 300, marginRight: 20}}>
+                                                                        <h5>Alert
+                                                                            when {item.currency}/{item.currency === "EUR" ? "USD" : "EUR"} is {item.compare} than {item.rate}</h5>
+                                                                    </div>
+                                                                    <Button size={"mini"} color={"red"}
+                                                                            onClick={() => this.deleteAlert(item._id)}>X</Button>
+                                                                </Segment>)
+                                                        } else {
+                                                            return null
+                                                        }
+                                                    }
+                                                )
 
-                                        }
+                                            }
                                         </div>
 
                                     </Popup>
 
                                 </Grid.Column>
+                                }
                                 <Grid.Column width={2}>
                                     <Button as='div' labelPosition='right'>
                                         <Button disabled={!loggedin} color='red' onClick={()=>this.predict(0)}>
