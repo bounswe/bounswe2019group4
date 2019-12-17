@@ -171,7 +171,7 @@ module.exports.buy = async (request, response) => {
     // It adds this action to history.
     let history = new InvestmentHistory({
       userId: request.session['user']._id,
-      text: request.body.amount + " " + currency+ " bougth.",
+      text: request.body.amount + " " + currency+ " bought.",
       date: new Date(),
       type: "BUY",
       amount: request.body.amount,

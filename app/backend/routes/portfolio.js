@@ -27,7 +27,7 @@ router.post('/',[
 */
 
 router.patch('/:id', [
-  validateBody(['title', 'definition']),
+  validateBody(['title', 'definition', 'isPrivate']),
   isAuthenticated,
   modelBinder(Portfolio, 'Portfolio')], portfolioController.editPortfolio)
 
@@ -74,12 +74,6 @@ router.delete('/:id',[ isAuthenticated, multipleModelBinder([
   [Portfolio, 'Portfolio'],
   [PortfolioTradingEq, 'PortfolioTradingEq']
 ])], portfolioController.deletePortfolio)
-
-/*
-  Post endpoint for share portfolio.
-  Check controller function for more detail
-*/
-router.patch('/:id/share', [ isAuthenticated, modelBinder(Portfolio, 'Portfolio')], portfolioController.sharePortfolio)
 
 /*
   Post endpoint for following specific portfolio.

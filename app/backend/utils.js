@@ -289,7 +289,7 @@ getCurrentTradingEquipmentsFromAPI = schedule.scheduleJob('0 */2 * * *', async f
             const obj = JSON.parse(body);
             let result = obj["Realtime Currency Exchange Rate"];
             if(result){
-              await CurrentTradingEquipment.findOne({ from : from_symbol}, function(err, teq){
+              await CurrentTradingEquipment.findOne({ from : from_symbol}, async function(err, teq){
                 if(!teq){
                   teq = new CurrentTradingEquipment({
                     from : from_symbol,
@@ -301,6 +301,20 @@ getCurrentTradingEquipmentsFromAPI = schedule.scheduleJob('0 */2 * * *', async f
 
                 teq.rate = result['5. Exchange Rate'];
                 teq.Date = result['6. Last Refreshed'];
+
+                hist = await TradingEquipment.find({code: from_symbol}).sort({Date: -1})
+                close = parseFloat(hist[0].close)
+                currRate = parseFloat(teq.rate)
+
+                if(close > currRate){
+                  teq.status = "down"
+                } else if(close < currRate){
+                  teq.status = "up"
+                } else{
+                  teq.status = "noChange"
+                }
+
+                teq.change = ((currRate - close) / currRate) * 100 
 
                 teq.save().then(doc => {
                   
@@ -346,7 +360,7 @@ handleInvestmentOrders = schedule.scheduleJob('25 */2 * * *', async function() {
   }
 });
 
-handleTeqAlerts = schedule.scheduleJob('0 * * * * *', async function() {
+handleTeqAlerts = schedule.scheduleJob('30 */2 * * *', async function() {
   alerts = await TradingEquipmentAlert.find({})
 
   for(i = 0; i < alerts.length; i++){
@@ -424,7 +438,7 @@ async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   
   let notification = new Notification({
     userId: USER_ID,
-    text: "Buy order executed. " + AMOUNT + " " + TEQ+ " bougth.",
+    text: "Buy order executed. " + AMOUNT + " " + TEQ+ " bought.",
     date: new Date()
   })
  
@@ -432,7 +446,7 @@ async function buyEquipment(ORDER_ID, USER_ID, RATE, TEQ, AMOUNT){
   
   let history = new InvestmentHistory({
     userId: USER_ID,
-    text: AMOUNT + " " + TEQ+ " bougth.",
+    text: AMOUNT + " " + TEQ+ " bought.",
     date: new Date(),
     type: "BUY",
     amount: AMOUNT,
@@ -787,7 +801,7 @@ getCurrentCoinsFromAPI = schedule.scheduleJob('10 */2 * * *', async function() {
             const obj = JSON.parse(body);
             let result = obj["Realtime Currency Exchange Rate"];
             if(result){
-              await CurrentTradingEquipment.findOne({ from : from_symbol}, function(err, teq){
+              await CurrentTradingEquipment.findOne({ from : from_symbol}, async function(err, teq){
                 if(!teq){
                   teq = new CurrentTradingEquipment({
                     from : from_symbol,
@@ -796,6 +810,20 @@ getCurrentCoinsFromAPI = schedule.scheduleJob('10 */2 * * *', async function() {
                     toName : to_name
                   });
                 }
+
+                hist = await TradingEquipment.find({code: from_symbol}).sort({Date: -1})
+                close = parseFloat(hist[0].close)
+                currRate = parseFloat(teq.rate)
+
+                if(close > currRate){
+                  teq.status = "down"
+                } else if(close < currRate){
+                  teq.status = "up"
+                }  else{
+                  teq.status = "noChange"
+                }
+
+                teq.change = ((currRate - close) / currRate) * 100 
 
                 teq.rate = result['5. Exchange Rate'];
                 teq.Date = result['6. Last Refreshed'];
@@ -884,7 +912,7 @@ getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
               });
 
               if(first_time){
-                CurrentTradingEquipment.findOne({ from : from_symbol}, function(err, teq){
+                CurrentTradingEquipment.findOne({ from : from_symbol}, async function(err, teq){
                   if(!teq){
                     teq = new CurrentTradingEquipment({
                       from : from_symbol,
@@ -896,6 +924,20 @@ getStocksFromAPI = schedule.scheduleJob('8 23 * * *', function() {
 
                   teq.rate = temp["4. close"]
                   teq.Date = js_yyyy_mm_dd_hh_mm_ss()
+
+                  hist = await TradingEquipment.find({code: from_symbol}).sort({Date: -1})
+                  close = parseFloat(hist[0].open)
+                  currRate = parseFloat(teq.rate)
+
+                  if(close > currRate){
+                    teq.status = "down"
+                  } else if(close < currRate){
+                    teq.status = "up"
+                  }  else{
+                  teq.status = "noChange"
+                }
+
+                teq.change = ((currRate - close) / currRate) * 100 
 
                   teq.save().then(doc => {
                       
