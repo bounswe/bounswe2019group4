@@ -12,7 +12,7 @@ import { Card } from 'semantic-ui-react'
 import SegmentGroup from "semantic-ui-react/dist/commonjs/elements/Segment/SegmentGroup";
 import ProfileCard from "./ProfileCard";
 import moment from 'moment';
-import user from "../../reducers/user";
+
 
 class Profile extends Component {
 
@@ -115,7 +115,7 @@ class Profile extends Component {
         const currentlyFollowing = newProfile.followStatus === "TRUE";
 
         const profileCardProps = {...newProfile.user};
-        alert(JSON.stringify(newProfile))
+
         return (
                 <Grid>
                     <Grid.Row>
@@ -123,14 +123,14 @@ class Profile extends Component {
                             <Grid.Row relaxed>
                                 <ProfileCard user={profileCardProps}/>
                             </Grid.Row>
-                            {user!=null&&user.loggedIn&&newProfile.followStatus === "FALSE" && newProfile.followStatus !== "PENDING"?
+                            {this.state.user!=null&&this.state.user.loggedIn&&newProfile.followStatus === "FALSE" && newProfile.followStatus !== "PENDING"?
                                 <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="teal" onClick={this.followUser.bind(this, otherUser._id)}>Follow</Button>
                                 :null}
-                            {user!=null&&user.loggedIn&&newProfile.followStatus === "TRUE" && newProfile.followStatus !== "PENDING"?
+                            {this.state.user!=null&&this.state.user.loggedIn&&newProfile.followStatus === "TRUE" && newProfile.followStatus !== "PENDING"?
                                 <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="google plus" onClick={this.unFollowUser.bind(this, otherUser._id)}>Unfollow</Button>
                                 :null
                             }
-                            {user!=null&&user.loggedIn&&newProfile.followStatus === "PENDING"?
+                            {this.state.user!=null&&this.state.user.loggedIn&&newProfile.followStatus === "PENDING"?
                                 <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="grey" onClick={this.unFollowUser.bind(this, otherUser._id)}>Cancel Request</Button>
                                 :null}
                             {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
