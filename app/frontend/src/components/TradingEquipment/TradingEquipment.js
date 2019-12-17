@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Segment, Table, Grid, Dropdown, Button, Icon, Label, Popup,Form,Radio} from 'semantic-ui-react';
+import {Segment, Table, Grid, Dropdown, Button, Icon, Label, Popup,Form,Radio,Checkbox} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import CandleStickChart from "./TEqChart";
 import { timeParse } from "d3-time-format";
@@ -16,7 +16,7 @@ class TradingEquipment extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[],numUp:0,numDown:0, vote: "noVote",alerttext:"",value:"lower",alerts:[]};
+        this.state = {tradingEquipment: [], selectedTE: "TRY",comments:[],numUp:0,numDown:0, vote: "noVote",alerttext:"",value:"lower",alerts:[],showAll:false};
     }
 
     componentWillMount() {
@@ -123,7 +123,8 @@ setAlert=async()=>{
                 compare: this.state.value
             };
             this.props.setAlert(params).then(() => {
-                this.getAlerts()
+                this.getAlerts();
+                alert("New alert is set!")
             });
         }else{
             alert("Please set a limit for the alert.")
@@ -134,6 +135,9 @@ setAlert=async()=>{
             this.getAlerts();
         });
     };
+    showAllAlerts=()=>{
+        this.setState({showAll:!this.state.showAll})
+    }
 
     render() {
 
@@ -235,10 +239,13 @@ setAlert=async()=>{
                                         <Button>My Alerts</Button>
                                     } on={"click"}
                                            position='bottom center'
+
                                     >
+                                        <Checkbox label={"Show All"} checked={this.state.showAll} onChange={this.showAllAlerts} />
+                                        <div style={{overflowY:"auto",maxHeight:300}}>
                                         {
                                             this.state.alerts.map(item=>{
-                                                if(item.currency===this.state.selectedTE){
+                                                if(this.state.showAll||item.currency===this.state.selectedTE){
                                                 return(
                                                 <div style={{display:"flex",flexDirection:"row",margin:10,borderWidth:1,borderRadius:10,borderColor:"black"}}>
                                                 <h5>Alert when {item.currency}/{item.currency==="EUR"?"USD":"EUR"} is {item.compare} than {item.rate}</h5>
@@ -248,6 +255,7 @@ setAlert=async()=>{
                                             )
 
                                         }
+                                        </div>
 
                                     </Popup>
 
