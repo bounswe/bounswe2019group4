@@ -227,7 +227,7 @@ setAlert=async()=>{
                                                     onChange={this.handleChange}
                                                 />
                                             </Form.Field>
-                                            <Form.Field label='than' control='input' type='number' value={this.state.alerttext}  onChange={this.handleAlertChange} />
+                                            <Form.Field label='than' control='input' type='number' step={0.01} value={this.state.alerttext}  onChange={this.handleAlertChange} />
                                             <Form.Button onClick={this.setAlert}>Set Alert</Form.Button>
                                         </Form>
 
