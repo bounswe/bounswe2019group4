@@ -172,30 +172,30 @@ public interface APIService {
     Call<ResponseBody> rateArticle(@Header("Cookie") String userCookie, @Path("id") String id, @Body ArticleRateRequest articleRateRequest);
 
     @Headers({"Content-Type: application/json"})
-    @GET("investment")
+    @GET("investments")
     Call<Investment> getInvestment(@Header("Cookie") String userCookie);
 
     @Headers({"Content-Type: application/json"})
-    @GET("order")
+    @GET("investments/order")
     Call<ListOrder> getOrder(@Header("Cookie") String userCookie);
 
     @Headers({"Content-Type: application/json"})
-    @POST("deposit")
+    @POST("investments/deposit")
     Call<ListOrder> depositMoney(@Header("Cookie") String userCookie, @Body Deposit deposit);
 
     @Headers({"Content-Type: application/json"})
-    @POST("order")
+    @POST("investments/order")
     Call<ResponseBody> sendOrder(@Header("Cookie") String userCookie, @Body Order order);
 
     @Headers({"Content-Type: application/json"})
-    @POST("sell")
+    @POST("investments/sell")
     Call<Account> sellTeq(@Header("Cookie") String userCookie, @Body Deposit sell);
 
     @Headers({"Content-Type: application/json"})
-    @POST("buy")
+    @POST("investments/buy")
     Call<Account> buyTeq(@Header("Cookie") String userCookie, @Body Deposit buy);
 
     @Headers({"Content-Type: application/json"})
-    @DELETE("order/{id}")
+    @DELETE("investments/order/{id}")
     Call<ResponseBody> deleteOrder(@Header("Cookie") String userCookie, @Path("id") String orderId);
 }
