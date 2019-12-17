@@ -18,7 +18,8 @@ const {TradingEquipmentAlert} = require('./models/trading-eq-alert');
 const { UserAccount } = require('./models/user-account');
 const { InvestmentHistory } = require('./models/investment-history');
 const { Notification } = require('./models/notification');
-const { tradingEquipmentKey } = require('./secrets');
+const { tradingEquipmentKey, rapidAPIKey } = require('./secrets');
+const axios = require("axios");
 
 const url = "https://api.tradingeconomics.com/calendar/country/all?c=guest:guest";
 let trading_eq_url_base = "https://www.alphavantage.co/query?";
@@ -980,4 +981,44 @@ function js_yyyy_mm_dd_hh_mm_ss () {
   minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
   second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
   return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+}
+
+const compareText = async (text1, text2) => {
+  return await axios({
+    "method":"GET",
+    "url":"https://twinword-text-similarity-v1.p.rapidapi.com/similarity/",
+    "headers": {
+      "content-type": "application/octet-stream",
+      "x-rapidapi-host": "twinword-text-similarity-v1.p.rapidapi.com",
+      "x-rapidapi-key": rapidAPIKey
+    },
+    "params": {
+      text1,
+      text2
+    }
+  })
+}
+
+module.exports.compareText = compareText
+
+module.exports.filterArticleTitles = async (articles, terms) => {
+  const similarities = await Promise.all(articles.map(article => {
+    return axios({
+      "method":"GET",
+      "url":"https://twinword-text-similarity-v1.p.rapidapi.com/similarity/",
+      "headers": {
+        "content-type": "application/octet-stream",
+        "x-rapidapi-host": "twinword-text-similarity-v1.p.rapidapi.com",
+        "x-rapidapi-key": rapidAPIKey
+      },
+      "params": {
+        text1: article.title,
+        text2: terms
+      }
+    })
+  }))
+
+  return articles.filter((_, index) => {
+    return similarities[index].data.similarity > 0.1
+  })
 }

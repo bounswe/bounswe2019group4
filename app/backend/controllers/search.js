@@ -1,4 +1,4 @@
-const {filterData} = require('../utils')
+const {filterData, filterArticleTitles} = require('../utils')
 
 module.exports.search = async (req, res, next) => {
     const {Event, CurrentTradingEquipment, Article, User} = req.models
@@ -22,7 +22,7 @@ module.exports.search = async (req, res, next) => {
     users = Array.from(new Set(users)).sort((a, b) => eval(b.predictionRate) - eval(a.predictionRate))
     const events = terms.flatMap(term => filterData(eventsData, ['Country', 'Catogory', 'Event'], term))
     const tradingEq = terms.flatMap(term => filterData(tradingEqData, ['from', 'fromName', 'to', 'toName'], term))
-    const articles = terms.flatMap(term => filterData(articlesData, ['text', 'title'], term))
+    const articles = await filterArticleTitles(articlesData, req.query.q)
 
     return res.json({
         users,
