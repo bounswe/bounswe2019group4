@@ -90,6 +90,7 @@ module.exports.getDetails = async (request, response) => {
 
   try {
     if(currentUser && currentUser._id == requestedUserId) {  // when the user asks for his own details
+      currentUser = await User.findOne({ _id : requestedUserId })
       res = await profileResponse(currentUser, true, null, TradingEqFollow, Article, Portfolio)
       return response.send(res);
     } else {  // when the user requested isn't the user logged in himself
