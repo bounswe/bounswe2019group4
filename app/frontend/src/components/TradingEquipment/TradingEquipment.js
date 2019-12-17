@@ -160,7 +160,7 @@ setAlert=async()=>{
                         {tradingEquipment.map(tEq => {
                             return (
                                 <Table.Row>
-                                    <Table.Cell><a onClick={()=>this.onChange({},{value:tEq.from})}>{tEq.from + "/" + tEq.to}</a></Table.Cell>
+                                    <Table.Cell><a style={{cursor:"pointer"}} onClick={()=>this.onChange({},{value:tEq.from})}>{tEq.from + "/" + tEq.to}</a></Table.Cell>
 
                                     <Table.Cell>{tEq.rate}
                                         <div style={{fontSize:12}}>
