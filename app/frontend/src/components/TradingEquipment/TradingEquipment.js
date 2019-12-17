@@ -35,7 +35,7 @@ class TradingEquipment extends Component {
                 teDetail: this.parseData(result[1].action.payload.values.reverse()), comments: result[1].action.payload.comments,
                 convertedCurrency: result[1].action.payload.current.to, following: result[1].action.payload.following});
         });
-        if(loadState().user.loggedIn) {
+        if(loadState().user!=null&&loadState().user.loggedIn) {
             this.getAlerts();
         }
     }
