@@ -248,7 +248,9 @@ setAlert=async()=>{
                                                 if(this.state.showAll||item.currency===this.state.selectedTE){
                                                 return(
                                                 <div style={{display:"flex",flexDirection:"row",margin:10,borderWidth:1,borderRadius:10,borderColor:"black"}}>
+                                                    <div style={{width:300,marginRight:20}}   >
                                                 <h5>Alert when {item.currency}/{item.currency==="EUR"?"USD":"EUR"} is {item.compare} than {item.rate}</h5>
+                                                    </div>
                                                     <Button size={"mini"} color={"red"} onClick={()=>this.deleteAlert(item._id)}>X</Button>
                                                 </div>)} else {return null}
                                             }
