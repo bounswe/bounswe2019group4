@@ -22,7 +22,7 @@ class AllArticles extends Component {
             shown:[],
             shownPage:1,
             totalNumOfEvents:0,
-            eventPerPage:8,
+            eventPerPage:10,
             dateDir:false,
             impDir:false,
             dropdownItems:[],
@@ -263,7 +263,7 @@ class AllArticles extends Component {
             !loading?(
 
                 <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
-                    <div style={{fontWeight: "bold", fontSize: 16,margin:20}} >
+                    <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20}} >
 
                         <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
 
