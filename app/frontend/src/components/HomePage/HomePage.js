@@ -27,7 +27,7 @@ user:{}
     }
 
     navigateEvents(e) {
-        history.push("/events");
+        history.push("/trading-equipment");
     }
 
     componentDidMount() {
@@ -65,7 +65,7 @@ user:{}
                     <p  style={{color: "#FFFFFF", fontSize: "20px" }} >{slide.description}</p>
                         {!user||!user.loggedIn ? <button  name="sign_up"
                              onClick={this.navigateSignUp}>Register</button> :
-                            <button  name="events" onClick={this.navigateEvents}>Events</button> }
+                            <button  name="trading-equipment" onClick={this.navigateEvents}>Explore</button> }
                 </div>)}
             </Slider>
 
