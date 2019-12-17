@@ -34,3 +34,21 @@ export function unfollowTEq(params) {
         payload: tEquipmentService.unfollowTEquipment(params)
     };
 }
+export function setAlert(params) {
+    return {
+        type: "SET_ALERT",
+        payload: tEquipmentService.setAlert(params)
+    };
+}
+export function getAlerts(params) {
+    return {
+        type: "GET_ALERTS",
+        payload: tEquipmentService.getAlerts(params)
+    };
+}
+export function deleteAlert(params) {
+    return {
+        type: "DELETE_ALERT",
+        payload: tEquipmentService.deleteAlert(params)
+    };
+}

@@ -61,7 +61,7 @@ class Profile extends Component {
         //let ikz = this.state.user.portfolios;
         // console.log(ikz)
         await this.props.portfolios(this.state.portfolios[i]._id).then(async result => {
-                let newPortfolios = result.value
+                let newPortfolios = result.value;
                 //let newTradingEqs = {}
                 console.log(newPortfolios.tradingEqs)
                 //newTradingEqs[i] = newPortfolios.tradingEqs
