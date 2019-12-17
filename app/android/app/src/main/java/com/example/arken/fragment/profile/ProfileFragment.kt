@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
@@ -32,6 +33,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
     private lateinit var location_value_textView: TextView
     private lateinit var user_type_textView: TextView
     private lateinit var article_button: Button
+    private lateinit var myinvestment_button: Button
     private lateinit var email_value_textView: TextView
     private lateinit var pred_value_textView: TextView
     private lateinit var profile: Profile
@@ -67,8 +69,11 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
         followerCountText = view.findViewById(R.id.follower_value_textView)
         followingCountText = view.findViewById(R.id.following_value_textView)
         pendingReqText = view.findViewById(R.id.profile_pending_req)
+        myinvestment_button=view.findViewById(R.id.investment_button)
+        myinvestment_button.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_investmentFragment)
+        }
         article_button = view.findViewById(R.id.article_button)
-
         article_button.setOnClickListener {
             val act = ProfileFragmentDirections.actionProfileFragmentToListArticleFragment()
             act.profile = profile
@@ -270,6 +275,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
                     profile = response.body()!!
+                    myinvestment_button.visibility=View.VISIBLE
                     article_button.visibility = View.VISIBLE
                     name_textView.text = profile.user?.name
                     surname_textView.text = profile.user?.surname

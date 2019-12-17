@@ -88,6 +88,9 @@
         <action
             android:id="@+id/action_profileFragment_to_listArticleFragment"
             app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_investmentFragment"
+            app:destination="@id/investmentFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -175,4 +178,8 @@
             android:id="@+id/action_articleDetail_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/investmentFragment"
+        android:name="com.example.arken.fragment.InvestmentFragment"
+        android:label="InvestmentFragment" />
 </navigation>
