@@ -29,9 +29,7 @@ class Profile extends Component {
     }
     componentDidMount() {
 
-        const localState = loadState();
-        this.setState({user: localState.user});
-        this.setState({userLocal: localState.user});
+
         this.getProfile();
         //console.log(this.state.portfolios);
         this.state.portfolios.forEach(element =>{
@@ -69,12 +67,14 @@ class Profile extends Component {
     }
 
       async getProfile() {
+
         await this.props.profile(loadState().user._id).then(async result =>{
             console.log(result.value);
             let newProfile = result.value
             console.log(newProfile.portfolios)
             this.setState({user:newProfile})
             //console.log(this.state.portfolios)
+            alert(JSON.stringify(result.value))
             }
         )
     }
@@ -87,6 +87,7 @@ class Profile extends Component {
 
 
         const { user,portfolios,userLocal,tradingEqs } = this.state;
+
         console.log(user);
 
         //console.log(portfolios)
@@ -103,7 +104,7 @@ class Profile extends Component {
                 <Button active floated='right'>Right Floated</Button>
 
             </div>
-        )
+        );
         return (
 
                 <Grid>

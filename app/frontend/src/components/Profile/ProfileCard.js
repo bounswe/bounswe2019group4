@@ -33,7 +33,7 @@ class ProfileCard extends Component {
     }
 
     render() {
-        const {name, surname, email, predictionRate, isPublic, isTrader, followers, following} = this.state;
+        const {name, surname, email, predictionRate, isPublic, isTrader,location, followers, following} = this.state;
 
         return(
             <Card style={{width: "100%", margin: 20, background: "rgba(255,255,255,0.15)"}}>
@@ -61,8 +61,15 @@ class ProfileCard extends Component {
                     <span style={{color: "#c9c9c9"}}>{email}</span>
 
                 </Card.Content>
-                }
 
+                }
+                {location &&
+                <Card.Content extra>
+                    <Icon inverted name='map pin'/>
+                    <span style={{color: "#c9c9c9"}}>{location}</span>
+
+                </Card.Content>
+                }
             </Card>
         )
     }
