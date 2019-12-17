@@ -443,6 +443,12 @@ class AllArticles extends Component {
                             Article
                         </th>
                         <th className={"two wide"}>
+                            Author
+                        </th>
+                        <th className={"two wide"}>
+                            Date
+                        </th>
+                        <th className={"two wide"}>
                             Rating
                         </th>
 
@@ -458,13 +464,25 @@ class AllArticles extends Component {
 
                                     <Link to={"/articles/"+article._id}>{article.title}</Link>
                                 </td>
+                                <td>
+                                    <Link to={"/profile/"+article.userId}>{article.username+" "+article.usersurname}</Link>
 
+                                </td>
+                                <td>
+                                    {normalizeDateToTR(article.date)}
+                                </td>
                                 <td>
                                     <div style={{display:"flex",flexDirection:"row"}}>
 
                                         <Label style={{fontSize:14}} color={"yellow"} >
                                             <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
                                                 {article.rateAverage}
+                                            </div>
+                                        </Label>
+                                        <Label>
+                                            <div style={{display:"flex",flexDirection:"row",width:25}}>
+                                                <Icon name='users' />
+                                                {article.numberOfRates}
                                             </div>
                                         </Label>
 
