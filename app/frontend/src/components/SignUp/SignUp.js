@@ -128,7 +128,7 @@ class SignUp extends Component {
                 <Grid.Row>
                     <Grid.Column>
                 <Form.Group grouped>
-                    <Form.Field control={Checkbox} slider name="isTrader" checked={isTrader} onChange={this.handleChange.bind(this)} label="Want to be a trader and join the winning community?" />
+                    <Form.Field control={Checkbox}  name="isTrader" checked={isTrader} onChange={this.handleChange.bind(this)} label="Want to be a trader and join the winning community?" />
                     { isTrader && (
                     <Form.Field>
                         <label>IBAN:</label>

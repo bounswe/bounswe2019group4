@@ -65,7 +65,7 @@ user:{}
                     <p  style={{color: "#FFFFFF", fontSize: "20px" }} >{slide.description}</p>
                         {!user||!user.loggedIn ? <button  name="sign_up"
                              onClick={this.navigateSignUp}>Register</button> :
-                            <button  name="trading-equipment" onClick={this.navigateEvents}>Explore</button> }
+                            <button  name="trading-equipment" onClick={this.navigateEvents}>Trading Equipment</button> }
                 </div>)}
             </Slider>
 

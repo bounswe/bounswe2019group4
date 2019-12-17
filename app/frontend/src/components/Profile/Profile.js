@@ -74,7 +74,7 @@ class Profile extends Component {
             console.log(newProfile.portfolios)
             this.setState({user:newProfile})
             //console.log(this.state.portfolios)
-            alert(JSON.stringify(result.value))
+
             }
         )
     }
