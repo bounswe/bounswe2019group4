@@ -47,7 +47,9 @@ class Profile extends Component {
     }
 
     componentDidUpdate(props) {
-        if(loadState().user&&props.match.params.id === loadState().user._id) {
+
+        if(loadState().user!==null&&props.match.params.id === loadState().user._id) {
+
             history.push("/profile");
         }
         if(props.match.params.id !== this.props.match.params.id) {
