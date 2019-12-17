@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Button, Dropdown, Header, Icon, Pagination, Popup, Segment,Label,Grid} from 'semantic-ui-react';
+import {Button, Dropdown, Header, Icon, Pagination, Popup, Segment,Label,Grid,Tab} from 'semantic-ui-react';
 
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
@@ -9,6 +9,7 @@ import Loading from "../Loading";
 import DatePicker, {getDefaultLocale, registerLocale, setDefaultLocale} from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import {normalizeDate, compareDates, normalizeDateToTR} from "../Events/Events";
+import {colorBG, colorDarkerBlue} from "../../utils/constants/Colors";
 
 
 class AllArticles extends Component {
@@ -31,7 +32,10 @@ class AllArticles extends Component {
             drAuthor:[],
             loading:false,
             startDate:new Date(),
-            endDate:new Date()
+            endDate:new Date(),
+
+            recommended:false,
+            recommendedArticles:[]
 
 
 
@@ -50,11 +54,21 @@ class AllArticles extends Component {
         this.sortEventsByDate();
         await this.setInitialDates();
 
+        if(loadState().user!==null&&loadState().user.loggedIn){
+            this.getRecommendedArticles();
+        }
     }
     setInitialDates=async ()=>{
         let {0 : a ,length : l, [l - 1] : b} = this.state.events2;
 
         await this.setState({startDate:new Date(b.date.toString()),endDate:new Date(a.date.toString())});
+    };
+
+    getRecommendedArticles=()=>{
+
+        this.props.getRecommendedArticles().then(result=>{
+            this.setState({recommendedArticles:result.value.articleRecommends})
+        })
     };
 
     getTitlesForDropdown=()=>{
@@ -253,179 +267,248 @@ class AllArticles extends Component {
         this.setState({endDate:date},this.onDropdownsChange);
     };
 
-    render() {
+    renderArticles=()=>{
         const {shown}  = this.state;
         //const len=shown.length;
-        const loading=this.state.loading;
 
-        return (
+        return(
+            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
+                <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20}} >
 
-            !loading?(
+                    <table className="ui table inverted " style={{background: "rgba(255,255,255,0)"}}>
 
-                <Grid>
-                    <Grid.Row>
-
-
-                  <Grid.Column width={4}/>
-                        <Grid.Column width={8}>
-                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
-                    <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20}} >
-
-                        <table className="ui table inverted responsive" style={{background: "rgba(255,255,255,0)"}}>
-
-                            <thead>
-                            <tr >
-                                <th className={"four wide"}>
-                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+                        <thead>
+                        <tr >
+                            <th className={"four wide"}>
+                                <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
 
-                                        Article
+                                    Article
 
 
-                                        <Dropdown
-                                            style={{marginLeft:5}}
-                                            placeholder='All'
+                                    <Dropdown
+                                        style={{marginLeft:5}}
+                                        placeholder='All'
 
-                                            multiple
-                                            search
-                                            selection
+                                        multiple
+                                        search
+                                        selection
 
-                                            options={this.state.titleItems}
-                                            onChange={this.onTitleChange}
+                                        options={this.state.titleItems}
+                                        onChange={this.onTitleChange}
 
-                                        />
-                                    </div>
-                                </th>
-                                <th className={"four wide"}>
-                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-
-
-                                        Author
+                                    />
+                                </div>
+                            </th>
+                            <th className={"four wide"}>
+                                <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
 
-                                        <Dropdown
-                                            style={{marginLeft:5}}
-                                            placeholder='All'
+                                    Author
 
-                                            multiple
-                                            search
-                                            selection
 
-                                            options={this.state.authorItems}
-                                            onChange={this.onAuthorChange}
+                                    <Dropdown
+                                        style={{marginLeft:5}}
+                                        placeholder='All'
 
-                                        />
+                                        multiple
+                                        search
+                                        selection
 
-                                    </div>
+                                        options={this.state.authorItems}
+                                        onChange={this.onAuthorChange}
 
-                                </th>
-                                <th className={"two wide"}>
-                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+                                    />
 
-                                        Date
-                                        <Button.Group style={{marginLeft:6,marginRight:20}}>
-                                            <Button onClick={this.sortEventsByDate}>
-                                                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                                </div>
 
-                                                    {this.state.dateDir?
-                                                        (<Icon name={"angle down"}/>):(<Icon name={"angle up"}/>)
-                                                    }
+                            </th>
+                            <th className={"two wide"}>
+                                <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
-                                                </div>
+                                    Date
+                                    <Button.Group style={{marginLeft:6,marginRight:20}}>
+                                        <Button onClick={this.sortEventsByDate}>
+                                            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+
+                                                {this.state.dateDir?
+                                                    (<Icon name={"angle down"}/>):(<Icon name={"angle up"}/>)
+                                                }
+
+                                            </div>
+                                        </Button>
+
+
+                                        <Popup trigger={
+                                            <Button>
+                                                <Icon name={"filter"}/>
                                             </Button>
+                                        } flowing hoverable>
+                                            <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:5}}>
+
+                                                <DatePicker
+                                                    locale={"pt-BR"}
+                                                    dateFormat={"P"}
+                                                    selected={this.state.startDate}
+                                                    onChange={this.startDateChange}
+                                                />
+                                                to
+                                                <DatePicker
+
+                                                    selected={this.state.endDate}
+                                                    onChange={this.endDateChange}
+                                                />
+                                            </div>
+                                        </Popup>
+                                    </Button.Group>
+                                </div>
+
+                            </th>
+
+                            <th className={"two wide"}>
 
 
-                                            <Popup trigger={
-                                                <Button>
-                                                    <Icon name={"filter"}/>
-                                                </Button>
-                                            } flowing hoverable>
-                                                <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:5}}>
-
-                                                    <DatePicker
-                                                        locale={"pt-BR"}
-                                                        dateFormat={"P"}
-                                                        selected={this.state.startDate}
-                                                        onChange={this.startDateChange}
-                                                    />
-                                                    to
-                                                    <DatePicker
-
-                                                        selected={this.state.endDate}
-                                                        onChange={this.endDateChange}
-                                                    />
-                                                </div>
-                                            </Popup>
-                                        </Button.Group>
-                                    </div>
-
-                                </th>
-
-                                <th className={"two wide"}>
+                                Rating
 
 
-                                        Rating
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {shown.map(function(article) {
 
 
-                                </th>
+                            return(
+                                <tr>
+                                    <td>
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {shown.map(function(article) {
+                                        <Link to={"/articles/"+article._id}>{article.title}</Link>
+                                    </td>
+                                    <td>
+                                        <Link to={"/profile/"+article.userId}>{article.username+" "+article.usersurname}</Link>
 
-
-                                return(
-                                    <tr>
-                                        <td>
-
-                                            <Link to={"/articles/"+article._id}>{article.title}</Link>
-                                        </td>
-                                        <td>
-                                            <Link to={"/profile/"+article.userId}>{article.username+" "+article.usersurname}</Link>
-
-                                        </td>
-                                        <td>
-                                            {article.normalDateTr}
-                                        </td>
-                                        <td>
-                                            <div style={{display:"flex",flexDirection:"row"}}>
+                                    </td>
+                                    <td>
+                                        {article.normalDateTr}
+                                    </td>
+                                    <td>
+                                        <div style={{display:"flex",flexDirection:"row"}}>
 
                                             <Label style={{fontSize:14}} color={"yellow"} >
                                                 <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
-                                                {article.rateAverage}
+                                                    {article.rateAverage}
                                                 </div>
                                             </Label>
 
                                             <Label>
                                                 <div style={{display:"flex",flexDirection:"row",width:25}}>
-                                            <Icon name='users' />
-                                                {article.numberOfRates}
+                                                    <Icon name='users' />
+                                                    {article.numberOfRates}
                                                 </div>
                                             </Label>
-                                            </div>
-                                        </td>
+                                        </div>
+                                    </td>
 
 
-                                    </tr>)
-                            })}
-                            </tbody>
+                                </tr>)
+                        })}
+                        </tbody>
 
 
-                        </table>
-                        <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-                            <Pagination  defaultActivePage={1}
-                                         siblingRange={5}
-                                         totalPages={this.state.numPages}
-                                         activePage={this.state.shownPage}
-                                         onPageChange={this.updatePage}
-                                         style={{background: "rgba(0,0,0,0)", color: "#ffffff !important", fontWeight: "bold"}}
-                            />
-                        </div>
-
+                    </table>
+                    <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                        <Pagination  defaultActivePage={1}
+                                     siblingRange={5}
+                                     totalPages={this.state.numPages}
+                                     activePage={this.state.shownPage}
+                                     onPageChange={this.updatePage}
+                                     style={{background: "rgba(0,0,0,0)", color: "#ffffff !important", fontWeight: "bold"}}
+                        />
                     </div>
 
                 </div>
+
+            </div>
+        );
+    };
+    renderRecom=()=>{
+        return(
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
+            <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20}} >
+                <table className="ui table inverted fixed" style={{background: "rgba(255,255,255,0)"}}>
+                    <thead>
+                    <tr >
+                        <th className={"four wide"}>
+                            Article
+                        </th>
+                        <th className={"two wide"}>
+                            Rating
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.recommendedArticles.map(function(article) {
+
+
+                        return(
+                            <tr>
+                                <td>
+
+                                    <Link to={"/articles/"+article._id}>{article.title}</Link>
+                                </td>
+
+                                <td>
+                                    <div style={{display:"flex",flexDirection:"row"}}>
+
+                                        <Label style={{fontSize:14}} color={"yellow"} >
+                                            <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
+                                                {article.rateAverage}
+                                            </div>
+                                        </Label>
+
+                                    </div>
+                                </td>
+
+
+                            </tr>)
+                    })}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        )
+
+    }
+    handleClick=()=>{
+
+        this.setState({recommended:!this.state.recommended})
+    }
+
+    render() {
+
+
+        return (
+
+            !this.state.loading?(
+
+                <Grid>
+                    <Grid.Row>
+
+                        <Grid.Column width={4}>
+                            {loadState().user!==null&&loadState().user.loggedIn&&
+                            <div style={{display:"flex",alignItems:"flex-start",marginLeft:20}}>
+                                <Button onClick={this.handleClick} inverted style={{borderRadius:20,borderWidth:1.5}} content={this.state.recommended?"Show All":"Show Recommended Articles"}/>
+                            </div>
+                                }
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+
+                            {!this.state.recommended||loadState().user===null||!loadState().user.loggedIn?this.renderArticles():this.renderRecom()}
+
+
                         </Grid.Column>
                         <Grid.Column width={4}/>
                     </Grid.Row>
@@ -442,7 +525,8 @@ const dispatchToProps = dispatch => {
     return {
 
         articles: params => dispatch(userActions.getAllArticles(params)),
-        authors:params=>dispatch(userActions.profile(params))
+        authors:params=>dispatch(userActions.profile(params)),
+        getRecommendedArticles:params=>dispatch(userActions.getRecommended(params))
     };
 };
 

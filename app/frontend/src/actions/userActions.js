@@ -160,4 +160,10 @@ export function getNotif() {
         payload: userService.getNotification()
     };
 }
+export function getRecommended(params) {
+    return {
+        type:"GET_RECOMMENDED",
+        payload: userService.getRecommended(params)
+    };
+}
 
