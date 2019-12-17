@@ -249,6 +249,7 @@ setAlert=async()=>{
                                            position='bottom center'
 
                                     >
+                                        <div style={{width:400}}>
                                         <Checkbox label={"Show All"} checked={this.state.showAll}
                                                   onChange={this.showAllAlerts}/>
                                         <div style={{overflowY: "auto", maxHeight: 300}}>
@@ -278,6 +279,7 @@ setAlert=async()=>{
                                                 )
 
                                             }
+                                        </div>
                                         </div>
 
                                     </Popup>

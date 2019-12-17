@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Header, Icon, Pagination, Segment,Dropdown,Popup,Button,Rating} from 'semantic-ui-react';
+import {Header, Icon, Pagination, Segment, Dropdown, Popup, Button, Rating, Grid} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import Star from "../../assets/star.png"
 import OneStar from '../../assets/onestar.png'
@@ -323,9 +323,12 @@ class Events extends Component {
         return (
 
             !loading?(
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={2}/>
+                        <Grid.Column width={12}>
                 <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center"}}>
                 <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20}} >
-
 
                         <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
 
@@ -337,9 +340,8 @@ class Events extends Component {
                                         Event
 
                                         <Dropdown
-                                            style={{marginLeft:5}}
+                                            style={{marginLeft:5,width:"auto"}}
                                             placeholder='All'
-
                                             multiple
                                             search
                                             selection
@@ -503,6 +505,10 @@ class Events extends Component {
 
                 </div>
                 </div>
+                        </Grid.Column>
+                        <Grid.Column width={2}/>
+                    </Grid.Row>
+                </Grid>
             ):(<Loading/>)
 
 

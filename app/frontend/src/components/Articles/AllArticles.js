@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Button, Dropdown, Header, Icon, Pagination, Popup, Segment,Label} from 'semantic-ui-react';
+import {Button, Dropdown, Header, Icon, Pagination, Popup, Segment,Label,Grid} from 'semantic-ui-react';
 
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
@@ -262,10 +262,16 @@ class AllArticles extends Component {
 
             !loading?(
 
+                <Grid>
+                    <Grid.Row>
+
+
+                  <Grid.Column width={4}/>
+                        <Grid.Column width={8}>
                 <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
                     <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20}} >
 
-                        <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
+                        <table className="ui table inverted responsive" style={{background: "rgba(255,255,255,0)"}}>
 
                             <thead>
                             <tr >
@@ -384,12 +390,18 @@ class AllArticles extends Component {
                                         </td>
                                         <td>
                                             <div style={{display:"flex",flexDirection:"row"}}>
+
                                             <Label style={{fontSize:14}} color={"yellow"} >
+                                                <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
                                                 {article.rateAverage}
+                                                </div>
                                             </Label>
+
                                             <Label>
+                                                <div style={{display:"flex",flexDirection:"row",width:25}}>
                                             <Icon name='users' />
                                                 {article.numberOfRates}
+                                                </div>
                                             </Label>
                                             </div>
                                         </td>
@@ -414,6 +426,11 @@ class AllArticles extends Component {
                     </div>
 
                 </div>
+                        </Grid.Column>
+                        <Grid.Column width={4}/>
+                    </Grid.Row>
+
+                </Grid>
             ):(<Loading/>)
 
 
