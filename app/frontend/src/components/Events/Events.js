@@ -209,6 +209,18 @@ class Events extends Component {
         this.setState({shownPage:1},this.setShownEvents)
     };
     */
+    sortfunc=(f,g)=>{
+        let dateDir=this.state.dateDir;
+        let a=new Date(f.normalDate);
+        let b=new Date(g.normalDate);
+        let c=f.Importance;
+        let d=g.Importance;
+        if(a.getTime()===b.getTime()) {
+            return d-c;
+        }
+        return dateDir?a-b:b-a;
+
+    };
     sortEventsByDate=()=>{
 
         let dateDir=this.state.dateDir;
@@ -301,29 +313,11 @@ class Events extends Component {
     };
     onEventChange=async(e,{value})=>{
         this.setState({drEv:value},this.onDropdownsChange);
-/*
-        let list=[];
-        if(value.length>0) {
-            for (let i of this.state.events) {
-                if (value.includes(i.Event)) {
-                    list.push(i);
-                }
-            }
-        }else{
-            list=this.state.events;
-        }
-
-        //await this.changeEvents2();
-        //this.setState({shownPage:1},this.setShownEvents)
-        this.setState({events2:list},()=>{this.setState(
-            {shownPage:1},this.setShownEvents);
-            this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
-        })
-*/
 
 
     };
     onImpChange=(e,{value})=>{
+
         this.setState({drImp:value},this.onDropdownsChange)
     };
     onSourceChange=(e,{value})=>{
