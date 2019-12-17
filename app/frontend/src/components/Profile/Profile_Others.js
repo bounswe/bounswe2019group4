@@ -175,7 +175,7 @@ class Profile extends Component {
                                                 <Card.Content>
                                                     <Card.Header style={{color: "#c9c9c9"}}>{article.title}</Card.Header>
                                                     <Card.Meta type="date" style={{color: "#c9c9c9"}}>{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
-                                                    <Card.Description style={{color: "#c9c9c9"}}>{article.text}</Card.Description>
+                                                    <Card.Description style={{color: "#c9c9c9"}}>{article.text.substring(0,350)+"..."}</Card.Description>
                                                 </Card.Content>
                                                 <Card.Content extra>
                                                     <Rating defaultRating={article.rateAverage} maxRating={5} disabled icon="star inverted"/>

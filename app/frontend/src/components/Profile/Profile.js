@@ -169,7 +169,7 @@ class Profile extends Component {
                                                 <Card.Content>
                                                     <Card.Header>{article.title}</Card.Header>
                                                     <Card.Meta type="date">{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
-                                                    <Card.Description>{article.text}</Card.Description>
+                                                    <Card.Description>{article.text.substring(0,350)+"..."}</Card.Description>
                                                 </Card.Content>
                                                 <Card.Content extra>
                                                     <Rating defaultRating={article.rateAverage} maxRating={5} disabled />{" by "+ article.numberOfRates + " votes"}
