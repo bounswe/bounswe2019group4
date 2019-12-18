@@ -21,7 +21,7 @@ module.exports.recommend = async (request, response) => {
             (userInfo.location.toLowerCase().includes(request.session['user'].location.toLowerCase())) || 
             (request.session['user'].location.toLowerCase().includes(userInfo.location.toLowerCase()))){
                 userRecommends.push(userInfo)
-                recommendedUserIds.push(userInfo._id)
+                  recommendedUserIds.push(userInfo._id.toString())
         }
     }
   }
@@ -33,12 +33,12 @@ module.exports.recommend = async (request, response) => {
     users = await User.find().select('name surname location predictionRate')
     for(i = 0; i < users.length; i++){
         user = users[i]
-        if(!recommendedUserIds.includes(user._id) && user._id != request.session['user']._id){
+        if(!recommendedUserIds.includes(user._id.toString()) && user._id != request.session['user']._id){
             followStatus = await UserFollow.findOne({FollowingId: userId, FollowedId: user._id, status: true})
             if(!followStatus){
                 if((user.predictionRate != "0/0" && eval(user.predictionRate) > predictionCut)){
                     userRecommends.push(user)
-                    recommendedUserIds.push(user._id)
+                    recommendedUserIds.push(user._id.toString())
                 }
             }
         }
@@ -58,7 +58,7 @@ module.exports.recommend = async (request, response) => {
         article = userArticles[j]
         rateStatus = await ArticleUser.findOne({userId : userId, articleId: article._id})
         if(!rateStatus && article.rateAverage > 2){
-            recommendedArticleIds.push(article._id)
+            recommendedArticleIds.push(article._id.toString())
             let articleOwner = await User.findOne({_id: article.userId})
             articleRecommends.push({
                 ...article._doc,
@@ -78,8 +78,8 @@ module.exports.recommend = async (request, response) => {
     for(i = 0; i < articles.length; i++){
         article = articles[i]
         rateStatus = await ArticleUser.findOne({userId : userId, articleId: article._id})
-        if(article.userId != userId && !rateStatus && article.rateAverage >= rateCut){
-            recommendedArticleIds.push(article._id)
+        if(article.userId != userId && !rateStatus && article.rateAverage >= rateCut && !recommendedArticleIds.includes(article._id.toString())){
+            recommendedArticleIds.push(article._id.toString())
             let articleOwner = await User.findOne({_id: article.userId})
             articleRecommends.push({
                 ...article._doc,
