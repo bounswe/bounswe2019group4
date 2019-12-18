@@ -669,7 +669,7 @@ resultPredictions = schedule.scheduleJob('20 */2 * * *', async function() {
 
 module.exports.filterData = (data, fields, keyword) => {
   keyword = keyword.toLowerCase()
-  const maxDifference = Math.floor(keyword.length / 3)
+  const maxDifference = Math.ceil(keyword.length / 2)
   
   return data.filter((row) => {
     return fields.filter(field => {
