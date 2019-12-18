@@ -180,6 +180,10 @@
     </fragment>
     <fragment
         android:id="@+id/investmentFragment"
-        android:name="com.example.arken.fragment.InvestmentFragment"
-        android:label="InvestmentFragment" />
+        android:name="com.example.arken.fragment.investment.InvestmentFragment"
+        android:label="InvestmentFragment" >
+        <argument
+            android:name="ibandefault"
+            app:argType="string" />
+    </fragment>
 </navigation>

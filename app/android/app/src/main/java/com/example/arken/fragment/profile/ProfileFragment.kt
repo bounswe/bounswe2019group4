@@ -70,9 +70,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
         followingCountText = view.findViewById(R.id.following_value_textView)
         pendingReqText = view.findViewById(R.id.profile_pending_req)
         myinvestment_button=view.findViewById(R.id.investment_button)
-        myinvestment_button.setOnClickListener {
-            findNavController().navigate(R.id.action_profileFragment_to_investmentFragment)
-        }
+
         article_button = view.findViewById(R.id.article_button)
         article_button.setOnClickListener {
             val act = ProfileFragmentDirections.actionProfileFragmentToListArticleFragment()
@@ -276,6 +274,10 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                 if (response.isSuccessful) {
                     profile = response.body()!!
                     myinvestment_button.visibility=View.VISIBLE
+                    myinvestment_button.setOnClickListener {
+                        val act = ProfileFragmentDirections.actionProfileFragmentToİnvestmentFragment(profile.user!!.iban!!)
+                        findNavController().navigate(act)
+                    }
                     article_button.visibility = View.VISIBLE
                     name_textView.text = profile.user?.name
                     surname_textView.text = profile.user?.surname

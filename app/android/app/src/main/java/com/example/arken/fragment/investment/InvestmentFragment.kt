@@ -1,13 +1,16 @@
-package com.example.arken.fragment
+package com.example.arken.fragment.investment
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.fragment.signup_login.LoginFragment
@@ -21,16 +24,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class InvestmentFragment : Fragment(), OnOrderClickedListener {
+class InvestmentFragment : Fragment(), OnOrderClickedListener,DepositClickListener {
 
     private lateinit var orderRecyclerView: RecyclerView
     private var orderDataset: MutableList<Order> = mutableListOf()
     private lateinit var orderAdapter: OrderAdapter
+    private val args: InvestmentFragmentArgs by navArgs()
+
     private lateinit var transactionRecyclerView: RecyclerView
     private var transactionDataset: MutableList<TransactionHistory> = mutableListOf()
     private lateinit var transactionAdapter: TransactionAdapter
     private lateinit var investment: Investment
     private lateinit var accountValues:TextView
+    private lateinit var depositButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +63,12 @@ accountValues=rootView.findViewById(R.id.fragment_investment_account_values)
         initDataset()
         orderRecyclerView.adapter?.notifyDataSetChanged()
 
+depositButton=rootView.findViewById(R.id.fragment_investment_deposit)
+        depositButton.setOnClickListener {
+            val dialogFragment = DepositDialog(this,args.İbandefault)
 
+           dialogFragment.show(fragmentManager!!,"deposit")
+        }
         return rootView
     }
 
@@ -136,6 +147,7 @@ accountValues=rootView.findViewById(R.id.fragment_investment_account_values)
         })
     }
 
+
     private fun initAccountValues(account: Account){
         var k  ="Total Profit : ${investment.totalProfit} EUR"
         if (account.eur!=0.0){
@@ -193,5 +205,9 @@ accountValues=rootView.findViewById(R.id.fragment_investment_account_values)
             k+="\nGOOG : ${account.goog} "
         }
         accountValues.text=k
+    }
+
+    override fun onDepositClick() {
+        initDataset()
     }
 }

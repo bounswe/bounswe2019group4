@@ -181,7 +181,7 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @POST("investments/deposit")
-    Call<ListOrder> depositMoney(@Header("Cookie") String userCookie, @Body Deposit deposit);
+    Call<Account> depositMoney(@Header("Cookie") String userCookie, @Body Deposit deposit);
 
     @Headers({"Content-Type: application/json"})
     @POST("investments/order")
