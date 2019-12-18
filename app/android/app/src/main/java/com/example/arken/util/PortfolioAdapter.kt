@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Portfolio
 
+//mode true kendim
+//mode false başkası
 class PortfolioAdapter(
     var dataSet: MutableList<Portfolio>,
-    val portfolioListener: PortfolioListener
+    val portfolioListener: PortfolioListener,
+    val mode: Boolean
 ) :
     RecyclerView.Adapter<PortfolioAdapter.ViewHolder>() {
 
@@ -29,14 +32,29 @@ class PortfolioAdapter(
         fun bind(
             portfolio: Portfolio,
             portfolioListener: PortfolioListener,
-            position: Int
+            position: Int,
+            mode: Boolean
         ) {
             title.text = portfolio.title
             definition.text = portfolio.definition
-            if (portfolio.isPrivate) {
+            if (mode) {
                 eyeButton.visibility = View.GONE
-            } else {
+                //burada follow kontrolü olmalı !!!
+            } else if(!mode && portfolio.isPrivate){
                 eyeButton.visibility = View.VISIBLE
+                eyeButton.setImageResource(R.drawable.ic_star_empty)
+                editButton.visibility = View.GONE
+                deleteButton.visibility = View.GONE
+            }
+
+            else if(!mode){
+                eyeButton.visibility = View.VISIBLE
+                eyeButton.setImageResource(R.drawable.ic_star_full)
+                editButton.visibility = View.GONE
+                deleteButton.visibility = View.GONE
+            }
+            eyeButton.setOnClickListener {
+                portfolioListener.onPortfolioFollowed(position, eyeButton.sourceLayoutResId == R.drawable.ic_star_full)
             }
 
             deleteButton.setOnClickListener {
@@ -69,7 +87,7 @@ class PortfolioAdapter(
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         val comment = dataSet[position]
-        viewHolder.bind(comment, portfolioListener, position)
+        viewHolder.bind(comment, portfolioListener, position, mode)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -79,4 +97,5 @@ class PortfolioAdapter(
 interface PortfolioListener {
     fun onPortfolioDeleted(position: Int)
     fun onPortfolioEdited(position: Int)
+    fun onPortfolioFollowed(position: Int, following: Boolean)
 }

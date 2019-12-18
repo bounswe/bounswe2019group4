@@ -73,7 +73,7 @@
                 android:layout_height="20dp"
                 android:id="@+id/portfolio_eye"
                 android:layout_below="@id/portfolio_te_list"
-                android:src="@drawable/ic_eye_white"
+                android:src="@drawable/ic_star_empty"
                 android:layout_alignParentRight="true"
                 android:layout_margin="8dp"/>
         </RelativeLayout>

@@ -2,19 +2,23 @@ package com.example.arken.fragment.portfolio
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
+import com.example.arken.fragment.profile.ProfileFragmentArgs
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.Portfolio
 import com.example.arken.model.Profile
 import com.example.arken.util.PortfolioAdapter
 import com.example.arken.util.PortfolioListener
 import com.example.arken.util.RetroClient
+import com.example.arken.util.TEClickListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -30,6 +34,9 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     private lateinit var dialog: PortfolioAddDialog
     private lateinit var userCookie:String
     private lateinit var realId:String
+    private val args: PortfolioFragmentArgs by navArgs()
+    private var myPage = true
+    private var userId:String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,11 +50,13 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
         userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
             .getString("user_cookie", "")!!
 
+        userId = args.userId
         realId = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
             .getString("userId", "defaultId")!!
         recyclerView = rootView.findViewById(R.id.portfolios_recyclerView)
+        myPage = (realId == userId)
 
-        portfolioAdapter = PortfolioAdapter(dataset, this)
+        portfolioAdapter = PortfolioAdapter(dataset, this, myPage)
         recyclerView.adapter = portfolioAdapter
 
         initDataset()
@@ -59,6 +68,7 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
             dialog.show(fragmentManager!!, "portFragment")
         }
 
+
         return rootView
     }
 
@@ -66,7 +76,7 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     fun initDataset() {
 
         val call: Call<Profile> =
-            RetroClient.getInstance().apiService.getProfile(userCookie, realId)
+            RetroClient.getInstance().apiService.getProfile(userCookie, userId)
 
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
@@ -83,11 +93,14 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
 
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                    Log.i("portErr" , response.raw().toString())
                 }
             }
 
             override fun onFailure(call: Call<Profile>, t: Throwable) {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                Log.i("portErr2" , t.message)
+
             }
         })
 
@@ -123,6 +136,51 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     override fun onDialogPositiveClick() {
         initDataset()
         recyclerView.adapter?.notifyDataSetChanged()
+    }
+    override fun onPortfolioFollowed(position: Int, following: Boolean) {
+        if(!following){
+            val call: Call<ResponseBody> =
+                RetroClient.getInstance().apiService.followPortfolio(userCookie, dataset[position]._id)
+
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "Following portfolio", Toast.LENGTH_SHORT).show()
+
+                        initDataset()
+
+                    } else {
+                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+        else{
+            val call: Call<ResponseBody> =
+                RetroClient.getInstance().apiService.unfollowPortfolio(userCookie, dataset[position]._id)
+
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "Unfollowing portfolio ", Toast.LENGTH_SHORT).show()
+
+                        initDataset()
+
+                    } else {
+                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
     }
 
 }

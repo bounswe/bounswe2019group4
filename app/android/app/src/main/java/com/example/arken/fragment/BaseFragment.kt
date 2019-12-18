@@ -20,6 +20,7 @@ import com.example.arken.fragment.search.SearchFragmentDirections
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.fragment.tEq.ListCurrentFragmentDirections
 import com.example.arken.fragment.portfolio.PortfolioFragmentDirections
+import com.example.arken.fragment.profile.ProfileFragmentDirections
 import com.example.arken.util.MenuAdapter
 import com.example.arken.util.OnMenuItemClickListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -249,6 +250,11 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
                 val act =
                     ArticleDetailDirections.actionArticleDetailToProfileFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            }
+            else if(findNavController(fragment!!).currentDestination!!.id == R.id.profileFragment){
+                val act =
+                    ProfileFragmentDirections.actionProfileFragmentToPortfolioFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             }
         } else if (index == 6) {

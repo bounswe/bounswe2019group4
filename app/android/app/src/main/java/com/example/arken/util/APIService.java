@@ -181,5 +181,11 @@ public interface APIService {
     @POST("portfolios/{id}")
     Call<Portfolio> getPortfolio(@Header("Cookie") String userCookie, @Path("id") String id );
 
+    @Headers({"Content-Type: application/json"})
+    @POST("portfolios/{id}/follow")
+    Call<ResponseBody> followPortfolio(@Header("Cookie") String userCookie, @Path("id") String id );
 
+    @Headers({"Content-Type: application/json"})
+    @POST("portfolios/{id}/unfollow")
+    Call<ResponseBody> unfollowPortfolio(@Header("Cookie") String userCookie, @Path("id") String id );
 }

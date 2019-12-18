@@ -98,7 +98,12 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
             editTextTitle.inputType = InputType.TYPE_NULL
             editTextDefinition.setText(portfolio.definition)
             switch.isChecked = portfolio.isPrivate
-            selectedTEs = portfolio.tradingEqs as ArrayList<String>
+            if(portfolio.tradingEqs!= null){
+                selectedTEs = portfolio.tradingEqs as ArrayList<String>
+            }
+            else{
+                selectedTEs = ArrayList()
+            }
         }
 
         val arr = resources.getStringArray(R.array.TeList)
