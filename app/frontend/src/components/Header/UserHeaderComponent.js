@@ -210,6 +210,16 @@ class UserHeaderComponent extends Component {
                 <Menu.Item
                     style={{display: "flex", alignItems: "center"}}
                     name="settings"
+
+                >
+                        <a style={{color:"white"}} href={"https://github.com/bounswe/bounswe2019group4"}>
+                    <Icon name={"github"}/>
+                    </a>
+
+                </Menu.Item>
+                <Menu.Item
+                    style={{display: "flex", alignItems: "center"}}
+                    name="settings"
                    // onClick={this.navigate}
                 >
                     <Dropdown  trigger={<i className="fas fa-cog" style={{ margin: 10}} />} icon={null}>
