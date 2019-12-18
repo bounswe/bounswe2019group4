@@ -143,6 +143,9 @@ public interface APIService {
     Call<Article> getArticle(
             @Header("Cookie") String userCookie, @Path("id") String article
     );
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/cancel/{id}")
+    Call<ResponseBody> cancelReq(@Header("Cookie") String userCookie, @Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
     @DELETE("articles/{id}")

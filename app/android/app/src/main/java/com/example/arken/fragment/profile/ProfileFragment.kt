@@ -41,7 +41,6 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
     private var followerCount = 0
     private var isPublic = true
     private val args: ProfileFragmentArgs by navArgs()
-    private var following = false
     private lateinit var pendingReqText: TextView
     var userCookie = ""
     private var pendingReqList: MutableList<FollowRequest> = mutableListOf()
@@ -85,7 +84,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                 MY_PREFS_NAME,
                 MODE_PRIVATE
             ).getString("user_cookie", "")!!
-            if (!following) {
+            if (followButton.text == "FOLLOW") {
                 val callFollow: Call<ResponseBody> =
                     RetroClient.getInstance().apiService.follow(userCookie, userId)
 
@@ -100,7 +99,6 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
 
                                 getProfile()
                                 followButton.text = "UNFOLLOW"
-                                following = true
                                 Toast.makeText(context, "You are following", Toast.LENGTH_SHORT)
                                     .show()
                             } else {
@@ -119,48 +117,62 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                         Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
-            } else {
-                if (followButton.text == "PENDING") {
-                    Toast.makeText(context, "Your request is already sent", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    if (!following) {
-                        followButton.text = "Follow"
-                    } else {
-                        val callFollow: Call<ResponseBody> =
+            } else if (followButton.text == "PENDING") {
+
+                val cancelReq: Call<ResponseBody> =
+                    RetroClient.getInstance().apiService.cancelReq(userCookie, userId)
+
+                cancelReq.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(
+                                context,
+                                "You cancelled your follow request",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            getProfile()
+
+                        } else {
+                            Toast.makeText(
+                                context,
+                                response.raw().toString(),
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            Log.i("cancelErr", response.raw().toString())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                        Log.i("cancelErr2", t.message)
+                    }
+                })
+            }
+            else {
+                val callFollow: Call<ResponseBody> =
                             RetroClient.getInstance().apiService.unfollow(userCookie, userId)
 
-                        callFollow.enqueue(object : Callback<ResponseBody> {
-                            override fun onResponse(
-                                call: Call<ResponseBody>,
-                                response: Response<ResponseBody>
-                            ) {
-                                if (response.isSuccessful) {
-                                    Toast.makeText(
-                                        context,
-                                        "You have unfollowed",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                callFollow.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "You have unfollowed", Toast.LENGTH_SHORT).show()
 
-                                    getProfile()
+                            getProfile()
 
-                                } else {
-                                    Toast.makeText(
-                                        context,
-                                        response.raw().toString(),
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
-                                }
-                            }
-
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                            }
-                        })
+                        } else {
+                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
 
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
         }
         followerCountText.setOnClickListener {
@@ -284,13 +296,12 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                     isPublic = profile.user?.isPublic!!
                     if (userCookie != "" && realId != userId) {
                         followButton.visibility = View.VISIBLE
-                        if (profile.followStatus == "TRUE") {
-                            followButton.text = "UNFOLLOW"
-                            following = true
-                        } else {
+                        if(profile.followStatus=="FALSE")
                             followButton.text = "FOLLOW"
-                            following = false
-                        }
+                        else if(profile.followStatus=="TRUE")
+                            followButton.text = "UNFOLLOW"
+                        else
+                            followButton.text = "PENDING"
                     } else if (userCookie != "") {
                         pendingReqText.visibility = View.VISIBLE
                         if(profile.followRequest==null){
