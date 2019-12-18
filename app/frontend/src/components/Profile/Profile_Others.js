@@ -74,7 +74,7 @@ class Profile extends Component {
     async getProfile() {
         await this.props.profile(this.props.match.params.id).then(async result =>{
                 let newProfile = result.value
-            alert(JSON.stringify(newProfile))
+
                 console.log(newProfile)
                 this.setState({newProfile:newProfile,otherUser:newProfile.user, following:newProfile.following,
                             follower:newProfile.follower,
