@@ -1016,6 +1016,8 @@ module.exports.filterArticleTitles = async (articles, terms) => {
         text1: article.title,
         text2: terms
       }
+    }).catch(err => {
+      console.log(err)
     })
   }))
 
