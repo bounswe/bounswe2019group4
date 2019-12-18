@@ -8,18 +8,32 @@ const {findUserFollows, checkPassword, checkIBAN, checkTCKN} = require('../utils
   Get user id from parameter and responses accordingly.
 */
 
-async function profileResponse(user, me, followStatus, TradingEqFollow, Article, Portfolio) {
+async function profileResponse(user, me, followStatus, TradingEqFollow, Article, Portfolio, PortfolioTradingEq) {
   let followings = await findUserFollows({ FollowingId: user._id, status: true })
   let followers = await findUserFollows({ FollowedId: user._id, status: true })
   let followRequests = await findUserFollows({ FollowedId: user._id, status: false})
   let followingTradings = await TradingEqFollow.find({ UserId : user._id })
   let articles = await Article.find().where('userId').equals(user._id)
-  let portfolios = null
+  let portfoliosBefore = null
+  let portfolios = []
   if(me){
-    portfolios = await Portfolio.find().where('userId').equals(user._id)
+    portfoliosBefore = await Portfolio.find().where('userId').equals(user._id)   
   }
   else{
-    portfolios = await Portfolio.find({userId: user._id, isPrivate: false})
+    portfoliosBefore = await Portfolio.find({userId: user._id, isPrivate: false})
+  }
+
+  for (const portfolio of portfoliosBefore) {
+    let tradingEqsObj = await PortfolioTradingEq.find({ PortfolioId : portfolio._id})
+    let tradingEqs = []
+    for (const tradingEq of tradingEqsObj) {
+      tradingEqs.push(tradingEq['TradingEq']);
+    }
+    obj = {
+      ...portfolio["_doc"],
+      tradingEqs: tradingEqs
+    }
+    portfolios.push(obj)
   }
 
   if(me){ // if profile is mine
@@ -78,12 +92,14 @@ async function profileResponse(user, me, followStatus, TradingEqFollow, Article,
   }
 }
 
+
 module.exports.getDetails = async (request, response) => {
   let UserFollow = request.models['UserFollow']
   let User = request.models['User']
   let TradingEqFollow = request.models['TradingEquipmentFollow']
   let Article = request.models['Article']
   let Portfolio = request.models['Portfolio']
+  let PortfolioTradingEq = request.models['PortfolioTradingEq']
 
   const requestedUserId = request.params['id']
   const currentUser = request.session['user']
@@ -91,7 +107,7 @@ module.exports.getDetails = async (request, response) => {
   try {
     if(currentUser && currentUser._id == requestedUserId) {  // when the user asks for his own details
       requestedUser = await User.findOne({ _id : requestedUserId })
-      res = await profileResponse(requestedUser, true, null, TradingEqFollow, Article, Portfolio)
+      res = await profileResponse(requestedUser, true, null, TradingEqFollow, Article, Portfolio, PortfolioTradingEq)
       return response.send(res);
     } else {  // when the user requested isn't the user logged in himself
       const requestedUser = await User.findOne({ _id : requestedUserId })   // finds the user instance requested if it exists
@@ -103,7 +119,7 @@ module.exports.getDetails = async (request, response) => {
             followStatus = entry.status ? 'TRUE' : 'PENDING' 
           }
         }
-        res = await profileResponse(requestedUser, false, followStatus, TradingEqFollow, Article, Portfolio)
+        res = await profileResponse(requestedUser, false, followStatus, TradingEqFollow, Article, Portfolio, PortfolioTradingEq)
         return response.send(res);        
       } else {  // when there's no user with given ID
         return response.status(400).send({
