@@ -198,7 +198,7 @@ class UserHeaderComponent extends Component {
                     <Dropdown  trigger={<i className="fas fa-user-plus" style={{ margin: 10}} />} icon={null}>
 
                         <Dropdown.Menu style={{overflowY:"auto",maxHeight:400,width:"20vw",background:"lightgrey"}}>
-                            <Dropdown.Header onClick={this.logout.bind(this)}>Recommended Users</Dropdown.Header>
+                            <Dropdown.Header >Recommended Users</Dropdown.Header>
                             {this.state.recommended.map(item=>this.renderRecommended(item))
 
 

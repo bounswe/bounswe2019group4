@@ -32,14 +32,13 @@ class Profile extends Component {
     }
     componentDidMount() {
 
-        const localState = loadState();
-        this.setState({user: localState.user});
         this.getProfile();
         console.log(this.props.match.params.id);
         this.state.portfolios.forEach(element =>{
             console.log(element);
             this.getPortfolios(element._id);
         })
+
 
 
 
@@ -75,6 +74,7 @@ class Profile extends Component {
     async getProfile() {
         await this.props.profile(this.props.match.params.id).then(async result =>{
                 let newProfile = result.value
+            alert(JSON.stringify(newProfile))
                 console.log(newProfile)
                 this.setState({newProfile:newProfile,otherUser:newProfile.user, following:newProfile.following,
                             follower:newProfile.follower,
@@ -109,10 +109,12 @@ class Profile extends Component {
 
     render() {
 
-
+        const userr=loadState().user;
         const {newProfile, otherUser,portfolios,following,follower } = this.state;
 
         const currentlyFollowing = newProfile.followStatus === "TRUE";
+
+
 
         const profileCardProps = {...newProfile.user};
 
@@ -123,14 +125,14 @@ class Profile extends Component {
                             <Grid.Row relaxed>
                                 <ProfileCard user={profileCardProps}/>
                             </Grid.Row>
-                            {this.state.user!=null&&this.state.user.loggedIn&&newProfile.followStatus === "FALSE" && newProfile.followStatus !== "PENDING"?
-                                <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="teal" onClick={this.followUser.bind(this, otherUser._id)}>Follow</Button>
+                            {(userr!==null&&userr.loggedIn===true&&newProfile.followStatus === "FALSE" && newProfile.followStatus !== "PENDING")?
+                                (<Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="teal" onClick={this.followUser.bind(this, otherUser._id)}>Follow</Button>)
                                 :null}
-                            {this.state.user!=null&&this.state.user.loggedIn&&newProfile.followStatus === "TRUE" && newProfile.followStatus !== "PENDING"?
+                            {(userr!==null&&userr.loggedIn&&newProfile.followStatus === "TRUE" && newProfile.followStatus !== "PENDING")?
                                 <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="google plus" onClick={this.unFollowUser.bind(this, otherUser._id)}>Unfollow</Button>
                                 :null
                             }
-                            {this.state.user!=null&&this.state.user.loggedIn&&newProfile.followStatus === "PENDING"?
+                            {(userr!==null&&userr.loggedIn&&newProfile.followStatus === "PENDING")?
                                 <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="grey" onClick={this.unFollowUser.bind(this, otherUser._id)}>Cancel Request</Button>
                                 :null}
                             {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
