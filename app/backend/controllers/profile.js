@@ -101,6 +101,8 @@ module.exports.getDetails = async (request, response) => {
           entry = await UserFollow.findOne({ FollowingId : request.session['user']._id, FollowedId : requestedUserId }) // check whether they follow each other
           if(entry){ // if following or request sent
             followStatus = entry.status ? 'TRUE' : 'PENDING' 
+          } else {
+            followStatus = 'FALSE'
           }
         }
         res = await profileResponse(requestedUser, false, followStatus, TradingEqFollow, Article, Portfolio)
