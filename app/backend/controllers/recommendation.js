@@ -51,13 +51,19 @@ module.exports.recommend = async (request, response) => {
   let myFollowings = await UserFollow.find({FollowingId: userId, status: true})
   for( i = 0; i < myFollowings.length; i++){
     follow = myFollowings[i]
-    userArticles = await Article.find().select('text title rateAverage').where('userId').equals(follow.FollowedId)
+    userArticles = await Article.find({userId : follow.FollowedId})
     for(j = 0; j < userArticles.length; j++){
         article = userArticles[j]
         rateStatus = await ArticleUser.findOne({userId : userId, articleId: article._id})
         if(!rateStatus && article.rateAverage > 2){
             recommendedArticleIds.push(article._id)
-            articleRecommends.push(article)
+            let articleOwner = await User.findOne({_id: article.userId})
+            articleRecommends.push({
+                ...article._doc,
+                rateAverage: Math.round(article.rateAverage * 10) / 10,
+                username: articleOwner.name,
+                usersurname: articleOwner.surname
+            })
         }
     }
   }
@@ -66,13 +72,19 @@ module.exports.recommend = async (request, response) => {
   let count = 0
   while(articleRecommends.length < 6 && count < 5){
     count++
-    articles = await Article.find().select('text title rateAverage')
+    articles = await Article.find({})
     for(i = 0; i < articles.length; i++){
         article = articles[i]
         rateStatus = await ArticleUser.findOne({userId : userId, articleId: article._id})
-        if(!rateStatus && article.rateAverage >= rateCut){
+        if(article.userId != userId && !rateStatus && article.rateAverage >= rateCut){
             recommendedArticleIds.push(article._id)
-            articleRecommends.push(article)
+            let articleOwner = await User.findOne({_id: article.userId})
+            articleRecommends.push({
+                ...article._doc,
+                rateAverage: Math.round(article.rateAverage * 10) / 10,
+                username: articleOwner.name,
+                usersurname: articleOwner.surname
+            })
         }
     }
     rateCut -= 0.5

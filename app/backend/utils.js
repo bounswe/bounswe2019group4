@@ -667,14 +667,15 @@ resultPredictions = schedule.scheduleJob('20 */2 * * *', async function() {
   }
 });
 
-module.exports.filterData = (data, fields, keyword, max_ = 1) => {
+module.exports.filterData = (data, fields, keyword) => {
   keyword = keyword.toLowerCase()
+  const maxDifference = Math.floor(keyword.length / 3)
   
   return data.filter((row) => {
     return fields.filter(field => {
       const words = String(row[field]).toLowerCase().split(' ')
       return words.filter(word => {
-        return levenstein(word, keyword) <= max_
+        return levenstein(word, keyword) <= maxDifference
       }).length > 0
     }).length > 0
   })
