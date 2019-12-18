@@ -1,17 +1,19 @@
 import React, {Component} from "react";
-import {Menu, Dropdown, Icon} from "semantic-ui-react";
+import {Menu, Dropdown, Icon, Segment, Label} from "semantic-ui-react";
 import * as userActions from "../../actions/userActions";
 import connect from "react-redux/es/connect/connect";
 import history from "../../_core/history";
 import SearchBar from "../Search/Search";
 import {normalizeDate} from "../Events/Events";
+import {colorDarkerBlue} from "../../utils/constants/Colors";
 
 class UserHeaderComponent extends Component {
 
     constructor(props){
         super(props);
         this.state={
-            notifications:[]
+            notifications:[],
+            recommended:[]
         };
     }
 
@@ -19,6 +21,7 @@ class UserHeaderComponent extends Component {
     interval=null;
     componentDidMount() {
         this.getNotifs();
+        this.getRecommended();
         //this.interval=setInterval(this.getNotifs,5000);
     }
     componentWillUnmount() {
@@ -33,6 +36,11 @@ class UserHeaderComponent extends Component {
 
         });
     };
+    getRecommended=async()=>{
+        this.props.getRecommended().then(result=>{
+            this.setState({recommended:result.value.userRecommends})
+        })
+    }
 
     navigate(e, {name}) {
         history.push("/" + name);
@@ -119,6 +127,37 @@ class UserHeaderComponent extends Component {
             )
         }
     };
+    renderRecommended=(item)=>{
+        return(
+            <Segment style={{margin:10,borderWidth:1,borderRadius:30,borderColor:colorDarkerBlue,backgroundColor:"lightgrey"}}>
+                <div style={{display:"flex",flexDirection:"row"}}>
+                    <div style={{display:"flex",flex:2,flexDirection:"column"}}>
+                        <Label style={{color:"black",fontSize:15}}>
+                            <Icon name={"user"}/>
+                    <a href={"/profile/"+item._id}>{item.name+" "+item.surname}</a>
+                        </Label>
+                        <Label style={{marginTop:5}}>
+                            <Icon name={"map pin"}/>
+
+                            {item.location}
+
+                        </Label>
+                    </div>
+                    <div style={{color:"black",flexDirection:"column",fontSize:12,marginLeft:10}}>
+
+                        <Label color={"green"}>
+                        {"Pr.Rate: "+item.predictionRate}
+                        </Label>
+                    </div>
+
+                </div>
+                <div>
+
+                </div>
+
+            </Segment>
+        )
+    }
 
     render() {
         return (
@@ -153,6 +192,23 @@ class UserHeaderComponent extends Component {
                 </Menu.Item>
                 <Menu.Item
                     style={{display: "flex", alignItems: "center"}}
+                    name="users"
+                    // onClick={this.navigate}
+                >
+                    <Dropdown  trigger={<i className="fas fa-user-plus" style={{ margin: 10}} />} icon={null}>
+
+                        <Dropdown.Menu style={{overflowY:"auto",maxHeight:400,width:"20vw",background:"lightgrey"}}>
+                            <Dropdown.Header onClick={this.logout.bind(this)}>Recommended Users</Dropdown.Header>
+                            {this.state.recommended.map(item=>this.renderRecommended(item))
+
+
+
+                            }
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Menu.Item>
+                <Menu.Item
+                    style={{display: "flex", alignItems: "center"}}
                     name="settings"
                    // onClick={this.navigate}
                 >
@@ -171,7 +227,8 @@ class UserHeaderComponent extends Component {
 const dispatchToProps = dispatch => {
     return {
         logout: () => dispatch(userActions.logout()),
-        getNotif:()=>dispatch(userActions.getNotif())
+        getNotif:()=>dispatch(userActions.getNotif()),
+        getRecommended:()=>dispatch(userActions.getRecommended())
 
     };
 };
