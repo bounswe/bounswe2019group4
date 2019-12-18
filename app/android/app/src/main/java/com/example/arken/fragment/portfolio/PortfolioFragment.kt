@@ -16,6 +16,7 @@ import com.example.arken.util.PortfolioAdapter
 import com.example.arken.util.PortfolioListener
 import com.example.arken.util.RetroClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +28,8 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     private lateinit var portfolioAdapter: PortfolioAdapter
     private lateinit var addFloatingButton:FloatingActionButton
     private lateinit var dialog: PortfolioAddDialog
+    private lateinit var userCookie:String
+    private lateinit var realId:String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +40,12 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
             R.layout.fragment_portfolio,
             container, false
         )
+        userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            .getString("user_cookie", "")!!
 
+        realId = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            .getString("userId", "defaultId")!!
         recyclerView = rootView.findViewById(R.id.portfolios_recyclerView)
-        val userId = activity!!.getSharedPreferences(
-            MY_PREFS_NAME, MODE_PRIVATE
-        ).getString("userId", "defaultId")!!
 
         portfolioAdapter = PortfolioAdapter(dataset, this)
         recyclerView.adapter = portfolioAdapter
@@ -51,7 +55,7 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
 
         addFloatingButton = rootView.findViewById(R.id.portfolio_add)
         addFloatingButton.setOnClickListener{
-            dialog = PortfolioAddDialog(this, context!!)
+            dialog = PortfolioAddDialog(this, context!! , null)
             dialog.show(fragmentManager!!, "portFragment")
         }
 
@@ -60,10 +64,6 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
 
 
     fun initDataset() {
-        val userCookie = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-            .getString("user_cookie", "")
-        val realId = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-            .getString("userId", "defaultId")
 
         val call: Call<Profile> =
             RetroClient.getInstance().apiService.getProfile(userCookie, realId)
@@ -94,11 +94,30 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     }
 
     override fun onPortfolioDeleted(position: Int) {
-        Toast.makeText(context, "Delete portfolio", Toast.LENGTH_SHORT).show()
+        val call: Call<ResponseBody> =
+            RetroClient.getInstance().apiService.deletePortfolio(userCookie, dataset[position]._id)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "Your portfolio is deleted ", Toast.LENGTH_SHORT).show()
+
+                   initDataset()
+
+                } else {
+                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onPortfolioEdited(position: Int) {
-       Toast.makeText(context, "Portfolio edit", Toast.LENGTH_SHORT).show()
+        dialog = PortfolioAddDialog(this, context!! , dataset[position])
+        dialog.show(fragmentManager!!, "portFragment")
     }
 
     override fun onDialogPositiveClick() {
