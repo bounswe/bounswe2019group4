@@ -46,6 +46,8 @@ module.exports.recommend = async (request, response) => {
     predictionCut -= 0.1
   }
 
+  userRecommends = Array.from(new Set(userRecommends)).sort((a, b) => eval(b.predictionRate) - eval(a.predictionRate))
+
   let articleRecommends = []
   let recommendedArticleIds = []
   let myFollowings = await UserFollow.find({FollowingId: userId, status: true})
