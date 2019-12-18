@@ -9,6 +9,7 @@
         android:layout_gravity="center"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_margin="8dp"
         card_view:cardCornerRadius="4dp">
 
     <RelativeLayout

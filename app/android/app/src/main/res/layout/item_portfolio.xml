@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp">
 
     <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -26,7 +27,7 @@
                 android:textColor="@color/whiteTextColor"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:layout_margin="8dp"/>
 
             <TextView
@@ -37,12 +38,13 @@
                 android:textColor="@color/whiteTextColor"
                 android:text="Portfolio"
                 android:layout_margin="8dp"
+                android:textSize="12sp"
                 android:layout_marginTop="20dp"/>
 
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/portfolio_edit"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
@@ -58,8 +60,8 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/portfolio_delete"
                 android:layout_toLeftOf="@id/portfolio_edit"
                 android:layout_alignParentTop="true"
@@ -67,8 +69,8 @@
                 android:layout_marginTop="8dp"/>
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/portfolio_eye"
                 android:layout_below="@id/portfolio_te_list"
                 android:src="@drawable/ic_eye_white"

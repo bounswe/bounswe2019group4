@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 
 class PortfolioTEAdapter(
-    var nameSet: Array<String>
+    var nameSet: List<String>, val teClickListener: TEClickListener
 ) :
     RecyclerView.Adapter<PortfolioTEAdapter.ViewHolder>() {
 
@@ -33,6 +33,9 @@ class PortfolioTEAdapter(
         // with that element
 
         viewHolder.textView.text = nameSet[position]
+        viewHolder.itemView.setOnClickListener{
+            teClickListener.onTEClicked(position)
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -41,7 +44,7 @@ class PortfolioTEAdapter(
         return nameSet.size
     }
 
-    companion object {
-        private val TAG = "CustomAdapter"
-    }
+}
+interface TEClickListener{
+    fun onTEClicked(position : Int)
 }

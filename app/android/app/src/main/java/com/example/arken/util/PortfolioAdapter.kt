@@ -15,7 +15,9 @@ class PortfolioAdapter(
 ) :
     RecyclerView.Adapter<PortfolioAdapter.ViewHolder>() {
 
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+    class ViewHolder(v: View) : RecyclerView.ViewHolder(v), TEClickListener {
+        override fun onTEClicked(position: Int) {}
+
         private val title: TextView = v.findViewById(R.id.portfolio_title)
         private val definition: TextView = v.findViewById(R.id.portfolio_definition)
         private val recyclerView: RecyclerView = v.findViewById(R.id.portfolio_te_list)
@@ -43,7 +45,13 @@ class PortfolioAdapter(
             editButton.setOnClickListener {
                 portfolioListener.onPortfolioEdited(position)
             }
-            //!!!!! te adapter olması lazımm
+            var arr = portfolio.tradingEqs
+            if(arr == null){
+                arr = mutableListOf()
+            }
+            val pAdapter = PortfolioTEAdapter(arr, this)
+            recyclerView.adapter = pAdapter
+            recyclerView.adapter?.notifyDataSetChanged()
         }
     }
 

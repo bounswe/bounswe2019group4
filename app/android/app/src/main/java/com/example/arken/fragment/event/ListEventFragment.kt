@@ -96,8 +96,6 @@ class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListen
         }
         setRecyclerViewLayoutManager(currentLayoutManagerType)
 
-
-
         eventAdapter = EventAdapter(dataset, this)
         recyclerView.adapter = eventAdapter
 
