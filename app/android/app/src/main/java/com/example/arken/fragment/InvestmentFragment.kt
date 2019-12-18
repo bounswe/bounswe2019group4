@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.fragment.signup_login.LoginFragment
-import com.example.arken.model.investment.Investment
-import com.example.arken.model.investment.ListOrder
-import com.example.arken.model.investment.Order
-import com.example.arken.model.investment.TransactionHistory
+import com.example.arken.model.investment.*
 import com.example.arken.util.OnOrderClickedListener
 import com.example.arken.util.OrderAdapter
 import com.example.arken.util.RetroClient
@@ -32,6 +30,7 @@ class InvestmentFragment : Fragment(), OnOrderClickedListener {
     private var transactionDataset: MutableList<TransactionHistory> = mutableListOf()
     private lateinit var transactionAdapter: TransactionAdapter
     private lateinit var investment: Investment
+    private lateinit var accountValues:TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +41,7 @@ class InvestmentFragment : Fragment(), OnOrderClickedListener {
             R.layout.fragment_myinvestments,
             container, false
         )
-
+accountValues=rootView.findViewById(R.id.fragment_investment_account_values)
         orderRecyclerView = rootView.findViewById(R.id.fragment_investment_order_recyclerview)
         transactionRecyclerView =
             rootView.findViewById(R.id.fragment_investment_transaction_recyclerview)
@@ -108,6 +107,7 @@ class InvestmentFragment : Fragment(), OnOrderClickedListener {
                     transactionDataset=investment.histories
                     transactionAdapter.dataSet = transactionDataset
                     transactionAdapter.notifyDataSetChanged()
+                    initAccountValues(investment.account)
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
@@ -134,5 +134,64 @@ class InvestmentFragment : Fragment(), OnOrderClickedListener {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun initAccountValues(account: Account){
+        var k  ="Total Profit : ${investment.totalProfit} EUR"
+        if (account.eur!=0.0){
+            k+="\nEUR : ${account.eur} "
+        }
+        if (account.tl!=0.0){
+            k+="\nTRY : ${account.tl} "
+        }
+        if (account.usd!=0.0){
+            k+="\nUSD : ${account.usd} "
+        }
+        if (account.aud!=0.0){
+            k+="\nAUD : ${account.aud} "
+        }
+        if (account.cny!=0.0){
+            k+="\nCNY : ${account.cny} "
+        }
+        if (account.hkd!=0.0){
+            k+="\nHKD : ${account.hkd} "
+        }
+        if (account.inr!=0.0){
+            k+="\nINR : ${account.inr} "
+        }
+        if (account.jpy!=0.0){
+            k+="\nJPY : ${account.jpy} "
+        }
+        if (account.aed!=0.0){
+            k+="\nAED : ${account.aed} "
+        }
+        if (account.ltc!=0.0){
+            k+="\nLTC : ${account.ltc} "
+        }
+        if (account.xrp!=0.0){
+            k+="\nXRP : ${account.xrp} "
+        }
+        if (account.eth!=0.0){
+            k+="\nETH : ${account.eth} "
+        }
+        if (account.btc!=0.0){
+            k+="\nBTC : ${account.btc} "
+        }
+        if (account.fb!=0.0){
+            k+="\nFB : ${account.fb} "
+        }
+        if (account.amzn!=0.0){
+            k+="\nAMZN : ${account.amzn} "
+        }
+        if (account.aapl!=0.0){
+            k+="\nAAPL : ${account.aapl} "
+        }
+        if (account.msft!=0.0){
+            k+="\nMSFT : ${account.msft} "
+        }
+        if (account.goog !=0.0){
+            k+="\nGOOG : ${account.goog} "
+        }
+        accountValues.text=k
     }
 }

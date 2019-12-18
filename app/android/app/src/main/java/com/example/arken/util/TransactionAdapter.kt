@@ -8,8 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.investment.TransactionHistory
+import com.example.arken.model.investment.enums.Type
+import java.math.RoundingMode
 
-class TransactionAdapter():
+class TransactionAdapter() :
     RecyclerView.Adapter<TransactionAdapter.TransactionHolder>() {
     var dataSet: MutableList<TransactionHistory> = mutableListOf()
 
@@ -28,10 +30,21 @@ class TransactionAdapter():
         }
 
         fun bind(transactionHistory: TransactionHistory) {
-            transactionText.text=transactionHistory.text
-            rate.text="From Rate = ${transactionHistory.fromRate}"
-            date.text=transactionHistory.date.toString()
-            profit.text=transactionHistory.profit.toString()
+            transactionText.text = transactionHistory.text
+            if (transactionHistory.type == Type.DEPOSIT) {
+                rate.text =
+                    "When ${transactionHistory.currency}/EUR was ${transactionHistory.fromRate}"
+            } else {
+                rate.text =
+                    "When ${transactionHistory.currency}/EUR was ${transactionHistory.fromRate}"
+            }
+            date.text = "At " + transactionHistory.date.toString()
+            if (transactionHistory.type != Type.DEPOSIT) {
+                profit.text = "Profit: " + transactionHistory.profit.toBigDecimal().setScale(
+                    4,
+                    RoundingMode.HALF_UP
+                ).toString()
+            }
         }
     }
 

@@ -27,7 +27,7 @@ class OrderAdapter (
         }
 
         fun bind(order: Order, onOrderClickedListener: OnOrderClickedListener,position: Int) {
-            orderText.text = order.compare.toString()
+            orderText.text = "${order.type.toString().toLowerCase()} ${order.amount} ${order.currency} when ${order.currency}/EUR is ${order.compare.toString().toLowerCase()} than ${order.rate}"
             deleteButton.setOnClickListener{
                 onOrderClickedListener.onClicked(order._id!!,position)
             }
