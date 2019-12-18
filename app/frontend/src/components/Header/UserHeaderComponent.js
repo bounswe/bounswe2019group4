@@ -182,7 +182,7 @@ class UserHeaderComponent extends Component {
                                onClick={this.getNotifs}
                                icon={null}>
 
-                        <Dropdown.Menu style={{overflowY:"auto",maxHeight:200}}>
+                        <Dropdown.Menu style={{overflowY:"auto",maxHeight:400,background:"lightgrey"}}>
                             {this.state.notifications.map(item=>
                                 this.renderNotif(item)
                             )}

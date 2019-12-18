@@ -109,6 +109,7 @@ class SearchBar extends Component {
             <Popup
                 trigger={
                     <Search
+
                         style={{marginTop: 2}}
                         category
                         categoryRenderer={categoryRenderer}
