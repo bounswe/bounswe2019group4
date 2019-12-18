@@ -185,10 +185,6 @@ class Article_Details extends Component {
                                                 </Header>
                                             )
                                         }
-
-
-
-
                                         {user && user.loggedIn&&article.userId===user._id ? (
                                             <Dimmer.Dimmable dimmed={active}>
                                                 <Form
@@ -247,7 +243,7 @@ class Article_Details extends Component {
                                             </Dimmer.Dimmable>
                                             )
                                             : (
-                                                <p>
+                                                <p style={{textAlign:"justify"}}>
                                                     {article.text}
                                                 </p>
                                             )

@@ -5,6 +5,7 @@ import {Search, Segment, Header, Grid, Label,Popup} from 'semantic-ui-react';
 
 import * as searchActions from '../../actions/searchActions';
 import history from "../../_core/history";
+import {normalizeDateToTR} from "../Events/Events";
 
 const categoryRenderer = ({ name, results }) => {
     if(results.length>0) {
@@ -19,7 +20,7 @@ const configureResults = (key, values) => {
     if(key === "users") {
         return values.map(res =>  {return {...res, title: res.name + " " + res.surname, price: res.predictionRate, description: res.location}})
     } else if(key === "events") {
-        return values.map(res => { return {...res, title: res.Event, price: res.Importance, description: res.Country + " - " + res.Date}})
+        return values.map(res => { return {...res, title: res.Event, price: res.Importance, description: res.Country + " - " + normalizeDateToTR(res.Date)}})
     } else if(key === "articles") {
         return values.map(res => { return {...res, title: res.title}})
     } else if(key === "trading-equipments") {
