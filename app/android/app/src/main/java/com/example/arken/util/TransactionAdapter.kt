@@ -31,12 +31,12 @@ class TransactionAdapter() :
 
         fun bind(transactionHistory: TransactionHistory) {
             transactionText.text = transactionHistory.text
-            if (transactionHistory.type == Type.DEPOSIT) {
+            if (transactionHistory.type != Type.DEPOSIT) {
                 rate.text =
                     "When ${transactionHistory.currency}/EUR was ${transactionHistory.fromRate}"
-            } else {
-                rate.text =
-                    "When ${transactionHistory.currency}/EUR was ${transactionHistory.fromRate}"
+            }else{
+                rate.visibility=View.GONE
+                profit.visibility=View.GONE
             }
             date.text = "At " + transactionHistory.date.toString()
             if (transactionHistory.type != Type.DEPOSIT) {
