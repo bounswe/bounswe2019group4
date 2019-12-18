@@ -323,7 +323,7 @@ setAlert=async()=>{
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
-                        {teDetail && <div style={{textAlign: "left"}}><CandleStickChart type="hybrid" data={teDetail} convertedCurrency={convertedCurrency} /></div>}
+                        {teDetail && <div style={{textAlign: "left"}}><CandleStickChart type="hybrid" data={teDetail} currentval={this.state.currval} convertedCurrency={convertedCurrency} /></div>}
                         <Comments type={"trading-equipment"} _id={this.state.selectedTE} resendComments={this.onChange.bind(this,{},{value:this.state.selectedTE})} data={this.state.comments}/>
                     </div>
                 </Grid.Column>

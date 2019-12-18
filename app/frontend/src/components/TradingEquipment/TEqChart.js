@@ -41,13 +41,7 @@ function tooltipContent(ys) {
                     value: currentItem.close && numberFormat(currentItem.close)
                 }
             ]
-                .concat(
-                    ys.map(each => ({
-                        label: each.label,
-                        value: each.value(currentItem),
-                        stroke: each.stroke
-                    }))
-                )
+
                 .filter(line => line.value)
         };
     };
@@ -101,33 +95,21 @@ class CandleStickChart extends React.Component {
                            fontSize="12"
                            color="#FFFFFF"
                            text={convertedCurrency} />
-                    <LineSeries
-                        yAccessor={ema20.accessor()}
-                        stroke={ema20.stroke()}
-                    />
-                    <LineSeries
-                        yAccessor={ema50.accessor()}
-                        stroke={ema50.stroke()}
+
+                    <EdgeIndicator
+                        itemType="last"
+                        orient="right"
+                        edgeAt="right"
+                        yAccessor={d=>this.props.currentval}
+                        displayFormat={format(".4")}
+                        fill={d => ("green")}
                     />
                     <CandlestickSeries width={timeIntervalBarWidth(utcDay)} stroke={d => d.close > d.open ? "#6BA583" : "#DB0000"}
                                        wickStroke={d => d.close > d.open ? "#6BA583" : "#DB0000"}
                                        fill={d => d.close > d.open ? "#6BA583" : "#DB0000"}/>
                     <HoverTooltip
                         yAccessor={ema50.accessor()}
-                        tooltipContent={tooltipContent([
-                            {
-                                label: `${ema20.type()}(${ema20.options()
-                                    .windowSize})`,
-                                value: d => numberFormat(ema20.accessor()(d)),
-                                stroke: ema20.stroke()
-                            },
-                            {
-                                label: `${ema50.type()}(${ema50.options()
-                                    .windowSize})`,
-                                value: d => numberFormat(ema50.accessor()(d)),
-                                stroke: ema50.stroke()
-                            }
-                        ])}
+                        tooltipContent={tooltipContent()}
                         fontSize={15}
                     />
                 </Chart>
