@@ -8,6 +8,7 @@ const { UserFollow } = require('../models/user-follow')
 const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
 const { Article } = require('../models/article')
 const { Portfolio } = require('../models/portfolio')
+const { PortfolioTradingEq } = require('../models/portfolio-tradingEq')
 const { validateBody } = require('../controllers/middleware')
 
 /*
@@ -19,7 +20,8 @@ router.get('/:id', multipleModelBinder([
   [UserFollow, 'UserFollow'],
   [TradingEquipmentFollow, 'TradingEquipmentFollow'],
   [Article, 'Article'],
-  [Portfolio, 'Portfolio']
+  [Portfolio, 'Portfolio'],
+  [PortfolioTradingEq, 'PortfolioTradingEq']
 ]), profileController.getDetails)
 
 /*
