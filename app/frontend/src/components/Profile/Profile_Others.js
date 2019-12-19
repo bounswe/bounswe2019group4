@@ -143,7 +143,7 @@ class Profile extends Component {
                                         <List.Header as="h3" style={{color: "#c9c9c9"}}>{newProfile.follower + " Followers"}</List.Header>
                                         {newProfile.followers && newProfile.followers.map(follower => {
                                             return <List.Item icon="user"
-                                                              style={{color: "#c9c9c9"}}
+                                                              style={{color: "#c9c9c9",cursor:"pointer"}}
                                                               onClick={()=>{history.push("/profile/"+follower.FollowingId)}}
                                                               content={follower.FollowingName + " " + follower.FollowingSurname}/>
                                         })}
@@ -158,7 +158,7 @@ class Profile extends Component {
                                         <List.Header as="h3" style={{color: "#c9c9c9"}}>{newProfile.following + " Following"}</List.Header>
                                         {newProfile.followings && newProfile.followings.map(follower => {
                                             return <List.Item icon="user"
-                                                              style={{color: "#c9c9c9"}}
+                                                              style={{color: "#c9c9c9",cursor:"pointer"}}
                                                               onClick={()=>{history.push("/profile/"+follower.FollowedId)}}
                                                               content={follower.FollowedName + " " + follower.FollowedSurname} />
                                         })}
@@ -201,7 +201,7 @@ class Profile extends Component {
                                         <List.Header as="h3" style={{color: "#c9c9c9"}}>Followed Trading Equipment</List.Header>
                                         {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.followingTradings && newProfile.followingTradings.length >0 ? newProfile.followingTradings.map(teq => {
                                             return <List.Item icon="chart line"
-                                                              style={{color: "#c9c9c9"}}
+                                                              style={{color: "#c9c9c9",cursor:"pointer"}}
                                                               onClick={()=>{history.push({pathname: "/trading-equipment",state:{currency: teq.TradingEq}})}}
                                                               content={teq.TradingEq==="EUR"?(teq.TradingEq+"/USD"):(teq.TradingEq+"/EUR")}/>
                                         }): (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <List.Item style={{color: "#c9c9c9"}} content="Can't See Followed Trading Equipment" /> : <List.Item style={{color: "#c9c9c9"}} content="No Trading Equipment Is Followed" />}

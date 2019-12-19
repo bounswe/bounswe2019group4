@@ -144,7 +144,7 @@ class Profile extends Component {
                                                           onClick={()=>{history.push("/profile/"+follower.FollowingId)}}
                                                           content={follower.FollowingName + " " + follower.FollowingSurname} />
                                     })}
-                                </List>
+                                   </List>
                                 </Segment>
                             </Grid.Row>
                             <Grid.Row relaxed>
@@ -153,7 +153,7 @@ class Profile extends Component {
                                         <List.Header as="h3" style={{color: "#c9c9c9"}}>{user.following + " Following"}</List.Header>
                                         {user.followings && user.followings.map(follower => {
                                             return <List.Item icon="user"
-                                                              style={{color: "#c9c9c9"}}
+                                                              style={{color: "#c9c9c9",cursor:"pointer"}}
                                                               onClick={()=>{history.push("/profile/"+follower.FollowedId)}}
                                                               content={follower.FollowedName + " " + follower.FollowedSurname} />
                                         })}
