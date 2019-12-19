@@ -1,5 +1,6 @@
 package com.example.arken.util;
 
+import com.example.arken.model.Alert;
 import com.example.arken.model.Article;
 import com.example.arken.model.ArticleCreateRequest;
 import com.example.arken.model.ArticleRateRequest;
@@ -166,4 +167,16 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @POST("articles/{id}/rate")
     Call<ResponseBody> rateArticle( @Header("Cookie") String userCookie,@Path("id") String id, @Body ArticleRateRequest articleRateRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("trading-equipments/alert")
+    Call<List<Alert>> getAlerts(@Header("Cookie") String userCookie);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("trading-equipments/alert")
+    Call<ResponseBody> createAlert(@Header("Cookie") String userCookie, @Body Alert alert);
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("trading-equipments/alert/{id}")
+    Call<ResponseBody> deleteeAlert(@Header("Cookie") String userCookie, @Path("id") String id);
 }
