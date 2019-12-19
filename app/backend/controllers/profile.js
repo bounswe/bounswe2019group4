@@ -320,7 +320,7 @@ module.exports.editProfile = async (request, response) => {
     try{
         await User.updateOne({_id:userId},{ name: name, surname: surname, location: location, 
                                             iban: iban, tckn: tckn, isPublic: isPublic, isTrader: isTrader}) 
-        .then( doc => {
+        .then(async  doc => {
           let edittedUser = await User.findOne({ _id : userId});
           request.session['user'] = edittedUser;
           return response.status(204).send();
