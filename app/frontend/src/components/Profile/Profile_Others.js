@@ -134,7 +134,7 @@ class Profile extends Component {
                                 :null
                             }
                             {(userr!==null&&userr.loggedIn&&newProfile.followStatus === "PENDING")?
-                                <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="grey" onClick={this.unFollowUser.bind(this, otherUser._id)}>Cancel Request</Button>
+                                <Button style={{width: "100%", marginLeft: 20,marginRight: 20}} color="grey" onClick={this.unFollowUser.bind(this, otherUser._id)}>Cancel Follow Request</Button>
                                 :null}
                             {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
                             <Grid.Row relaxed>
