@@ -18,6 +18,7 @@ import Profile_Others from "./Profile/Profile_Others";
 
 import AllArticles from "./Articles/AllArticles";
 import HomePage from "./HomePage/HomePage";
+import EditProfile from "./Profile/EditProfile";
 
 
 
@@ -48,6 +49,7 @@ class Routes extends Component {
                     <Route path="/articles/:id" render={(props) => { return <Article_Details{...props} />; }} />
                     <Route path="/articles" render={(props) => {return <AllArticles{...props} />; }} />
                     <Route path="/trading-equipment" render={(props) => { return <TradingEquipment {...props} />; }} />
+                    <Route exact path="/profile/edit" render={(props) => { return <EditProfile{...props} />; }} />
                     <Route exact path="/profile/:id" render={(props) => { return <Profile_Others{...props} />; }} />
                     <Route path="/home" render={() => { return <HomePage  />; }} />
                     <Route exact path="/profile" render={

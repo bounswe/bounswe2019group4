@@ -5,6 +5,10 @@ const user = (state = null, action) => {
                 ...action.payload,
                 loggedIn: true
             };
+        case "CHANGE_USER_STATE":
+            return {
+                ...action.payload
+            };
         case "LOGOUT_FULFILLED":
             return { loggedIn: false } ;
         case "LOGOUT_REJECTED":
