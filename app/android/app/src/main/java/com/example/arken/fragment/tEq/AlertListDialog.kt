@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,8 @@ class AlertListDialog(val currency: String, val currentVal: Double) : DialogFrag
     lateinit var alertAdapter: AlertAdapter
     lateinit var addFloatingButton: FloatingActionButton
     var userCookie = ""
+    var showAll = false
+    lateinit var checkBox: CheckBox
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +48,11 @@ class AlertListDialog(val currency: String, val currentVal: Double) : DialogFrag
                 LoginFragment.MY_PREFS_NAME,
         Context.MODE_PRIVATE
         ).getString("user_cookie", "")!!
+        checkBox = rootView.findViewById(R.id.alert_showAll)
+        checkBox.setOnClickListener{
+            showAll = !showAll
+            initDataset()
+        }
 
         initDataset()
 
@@ -87,9 +95,28 @@ class AlertListDialog(val currency: String, val currentVal: Double) : DialogFrag
         callGetAlert.enqueue(object : Callback<ListAlert> {
             override fun onResponse(call: Call<ListAlert>, response: Response<ListAlert>) {
                 if (response.isSuccessful) {
+                    if(showAll){
+                        alerts = response.body()?.alerts as MutableList<Alert>
+                        alertAdapter.dataSet = alerts
+                    }
+                    else{
+                        val arr = response.body()?.alerts as MutableList<Alert>
+                        alerts.clear()
+                        for(alert in arr){
+                            var str = alert.currency
+                            if(str == "EUR"){
+                                str = "EUR/USD"
+                            }
+                            else{
+                                str+="/EUR"
+                            }
+                            if(str == currency){
+                                alerts.add(alert)
+                            }
+                        }
+                        alertAdapter.dataSet = alerts
+                    }
 
-                    alerts = response.body()?.alerts as MutableList<Alert>
-                    alertAdapter.dataSet = alerts
                     alertAdapter.notifyDataSetChanged()
 
                 } else {
