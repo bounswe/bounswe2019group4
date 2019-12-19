@@ -53,12 +53,16 @@ class EditProfile extends Component {
     handleSubmit=async()=>{
         this.setState({loading:true});
         let user={...this.state.user,location:this.state.location};
-        await this.props.editProfile(user).then(()=>{
+        this.props.editProfile(user).then(()=>{
             this.props.changeUserState(user);
-            this.setState({dimmer:true});
+            this.setState({dimmer:true,loading:false});
             setTimeout(()=>this.setState({dimmer:false}),2000);
+        }).catch(()=>{
+
+            this.setState({loading:false})
         });
-        this.setState({loading:false})
+
+
 
     };
     handleLocationChange ({ position, address, places }) {
