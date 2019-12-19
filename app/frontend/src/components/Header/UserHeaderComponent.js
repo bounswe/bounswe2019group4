@@ -31,7 +31,7 @@ class UserHeaderComponent extends Component {
     }
 
     getNotifs=async()=>{
-
+        if(!this.state.notifOpen) {
             let notifs = [];
             await this.props.getNotif().then(result => {
                 notifs = result.value.notifications;
@@ -44,7 +44,7 @@ class UserHeaderComponent extends Component {
                 }
                 this.setState({unread: count});
             });
-
+        }
     };
     getRecommended=async()=>{
         this.props.getRecommended().then(result=>{
