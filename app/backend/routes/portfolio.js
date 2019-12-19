@@ -29,7 +29,10 @@ router.post('/',[
 router.patch('/:id', [
   validateBody(['title', 'definition', 'isPrivate']),
   isAuthenticated,
-  modelBinder(Portfolio, 'Portfolio')], portfolioController.editPortfolio)
+  multipleModelBinder([
+    [Portfolio, 'Portfolio'],
+    [PortfolioTradingEq, 'PortfolioTradingEq']
+  ])], portfolioController.editPortfolio)
 
 /*
   Get endpoint for portfolio.
