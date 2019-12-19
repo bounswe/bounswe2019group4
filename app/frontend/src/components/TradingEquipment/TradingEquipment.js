@@ -141,6 +141,8 @@ setAlert=async()=>{
         this.setState({showAll:!this.state.showAll})
     }
 
+
+
     render() {
 
         const loggedin=authService.isUserLoggedIn();
@@ -149,7 +151,7 @@ setAlert=async()=>{
             <Grid columns={2} divided>
             <Grid.Row>
                 <Grid.Column width={3} style={{margin: 20}}>
-                <Table basic="very" celled inverted style={{background: "#161C1D"}} >
+                <Table selectable basic="very" celled inverted style={{background: "#161C1D"}} >
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Parity</Table.HeaderCell>
@@ -159,8 +161,8 @@ setAlert=async()=>{
                     <Table.Body>
                         {tradingEquipment.map(tEq => {
                             return (
-                                <Table.Row>
-                                    <Table.Cell><a style={{cursor:"pointer"}} onClick={()=>this.onChange({},{value:tEq.from})}>{tEq.from + "/" + tEq.to}</a></Table.Cell>
+                                <Table.Row style={{cursor:"pointer"}} onClick={()=>{this.onChange({},{value:tEq.from}); window.scrollTo(0,0)}}>
+                                    <Table.Cell><a  >{tEq.from + "/" + tEq.to}</a></Table.Cell>
 
                                     <Table.Cell>{tEq.rate}
                                         <div style={{fontSize:12}}>
