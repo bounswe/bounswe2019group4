@@ -21,7 +21,7 @@ class EditProfile extends Component {
         let user=loadState().user;
         if(user!==null&&user.loggedIn){
             this.setState({user,location:user.location},this.getProfile)
-            alert(user.location)
+
         }
         else{
             history.push("/home")
@@ -54,7 +54,7 @@ class EditProfile extends Component {
         this.setState({loading:true});
         let user={...this.state.user,location:this.state.location};
         await this.props.editProfile(user).then(()=>{
-            saveState({user:user});
+            this.props.changeUserState(user);
             this.setState({dimmer:true});
             setTimeout(()=>this.setState({dimmer:false}),2000);
         });
@@ -64,9 +64,17 @@ class EditProfile extends Component {
     handleLocationChange ({ position, address, places }) {
 
             if (places.length === 1) {
-                this.setState({location: places[0]["formatted_address"]});
+                if(places[0]) {
+                    this.setState({location: places[0]["formatted_address"]});
+                }else{
+                    this.setState({location:""});
+                }
             } else {
+                if(places[0]) {
                 this.setState({location: places[places.length - 2]["formatted_address"].split(",")[0]});
+                }else{
+                this.setState({location:""});
+            }
             }
 
     }
@@ -144,7 +152,8 @@ class EditProfile extends Component {
 const dispatchToProps = dispatch => {
     return {
         profile: params => dispatch(userActions.profile(params)),
-        editProfile:params => dispatch(userActions.editProfile(params))
+        editProfile:params => dispatch(userActions.editProfile(params)),
+        changeUserState:params=>dispatch(userActions.changeUserState(params))
 
     };
 };

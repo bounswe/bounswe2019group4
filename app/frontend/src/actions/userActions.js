@@ -68,6 +68,12 @@ export function editProfile(params) {
         payload: userService.editProfile(params)
     };
 }
+export function changeUserState(params) {
+    return {
+        type:"CHANGE_USER_STATE",
+        payload: params
+    };
+}
 export function portfolios(params) {
     return {
         type:"PORTFOLIOS",
