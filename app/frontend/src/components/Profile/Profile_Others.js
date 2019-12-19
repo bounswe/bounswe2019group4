@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Icon, Menu, Rating} from 'semantic-ui-react'
+import {Button, Icon, Label, Menu, Rating} from 'semantic-ui-react'
 import {loadState} from '../../_core/localStorage'
 import {Form, Checkbox, Grid, Segment, Header, Container, List, Divider} from 'semantic-ui-react';
 import {connect} from 'react-redux';
@@ -12,6 +12,7 @@ import { Card } from 'semantic-ui-react'
 import SegmentGroup from "semantic-ui-react/dist/commonjs/elements/Segment/SegmentGroup";
 import ProfileCard from "./ProfileCard";
 import moment from 'moment';
+import {colorBG, colorPrimary} from "../../utils/constants/Colors";
 
 
 class Profile extends Component {
@@ -121,7 +122,7 @@ class Profile extends Component {
         return (
                 <Grid>
                     <Grid.Row>
-                        <Grid.Column width={3}>
+                        <Grid.Column style={{marginLeft:30}} width={3}>
                             <Grid.Row relaxed>
                                 <ProfileCard user={profileCardProps}/>
                             </Grid.Row>
@@ -137,7 +138,7 @@ class Profile extends Component {
                                 :null}
                             {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
+                                <Segment textAlign="left" style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <List animated divided relaxed textAlign="left">
                                         <List.Header as="h3" style={{color: "#c9c9c9"}}>{newProfile.follower + " Followers"}</List.Header>
                                         {newProfile.followers && newProfile.followers.map(follower => {
@@ -152,7 +153,7 @@ class Profile extends Component {
                             }
                             {(newProfile.user && (newProfile.user.isPublic || currentlyFollowing)) &&
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%", background: "rgba(255,255,255,0.15)"}}>
+                                <Segment textAlign="left" style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <List animated divided relaxed textAlign="left">
                                         <List.Header as="h3" style={{color: "#c9c9c9"}}>{newProfile.following + " Following"}</List.Header>
                                         {newProfile.followings && newProfile.followings.map(follower => {
@@ -167,7 +168,7 @@ class Profile extends Component {
                             }
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <Segment color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
+                            <Segment style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}  >
                                 <Header style={{color: "#c9c9c9"}}>Articles</Header>
                                 <Divider/>
                                 {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.articles && newProfile.articles.length>0 ?
@@ -179,9 +180,12 @@ class Profile extends Component {
                                                     <Card.Meta type="date" style={{color: "#c9c9c9"}}>{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
                                                     <Card.Description style={{color: "#c9c9c9"}}>{article.text.substring(0,350)+"..."}</Card.Description>
                                                 </Card.Content>
-                                                <Card.Content extra>
-                                                    <Rating defaultRating={article.rateAverage} maxRating={5} disabled icon="star inverted"/>
-                                                    <span style={{color: "#c9c9c9"}}>{" by "+ article.numberOfRates + " votes"}</span>
+                                                <Card.Content style={{color: "#c9c9c9"}} extra>
+                                                    <Label style={{fontSize:12}} color={"blue"} >
+                                                        <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
+                                                            {(article.rateAverage?article.rateAverage.toFixed(1):0)}
+                                                        </div>
+                                                    </Label>{" by "+ article.numberOfRates + " votes"}
                                                 </Card.Content>
                                             </Card>
                                         )
@@ -190,9 +194,9 @@ class Profile extends Component {
                                 }
                             </Segment>
                         </Grid.Column>
-                        <Grid.Column width={5}>
+                        <Grid.Column width={4}>
                             <Grid.Row>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
+                                <Segment textAlign="left" style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <List animated divided relaxed textAlign="left">
                                         <List.Header as="h3" style={{color: "#c9c9c9"}}>Followed Trading Equipment</List.Header>
                                         {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.followingTradings && newProfile.followingTradings.length >0 ? newProfile.followingTradings.map(teq => {
@@ -205,7 +209,7 @@ class Profile extends Component {
                                 </Segment>
                             </Grid.Row>
                             <Grid.Row>
-                                <Segment color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.15)"}}>
+                                <Segment style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <Header style={{color: "#c9c9c9"}}>Portfolios</Header>
                                     <Divider style={{color: "#c9c9c9"}}/>
                                     {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.portfolios && newProfile.portfolios.length>0 ?

@@ -42,9 +42,9 @@ class ProfileCard extends Component {
 
         return(
             <Card style={{width: "100%", margin: 20, background: "rgba(255,255,255,0.15)"}}>
-                <Image src='https://cnam.ca/wp-content/uploads/2018/06/default-profile-300x300.gif' wrapped ui={false} />
+
                 <Card.Content>
-                    <Card.Header style={{color: "#c9c9c9"}}>{name + " " + surname}</Card.Header>
+                    <Card.Header style={{color: "#c9c9c9",fontSize:30}}>{name + " " + surname}</Card.Header>
                 </Card.Content>
                 <Card.Content extra>
                     <Label basic color='red' horizontal >
