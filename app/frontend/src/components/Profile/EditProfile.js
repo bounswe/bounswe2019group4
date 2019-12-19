@@ -91,7 +91,7 @@ class EditProfile extends Component {
                         <input name={"iban"} onChange={this.onChangeHandler2} value={user.iban} placeholder='IBAN'/>
                     </Form.Field>
                     }
-                    <Form.Button onClick={this.handleSubmit}>Edit</Form.Button>
+                    <Form.Button inverted style={{borderRadius:20,marginTop:20}} onClick={this.handleSubmit}>Edit</Form.Button>
                 </Form>
                     <Dimmer
                         active={active}
