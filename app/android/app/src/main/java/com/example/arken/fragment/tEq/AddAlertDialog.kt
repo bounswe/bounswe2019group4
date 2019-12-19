@@ -23,7 +23,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AddAlertDialog(val addAlertListener: AddAlertListener, val currency: String) : DialogFragment(){
+class AddAlertDialog(val addAlertListener: AddAlertListener, val currency: String, val currentVal: Double) : DialogFragment(){
 
     lateinit var editTextVal: EditText
     lateinit var switch: Switch
@@ -39,34 +39,48 @@ class AddAlertDialog(val addAlertListener: AddAlertListener, val currency: Strin
         editTextVal = rootView.findViewById(R.id.add_alert_edittext)
         switch = rootView.findViewById(R.id.alert_isHigher)
         button = rootView.findViewById(R.id.add_alert_button)
+        var value = 0.0
         button.setOnClickListener{
             if(editTextVal.text.trim() ==""){
                 editTextVal.error = "Please enter a value"
             }
-            else{
-                var txt = "lower"
-                if(switch.isChecked){
-                    txt = "higher"
+            else {
+                value = (editTextVal.text.toString().toDouble())
+                if(value== currentVal){
+                    Toast.makeText(context, "The value is already equal", Toast.LENGTH_SHORT).show()
                 }
-                val callCreate: Call<ResponseBody> =
-                    RetroClient.getInstance().apiService.createAlert(userCookie, Alert(null, currency, Integer.getInteger(editTextVal.text.toString()), txt))
+                if(value < currentVal && switch.isChecked){
+                    Toast.makeText(context, "The value is already higher", Toast.LENGTH_SHORT).show()
+                }
+                else if(value > currentVal && !switch.isChecked){
+                    Toast.makeText(context, "The value is already higher", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    var txt = "lower"
+                    if(switch.isChecked){
+                        txt = "higher"
+                    }
+                    val callCreate: Call<ResponseBody> =
+                        RetroClient.getInstance().apiService.createAlert(userCookie, Alert(null, currency, value, txt))
 
-                callCreate.enqueue(object : Callback<ResponseBody> {
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        if (response.isSuccessful) {
-                            Toast.makeText(context, "You have added your alert", Toast.LENGTH_SHORT).show()
-                            addAlertListener.onAddAlert()
-                            dialog?.dismiss()
-                        } else {
-                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                    callCreate.enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            if (response.isSuccessful) {
+                                Toast.makeText(context, "You have added your alert", Toast.LENGTH_SHORT).show()
+                                addAlertListener.onAddAlert()
+                                dialog?.dismiss()
+                            } else {
+                                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
 
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                    }
-                })
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }
             }
+
         }
 
         this.dialog?.setTitle("Add Alert")

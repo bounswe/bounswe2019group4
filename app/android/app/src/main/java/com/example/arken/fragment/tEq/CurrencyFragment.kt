@@ -136,7 +136,14 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.alert_button -> if (loggedIn) {
-                val dialog = AlertListDialog()
+                var str = currencyName.text.toString()
+                if(str == "EUR"){
+                    str = "EUR/USD"
+                }
+                else{
+                    str+="/EUR"
+                }
+                val dialog = AlertListDialog(currencyName.text.toString(), currencyValue.text.toString().toDouble())
                 dialog.show(fragmentManager!!, "alertFragment")
             } else {
                 Toast.makeText(context, "You need to login to use this action", Toast.LENGTH_SHORT)

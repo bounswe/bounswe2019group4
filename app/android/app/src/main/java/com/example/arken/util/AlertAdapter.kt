@@ -19,16 +19,23 @@ class AlertAdapter(
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val userName: TextView = v.findViewById(R.id.user_name)
         private val reject: ImageView = v.findViewById(R.id.user_pending_reject)
+        private val country: TextView = v.findViewById(R.id.user_country)
 
         fun bind(
             alert: Alert,
             alarmClickedListener: OnAlarmClickedListener,
             position: Int
         ) {
-
-
-            userName.text = "Alert when " + alert.currency + " is "+ alert.compare +" than "+ alert.rate
+            var str = alert.currency
+            if(str == "EUR"){
+                str = "EUR/USD"
+            }
+            else{
+                str+="/EUR"
+            }
+            userName.text = "When " + str + " is "+ alert.compare +" than "+ alert.rate
             reject.visibility = View.VISIBLE
+            country.visibility = View.GONE
 
             reject.setOnClickListener {
                 alarmClickedListener.onDeleteClicked(alert._id!!, position)

@@ -13,6 +13,7 @@ import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.fragment.tEq.CurrencyFragment
 import com.example.arken.model.Alert
 import com.example.arken.model.FollowRequest
+import com.example.arken.model.ListAlert
 import com.example.arken.util.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import okhttp3.ResponseBody
@@ -20,8 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AlertListDialog : DialogFragment(),  OnAlarmClickedListener{
-
+class AlertListDialog(val currency: String, val currentVal: Double) : DialogFragment(),  OnAlarmClickedListener, AddAlertListener{
     lateinit var recyclerView: RecyclerView
     var alerts:MutableList<Alert> = mutableListOf()
     lateinit var alertAdapter: AlertAdapter
@@ -47,6 +47,11 @@ class AlertListDialog : DialogFragment(),  OnAlarmClickedListener{
         ).getString("user_cookie", "")!!
 
         initDataset()
+
+        addFloatingButton.setOnClickListener{
+            val dialog = AddAlertDialog(this, currency.substring(0, currency.indexOf('/')), currentVal)
+            dialog.show(fragmentManager!!, "alertFragment")
+        }
 
         return rootView
     }
@@ -76,14 +81,14 @@ class AlertListDialog : DialogFragment(),  OnAlarmClickedListener{
     }
 
     fun initDataset(){
-        val callGetAlert: Call<List<Alert>> =
+        val callGetAlert: Call<ListAlert> =
             RetroClient.getInstance().apiService.getAlerts(userCookie)
 
-        callGetAlert.enqueue(object : Callback<List<Alert>> {
-            override fun onResponse(call: Call<List<Alert>>, response: Response<List<Alert>>) {
+        callGetAlert.enqueue(object : Callback<ListAlert> {
+            override fun onResponse(call: Call<ListAlert>, response: Response<ListAlert>) {
                 if (response.isSuccessful) {
 
-                    alerts = response.body() as MutableList<Alert>
+                    alerts = response.body()?.alerts as MutableList<Alert>
                     alertAdapter.dataSet = alerts
                     alertAdapter.notifyDataSetChanged()
 
@@ -92,10 +97,12 @@ class AlertListDialog : DialogFragment(),  OnAlarmClickedListener{
                 }
             }
 
-            override fun onFailure(call: Call<List<Alert>>, t: Throwable) {
+            override fun onFailure(call: Call<ListAlert>, t: Throwable) {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
-
+    override fun onAddAlert() {
+        initDataset()
+    }
 }

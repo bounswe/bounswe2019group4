@@ -10,6 +10,7 @@ import com.example.arken.model.Event;
 import com.example.arken.model.EventWithComment;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
+import com.example.arken.model.ListAlert;
 import com.example.arken.model.ListArticle;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
@@ -170,7 +171,7 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("trading-equipments/alert")
-    Call<List<Alert>> getAlerts(@Header("Cookie") String userCookie);
+    Call<ListAlert> getAlerts(@Header("Cookie") String userCookie);
 
     @Headers({"Content-Type: application/json"})
     @POST("trading-equipments/alert")
