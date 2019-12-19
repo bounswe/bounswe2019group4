@@ -31,7 +31,7 @@ class AlertAdapter(
             reject.visibility = View.VISIBLE
 
             reject.setOnClickListener {
-                alarmClickedListener.onRejectClicked(alert._id!!, position)
+                alarmClickedListener.onDeleteClicked(alert._id!!, position)
             }
         }
     }
@@ -58,5 +58,5 @@ class AlertAdapter(
 }
 
 interface OnAlarmClickedListener {
-    fun onRejectClicked(followingId: String, position: Int)
+    fun onDeleteClicked(alarmId: String, position: Int)
 }
