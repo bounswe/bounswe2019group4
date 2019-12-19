@@ -3,8 +3,9 @@ import {colorBG, colorPrimary} from "../../utils/constants/Colors";
 import {Form, Header, Radio, Segment, Checkbox, Dimmer} from "semantic-ui-react";
 import * as userActions from "../../actions/userActions";
 import {connect} from "react-redux";
-import {loadState} from "../../_core/localStorage";
+import {loadState, saveState} from "../../_core/localStorage";
 import history from "../../_core/history";
+import LocationPicker from 'react-location-picker';
 
 class EditProfile extends Component {
 
@@ -12,14 +13,15 @@ class EditProfile extends Component {
         user:{},
         all:{},
         loading:false,
-        dimmer:false
+        dimmer:false,
+        location: ""
     };
 
     componentDidMount() {
         let user=loadState().user;
         if(user!==null&&user.loggedIn){
-            this.setState({user},this.getProfile)
-
+            this.setState({user,location:user.location},this.getProfile)
+            alert(user.location)
         }
         else{
             history.push("/home")
@@ -50,21 +52,34 @@ class EditProfile extends Component {
     };
     handleSubmit=async()=>{
         this.setState({loading:true});
-        await this.props.editProfile(this.state.user).then(()=>{
+        let user={...this.state.user,location:this.state.location};
+        await this.props.editProfile(user).then(()=>{
+            saveState({user:user});
             this.setState({dimmer:true});
             setTimeout(()=>this.setState({dimmer:false}),2000);
         });
         this.setState({loading:false})
 
     };
+    handleLocationChange ({ position, address, places }) {
+
+            if (places.length === 1) {
+                this.setState({location: places[0]["formatted_address"]});
+            } else {
+                this.setState({location: places[places.length - 2]["formatted_address"].split(",")[0]});
+            }
+
+    }
 
     render() {
         let active=this.state.dimmer;
         let user=this.state.user;
         return (
             <div style={{display:"flex",justifyContent:"center"}}>
-            <Segment style={{margin: 20, width: "30%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+            <Segment style={{margin: 20, width: "50%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                 <Header style={{color:"grey"}}>Edit Profile</Header>
+                <div style={{display:"flex",flexDirection:"row"}}>
+                    <div style={{width:"50%"}}>
                 <Dimmer.Dimmable dimmed={active}>
                 <Form loading={this.state.loading}>
 
@@ -75,6 +90,10 @@ class EditProfile extends Component {
                     <Form.Field>
                         <label style={{color:"white"}}>Last Name</label>
                         <input name={"surname"} onChange={this.onChangeHandler2} value={user.surname}  placeholder='Last Name' />
+                    </Form.Field>
+                    <Form.Field>
+                        <label style={{color:"white"}}>Location</label>
+                        <input name={"location"} disabled={true} onChange={this.onChangeHandler2} value={this.state.location} placeholder='Location' />
                     </Form.Field>
                     <Form.Field style={{color:"white",flexDirection:"row"}}>
                         <Checkbox id={"isPublic"} onChange={this.onChangeHandler} checked={user.isPublic} style={{marginRight:5}}  />
@@ -100,6 +119,21 @@ class EditProfile extends Component {
                         Your profile details has been edited!
                     </Dimmer>
                 </Dimmer.Dimmable>
+                    </div>
+                    <div style={{marginLeft:40,width:"40%"}} >
+                        <LocationPicker
+                            containerElement={ <div style={ {height: '100%'} } /> }
+                            mapElement={ <div style={ {height: '400px'} } /> }
+                            zoom={5}
+                            defaultPosition={{lat: 41.0082, lng: 28.9784}}
+                            onChange={this.handleLocationChange.bind(this)}
+
+                        />
+
+
+                    </div>
+
+                </div>
 
             </Segment>
             </div>
