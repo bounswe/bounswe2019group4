@@ -345,13 +345,13 @@ handleInvestmentOrders = schedule.scheduleJob('25 */2 * * *', async function() {
     let ORDER_ID = orders[i]._id
 
     currentExchange = await CurrentTradingEquipment.findOne({from : RELATED_TEQ})
-    if(currentExchange.rate >= RATE && COMPARE == "HIGHER"){
+    if(currentExchange.rate > RATE && COMPARE == "HIGHER"){
       if(TYPE == "BUY"){
         buyEquipment(ORDER_ID, USER_ID, currentExchange.rate, RELATED_TEQ, AMOUNT)
       } else if(TYPE == "SELL"){
         sellEquipment(ORDER_ID, USER_ID, currentExchange.rate, RELATED_TEQ, AMOUNT)
       }
-    } else if(currentExchange.rate <= RATE && COMPARE == "LOWER"){
+    } else if(currentExchange.rate < RATE && COMPARE == "LOWER"){
       if(TYPE == "BUY"){
         buyEquipment(ORDER_ID, USER_ID, currentExchange.rate, RELATED_TEQ, AMOUNT)
       } else if(TYPE == "SELL"){
@@ -376,7 +376,7 @@ handleTeqAlerts = schedule.scheduleJob('30 */2 * * *', async function() {
     if(RELATED_TEQ == 'EUR')
       to = "USD"
 
-    if(currentExchange.rate >= RATE && COMPARE == "HIGHER"){
+    if(currentExchange.rate > RATE && COMPARE == "HIGHER"){
       let notification = new Notification({
         userId: USER_ID,
         text: RELATED_TEQ + "/" + to +" has value more than " +RATE +", it is now " + currentExchange.rate +".",
@@ -390,7 +390,7 @@ handleTeqAlerts = schedule.scheduleJob('30 */2 * * *', async function() {
           console.log(err)
         }
       })
-    } else if(currentExchange.rate <= RATE && COMPARE == "LOWER"){
+    } else if(currentExchange.rate < RATE && COMPARE == "LOWER"){
       let notification = new Notification({
         userId: USER_ID,
         text: RELATED_TEQ + "/" + to + " has value less than " +RATE +", it is now " + currentExchange.rate +".",
