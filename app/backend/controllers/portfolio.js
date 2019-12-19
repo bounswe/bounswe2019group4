@@ -150,33 +150,6 @@ module.exports.editPortfolio = async (request, response) => {
     });
   }
 
-  /*
-  Post method for portfolio.
-  It saves portfolio to database.
-*/
-module.exports.addTradingEq = async (request, response) => {
-  let Portfolio = request.models['Portfolio']
-  let PortfolioTradingEq = request.models['PortfolioTradingEq']
-  let tradingEq = request.body['tradingEq']
-  const PortfolioId = request.params['id']
-  // portfolioTradingEq instance to add to the database
-  let portfolioTradingEq = new PortfolioTradingEq({
-      _id: {
-          PortfolioId: PortfolioId,
-          TradingEq: tradingEq
-      },
-      PortfolioId: PortfolioId,
-      TradingEq: tradingEq
-  });
-
-  // Saves the instance into the database, returns any error occured
-  portfolioTradingEq.save().then(doc => {
-    return response.status(204).send();
-  }).catch(error => {
-    return response.status(400).send(error);
-  });
-}
-
 /*
   Delete method for remove trading eq. from portfolio.
   It deletes given portfolio - trading eq. instances.

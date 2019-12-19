@@ -44,19 +44,6 @@ router.get('/:id',[ multipleModelBinder([
 ])], portfolioController.getPortfolio)
 
 /*
-  Post endpoint for add trading eq to portfolio.
-  Check controller function for more detail
-*/
-
-router.post('/:id/add',[
-  validateBody(['tradingEq']),
-  isAuthenticated,
-  multipleModelBinder([
-    [Portfolio, 'Portfolio'],
-    [PortfolioTradingEq, 'PortfolioTradingEq']
-  ])], portfolioController.addTradingEq)
-
-/*
   Delete endpoint for remove trading eq from portfolio.
   Check controller function for more detail
 */
