@@ -13,7 +13,8 @@ class UserHeaderComponent extends Component {
         super(props);
         this.state={
             notifications:[],
-            recommended:[]
+            recommended:[],
+            unread:0
         };
     }
 
@@ -22,25 +23,33 @@ class UserHeaderComponent extends Component {
     componentDidMount() {
         this.getNotifs();
         this.getRecommended();
-        //this.interval=setInterval(this.getNotifs,5000);
+        this.interval=setInterval(this.getNotifs,10000);
     }
     componentWillUnmount() {
-        //clearInterval(this.interval);
+        clearInterval(this.interval);
     }
 
     getNotifs=async()=>{
 
+        let notifs=[];
         await this.props.getNotif().then(result=>{
-            let notifs=result.value.notifications;
+             notifs=result.value.notifications;
             this.setState({notifications:notifs});
-
+            let count=0;
+            for(let i of notifs){
+                if(i.seen&&i.seen===false){
+                    count++;
+                }
+            }
+            this.setState({unread:count});
         });
+
     };
     getRecommended=async()=>{
         this.props.getRecommended().then(result=>{
             this.setState({recommended:result.value.userRecommends})
         })
-    }
+    };
 
     navigate(e, {name}) {
         history.push("/" + name);
@@ -178,8 +187,8 @@ class UserHeaderComponent extends Component {
                     name="notifications"
 
                 >
-                    <Dropdown  trigger={ <i className="fas fa-bell" style={{ margin: 10}} /> }
-                               onClick={this.getNotifs}
+                    <Dropdown  trigger={<div> <i className="fas fa-bell" style={{ margin: 10}} />{this.state.unread!==0?<Label color={"yellow"}>{this.state.unread}</Label>:null}</div> }
+                               onClick={()=>{this.props.readNotif();this.setState({unread:0})}}
                                icon={null}>
 
                         <Dropdown.Menu style={{overflowY:"auto",maxHeight:400,background:"lightgrey"}}>
@@ -238,6 +247,7 @@ const dispatchToProps = dispatch => {
     return {
         logout: () => dispatch(userActions.logout()),
         getNotif:()=>dispatch(userActions.getNotif()),
+        readNotif:()=>dispatch(userActions.readNotif()),
         getRecommended:()=>dispatch(userActions.getRecommended())
 
     };
