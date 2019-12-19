@@ -13,7 +13,9 @@ class UserHeaderComponent extends Component {
         super(props);
         this.state={
             notifications:[],
-            recommended:[]
+            recommended:[],
+            unread:0,
+            notifOpen:false
         };
     }
 
@@ -22,25 +24,33 @@ class UserHeaderComponent extends Component {
     componentDidMount() {
         this.getNotifs();
         this.getRecommended();
-        //this.interval=setInterval(this.getNotifs,5000);
+        this.interval=setInterval(this.getNotifs,10000);
     }
     componentWillUnmount() {
-        //clearInterval(this.interval);
+        clearInterval(this.interval);
     }
 
     getNotifs=async()=>{
-
-        await this.props.getNotif().then(result=>{
-            let notifs=result.value.notifications;
-            this.setState({notifications:notifs});
-
-        });
+        if(!this.state.notifOpen) {
+            let notifs = [];
+            await this.props.getNotif().then(result => {
+                notifs = result.value.notifications;
+                this.setState({notifications: notifs});
+                let count = 0;
+                for (let i of notifs) {
+                    if (i.seen === false) {
+                        count++;
+                    }
+                }
+                this.setState({unread: count});
+            });
+        }
     };
     getRecommended=async()=>{
         this.props.getRecommended().then(result=>{
             this.setState({recommended:result.value.userRecommends})
         })
-    }
+    };
 
     navigate(e, {name}) {
         history.push("/" + name);
@@ -52,38 +62,68 @@ class UserHeaderComponent extends Component {
         })
     }
     renderNotif=(item)=>{
+        let seen=item.seen;
         if(item.text.includes("follow")){
             return(
-                <Dropdown.Item name={"profile"} onClick={this.navigate}>
-                    <Icon color={"green"} name={"user"}/>
-                    {item.text}
-                    <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
-                        {normalizeDate(item.date)}
+                <Dropdown.Item  name={"profile"} onClick={this.navigate}>
+
+                    <div style={{display:"flex",flexDirection:"row"}}>
+                    <div style={{width:"90%"}}>
+                        <Icon color={"green"} name={"user"}/>
+                        {item.text}
                     </div>
+                        {!item.seen&& <Label style={{marginLeft:30}} circular empty color={"blue"}/>}
+                    </div>
+
+                        <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
+                            {normalizeDate(item.date)}
+                        </div>
+
+
                 </Dropdown.Item>)
         }else if(item.text.includes("value less")){
             return(
                 <Dropdown.Item name={"trading-equipment"} onClick={this.navigate}>
-                    <Icon color={"red"} name={"arrow down"}/>
-                    {item.text}
+                    <div style={{display:"flex",flexDirection:"row"}}>
+                        <div style={{width:"90%"}}>
+                            <Icon color={"red"} name={"arrow down"}/>
+                            {item.text}
+                        </div>
+                        {!item.seen&& <Label style={{marginLeft:30}} circular empty color={"blue"}/>}
+                    </div>
+
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
                         {normalizeDate(item.date)}
                     </div>
+
                 </Dropdown.Item>)
         }else if(item.text.includes("value more")){
             return(
                 <Dropdown.Item name={"trading-equipment"} onClick={this.navigate}>
-                    <Icon color={"green"} name={"arrow up"}/>
-                    {item.text}
+                    <div style={{display:"flex",flexDirection:"row"}}>
+                        <div style={{width:"90%"}}>
+                            <Icon color={"green"} name={"arrow up"}/>
+                            {item.text}
+                        </div>
+                        {!item.seen&& <Label style={{marginLeft:30}} circular empty color={"blue"}/>}
+                    </div>
+
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
                         {normalizeDate(item.date)}
                     </div>
+
                 </Dropdown.Item>)
         }else if(item.text.includes("prediction")&&item.text.includes("nor false")) {
             return (
                 <Dropdown.Item name={"trading-equipment"} onClick={this.navigate}>
-                    <Icon  name={"arrows alternate horizontal"}/>
-                    {item.text}
+                    <div style={{display:"flex",flexDirection:"row"}}>
+                        <div style={{width:"90%"}}>
+                            <Icon name={"arrows alternate horizontal"}/>
+                            {item.text}
+                        </div>
+                        {!item.seen&& <Label style={{marginLeft:30}} circular empty color={"blue"}/>}
+                    </div>
+
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
                         {normalizeDate(item.date)}
                     </div>
@@ -91,35 +131,64 @@ class UserHeaderComponent extends Component {
         }else if(item.text.includes("prediction")&&item.text.includes("true")){
             return(
                 <Dropdown.Item name={"trading-equipment"} onClick={this.navigate}>
-                    <Icon color={"green"} name={"checkmark"}/>
-                    {item.text}
+                    <div style={{display:"flex",flexDirection:"row"}}>
+                        <div style={{width:"90%"}}>
+                            <Icon color={"green"} name={"checkmark"}/>
+                            {item.text}
+                        </div>
+                        {!item.seen&& <Label style={{marginLeft:30}} circular empty color={"blue"}/>}
+                    </div>
+
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
                         {normalizeDate(item.date)}
                     </div>
+
                 </Dropdown.Item>)
         }else if(item.text.includes("prediction")&&item.text.includes("false")){
             return(
                 <Dropdown.Item name={"trading-equipment"} onClick={this.navigate}>
-                    <Icon color={"red"} name={"close"}/>
-                    {item.text}
+                    <div style={{display:"flex",flexDirection:"row"}}>
+                        <div style={{width:"90%"}}>
+                            <Icon color={"red"} name={"close"}/>
+                            {item.text}
+                        </div>
+                        {!item.seen&& <Label style={{marginLeft:30}} circular empty color={"blue"}/>}
+                    </div>
+
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
                         {normalizeDate(item.date)}
                     </div>
+
                 </Dropdown.Item>)
         }else if(item.text.includes("order executed")){
             return(
                 <Dropdown.Item name={"trading-equipment"} onClick={this.navigate}>
-                    <Icon color={"green"} name={"money bill alternate outline"}/>
-                    {item.text}
+
+                    <div style={{display:"flex",flexDirection:"row"}}>
+                        <div style={{width:"90%"}}>
+                            <Icon color={"green"} name={"money bill alternate outline"}/>
+                            {item.text}
+                        </div>
+                        {!item.seen&& <Label style={{marginLeft:30}} circular empty color={"blue"}/>}
+                    </div>
+
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
                         {normalizeDate(item.date)}
                     </div>
+
                 </Dropdown.Item>)
         }else{
             return(
                 <Dropdown.Item name={"profile"} onClick={this.navigate}>
-                    <Icon name={"info"}/>
-                    {item.text}
+
+                    <div style={{display:"flex",flexDirection:"row"}}>
+                        <div style={{width:"90%"}}>
+                            <Icon name={"info"}/>
+                            {item.text}
+                        </div>
+                        {!item.seen&& <Label style={{marginLeft:30}} circular empty color={"blue"}/>}
+                    </div>
+
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
                         {normalizeDate(item.date)}
                     </div>
@@ -158,6 +227,14 @@ class UserHeaderComponent extends Component {
             </Segment>
         )
     }
+    handleOnClose=async()=>{
+            this.setState({notifOpen:false})
+            this.props.readNotif().then(()=>{
+                this.setState({unread:0})
+            });
+
+
+    }
 
     render() {
         return (
@@ -178,8 +255,9 @@ class UserHeaderComponent extends Component {
                     name="notifications"
 
                 >
-                    <Dropdown  trigger={ <i className="fas fa-bell" style={{ margin: 10}} /> }
-                               onClick={this.getNotifs}
+                    <Dropdown  trigger={<div> <i className="fas fa-bell" style={{ margin: 10}} />{this.state.unread!==0?<Label color={"yellow"}>{this.state.unread}</Label>:null}</div> }
+                               onClose={this.handleOnClose}
+                               onOpen={()=>this.setState({notifOpen:true})}
                                icon={null}>
 
                         <Dropdown.Menu style={{overflowY:"auto",maxHeight:400,background:"lightgrey"}}>
@@ -238,6 +316,7 @@ const dispatchToProps = dispatch => {
     return {
         logout: () => dispatch(userActions.logout()),
         getNotif:()=>dispatch(userActions.getNotif()),
+        readNotif:()=>dispatch(userActions.readNotif()),
         getRecommended:()=>dispatch(userActions.getRecommended())
 
     };

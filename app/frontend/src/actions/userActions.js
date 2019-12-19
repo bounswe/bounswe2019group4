@@ -154,10 +154,16 @@ export function cancelFollow(path) {
     };
 }
 
-export function getNotif() {
+export function getNotif(params) {
     return {
         type:"GET_NOTIFICATIONS",
-        payload: userService.getNotification()
+        payload: userService.getNotification(params)
+    };
+}
+export function readNotif(params) {
+    return {
+        type:"READ_NOTIFICATIONS",
+        payload: userService.readNotifs(params)
     };
 }
 export function getRecommended(params) {
