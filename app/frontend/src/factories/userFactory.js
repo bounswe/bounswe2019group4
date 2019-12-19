@@ -21,7 +21,7 @@ function userFactory() {
     this.cancelFollow = params => baseRequest.get("/profile/cancel/"+params);
     this.getNotification= (params)=> baseRequest.get("/notifications/");
     this.getRecommended=params=>baseRequest.get("/recommendations");
-    this.readNotifs=()=>baseRequest.post("/recommendations",{});
+    this.readNotifs=()=>baseRequest.post("/notifications",{});
 }
 
 export default new userFactory();
