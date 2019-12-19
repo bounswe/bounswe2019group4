@@ -19,6 +19,11 @@ let Notification = mongoose.model('Notification', {
   date:{
     type: Date,
     require: true
+  },
+
+  seen:{
+    type:Boolean,
+    default: false
   }
 });
 

@@ -14,4 +14,13 @@ router.get('/', [
   modelBinder(Notification, 'Notification')
 ], notificationController.getNotifications)
 
+/*
+  Post endpoint for notification.
+  Check controller function for more detail
+*/
+router.post('/', [
+  isAuthenticated,
+  modelBinder(Notification, 'Notification')
+], notificationController.postNotifications)
+
 module.exports = router
