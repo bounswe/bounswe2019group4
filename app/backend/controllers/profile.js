@@ -321,6 +321,8 @@ module.exports.editProfile = async (request, response) => {
         await User.updateOne({_id:userId},{ name: name, surname: surname, location: location, 
                                             iban: iban, tckn: tckn, isPublic: isPublic, isTrader: isTrader}) 
         .then( doc => {
+          let edittedUser = await User.findOne({ _id : userId});
+          request.session['user'] = edittedUser;
           return response.status(204).send();
         }).catch(error => {
           return response.status(400).send(error);
