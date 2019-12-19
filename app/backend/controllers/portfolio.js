@@ -151,26 +151,6 @@ module.exports.editPortfolio = async (request, response) => {
   }
 
 /*
-  Delete method for remove trading eq. from portfolio.
-  It deletes given portfolio - trading eq. instances.
-*/
-module.exports.removeTradingEq = async (request, response) => {
-  let Portfolio = request.models['Portfolio']
-  let PortfolioTradingEq = request.models['PortfolioTradingEq']
-  let tradingEq = request.body['tradingEq']
-  const PortfolioId = request.params['id'];
-
-  PortfolioTradingEq.deleteOne({ PortfolioId : PortfolioId, TradingEq: tradingEq}, (err, results) => {
-    if(err){
-      return response.status(404).send({
-        errmsg: "Failed to delete portfolio - trading eq. instances."
-      })
-    }     
-    return response.status(204).send(); 
-  });
-}
-
-/*
   Post method for following specific portfolio.
 */
 module.exports.followPortfolio = async (request, response) => {

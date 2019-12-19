@@ -22,7 +22,7 @@ router.post('/',[
   ])], portfolioController.postPortfolio)
 
 /*
-  Post endpoint for rename portfolio.
+  Patch endpoint to edit portfolio.
   Check controller function for more detail
 */
 
@@ -42,19 +42,6 @@ router.get('/:id',[ multipleModelBinder([
   [Portfolio, 'Portfolio'],
   [PortfolioTradingEq, 'PortfolioTradingEq']
 ])], portfolioController.getPortfolio)
-
-/*
-  Delete endpoint for remove trading eq from portfolio.
-  Check controller function for more detail
-*/
-
-router.delete('/:id/remove',[
-  validateBody(['tradingEq']),
-  isAuthenticated,
-  multipleModelBinder([
-    [Portfolio, 'Portfolio'],
-    [PortfolioTradingEq, 'PortfolioTradingEq']
-  ])], portfolioController.removeTradingEq)
 
 /*
   Delete endpoint for portfolio.
