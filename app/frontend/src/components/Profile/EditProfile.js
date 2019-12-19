@@ -64,17 +64,15 @@ class EditProfile extends Component {
     handleLocationChange ({ position, address, places }) {
 
             if (places.length === 1) {
-                if(places[0]) {
+
                     this.setState({location: places[0]["formatted_address"]});
-                }else{
-                    this.setState({location:""});
-                }
+
             } else {
-                if(places[0]) {
+                if(places.length>1) {
                 this.setState({location: places[places.length - 2]["formatted_address"].split(",")[0]});
                 }else{
                 this.setState({location:""});
-            }
+                }
             }
 
     }
