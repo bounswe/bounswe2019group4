@@ -999,25 +999,4 @@ module.exports.filterArticleTitles = async (articles, terms) => {
     }).length > 0
     return matched
   })
-  const similarities = await Promise.all(articles.map(article => {
-    return axios({
-      "method":"GET",
-      "url":"https://twinword-text-similarity-v1.p.rapidapi.com/similarity/",
-      "headers": {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "twinword-text-similarity-v1.p.rapidapi.com",
-        "x-rapidapi-key": rapidAPIKey
-      },
-      "params": {
-        text1: article.title,
-        text2: terms
-      }
-    }).catch(err => {
-      console.log(err)
-    })
-  }))
-
-  return articles.filter((_, index) => {
-    return similarities[index].data.similarity > 0.1
-  })
 }
