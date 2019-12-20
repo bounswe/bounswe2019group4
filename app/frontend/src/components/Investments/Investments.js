@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import {Segment, Grid, List, Header, Dropdown, Input, Button, Label, Radio, Divider} from "semantic-ui-react";
+import {Segment, Grid, List, Header, Dropdown, Input, Button, Label, Radio, Icon, Pagination} from "semantic-ui-react";
 import {connect} from "react-redux";
 import moment from "moment";
 import _ from "lodash";
@@ -9,12 +9,13 @@ import {loadState} from "../../_core/localStorage";
 import * as investmentActions from "../../actions/investmentActions";
 
 import tradingEquipment from "../../utils/constants/tradingEquipment";
+import {colorBG, colorPrimary} from "../../utils/constants/Colors";
 
 class Investments extends Component {
     constructor(props) {
         super(props);
         const initialState = loadState();
-        this.state = { user: initialState.user, currency: "USD", buySellType: "buy", exchangeResult: 0, buySellAmount: 0, aboveOrBelow: "HIGHER", orderRate: 0, orders: []};
+        this.state = { user: initialState.user, currency: "USD", buySellType: "buy", exchangeResult: 0, buySellAmount: 0, aboveOrBelow: "HIGHER", orderRate: 0, orders: [], shownPage: 1};
     }
 
     componentDidMount() {
@@ -30,6 +31,10 @@ class Investments extends Component {
             });
         })
     }
+
+    updatePage= (e,data)=>{
+        this.setState({shownPage:data.activePage},this.setShownEvents);
+    };
 
     onChange(e, data) {
         let { exchangeResult, investments, currency, buySellAmount } = this.state;
@@ -75,13 +80,10 @@ class Investments extends Component {
         })
     }
 
-    changeBuySell() {
-        const {buySellType} = this.state;
-        if(buySellType === "buy") {
-            this.setState({buySellType: "sell"});
-        } else {
-            this.setState({buySellType: "buy"});
-        }
+    changeBuySell(buySellType) {
+
+        this.setState({buySellType });
+
     }
 
     buySell() {
@@ -132,8 +134,8 @@ class Investments extends Component {
             (
             <Grid>
                 <Grid.Row>
-                    <Grid.Column width={4}>
-                        <Segment style={{display: "flex"}}>
+                    <Grid.Column width={3}>
+                        <Segment style={{display: "flex", margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                             <Grid.Column>
                             <Grid.Row>
                                 <Grid.Column width={16}>
@@ -142,7 +144,7 @@ class Investments extends Component {
                             </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column width={16}>
-                                    <Header>Current Balance</Header>
+                                    <Header style={{color: "#c9c9c9"}}>Current Balance</Header>
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
@@ -155,21 +157,22 @@ class Investments extends Component {
                                         step="1"
                                         labelPosition="right"
                                         placeholder="Amount"
+                                        action={<Button style={{float: "right"}} onClick={this.deposit.bind(this)}  disabled={!amount}>Deposit</Button>}
+
                                     />
-                                    <Button style={{float: "right"}} onClick={this.deposit.bind(this)}  disabled={!amount}>Deposit</Button>
                                 </Grid.Column>
                             </Grid.Row>
                             </Grid.Column>
                         </Segment>
                     </Grid.Column>
                     <Grid.Column width={12}>
-                        <Segment raised>
-                            <Header>My Assets</Header>
+                        <Segment raised style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                            <Header style={{color: "#c9c9c9"}}>My Assets</Header>
                             <List horizontal divided>
                                 {tradingEquipment.map(key=> {
                                     if(key.value !== "EUR") {
                                         return (
-                                            <List.Item icon={key.icon || "money"} content={investments.account[key.value] + " " + key.value} />
+                                            <List.Item style={{color: "#c9c9c9"}} icon={key.icon ? key.icon+ " inverted" : "money inverted"} content={investments.account[key.value] + " " + key.value} />
                                         )
                                     }
                                 })}
@@ -181,13 +184,14 @@ class Investments extends Component {
                 <Grid.Row>
                     <Grid.Column width={8}>
                         <Grid.Row>
-                        <Segment>
+                        <Segment style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                             <Grid>
                                 <Grid.Row >
                                     <Grid.Column width={16} style={{display: "flex !important", justifyContent: "center !important", alignItems: "center !important"}}>
-                                        <Label size="large" color={buySellType === "sell" ? "teal" : "grey"}>SELL</Label>
-                                        <Radio slider checked={buySellType === "buy"} onChange={this.changeBuySell.bind(this)} />
-                                        <Label size="large" color={buySellType === "buy" ? "teal" : "grey"}>BUY</Label>
+                                        <Button size="small" style={{float: "left"}} color={buySellType === "sell" ? "teal" : "grey"} basic={buySellType === "buy"} onClick={this.changeBuySell.bind(this, "sell")}>SELL</Button>
+                                        <Button size="small" style={{float: "left"}} color={buySellType === "buy" ? "teal" : "grey"} basic={buySellType === "sell"} onClick={this.changeBuySell.bind(this, "buy")}>BUY</Button>
+                                        <span style={{color: "#c9c9c9", fontWeight: "bold", fontSize: 17}}>Enter Amount</span>
+                                        <Icon name="arrow right inverted" />
                                         <Input
                                             label={
                                                 <Dropdown
@@ -211,7 +215,7 @@ class Investments extends Component {
                             </Grid>
                             <Grid columns={2} divided>
                                 <Grid.Column width={5} >
-                                    <Button onClick={this.buySell.bind(this)} basic color="teal">{buySellType.toUpperCase() + " NOW for " + exchangeResult + "€"}</Button>
+                                    <Button onClick={this.buySell.bind(this)} style={{backgroundColor: colorPrimary, color: "white"}}>{buySellType.toUpperCase() + " NOW for " + exchangeResult + "€"}</Button>
                                 </Grid.Column>
                                 <Grid.Column width={11} >
                                     <Input
@@ -227,7 +231,7 @@ class Investments extends Component {
                                         name="orderRate"
                                         onChange={this.onChange.bind(this)}
                                         value={orderRate}
-                                        action={<Button onClick={this.order.bind(this)} basic color="teal">{"ORDER TO " + buySellType.toUpperCase() + " for " + Math.round(parseFloat(orderRate)*buySellAmount*1000)/1000 + "€"}</Button>}
+                                        action={<Button onClick={this.order.bind(this)} style={{backgroundColor: colorPrimary, color: "white"}}>{"ORDER TO " + buySellType.toUpperCase() + " for " + Math.round(parseFloat(orderRate)*buySellAmount*1000)/1000 + "€"}</Button>}
                                         type="number"
                                         labelPosition="left"
                                         placeholder="Order Rate"
@@ -239,7 +243,7 @@ class Investments extends Component {
                         </Segment>
                         </Grid.Row>
                         <Grid.Row>
-                            <Segment>
+                            <Segment textAlign="left"  style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                 {orders && orders.length > 0 ? (
                                     <List divided>
                                         {orders.map(order => {
@@ -247,10 +251,10 @@ class Investments extends Component {
                                                     <List.Content floated='right'>
                                                         <Button color="red" onClick={this.deleteOrder.bind(this,order._id)}>Cancel Order</Button>
                                                     </List.Content>
-                                                    <List.Icon name="long arrow alternate right" />
+                                                    <List.Icon name="arrows alternate horizontal inverted" />
                                                     <List.Content>
-                                                        <List.Header>{"Ordered to " +order.type.toLowerCase()+ " " + order.amount+order.currency + " when " + order.currency+ "/EUR is " + order.compare.toLowerCase() + " than " + order.rate}</List.Header>
-                                                        <List.Description>{moment(order.date).format("DD/MM/YYYY HH:mm")}</List.Description>
+                                                        <List.Header style={{color: "#c9c9c9"}}>{"Ordered to " +order.type.toLowerCase()+ " " + order.amount+order.currency + " when " + order.currency+ "/EUR is " + order.compare.toLowerCase() + " than " + order.rate}</List.Header>
+                                                        <List.Description style={{color: "#c9c9c9"}}>{moment(order.date).format("DD/MM/YYYY HH:mm")}</List.Description>
                                                     </List.Content>
                                                 </List.Item>
                                             }
@@ -262,23 +266,34 @@ class Investments extends Component {
                             </Segment>
                         </Grid.Row>
                     </Grid.Column>
-                    <Grid.Column width={8}>
-                    <Segment textAlign="left">
-                        <Header>Action History</Header>
+                    <Grid.Column width={7}>
+                    <Segment textAlign="left" style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                        <Header style={{color: "#c9c9c9"}}>Action History</Header>
                         {investments && (
                             <List>
-                                {investments.histories.map(investment => {
+                                {investments.histories.slice((this.state.shownPage-1)*12,this.state.shownPage*12+1).map(investment => {
                                     return <List.Item>
-                                        <List.Icon name="long arrow alternate right" />
+                                        <List.Icon name="long arrow alternate right inverted" />
                                         <List.Content>
-                                        <List.Header>{investment.text}</List.Header>
-                                        <List.Description>{moment(investment.date).format("DD/MM/YYYY HH:mm")}</List.Description>
+                                        <List.Header style={{color: "#c9c9c9"}}>{investment.text}</List.Header>
+                                        <List.Description style={{color: "#c9c9c9"}}>{moment(investment.date).format("DD/MM/YYYY HH:mm")}</List.Description>
                                         </List.Content>
                                     </List.Item>
                                 }
                                 )}
                             </List>
                                 )}
+                        {investments && investments.histories && investments.histories.length > 0 && (
+                            <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                                <Pagination  defaultActivePage={1}
+                                             siblingRange={5}
+                                             totalPages={Math.ceil(investments.histories.length/12.0)}
+                                             activePage={this.state.shownPage}
+                                             onPageChange={this.updatePage}
+                                             style={{background: "rgba(0,0,0,0)", color: "#ffffff !important", fontWeight: "bold"}}
+                                />
+                            </div>
+                        )}
                     </Segment>
                     </Grid.Column>
                 </Grid.Row>
