@@ -984,44 +984,19 @@ function js_yyyy_mm_dd_hh_mm_ss () {
   return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 }
 
-const compareText = async (text1, text2) => {
-  return await axios({
-    "method":"GET",
-    "url":"https://twinword-text-similarity-v1.p.rapidapi.com/similarity/",
-    "headers": {
-      "content-type": "application/octet-stream",
-      "x-rapidapi-host": "twinword-text-similarity-v1.p.rapidapi.com",
-      "x-rapidapi-key": rapidAPIKey
-    },
-    "params": {
-      text1,
-      text2
-    }
-  })
-}
-
-module.exports.compareText = compareText
-
 module.exports.filterArticleTitles = async (articles, terms) => {
-  const similarities = await Promise.all(articles.map(article => {
-    return axios({
-      "method":"GET",
-      "url":"https://twinword-text-similarity-v1.p.rapidapi.com/similarity/",
-      "headers": {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "twinword-text-similarity-v1.p.rapidapi.com",
-        "x-rapidapi-key": rapidAPIKey
-      },
-      "params": {
-        text1: article.title,
-        text2: terms
-      }
-    }).catch(err => {
-      console.log(err)
-    })
-  }))
+  const queryKeyword = terms.split(' ').join('+')
+  let searchTags = await axios.get(`https://api.datamuse.com/words?max=15&ml=${queryKeyword}`)
+  searchTags = searchTags.data.map(el => el.word)
 
-  return articles.filter((_, index) => {
-    return similarities[index].data.similarity > 0.1
+  return articles.filter(({tags}) => {
+    const matched = searchTags.filter(tag => {
+      if(tags) {
+        return tags.indexOf(tag) > -1
+      } else {
+        return false
+      }
+    }).length > 0
+    return matched
   })
 }

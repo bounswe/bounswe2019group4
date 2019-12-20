@@ -9,7 +9,7 @@ module.exports.search = async (req, res, next) => {
     let usersData = User.find().select('name surname location predictionRate').sort({predictionRate: -1}).lean()
     let eventsData = Event.find().select('Country CalendarId Date Catogory Event Importance').sort({Importance: -1}).lean()
     let tradingEqData = CurrentTradingEquipment.find().select('from fromName to toName rate').lean()
-    let articlesData = Article.find().select('text title').lean()
+    let articlesData = Article.find().select('text title tags').lean()
 
 
     usersData = await usersData

@@ -1,6 +1,7 @@
 const {findUserArticle} = require('../utils')
 const {findUserComments} = require('../utils')
 const {User} = require('../models/user')
+const axios = require('axios')
   /*
     Get method for articles.
     It returns all articles in database.
@@ -47,7 +48,12 @@ module.exports.postArticle = async (request, response) => {
       userId: request.session['user']._id,
       date: new Date()
     });
-  
+
+    const queryKeyword = request.body.title.split(' ').join('+')
+    let tags = await axios.get(`https://api.datamuse.com/words?max=15&ml=${queryKeyword}`)
+    tags = tags.data.map(el => el.word)
+    article.tags = tags
+
     // Saves the instance into the database, returns any error occured
     article.save()
       .then(doc => {

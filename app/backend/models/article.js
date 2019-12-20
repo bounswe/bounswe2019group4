@@ -17,6 +17,10 @@ let Article = mongoose.model('Article', {
       require: true
   },
 
+  tags: {
+    type: [String]
+  },
+  
   date:{
     type: Date,
     require: true
