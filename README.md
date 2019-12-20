@@ -49,8 +49,11 @@ Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <str
 <img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_trading_screen.png" />
 </p>
 
-
 ---
+
+## <div align="center"> Web Application </div>
+<p float="left">
+<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/laptop_mockup_1.png"  /><img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/laptop_mockup_2.png" />
 
 
 ## <div align="center"> Deployment </div>
