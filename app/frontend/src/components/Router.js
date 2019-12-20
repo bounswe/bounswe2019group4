@@ -62,7 +62,7 @@ class Routes extends Component {
                             }
                         }
                     } />
-                    <Route exact pah="/investments" render={() => {return <Investments />}} />
+                    <Route exact path="/investments" render={() => {return <Investments />}} />
                     <Route path="/" render={() => { return <EmptyPage />; }} />
 
                 </Switch>

@@ -135,9 +135,9 @@ class Investments extends Component {
             (
             <Grid>
                 <Grid.Row>
-                    <Grid.Column width={3}>
-                        <Segment style={{display: "flex", margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
-                            <Grid.Column>
+                    <Grid.Column stretched width={4}>
+                        <Segment style={{margin: 20, display:"flex",justifyContent:"center",alignItems:"center",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                            <Grid.Column stretched>
                             <Grid.Row>
                                 <Grid.Column width={16}>
                                     <Label circular color="grey" size="massive">{ "€"+Math.round(investments.account.EUR*100)/100}</Label>
@@ -166,18 +166,21 @@ class Investments extends Component {
                             </Grid.Column>
                         </Segment>
                     </Grid.Column>
-                    <Grid.Column width={12}>
+                    <Grid.Column width={11}>
                         <Segment raised style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                             <Header style={{color: "#c9c9c9"}}>My Assets</Header>
-                            <List horizontal divided>
+                            <div style={{display:"flex",justifyContent:"center"}}>
+
+                            <List style={{margin: 20, width: "80%",  background: colorBG}} horizontal divided>
                                 {tradingEquipment.map(key=> {
                                     if(key.value !== "EUR") {
                                         return (
-                                            <List.Item style={{color: "#c9c9c9"}} icon={key.icon ? key.icon+ " inverted" : "money inverted"} content={investments.account[key.value] + " " + key.value} />
+                                            <List.Item style={{color: "#c9c9c9",margin:5}} icon={key.icon ? key.icon+ " inverted" : "money inverted"} content={investments.account[key.value] + " " + key.value} />
                                         )
                                     }
                                 })}
                             </List>
+                            </div>
                         </Segment>
                     </Grid.Column>
 
@@ -196,12 +199,15 @@ class Investments extends Component {
                                         <Input
                                             label={
                                                 <Dropdown
+                                                    scrolling
+                                                    search
                                                     placeholder='Select Currency'
                                                     name="currency"
                                                     value={currency}
                                                     basic
                                                     options={dropdownOptions}
                                                     onChange={this.onChange.bind(this)}
+
                                                 />
                                             }
                                             name="buySellAmount"
@@ -211,9 +217,9 @@ class Investments extends Component {
                                             labelPosition="right"
                                             placeholder="Amount"
                                         />
-                                        <span style={{marginLeft:30, color: "#c9c9c9", fontWeight: "bold", fontSize: 17}}>{"Current "+ currency + "/EUR Rate"}</span>
-                                        <Icon name="arrow right inverted" />
-                                        <span style={{color: "#c9c9c9", fontWeight: "bold", fontSize: 17}}>{currentRate}</span>
+                                        <span style={{marginLeft:10, color: "#c9c9c9", fontWeight: "bold", fontSize: 13}}>{currency+"/EUR"}</span>
+                                        <Icon size={13} name="arrow right inverted" />
+                                        <span style={{color: "#c9c9c9", fontWeight: "bold", fontSize: 13}}>{currentRate}</span>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -265,7 +271,7 @@ class Investments extends Component {
                                         )}
                                     </List>
                                 ) : (
-                                    <Header>No current order.</Header>
+                                    <Header style={{color: "#c9c9c9"}}>No current order.</Header>
                                 )}
                             </Segment>
                         </Grid.Row>
