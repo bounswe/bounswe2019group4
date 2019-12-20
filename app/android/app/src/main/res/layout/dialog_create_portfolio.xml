@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="600dp"
+    android:layout_height="wrap_content"
     android:background="@color/black"
     android:padding="12dp">
     <TextView
@@ -111,4 +111,26 @@
         app:layout_constraintTop_toBottomOf="@id/portfolio_spinner"
         android:layout_margin="12dp"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/portfolio_add_button"
+        android:background="@drawable/filter_button_background"
+        android:textColor="@color/colorWhite"
+        android:text="Add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/portfolio_te_list"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/portfolio_cancel_button"
+        android:background="@drawable/filter_button_background"
+        android:textColor="@color/colorWhite"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/portfolio_te_list"
+        app:layout_constraintEnd_toStartOf="@id/portfolio_add_button"
+        android:layout_marginRight="12dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

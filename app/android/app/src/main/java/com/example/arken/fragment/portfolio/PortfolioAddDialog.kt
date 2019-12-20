@@ -40,6 +40,8 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
     lateinit var addImageView: ImageView
     lateinit var TEAdapter:PortfolioTEAdapter
     lateinit var text:String
+    lateinit var addButton: Button
+    lateinit var cancelButton: Button
 
     override fun onTEClicked(position: Int) {
         val builder = AlertDialog.Builder(context2)
@@ -124,88 +126,89 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
             text = "Edit"
         }
 
-        builder.setView(view)
-            // Add action buttons
-            .setPositiveButton(text
-            ) { dialog, id ->
-
-                if(editTextTitle.text.toString().trim() == ""){
-                    editTextTitle.error = "Please type a title"
-                }
-                else if(editTextDefinition.text.toString().trim() == ""){
-                    editTextDefinition.error = "Please type a definition"
-                }
-                else if(selectedTEs.isEmpty()){
-                    Toast.makeText(context2, "Please add a TE to your list", Toast.LENGTH_SHORT).show()
-                }
-                else if (portfolio == null){
-                    val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-
-                    val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs)
-
-                    val call: Call<ResponseBody> =
-                        RetroClient.getInstance().apiService.createPortfolio(
-                            prefs.getString("user_cookie", null), portfolio)
-
-                    call.enqueue(object : Callback<ResponseBody> {
-                        override fun onResponse(
-                            call: Call<ResponseBody>,
-                            response: Response<ResponseBody>
-                        ) {
-                            if (response.isSuccessful) {
-                                Toast.makeText(context2, "Your portfolio is added", Toast.LENGTH_SHORT)
-                                    .show()
-                                dialog.dismiss()
-
-                            } else {
-                                Toast.makeText(context2, response.raw().toString(), Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        }
-
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(context2, t.message, Toast.LENGTH_SHORT).show()
-                        }
-                    })
-                    listener.onDialogPositiveClick()
-                }
-                else{
-                    val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-
-                    val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs)
-
-                    val call: Call<ResponseBody> =
-                        RetroClient.getInstance().apiService.editPortfolio(
-                            prefs.getString("user_cookie", null), portfolio)
-
-                    call.enqueue(object : Callback<ResponseBody> {
-                        override fun onResponse(
-                            call: Call<ResponseBody>,
-                            response: Response<ResponseBody>
-                        ) {
-                            if (response.isSuccessful) {
-                                Toast.makeText(context2, "Your portfolio is updated", Toast.LENGTH_SHORT)
-                                    .show()
-                                dialog.dismiss()
-
-                            } else {
-                                Toast.makeText(context2, response.raw().toString(), Toast.LENGTH_SHORT)
-                                    .show()
-                                Log.i("portError ", response.raw().toString())
-                            }
-                        }
-
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(context2, t.message, Toast.LENGTH_SHORT).show()
-                            Log.i("portError2 ", t.message)
-                        }
-                    })
-                    listener.onDialogPositiveClick()
-                }
-
+        addButton = view.findViewById(R.id.portfolio_add_button)
+        addButton.setOnClickListener{
+            if(editTextTitle.text.toString().trim() == ""){
+                editTextTitle.error = "Please type a title"
             }
-            .setNegativeButton("Cancel"
-            ) { dialog, id -> this@PortfolioAddDialog.dialog!!.cancel() }
+            else if(editTextDefinition.text.toString().trim() == ""){
+                editTextDefinition.error = "Please type a definition"
+            }
+            else if(selectedTEs.isEmpty()){
+                Toast.makeText(context2, "Please add a TE to your list", Toast.LENGTH_SHORT).show()
+            }
+            else if (portfolio == null){
+                val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+
+                val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs)
+
+                val call: Call<ResponseBody> =
+                    RetroClient.getInstance().apiService.createPortfolio(
+                        prefs.getString("user_cookie", null), portfolio)
+
+                call.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context2, "Your portfolio is added", Toast.LENGTH_SHORT)
+                                .show()
+                            dialog?.dismiss()
+
+                        } else {
+                            Toast.makeText(context2, response.raw().toString(), Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(context2, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
+                listener.onDialogPositiveClick()
+            }
+            else{
+                val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+
+                val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs)
+
+                val call: Call<ResponseBody> =
+                    RetroClient.getInstance().apiService.editPortfolio(
+                        prefs.getString("user_cookie", null), portfolio)
+
+                call.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context2, "Your portfolio is updated", Toast.LENGTH_SHORT)
+                                .show()
+                            dialog?.dismiss()
+
+                        } else {
+                            Toast.makeText(context2, response.raw().toString(), Toast.LENGTH_SHORT)
+                                .show()
+                            Log.i("portError ", response.raw().toString())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(context2, t.message, Toast.LENGTH_SHORT).show()
+                        Log.i("portError2 ", t.message)
+                    }
+                })
+                listener.onDialogPositiveClick()
+            }
+        }
+
+        cancelButton = view.findViewById(R.id.portfolio_cancel_button)
+        cancelButton.setOnClickListener{
+            dialog?.dismiss()
+        }
+
+
         return builder.create()
     }
 }
