@@ -123,6 +123,7 @@ class Investments extends Component {
 
     render() {
         const {investments, currency, amount, buySellType, buySellAmount, exchangeResult, aboveOrBelow, orderRate, orders} = this.state;
+        const currentRate = investments && Math.round(parseFloat(_.find(investments.currentRates, {from: currency, to: "EUR"}).rate)*10000)/10000;
         const dropdownOptions = _.reduce(tradingEquipment, function(final, obj) {
             if(obj.value === "EUR") {
                 return final;
@@ -210,12 +211,15 @@ class Investments extends Component {
                                             labelPosition="right"
                                             placeholder="Amount"
                                         />
+                                        <span style={{marginLeft:30, color: "#c9c9c9", fontWeight: "bold", fontSize: 17}}>{"Current "+ currency + "/EUR Rate"}</span>
+                                        <Icon name="arrow right inverted" />
+                                        <span style={{color: "#c9c9c9", fontWeight: "bold", fontSize: 17}}>{currentRate}</span>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
                             <Grid columns={2} divided>
                                 <Grid.Column width={5} >
-                                    <Button onClick={this.buySell.bind(this)} style={{backgroundColor: colorPrimary, color: "white"}}>{buySellType.toUpperCase() + " NOW for " + exchangeResult + "€"}</Button>
+                                    <Button onClick={this.buySell.bind(this)} disabled={!buySellAmount} style={{backgroundColor: colorPrimary, color: "white"}}>{buySellType.toUpperCase() + " NOW for " + exchangeResult + "€"}</Button>
                                 </Grid.Column>
                                 <Grid.Column width={11} >
                                     <Input
@@ -231,7 +235,7 @@ class Investments extends Component {
                                         name="orderRate"
                                         onChange={this.onChange.bind(this)}
                                         value={orderRate}
-                                        action={<Button onClick={this.order.bind(this)} style={{backgroundColor: colorPrimary, color: "white"}}>{"ORDER TO " + buySellType.toUpperCase() + " for " + Math.round(parseFloat(orderRate)*buySellAmount*1000)/1000 + "€"}</Button>}
+                                        action={<Button disabled={!buySellAmount} onClick={this.order.bind(this)} style={{backgroundColor: colorPrimary, color: "white"}}>{"ORDER TO " + buySellType.toUpperCase() + " for " + Math.round(parseFloat(orderRate)*buySellAmount*1000)/1000 + "€"}</Button>}
                                         type="number"
                                         labelPosition="left"
                                         placeholder="Order Rate"
