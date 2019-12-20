@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardCornerRadius="4dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -76,6 +76,16 @@
                 android:src="@drawable/ic_star_empty"
                 android:layout_alignParentRight="true"
                 android:layout_margin="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/portfolio_userName"
+                android:text="Elif Çalışkan"
+                android:textColor="@color/colorWhite"
+                android:layout_margin="8dp"
+                android:layout_below="@id/portfolio_te_list"
+                android:layout_alignParentLeft="true"/>
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

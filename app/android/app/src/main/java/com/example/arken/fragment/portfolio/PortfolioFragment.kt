@@ -1,5 +1,6 @@
 package com.example.arken.fragment.portfolio
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
@@ -55,8 +56,9 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
             .getString("userId", "defaultId")!!
         recyclerView = rootView.findViewById(R.id.portfolios_recyclerView)
         myPage = (realId == userId)
+        val prefs = getActivity()!!.getSharedPreferences("MyPrefsFile", Context.MODE_PRIVATE)
 
-        portfolioAdapter = PortfolioAdapter(dataset, this, myPage)
+        portfolioAdapter = PortfolioAdapter(dataset, this, myPage, prefs)
         recyclerView.adapter = portfolioAdapter
 
         initDataset()
