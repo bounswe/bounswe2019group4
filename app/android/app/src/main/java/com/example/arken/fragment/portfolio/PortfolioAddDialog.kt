@@ -140,7 +140,7 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
             else if (portfolio == null){
                 val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
 
-                val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs)
+                val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs, null, null, null)
 
                 val call: Call<ResponseBody> =
                     RetroClient.getInstance().apiService.createPortfolio(
@@ -171,7 +171,7 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
             else{
                 val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
 
-                val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs)
+                val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs, null, null, null)
 
                 val call: Call<ResponseBody> =
                     RetroClient.getInstance().apiService.editPortfolio(

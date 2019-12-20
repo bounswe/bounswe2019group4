@@ -7,5 +7,8 @@ class Portfolio(
     val title:String,
     val definition: String,
     val isPrivate: Boolean,
-    val tradingEqs: List<String>?
+    val tradingEqs: List<String>?,
+    var userId: String?,
+    var userName: String?,
+    var userSurname:String?
 ) : Serializable

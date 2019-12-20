@@ -42,6 +42,7 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     private var userId:String = ""
     private lateinit var followingButton: Button
     var following = false
+    private var followingList: MutableList<String>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,9 +61,8 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
             .getString("userId", "defaultId")!!
         recyclerView = rootView.findViewById(R.id.portfolios_recyclerView)
         myPage = (realId == userId)
-        val prefs = getActivity()!!.getSharedPreferences("MyPrefsFile", Context.MODE_PRIVATE)
 
-        portfolioAdapter = PortfolioAdapter(dataset, this, myPage, prefs)
+        portfolioAdapter = PortfolioAdapter(dataset, this, myPage, null)
         recyclerView.adapter = portfolioAdapter
 
         initDataset()
@@ -99,8 +99,13 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                 if (response.isSuccessful) {
                     val profile = response.body()!!
                     if(following){
+                        dataset.clear()
                         if(profile.followingPortfolios!= null){
-                            val arr = profile.followingPortfolios as MutableList<FollowingPortfolio>
+                            val arr = profile.followingPortfolios
+                            followingList = mutableListOf()
+                            for(port in arr) {
+                                followingList!!.add(port.PortfolioId)
+                            }
                             for(port in arr){
                                 val callPort: Call<Portfolio> =
                                     RetroClient.getInstance().apiService.getPortfolio(userCookie, port.PortfolioId)
@@ -108,6 +113,11 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                                 callPort.enqueue(object : Callback<Portfolio> {
                                     override fun onResponse(call: Call<Portfolio>, response: Response<Portfolio>) {
                                         if (response.isSuccessful) {
+                                            val p = response.body()!!
+                                            p.userId = port.userId
+                                            p.userName = port.userName
+                                            p.userSurname = port.userSurname
+
                                             dataset.add(response.body()!!)
 
                                         } else {
@@ -135,6 +145,7 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                     }
 
                     portfolioAdapter.dataSet = dataset
+                    portfolioAdapter.followingPortfolioIds = followingList
                     portfolioAdapter.notifyDataSetChanged()
 
                 } else {
