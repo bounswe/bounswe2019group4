@@ -304,7 +304,6 @@ class UserHeaderComponent extends Component {
                 >
                     <Dropdown trigger={<i className="fas fa-cog" style={{ margin: 10}} />} icon={null}>
                         <Dropdown.Menu>
-                            {user && user.isTrader && <Dropdown.Item icon="briefcase" name="investments" onClick={this.navigate} text="My Investments"/> }
                             <Dropdown.Item icon="sign-out" onClick={this.logout.bind(this)} text="Logout" />
 
                         </Dropdown.Menu>
