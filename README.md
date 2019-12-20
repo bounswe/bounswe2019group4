@@ -52,8 +52,10 @@ Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <str
 ---
 
 ## <div align="center"> Web Application </div>
-<p float="center">
-<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/laptop_screen_2.png"  /><img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/laptop_screen_1.png" />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/laptop_screen_2.png" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/laptop_screen_1.png" />
+
 
 
 ## <div align="center"> Deployment </div>
