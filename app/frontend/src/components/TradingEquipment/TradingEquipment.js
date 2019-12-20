@@ -11,6 +11,7 @@ import authService from "../../factories/authFactory";
 
 import * as tradingEquipmentActions from '../../actions/tradingEquipmentActions';
 import {loadState} from "../../_core/localStorage";
+import {colorBG, colorLightBG, colorLightgrey, colorPrimary} from "../../utils/constants/Colors";
 
 class TradingEquipment extends Component {
 
@@ -203,7 +204,7 @@ setAlert=async()=>{
                                 <Grid.Column width={1}>
 
                                     <Popup trigger={
-                                        <Button>
+                                        <Button style={{backgroundColor:colorLightBG, borderColor:colorPrimary, borderWidth:1, color:"white"}}>
                                             <Icon name={"bell"}/>
                                         </Button>
                                     } on={"click"}
@@ -246,7 +247,7 @@ setAlert=async()=>{
                                 {loadState().user !== null && loadState().user.loggedIn &&
                                 <Grid.Column width={2}>
                                     <Popup trigger={
-                                        <Button>My Alerts</Button>
+                                        <Button style={{backgroundColor:colorLightBG, borderColor:colorPrimary, borderWidth:1, color:"white"}}>Alerts</Button>
                                     } on={"click"}
                                            position='bottom center'
 
@@ -321,7 +322,7 @@ setAlert=async()=>{
                                     </Button>
                                 </Grid.Column>
                                 <Grid.Column width={3} style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
-                                    {loggedin && (!following ? <Button basic color="green" onClick={this.follow.bind(this)}> + Follow</Button> : <Button basic color="red" onClick={this.follow.bind(this)}> - Unfollow</Button>)}
+                                    {loggedin && (!following ? <Button basic color="blue" onClick={this.follow.bind(this)}> + Follow</Button> : <Button basic color="blue" onClick={this.follow.bind(this)}> - Unfollow</Button>)}
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>

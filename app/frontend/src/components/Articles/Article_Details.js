@@ -22,7 +22,7 @@ import {connect} from 'react-redux';
 import * as userActions from '../../actions/userActions';
 import {normalizeDate} from "../Events/Events";
 import Loading from "../Loading";
-import article_photo from "../../assets/article_photo.png"
+import article_photo from "../../assets/article_logo.png"
 import Comments from "../Comments";
 class Article_Details extends Component {
 

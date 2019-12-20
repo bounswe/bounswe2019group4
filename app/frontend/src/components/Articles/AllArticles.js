@@ -9,7 +9,7 @@ import Loading from "../Loading";
 import DatePicker, {getDefaultLocale, registerLocale, setDefaultLocale} from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import {normalizeDate, compareDates, normalizeDateToTR} from "../Events/Events";
-import {colorBG, colorDarkerBlue} from "../../utils/constants/Colors";
+import {colorAccent, colorBG, colorDarkerBlue} from "../../utils/constants/Colors";
 
 
 class AllArticles extends Component {
@@ -383,7 +383,7 @@ class AllArticles extends Component {
                                 <tr>
                                     <td>
 
-                                        <Link to={"/articles/"+article._id}>{article.title}</Link>
+                                        <Link style={{color:"grey"}} to={"/articles/"+article._id}>{article.title}</Link>
                                     </td>
                                     <td>
                                         <Link to={"/profile/"+article.userId}>{article.username+" "+article.usersurname}</Link>
@@ -395,8 +395,8 @@ class AllArticles extends Component {
                                     <td>
                                         <div style={{display:"flex",flexDirection:"row"}}>
 
-                                            <Label style={{fontSize:14}} color={"yellow"} >
-                                                <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
+                                            <Label style={{fontSize:14, backgroundColor:colorAccent, color:"white"}}  >
+                                                <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center", backgroundColor:colorAccent}}>
                                                     {article.rateAverage}
                                                 </div>
                                             </Label>
@@ -517,8 +517,8 @@ class AllArticles extends Component {
 
                         <Grid.Column width={4}>
                             {loadState().user!==null&&loadState().user.loggedIn&&
-                            <div style={{display:"flex",alignItems:"flex-start",marginLeft:20}}>
-                                <Button onClick={this.handleClick} inverted style={{borderRadius:20,borderWidth:1.5}} content={this.state.recommended?"Show All":"Show Recommended Articles"}/>
+                            <div style={{display:"flex",alignItems:"flex-start",marginLeft:10, marginTop:21}}>
+                                <Button onClick={this.handleClick} inverted style={{borderRadius:20,borderWidth:1}} content={this.state.recommended?"Show All":"Recommended Articles"}/>
                             </div>
                                 }
                         </Grid.Column>

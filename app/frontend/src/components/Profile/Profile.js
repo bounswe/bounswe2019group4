@@ -116,7 +116,7 @@ class Profile extends Component {
                             </Grid.Row>
                             {user.followRequests && user.followRequests.length > 0 &&
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                                <Segment textAlign="left" style={{margin: 20, width: "100%", backgroundColor: "white",borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <List divided relaxed textAlign="left">
                                         <List.Header style={{color: "#c9c9c9"}} as="h3">Pending Requests</List.Header>
                                         {user.followRequests.map(follower => {
@@ -163,7 +163,7 @@ class Profile extends Component {
                         </Grid.Column>
                         <Grid.Column width={8}>
                             <Segment style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
-                                <Header style={{color: "#c9c9c9"}}>Articles<Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/articles/new")}}>Add</Button></Header>
+                                <Header style={{color: "#c9c9c9"}}>Articles<Button style={{float:"right"}} basic color="blue" onClick={()=>{history.push("/articles/new")}}>Add</Button></Header>
                                 <Divider/>
                                 {user.articles && user.articles.length>0 ?
                                     user.articles.map(article => {

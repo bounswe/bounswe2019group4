@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Card, Label, Image, Icon, Button} from 'semantic-ui-react';
 import {loadState} from "../../_core/localStorage";
 import history from "../../_core/history";
+import {colorAccent, colorLightBG, colorPrimary} from "../../utils/constants/Colors";
 
 const initialState={
     _id:"",
@@ -41,19 +42,19 @@ class ProfileCard extends Component {
         const {name, surname, email, predictionRate, isPublic, isTrader,location, followers, following} = this.state;
 
         return(
-            <Card style={{width: "100%", margin: 20, background: "rgba(255,255,255,0.15)"}}>
+            <Card style={{width: "100%", margin: 20, backgroundColor:colorLightBG}}>
 
                 <Card.Content>
-                    <Card.Header style={{color: "#c9c9c9",fontSize:30}}>{name + " " + surname}</Card.Header>
+                    <Card.Header style={{color: "white",fontSize:30}}>{name + " " + surname}</Card.Header>
                 </Card.Content>
                 <Card.Content extra>
-                    <Label basic color='red' horizontal >
+                    <Label style={{color:colorAccent}} basic horizontal >
                         Prediction Rate
                     </Label>
-                    <span className='date' style={{color: "#c9c9c9"}}>{predictionRate}</span>
+                    <span className='date' style={{color: colorAccent}}>{predictionRate}</span>
                 </Card.Content>
                 <Card.Content extra>
-                    <Label color={isPublic ? "green" : "red"} horizontal >
+                    <Label style={{backgroundColor:colorAccent, color:"white"}}  horizontal >
                         {isPublic ? "Public Profile": "Private Profile"}
                     </Label>
                     <Label color="grey" horizontal>
