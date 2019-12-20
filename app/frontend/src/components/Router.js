@@ -16,6 +16,7 @@ import TradingEquipment from "./TradingEquipment/TradingEquipment";
 import Create_Article from "./Articles/Create_Article";
 import authService from "../factories/authFactory";
 import Profile_Others from "./Profile/Profile_Others";
+import Investments from "./Investments/Investments";
 
 
 class Routes extends Component {
@@ -52,6 +53,7 @@ class Routes extends Component {
                             }
                         }
                     } />
+                    <Route exact pah="/investments" render={() => {return <Investments />}} />
                     <Route path="/" render={() => { return <EmptyPage />; }} />
 
                 </Switch>
