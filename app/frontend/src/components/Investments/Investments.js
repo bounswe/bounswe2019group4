@@ -45,7 +45,10 @@ class Investments extends Component {
         if(data.name === "currency") {
             const rate = parseFloat(_.find(investments.currentRates, {from: data.value, to: "EUR"}).rate);
             exchangeResult = Math.round(rate* buySellAmount*1000)/1000;
+            const currentRate = investments && Math.round(parseFloat(_.find(investments.currentRates, {from: data.value, to: "EUR"}).rate)*10000)/10000;
+            this.setState({orderRate:currentRate})
         }
+
         this.setState({[data.name]: data.value, exchangeResult});
     }
 
@@ -145,7 +148,7 @@ class Investments extends Component {
                             </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column width={16}>
-                                    <Header style={{color: "#c9c9c9"}}>Current Balance</Header>
+                                    <Header style={{color: "#c9c9c9",margin:10}}>Current Balance</Header>
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
