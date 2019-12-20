@@ -28,7 +28,7 @@ import Loading from "../Loading";
 import Comments from "../Comments"
 import {Link} from "react-router-dom";
 import axios from "axios"
-import {colorBG, colorDarkerBlue, colorLightgrey, colorPrimary} from "../../utils/constants/Colors";
+import {colorBG, colorDarkerBlue, colorLightBG, colorLightgrey, colorPrimary} from "../../utils/constants/Colors";
 class Event_Details extends Component {
 
     constructor(props) {
@@ -124,16 +124,16 @@ class Event_Details extends Component {
 
                     <Segment style={{borderWidth:2,backgroundColor:colorBG,color:"white",borderColor:colorDarkerBlue,borderRadius:20}} textAlign="center">
                         <h4>Values</h4>
-                    <Table fixed className="ui table">
-                        <thead>
-                        <tr>
+                    <Table fixed className="ui table" style={{backgroundColor:colorLightBG}}>
+                        <thead style={{backgroundColor:colorLightBG}}>
+                        <tr style={{backgroundColor:colorLightBG}}>
                             <th>Actual</th>
                             <th>Previous</th>
                             <th>Forecast</th>
                         </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr style={{color:"white"}}>
                                 <td>{event.Actual}</td>
                                 <td>{event.Previous}</td>
                                 <td>{event.Forecast}</td>
