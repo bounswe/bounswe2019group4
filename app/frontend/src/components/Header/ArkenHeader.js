@@ -8,7 +8,7 @@ import UserHeaderComponent from './UserHeaderComponent';
 import {colorBG} from "../../utils/constants/Colors";
 import authService from "../../factories/authFactory";
 
-import arkenLogo from "../../assets/arken_logo.png";
+import arkenLogo from "../../assets/cropped_logo_without_font.png";
 import SearchBar from "../Search/Search";
 import {loadState} from "../../_core/localStorage";
 

@@ -20,7 +20,7 @@ import {connect} from 'react-redux';
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
 import ThreeStar from '../../assets/threestar.png'
-import news from '../../assets/news.png'
+import news from '../../assets/event_bg.jpg'
 import * as userActions from '../../actions/userActions';
 import userFactory from "../../factories/userFactory";
 import {normalizeDate} from "./Events";
