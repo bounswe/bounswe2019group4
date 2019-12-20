@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.fragment.profile.ProfileFragmentArgs
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
+import com.example.arken.model.FollowingPortfolio
 import com.example.arken.model.Portfolio
 import com.example.arken.model.Profile
 import com.example.arken.util.PortfolioAdapter
@@ -38,6 +40,8 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     private val args: PortfolioFragmentArgs by navArgs()
     private var myPage = true
     private var userId:String = ""
+    private lateinit var followingButton: Button
+    var following = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,7 +73,17 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
             dialog = PortfolioAddDialog(this, context!! , null)
             dialog.show(fragmentManager!!, "portFragment")
         }
-
+        followingButton = rootView.findViewById(R.id.following_portfolio_button)
+        followingButton.setOnClickListener{
+            following = !following
+            if(following){
+                followingButton.text = "YOURS"
+            }
+            else{
+                followingButton.text = "FOLLOWING"
+            }
+            initDataset()
+        }
 
         return rootView
     }
@@ -84,12 +98,42 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
                     val profile = response.body()!!
-                    if(profile.portfolios== null){
-                        dataset = mutableListOf()
+                    if(following){
+                        if(profile.followingPortfolios!= null){
+                            val arr = profile.followingPortfolios as MutableList<FollowingPortfolio>
+                            for(port in arr){
+                                val callPort: Call<Portfolio> =
+                                    RetroClient.getInstance().apiService.getPortfolio(userCookie, port.PortfolioId)
+
+                                callPort.enqueue(object : Callback<Portfolio> {
+                                    override fun onResponse(call: Call<Portfolio>, response: Response<Portfolio>) {
+                                        if (response.isSuccessful) {
+                                            dataset.add(response.body()!!)
+
+                                        } else {
+                                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Portfolio>, t: Throwable) {
+                                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                                    }
+                                })
+                            }
+
+                        }
+                        else{
+                            dataset = mutableListOf()
+                        }
+                    }else{
+                        if(profile.portfolios== null){
+                            dataset = mutableListOf()
+                        }
+                        else{
+                            dataset = profile.portfolios!!
+                        }
                     }
-                    else{
-                        dataset = profile.portfolios!!
-                    }
+
                     portfolioAdapter.dataSet = dataset
                     portfolioAdapter.notifyDataSetChanged()
 

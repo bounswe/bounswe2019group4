@@ -77,32 +77,8 @@ class PortfolioAdapter(
             }
             var arr = portfolio.tradingEqs
             if(arr == null){
+                arr = mutableListOf()
 
-                val call: Call<Portfolio> =
-                    RetroClient.getInstance().apiService.getPortfolio(
-                        prefs.getString("user_cookie", null), portfolio._id)
-
-                call.enqueue(object : Callback<Portfolio> {
-                    override fun onResponse(
-                        call: Call<Portfolio>,
-                        response: Response<Portfolio>
-                    ) {
-                        if (response.isSuccessful) {
-                            arr = response.body()?.tradingEqs
-
-                        } else {
-
-                            Log.i("portError ", response.raw().toString())
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Portfolio>, t: Throwable) {
-                        Log.i("portError2 ", t.message)
-                    }
-                })
-                if(arr == null){
-                    arr = mutableListOf()
-                }
             }
             val pAdapter = PortfolioTEAdapter(arr!!, this)
             recyclerView.adapter = pAdapter

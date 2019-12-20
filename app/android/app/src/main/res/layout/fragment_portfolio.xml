@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/portfolio_list_header"
+        app:layout_constraintTop_toBottomOf="@id/following_portfolio_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -56,5 +56,17 @@
         android:layout_margin="12dp"
         android:id="@+id/portfolio_add"
         android:src="@drawable/ic_add"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/following_portfolio_button"
+        android:background="@drawable/filter_button_background"
+        android:textColor="@color/colorWhite"
+        android:text="Followıng"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/portfolio_list_header"
+        android:layout_margin="12dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
