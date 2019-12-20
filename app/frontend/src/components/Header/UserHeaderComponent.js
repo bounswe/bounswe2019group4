@@ -6,6 +6,7 @@ import history from "../../_core/history";
 import SearchBar from "../Search/Search";
 import {normalizeDate} from "../Events/Events";
 import {colorDarkerBlue} from "../../utils/constants/Colors";
+import {loadState} from "../../_core/localStorage";
 
 class UserHeaderComponent extends Component {
 
@@ -237,6 +238,7 @@ class UserHeaderComponent extends Component {
     }
 
     render() {
+        const user = loadState().user;
         return (
             <Menu.Menu position="right">
                 <Menu.Item position="right">
@@ -300,13 +302,14 @@ class UserHeaderComponent extends Component {
                     name="settings"
                    // onClick={this.navigate}
                 >
-                    <Dropdown  trigger={<i className="fas fa-cog" style={{ margin: 10}} />} icon={null}>
+                    <Dropdown trigger={<i className="fas fa-cog" style={{ margin: 10}} />} icon={null}>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={this.logout.bind(this)}>Logout</Dropdown.Item>
+                            {user && user.isTrader && <Dropdown.Item icon="briefcase" name="investments" onClick={this.navigate} text="My Investments"/> }
+                            <Dropdown.Item icon="sign-out" onClick={this.logout.bind(this)} text="Logout" />
+
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Item>
-
             </Menu.Menu>
         )
     }
