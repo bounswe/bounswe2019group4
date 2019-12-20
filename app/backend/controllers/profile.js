@@ -13,7 +13,14 @@ async function profileResponse(user, me, followStatus, TradingEqFollow, Article,
   let followers = await findUserFollows({ FollowedId: user._id, status: true })
   let followRequests = await findUserFollows({ FollowedId: user._id, status: false})
   let followingTradings = await TradingEqFollow.find({ UserId : user._id })
-  let followingPortfolios = await PortfolioFollow.find({ UserId : user._id })
+  let followingPortfolios = await PortfolioFollow.find({ UserId : user._id }).lean()
+  followingPortfolios = await Promise.all(followingPortfolios.map(portfolio => Portfolio.findOne({_id: portfolio.PortfolioId}).lean()))
+  const portfolioOwners = await Promise.all(followingPortfolios.map(portfolio => User.findById(portfolio.userId).lean()))
+  followingPortfolios = followingPortfolios.map((portfolio, i) => {
+    portfolio.username = portfolioOwners[i].name
+    portfolio.usersurname = portfolioOwners[i].surname
+    return portfolio
+  })
   let articles = await Article.find().where('userId').equals(user._id)
   let portfoliosBefore = null
   let portfolios = []
