@@ -185,4 +185,8 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @GET("notifications")
     Call<ListNotification> getNotifications(@Header("Cookie") String userCookie);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("recommendations")
+    Call<SearchResult> getRecommendations(@Header("Cookie") String userCookie);
 }
