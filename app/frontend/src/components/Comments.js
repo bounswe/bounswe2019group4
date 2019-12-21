@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Comment, Divider, Button, Modal, Image, Header, Icon, Popup, Segment, Form} from "semantic-ui-react";
 import {Link} from "react-router-dom";
-import {normalizeDate} from "./Events/Events";
+import {normalizeDate,normalizeDateToTR} from "./Events/Events";
 import {loadState} from "../_core/localStorage";
 import * as userActions from "../actions/userActions";
 import {connect} from "react-redux";
@@ -111,7 +111,7 @@ class Comments extends Component{
                                         <h5 >{item.username+" "+item.usersurname}</h5>
                                     </a>
                                     <div style={{fontSize:10,color:"grey"}}>
-                                    {normalizeDate(item.date)}
+                                    {normalizeDateToTR(item.date)}
                                     </div>
                                     </div>
                                     {user && user.loggedIn&&user._id===item.userId?(
