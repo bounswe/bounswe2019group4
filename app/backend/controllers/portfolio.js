@@ -77,16 +77,42 @@ module.exports.getPortfolio = async (request, response) => {
 */
 module.exports.editPortfolio = async (request, response) => {
   let Portfolio = request.models['Portfolio']
+  let PortfolioTradingEq = request.models['PortfolioTradingEq']
   const userId = request.session['user']._id
   const title = request.body["title"];
   const definition = request.body["definition"];
   const isPrivate = request.body["isPrivate"];
   const PortfolioId = request.params['id'];
+  let tradingEqs = request.body['tradingEqs']
 
   portfolio = await Portfolio.findOne({ _id : PortfolioId, userId: userId});
   if(portfolio){
     Portfolio.updateOne({_id:PortfolioId, userId: userId},{ title: title, definition: definition, isPrivate: isPrivate}) 
       .then( doc => {
+        // first delete every trading Eqs of this portfolio from db
+        PortfolioTradingEq.deleteMany({ PortfolioId : request.params['id']}, (err, results) => {
+          if(err){
+            return response.status(404).send({
+              errmsg: "Failed to delete portfolio - trading eq. instances."
+            })
+          }
+        });
+
+        // then add the updated arary
+        for (const tradingEq of tradingEqs) {
+          // portfolioTradingEq instance to add to the database
+          let portfolioTradingEq = new PortfolioTradingEq({
+              _id: {
+                  PortfolioId: PortfolioId,
+                  TradingEq: tradingEq
+              },
+              PortfolioId: PortfolioId,
+              TradingEq: tradingEq
+          });
+
+          // Saves the instance into the database, returns any error occured
+          portfolioTradingEq.save()
+        }
         return response.status(204).send()
       }).catch(error => {
         return response.status(400).send(error);
@@ -123,53 +149,6 @@ module.exports.editPortfolio = async (request, response) => {
       });
     });
   }
-
-  /*
-  Post method for portfolio.
-  It saves portfolio to database.
-*/
-module.exports.addTradingEq = async (request, response) => {
-  let Portfolio = request.models['Portfolio']
-  let PortfolioTradingEq = request.models['PortfolioTradingEq']
-  let tradingEq = request.body['tradingEq']
-  const PortfolioId = request.params['id']
-  // portfolioTradingEq instance to add to the database
-  let portfolioTradingEq = new PortfolioTradingEq({
-      _id: {
-          PortfolioId: PortfolioId,
-          TradingEq: tradingEq
-      },
-      PortfolioId: PortfolioId,
-      TradingEq: tradingEq
-  });
-
-  // Saves the instance into the database, returns any error occured
-  portfolioTradingEq.save().then(doc => {
-    return response.status(204).send();
-  }).catch(error => {
-    return response.status(400).send(error);
-  });
-}
-
-/*
-  Delete method for remove trading eq. from portfolio.
-  It deletes given portfolio - trading eq. instances.
-*/
-module.exports.removeTradingEq = async (request, response) => {
-  let Portfolio = request.models['Portfolio']
-  let PortfolioTradingEq = request.models['PortfolioTradingEq']
-  let tradingEq = request.body['tradingEq']
-  const PortfolioId = request.params['id'];
-
-  PortfolioTradingEq.deleteOne({ PortfolioId : PortfolioId, TradingEq: tradingEq}, (err, results) => {
-    if(err){
-      return response.status(404).send({
-        errmsg: "Failed to delete portfolio - trading eq. instances."
-      })
-    }     
-    return response.status(204).send(); 
-  });
-}
 
 /*
   Post method for following specific portfolio.
