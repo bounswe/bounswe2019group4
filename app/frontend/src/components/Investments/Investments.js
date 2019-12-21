@@ -24,6 +24,7 @@ import * as investmentActions from "../../actions/investmentActions";
 import tradingEquipment from "../../utils/constants/tradingEquipment";
 import {colorBG, colorPrimary} from "../../utils/constants/Colors";
 import {buy} from "../../actions/investmentActions";
+import history from "../../_core/history";
 
 class Investments extends Component {
     constructor(props) {
@@ -210,7 +211,7 @@ class Investments extends Component {
                                 {tradingEquipment.map(key=> {
                                     if(key.value !== "EUR") {
                                         return (
-                                            <List.Item style={{color: "#c9c9c9",margin:5}} icon={key.icon ? key.icon+ " inverted" : "money inverted"} content={investments.account[key.value] + " " + key.value} />
+                                            <List.Item onClick={()=>history.push({pathname:"/trading-equipment",state:{currency:key.value}})} style={{color: "#c9c9c9",margin:5,cursor:"pointer"}} icon={key.icon ? key.icon+ " inverted" : "money inverted"} content={investments.account[key.value] + " " + key.value} />
                                         )
                                     }
                                 })}
@@ -262,7 +263,7 @@ class Investments extends Component {
                             <Grid columns={2} divided>
 
                                 <Grid.Column width={4} >
-                                    <Button onClick={this.buySell.bind(this)} disabled={buySellAmount===""||isNaN(parseFloat(buySellAmount))||parseFloat(buySellAmount)===0} style={{backgroundColor: colorPrimary, color: "white"}}>{buySellType.toUpperCase() + " NOW for " + exchangeResult + "€"}</Button>
+                                    <Button onClick={this.buySell.bind(this)} disabled={isNaN(parseFloat(buySellAmount))||parseFloat(buySellAmount)===0} style={{backgroundColor: colorPrimary, color: "white"}}>{buySellType.toUpperCase() + " NOW for " + exchangeResult + "€"}</Button>
 
                                 </Grid.Column>
                                 <Grid.Column width={12} >
@@ -279,7 +280,7 @@ class Investments extends Component {
                                         name="orderRate"
                                         onChange={this.onChange.bind(this)}
                                         value={orderRate}
-                                        action={<Button disabled={buySellAmount===""||isNaN(parseFloat(buySellAmount))||parseFloat(buySellAmount)===0} onClick={this.order.bind(this)} style={{backgroundColor: colorPrimary, color: "white"}}>{"ORDER TO " + buySellType.toUpperCase() + " for " + Math.round(parseFloat(orderRate)*parseFloat(buySellAmount!==""?buySellAmount:0)*1000)/1000 + "€"}</Button>}
+                                        action={<Button disabled={isNaN(parseFloat(buySellAmount))||parseFloat(buySellAmount)===0} onClick={this.order.bind(this)} style={{backgroundColor: colorPrimary, color: "white"}}>{"ORDER TO " + buySellType.toUpperCase() + " for " + Math.round(parseFloat(orderRate)*parseFloat(buySellAmount!==""?buySellAmount:0)*1000)/1000 + "€"}</Button>}
                                         type="number"
                                         labelPosition="left"
                                         placeholder="Order Rate"
@@ -310,7 +311,7 @@ class Investments extends Component {
                                         )}
                                     </List>
                                 ) : (
-                                    <Header style={{color: "#c9c9c9"}}>No current order.</Header>
+                                    <Header style={{color:"grey"}}>No current order.</Header>
                                 )}
                             </Segment>
                         </Grid.Row>
@@ -318,7 +319,7 @@ class Investments extends Component {
                     <Grid.Column width={7}>
                     <Segment textAlign="left" style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                         <Header style={{color: "#c9c9c9"}}>Action History</Header>
-                        {investments && (
+                        {investments &&investments.histories&&investments.histories.length>0? (
                             <List>
                                 {investments.histories.slice((this.state.shownPage-1)*6,this.state.shownPage*6).map(investment => {
                                     let profit=Math.round(investment.profit*1000)/1000;
@@ -338,7 +339,7 @@ class Investments extends Component {
                                 }
                                 )}
                             </List>
-                                )}
+                                ):<Header style={{color:"grey"}}>No actions.</Header>}
                         {investments && investments.histories && investments.histories.length > 0 && (
                             <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                                 <Pagination  defaultActivePage={1}
