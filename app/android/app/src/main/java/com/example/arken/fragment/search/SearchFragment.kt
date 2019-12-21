@@ -55,9 +55,9 @@ class SearchFragment: Fragment(){
         val userCookie = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE)
             .getString("user_cookie", "")
 
-        //if(userCookie!="") {
-           // getRecommendations()
-        //}
+        if(userCookie!="") {
+            getRecommendations()
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 // do something on text submit
@@ -65,10 +65,6 @@ class SearchFragment: Fragment(){
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-
-                if(newText.trim() == ""){
-                    getRecommendations()
-                }
 
                 if (newText.trim() != "") {
                     val call: Call<SearchResult> =
