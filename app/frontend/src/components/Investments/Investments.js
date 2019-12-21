@@ -28,7 +28,7 @@ class Investments extends Component {
     constructor(props) {
         super(props);
         const initialState = loadState();
-        this.state = { user: initialState.user, currency: "USD", buySellType: "buy", exchangeResult: 0, buySellAmount: 0, aboveOrBelow: "HIGHER", orderRate: 0, orders: [], shownPage: 1};
+        this.state = { user: initialState.user, currency: "USD", buySellType: "buy", exchangeResult: 0, buySellAmount: "", aboveOrBelow: "HIGHER", orderRate: 0, orders: [], shownPage: 1};
     }
 
     componentDidMount() {
@@ -57,7 +57,7 @@ class Investments extends Component {
         }
         if(data.name === "currency") {
             const rate = parseFloat(_.find(investments.currentRates, {from: data.value, to: "EUR"}).rate);
-            exchangeResult = Math.round(rate* buySellAmount*1000)/1000;
+            exchangeResult = Math.round(rate* parseFloat(buySellAmount)*1000)/1000;
             const currentRate = investments && Math.round(parseFloat(_.find(investments.currentRates, {from: data.value, to: "EUR"}).rate)*10000)/10000;
             this.setState({orderRate:currentRate})
         }
@@ -71,18 +71,19 @@ class Investments extends Component {
         const amount = data.value;
         const lastChar = amount.split("").reverse()[0];
 
-        if(lastChar && lastChar >= '0' & lastChar <= "9") {
+        if(lastChar &&( (lastChar >= '0' & lastChar <= "9")||lastChar===".")) {
+
             if(data.name === "buySellAmount") {
                 const rate = parseFloat(_.find(investments.currentRates, {from: currency, to: "EUR"}).rate);
                 exchangeResult = Math.round(rate* data.value*1000)/1000;
             }
-            this.setState({[data.name]: parseInt(data.value), exchangeResult});
+            this.setState({[data.name]: data.value, exchangeResult});
         } else if(!lastChar) {
             if(data.name === "buySellAmount") {
                 const rate = parseFloat(_.find(investments.currentRates, {from: currency, to: "EUR"}).rate);
                 exchangeResult = Math.round(rate* data.value*1000)/1000;
             }
-            this.setState({[data.name]: 0, exchangeResult});
+            this.setState({[data.name]: "", exchangeResult});
         }
 
     }
@@ -104,7 +105,7 @@ class Investments extends Component {
 
     buySell() {
         const {currency, buySellAmount, buySellType} = this.state;
-        this.props[buySellType]({currency, amount: buySellAmount}).then(result => {
+        this.props[buySellType]({currency, amount: parseFloat(buySellAmount)}).then(result => {
 
             this.props.getInvestments().then(res=> {
                 this.setState({investments: res.action.payload, amount: 0})
@@ -114,7 +115,7 @@ class Investments extends Component {
 
     order() {
         const {currency, buySellAmount, aboveOrBelow, orderRate, buySellType} = this.state;
-        this.props.order({currency, amount: buySellAmount, type: buySellType, rate: orderRate, compare: aboveOrBelow}).then(res => {
+        this.props.order({currency, amount: parseFloat(buySellAmount), type: buySellType, rate: orderRate, compare: aboveOrBelow}).then(res => {
             const promises = [];
             promises.push(this.props.getInvestments());
             promises.push(this.props.getOrders());
@@ -154,16 +155,28 @@ class Investments extends Component {
                     <Grid.Column stretched width={4}>
                         <Segment style={{margin: 20, display:"flex",justifyContent:"center",alignItems:"center",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                             <Grid.Column stretched>
+                                <Grid.Row>
+                                    <Grid.Column width={16}>
+                                        <Header style={{color: "#c9c9c9",margin:5}}>Current Balance</Header>
+                                    </Grid.Column>
+                                </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column width={16}>
                                     <Label circular color="grey" size="massive">{ "€"+Math.round(investments.account.EUR*100)/100}</Label>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column width={16}>
-                                    <Header style={{color: "#c9c9c9",margin:10}}>Current Balance</Header>
-                                </Grid.Column>
-                            </Grid.Row>
+                                <Grid.Row  style={{margin:5}}>
+                                    <Grid.Column  width={16}>
+
+                                        {investments.totalProfit>0?
+
+                                            <Label circular color="green" size="medium">{ "Total Profit: €"+Math.round(investments.totalProfit*100)/100}</Label>:
+                                            <Label circular color="red" size="medium">{ "Total Profit: €"+Math.round(investments.totalProfit*100)/100}</Label>
+                                        }
+
+                                    </Grid.Column>
+                                </Grid.Row>
+
                             <Grid.Row>
                                 <Grid.Column width={16}>
                                     <Input
@@ -187,7 +200,7 @@ class Investments extends Component {
                             <Header style={{color: "#c9c9c9"}}>My Assets</Header>
                             <div style={{display:"flex",justifyContent:"center"}}>
 
-                            <List style={{margin: 20, width: "80%",  background: colorBG}} horizontal divided>
+                            <List style={{margin: 20, width: "84%",  background: colorBG}} horizontal divided>
                                 {tradingEquipment.map(key=> {
                                     if(key.value !== "EUR") {
                                         return (
@@ -205,6 +218,7 @@ class Investments extends Component {
                     <Grid.Column width={8}>
                         <Grid.Row>
                         <Segment style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                            <Header style={{color: "#c9c9c9",textAlign:"left"}}>Invest</Header>
                             <Grid>
                                 <Grid.Row >
                                     <Grid.Column width={16} style={{display: "flex !important", justifyContent: "center !important", alignItems: "center !important"}}>
@@ -259,7 +273,7 @@ class Investments extends Component {
                                         name="orderRate"
                                         onChange={this.onChange.bind(this)}
                                         value={orderRate}
-                                        action={<Button disabled={!buySellAmount} onClick={this.order.bind(this)} style={{backgroundColor: colorPrimary, color: "white"}}>{"ORDER TO " + buySellType.toUpperCase() + " for " + Math.round(parseFloat(orderRate)*buySellAmount*1000)/1000 + "€"}</Button>}
+                                        action={<Button disabled={!buySellAmount} onClick={this.order.bind(this)} style={{backgroundColor: colorPrimary, color: "white"}}>{"ORDER TO " + buySellType.toUpperCase() + " for " + Math.round(parseFloat(orderRate)*parseFloat(buySellAmount)*1000)/1000 + "€"}</Button>}
                                         type="number"
                                         labelPosition="left"
                                         placeholder="Order Rate"
@@ -273,6 +287,7 @@ class Investments extends Component {
                         </Grid.Row>
                         <Grid.Row>
                             <Segment textAlign="left"  style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                                <Header style={{color: "#c9c9c9"}}>Orders</Header>
                                 {orders && orders.length > 0 ? (
                                     <List divided>
                                         {orders.map(order => {
@@ -300,9 +315,13 @@ class Investments extends Component {
                         <Header style={{color: "#c9c9c9"}}>Action History</Header>
                         {investments && (
                             <List>
-                                {investments.histories.slice((this.state.shownPage-1)*6,this.state.shownPage*6).map(investment => {
+                                {investments.histories.slice((this.state.shownPage-1)*7,this.state.shownPage*7).map(investment => {
+                                    let profit=Math.round(investment.profit);
                                     return <List.Item>
-                                        <List.Icon name="long arrow alternate right inverted" />
+                                        {
+                                            profit>0?<List.Icon color={"green"} name={"money"} ><span style={{marginLeft:3}}>{"€"+profit}</span></List.Icon>:profit<0?<List.Icon color={"red"} name={"money"} ><span style={{marginLeft:3}}>{"€"+profit}</span></List.Icon>:<List.Icon color={"grey"} name={"money"} />
+                                        }
+
                                         <List.Content>
                                         <List.Header style={{color: "#c9c9c9"}}>{investment.text}</List.Header>
                                         <List.Description style={{color: "#c9c9c9"}}>{moment(investment.date).format("DD/MM/YYYY HH:mm")}</List.Description>
@@ -316,7 +335,7 @@ class Investments extends Component {
                             <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                                 <Pagination  defaultActivePage={1}
                                              siblingRange={5}
-                                             totalPages={Math.ceil(investments.histories.length/6.0)}
+                                             totalPages={Math.ceil(investments.histories.length/7.0)}
                                              activePage={this.state.shownPage}
                                              onPageChange={this.updatePage}
                                              style={{background: "rgba(0,0,0,0)", color: "#ffffff !important", fontWeight: "bold"}}
