@@ -10,9 +10,9 @@ module.exports.getHistory = async (request, response) => {
 
   // It contains main page of investments.
   // It finds user's investment history, current exchange rates, and user's account.
-  let histories = await InvestmentHistory.find({userId: request.session['user']._id}).sort({date: -1})
-  let currentRates = await CurrentTradingEquipment.find({})
-  let account = await UserAccount.findOne({userId: request.session['user']._id})
+  histories = await InvestmentHistory.find({userId: request.session['user']._id}).sort({date: -1}).lean()
+  currentRates = await CurrentTradingEquipment.find({}).lean()
+  account = await UserAccount.findOne({userId: request.session['user']._id}).lean()
 
   // If user has no account yet, it returns empty account.
   if(!account){
@@ -21,27 +21,21 @@ module.exports.getHistory = async (request, response) => {
     })
   }
 
-  let totalProfit = 0
-  for(i = 0;i < histories.length; i++){
-    let item = histories[i]
-    if(item.type == "BUY" || item.type == "SELL"){
-        let CURRENCY = item.currency
-        let RATE = item.fromRate
-        let AMOUNT = item.amount
-
-        let EXCHANGE = await CurrentTradingEquipment.findOne({from: CURRENCY, to: 'EUR'})
-        let CURRENT_RATE = EXCHANGE.rate
-        let CURR_EUR = CURRENT_RATE * AMOUNT
-        let PREVIOUS_EUR = RATE * AMOUNT
+  histories = histories.filter(item => item.type == "BUY" || item.type == "SELL")
+  let currentExchange = await Promise.all(histories.map(item => CurrentTradingEquipment.findOne({from: item.currency, to: 'EUR'}).lean()))
   
-        if(item.type == "BUY")
-          item.profit = (CURR_EUR - PREVIOUS_EUR)
-        else
-          item.profit = -(CURR_EUR - PREVIOUS_EUR)
+  histories = histories.map((item, i) => {
+    let EXCHANGE = currentExchange[i]
 
-        totalProfit += item.profit
+    if(item.type == "BUY") {
+      item.profit = EXCHANGE.rate * item.amount - item.fromRate * item.amount
+    } else {
+      item.profit = item.fromRate * item.amount - EXCHANGE.rate * item.amount
     }
-  }
+    return item
+  })
+
+  const totalProfit = histories.reduce((sum, item) => sum + item.profit, 0)
 
   return response.send({
     histories,
