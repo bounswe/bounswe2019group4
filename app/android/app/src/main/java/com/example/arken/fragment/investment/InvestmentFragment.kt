@@ -37,6 +37,10 @@ class InvestmentFragment : Fragment(), OnOrderClickedListener,DepositClickListen
     private lateinit var investment: Investment
     private lateinit var accountValues:TextView
     private lateinit var depositButton: Button
+    private lateinit var buysellButton: Button
+
+    private lateinit var orderButton: Button
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +73,20 @@ depositButton=rootView.findViewById(R.id.fragment_investment_deposit)
 
            dialogFragment.show(fragmentManager!!,"deposit")
         }
+        buysellButton=rootView.findViewById(R.id.fragment_investment_buysell)
+        buysellButton.setOnClickListener {
+            val dialogFragment = BuySellDialog(this)
+
+            dialogFragment.show(fragmentManager!!,"buysell")
+        }
+
+        orderButton=rootView.findViewById(R.id.fragment_investment_give_order)
+        orderButton.setOnClickListener {
+            val dialogFragment = OrderDialog(this)
+
+            dialogFragment.show(fragmentManager!!,"order")
+        }
+
         return rootView
     }
 
