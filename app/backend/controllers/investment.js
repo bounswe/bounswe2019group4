@@ -21,16 +21,17 @@ module.exports.getHistory = async (request, response) => {
     })
   }
 
-  histories = histories.filter(item => item.type == "BUY" || item.type == "SELL")
   let currentExchange = await Promise.all(histories.map(item => CurrentTradingEquipment.findOne({from: item.currency, to: 'EUR'}).lean()))
   
   histories = histories.map((item, i) => {
-    let EXCHANGE = currentExchange[i]
-
-    if(item.type == "BUY") {
-      item.profit = EXCHANGE.rate * item.amount - item.fromRate * item.amount
-    } else {
-      item.profit = item.fromRate * item.amount - EXCHANGE.rate * item.amount
+    if(item.type == "BUY" || item.type == "SELL") {
+      let EXCHANGE = currentExchange[i]
+  
+      if(item.type == "BUY") {
+        item.profit = EXCHANGE.rate * item.amount - item.fromRate * item.amount
+      } else {
+        item.profit = item.fromRate * item.amount - EXCHANGE.rate * item.amount
+      }
     }
     return item
   })
