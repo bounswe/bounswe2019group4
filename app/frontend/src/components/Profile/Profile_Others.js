@@ -12,7 +12,7 @@ import { Card } from 'semantic-ui-react'
 import SegmentGroup from "semantic-ui-react/dist/commonjs/elements/Segment/SegmentGroup";
 import ProfileCard from "./ProfileCard";
 import moment from 'moment';
-import {colorBG, colorPrimary} from "../../utils/constants/Colors";
+import {colorAccent, colorBG, colorPrimary} from "../../utils/constants/Colors";
 
 
 class Profile extends Component {
@@ -181,7 +181,7 @@ class Profile extends Component {
                                                     <Card.Description style={{color: "#c9c9c9"}}>{article.text.substring(0,350)+"..."}</Card.Description>
                                                 </Card.Content>
                                                 <Card.Content style={{color: "#c9c9c9"}} extra>
-                                                    <Label style={{fontSize:12}} color={"blue"} >
+                                                    <Label style={{fontSize:14,backgroundColor:colorAccent,color:"white"}}  >
                                                         <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
                                                             {(article.rateAverage?article.rateAverage.toFixed(1):0)}
                                                         </div>

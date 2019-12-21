@@ -1,5 +1,18 @@
 import React,{Component} from "react";
-import {Segment, Grid, List, Header, Dropdown, Input, Button, Label, Radio, Icon, Pagination} from "semantic-ui-react";
+import {
+    Segment,
+    Grid,
+    List,
+    Header,
+    Dropdown,
+    Input,
+    Button,
+    Label,
+    Radio,
+    Icon,
+    Pagination,
+    Divider
+} from "semantic-ui-react";
 import {connect} from "react-redux";
 import moment from "moment";
 import _ from "lodash";
@@ -227,10 +240,12 @@ class Investments extends Component {
                                 </Grid.Row>
                             </Grid>
                             <Grid columns={2} divided>
-                                <Grid.Column width={5} >
+
+                                <Grid.Column width={4} >
                                     <Button onClick={this.buySell.bind(this)} disabled={!buySellAmount} style={{backgroundColor: colorPrimary, color: "white"}}>{buySellType.toUpperCase() + " NOW for " + exchangeResult + "€"}</Button>
+
                                 </Grid.Column>
-                                <Grid.Column width={11} >
+                                <Grid.Column width={12} >
                                     <Input
                                         label={
                                             <Dropdown
@@ -252,6 +267,7 @@ class Investments extends Component {
                                     <Header>{""}</Header>
                                 </Grid.Column>
                             </Grid>
+
 
                         </Segment>
                         </Grid.Row>
@@ -284,7 +300,7 @@ class Investments extends Component {
                         <Header style={{color: "#c9c9c9"}}>Action History</Header>
                         {investments && (
                             <List>
-                                {investments.histories.slice((this.state.shownPage-1)*12,this.state.shownPage*12+1).map(investment => {
+                                {investments.histories.slice((this.state.shownPage-1)*6,this.state.shownPage*6).map(investment => {
                                     return <List.Item>
                                         <List.Icon name="long arrow alternate right inverted" />
                                         <List.Content>
@@ -300,13 +316,14 @@ class Investments extends Component {
                             <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                                 <Pagination  defaultActivePage={1}
                                              siblingRange={5}
-                                             totalPages={Math.ceil(investments.histories.length/12.0)}
+                                             totalPages={Math.ceil(investments.histories.length/6.0)}
                                              activePage={this.state.shownPage}
                                              onPageChange={this.updatePage}
                                              style={{background: "rgba(0,0,0,0)", color: "#ffffff !important", fontWeight: "bold"}}
                                 />
                             </div>
                         )}
+
                     </Segment>
                     </Grid.Column>
                 </Grid.Row>

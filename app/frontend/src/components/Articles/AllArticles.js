@@ -474,7 +474,7 @@ class AllArticles extends Component {
                                 <td>
                                     <div style={{display:"flex",flexDirection:"row"}}>
 
-                                        <Label style={{fontSize:14}} color={"yellow"} >
+                                        <Label style={{fontSize:14,backgroundColor:colorAccent,color:"white"}}  >
                                             <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
                                                 {article.rateAverage}
                                             </div>

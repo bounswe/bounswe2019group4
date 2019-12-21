@@ -175,7 +175,7 @@ class Profile extends Component {
                                                     <Card.Description style={{color: "#c9c9c9"}}>{article.text.substring(0,350)+"..."}</Card.Description>
                                                 </Card.Content>
                                                 <Card.Content style={{color: "#c9c9c9"}} extra>
-                                                    <Label style={{fontSize:12}} color={"blue"} >
+                                                    <Label style={{fontSize:14,backgroundColor:colorAccent,color:"white"}} >
                                                         <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
                                                             {(article.rateAverage?article.rateAverage.toFixed(1):0)}
                                                         </div>
