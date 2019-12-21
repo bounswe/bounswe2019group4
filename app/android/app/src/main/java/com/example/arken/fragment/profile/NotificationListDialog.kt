@@ -19,11 +19,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class NotificationListDialog() : DialogFragment() {
+    private var notifications: MutableList<Notification> = mutableListOf()
     lateinit var recyclerView: RecyclerView
-    var notifications:MutableList<Notification> = mutableListOf()
     lateinit var notificationAdapter: NotificationAdapter
     var userCookie = ""
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,15 +30,9 @@ class NotificationListDialog() : DialogFragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_listnotification, container)
         recyclerView = rootView.findViewById(R.id.notification_recyclerView)
+        recyclerView.adapter = NotificationAdapter(notifications)
 
-        notificationAdapter = NotificationAdapter(notifications)
-        recyclerView.adapter = notificationAdapter
-
-        this.dialog?.setTitle("notifications")
-        userCookie  = activity!!.getSharedPreferences(
-            LoginFragment.MY_PREFS_NAME,
-            Context.MODE_PRIVATE
-        ).getString("user_cookie", "")!!
+        this.dialog?.setTitle("Notifications")
 
         initDataset()
 
@@ -48,6 +41,13 @@ class NotificationListDialog() : DialogFragment() {
 
 
     fun initDataset(){
+        userCookie = activity!!.getSharedPreferences(
+            LoginFragment.MY_PREFS_NAME,
+            Context.MODE_PRIVATE
+        ).getString(
+            "user_cookie",
+            ""
+        )!!
         val callGetNotification: Call<ListNotification> =
             RetroClient.getInstance().apiService.getNotifications(userCookie)
 
