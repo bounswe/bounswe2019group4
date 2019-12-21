@@ -80,6 +80,14 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
             act.profile = profile
             findNavController().navigate(act)
         }
+
+        notification_button.setOnClickListener {
+            //if (notifications.size > 0){
+            val dial = NotificationListDialog()
+            dial.show(fragmentManager!!, "notificationFragment")
+            //}
+        }
+
 /*
         notification_button.setOnClickListener {
             val dial = NotificationListDialog(notifications,this)
@@ -207,13 +215,14 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                 dialog.show(fragmentManager!!, "PioneersFragment_tag")
             }
         }
+        /*
         notification_button.setOnClickListener {
-            if (notifications.size > 0){
+            //if (notifications.size > 0){
                 notificationDialog = NotificationListDialog()
-                notificationDialog.show(fragmentManager!!, "Notifications")
-            }
+                notificationDialog.show(fragmentManager!!, "notificationFragment")
+            //}
         }
-
+        */
 
         return view
     }
@@ -297,7 +306,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                     followerCount = profile.follower!!
 
                     // TODO: add an if to check whether it is the logged in user's profile or not
-                    notificationDialog.initDataset()
+                    //notificationDialog.initDataset()
 
 
                         if ((userCookie != "" && realId == userId) || profile.user?.isPublic!! || profile.followStatus == "TRUE") {
