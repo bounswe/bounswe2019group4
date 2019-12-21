@@ -10,9 +10,9 @@ module.exports.getHistory = async (request, response) => {
 
   // It contains main page of investments.
   // It finds user's investment history, current exchange rates, and user's account.
-  histories = await InvestmentHistory.find({userId: request.session['user']._id}).sort({date: -1})
-  currentRates = await CurrentTradingEquipment.find({})
-  account = await UserAccount.findOne({userId: request.session['user']._id})
+  let histories = await InvestmentHistory.find({userId: request.session['user']._id}).sort({date: -1})
+  let currentRates = await CurrentTradingEquipment.find({})
+  let account = await UserAccount.findOne({userId: request.session['user']._id})
 
   // If user has no account yet, it returns empty account.
   if(!account){
@@ -23,16 +23,16 @@ module.exports.getHistory = async (request, response) => {
 
   let totalProfit = 0
   for(i = 0;i < histories.length; i++){
-    item = histories[i]
+    let item = histories[i]
     if(item.type == "BUY" || item.type == "SELL"){
-        CURRENCY = item.currency
-        RATE = item.fromRate
-        AMOUNT = item.amount
+        let CURRENCY = item.currency
+        let RATE = item.fromRate
+        let AMOUNT = item.amount
 
-        EXCHANGE = await CurrentTradingEquipment.findOne({from: CURRENCY, to: 'EUR'})
-        CURRENT_RATE = EXCHANGE.rate
-        CURR_EUR = CURRENT_RATE * AMOUNT
-        PREVIOUS_EUR = RATE * AMOUNT
+        let EXCHANGE = await CurrentTradingEquipment.findOne({from: CURRENCY, to: 'EUR'})
+        let CURRENT_RATE = EXCHANGE.rate
+        let CURR_EUR = CURRENT_RATE * AMOUNT
+        let PREVIOUS_EUR = RATE * AMOUNT
   
         if(item.type == "BUY")
           item.profit = (CURR_EUR - PREVIOUS_EUR)
