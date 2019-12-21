@@ -33,7 +33,7 @@ class NotificationAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.user_row, viewGroup, false)
+            .inflate(R.layout.fragment_notification, viewGroup, false)
 
         return ViewHolder(v)
     }
