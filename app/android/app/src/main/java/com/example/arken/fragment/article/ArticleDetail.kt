@@ -4,9 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.method.KeyListener
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -21,6 +18,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.*
+
 
 /*
 2) resim ekle imageview en alta
@@ -131,6 +130,14 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
             ),
             "commentList"
         )?.commit()
+
+        imageView.setOnLongClickListener {
+            val popup = PopupMenu(context, it)
+            val inflater: MenuInflater = popup.menuInflater
+            inflater.inflate(R.menu.image_anno, popup.menu)
+            popup.show()
+            true
+        }
     }
 private fun refresh(){
     val call: Call<Article> =
@@ -270,5 +277,17 @@ private fun refresh(){
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         rate = position + 1
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            R.id.add_annot ->
+                // do something
+                return true
+            R.id.see_annot ->
+                // do something
+                return true
+            else -> return super.onContextItemSelected(item)
+        }
     }
 }
