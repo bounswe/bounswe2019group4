@@ -17,6 +17,8 @@ import Create_Article from "./Articles/Create_Article";
 import authService from "../factories/authFactory";
 import Profile_Others from "./Profile/Profile_Others";
 import HomePage from "./HomePage/HomePage";
+import Portfolio_Details from "./Portfolios/Portfolio_Details";
+import Create_Portfolio from "./Portfolios/Create_Portfolio";
 
 
 class Routes extends Component {
@@ -42,6 +44,8 @@ class Routes extends Component {
                     <Route path="/events" render={() => { return <Events />; }} />
                     <Route path="/articles/new" render={(props) => { return <Create_Article {...props} />; }} />
                     <Route path="/articles/:id" render={(props) => { return <Article_Details{...props} />; }} />
+                    <Route path="/portfolios/new" render={(props) => { return <Create_Portfolio {...props} />; }} />
+                    <Route path="/portfolios/:id" render={(props) => { return <Portfolio_Details{...props} />; }} />
                     <Route path="/trading-equipment" render={(props) => { return <TradingEquipment {...props} />; }} />
                     <Route exact path="/profile/:id" render={(props) => { return <Profile_Others{...props} />; }} />
                     <Route path="/home" render={() => { return <HomePage  />; }} />

@@ -88,7 +88,7 @@ class Profile extends Component {
 
         const { user,portfolios,userLocal,tradingEqs } = this.state;
         console.log(user);
-
+        //console.log(tradingEqs);
         //console.log(portfolios)
 
         //const { portfolios } = this.state;
@@ -188,7 +188,7 @@ class Profile extends Component {
                                         return <List.Item icon="chart line"
                                                           style={{color: "#c9c9c9"}}
                                                           onClick={()=>{history.push({pathname: "trading-equipment",state:{currency: teq.TradingEq}})}}
-                                                          content={teq.TradingEq}/>
+                                                          content={teq.TradingEq === 'EUR'?  "EUR/USD" : teq.TradingEq + "/EUR"}/>
                                     }): <List.Item style={{color: "#c9c9c9"}} content="No Trading Equipment Is Followed" />}
                                 </List>
                             </Segment>
@@ -200,7 +200,7 @@ class Profile extends Component {
                                     {user.portfolios && user.portfolios.length>0 ?
                                         user.portfolios.map(portfolio => {
                                             return (
-                                                <Card style={{width: "100%"}}>
+                                                <Card style={{width: "100%"}} onClick={()=>{history.push("/portfolios/"+portfolio._id)}}>
                                                     <Card.Content>
                                                         <Card.Header>{portfolio.title}</Card.Header>
                                                         <Card.Description>{portfolio.definition}</Card.Description>
