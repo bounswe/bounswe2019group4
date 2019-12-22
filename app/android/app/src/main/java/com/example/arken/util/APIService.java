@@ -14,9 +14,11 @@ import com.example.arken.model.GoogleUser;
 import com.example.arken.model.ListAlert;
 import com.example.arken.model.ListArticle;
 import com.example.arken.model.ListEvent;
+import com.example.arken.model.ListNotification;
 import com.example.arken.model.LoginUser;
 import com.example.arken.model.Portfolio;
 import com.example.arken.model.Profile;
+import com.example.arken.model.Recommendation;
 import com.example.arken.model.SearchResult;
 import com.example.arken.model.SignupUser;
 import com.example.arken.model.User;
@@ -206,4 +208,12 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @DELETE("trading-equipments/alert/{id}")
     Call<ResponseBody> deleteeAlert(@Header("Cookie") String userCookie, @Path("id") String id);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("notifications")
+    Call<ListNotification> getNotifications(@Header("Cookie") String userCookie);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("recommendations")
+    Call<Recommendation> getRecommendations(@Header("Cookie") String userCookie);
 }
