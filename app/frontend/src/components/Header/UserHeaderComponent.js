@@ -4,7 +4,7 @@ import * as userActions from "../../actions/userActions";
 import connect from "react-redux/es/connect/connect";
 import history from "../../_core/history";
 import SearchBar from "../Search/Search";
-import {normalizeDate} from "../Events/Events";
+import {normalizeDate, normalizeDateToTR} from "../Events/Events";
 import {colorDarkerBlue} from "../../utils/constants/Colors";
 import {loadState} from "../../_core/localStorage";
 
@@ -77,7 +77,7 @@ class UserHeaderComponent extends Component {
                     </div>
 
                         <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
-                            {normalizeDate(item.date)}
+                            {normalizeDateToTR(item.date)}
                         </div>
 
 
@@ -94,7 +94,7 @@ class UserHeaderComponent extends Component {
                     </div>
 
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
-                        {normalizeDate(item.date)}
+                        {normalizeDateToTR(item.date)}
                     </div>
 
                 </Dropdown.Item>)
@@ -110,7 +110,7 @@ class UserHeaderComponent extends Component {
                     </div>
 
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
-                        {normalizeDate(item.date)}
+                        {normalizeDateToTR(item.date)}
                     </div>
 
                 </Dropdown.Item>)
@@ -126,7 +126,7 @@ class UserHeaderComponent extends Component {
                     </div>
 
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
-                        {normalizeDate(item.date)}
+                        {normalizeDateToTR(item.date)}
                     </div>
                 </Dropdown.Item>)
         }else if(item.text.includes("prediction")&&item.text.includes("true")){
@@ -141,7 +141,7 @@ class UserHeaderComponent extends Component {
                     </div>
 
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
-                        {normalizeDate(item.date)}
+                        {normalizeDateToTR(item.date)}
                     </div>
 
                 </Dropdown.Item>)
@@ -157,13 +157,13 @@ class UserHeaderComponent extends Component {
                     </div>
 
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
-                        {normalizeDate(item.date)}
+                        {normalizeDateToTR(item.date)}
                     </div>
 
                 </Dropdown.Item>)
-        }else if(item.text.includes("order executed")){
+        }else if(item.text.includes("order")){
             return(
-                <Dropdown.Item name={"trading-equipment"} onClick={this.navigate}>
+                <Dropdown.Item name={"investments"} onClick={this.navigate}>
 
                     <div style={{display:"flex",flexDirection:"row"}}>
                         <div style={{width:"90%"}}>
@@ -174,7 +174,7 @@ class UserHeaderComponent extends Component {
                     </div>
 
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
-                        {normalizeDate(item.date)}
+                        {normalizeDateToTR(item.date)}
                     </div>
 
                 </Dropdown.Item>)
@@ -191,7 +191,7 @@ class UserHeaderComponent extends Component {
                     </div>
 
                     <div style={{fontSize:12,color:"grey",textAlign:"right",marginTop:7}}>
-                        {normalizeDate(item.date)}
+                        {normalizeDateToTR(item.date)}
                     </div>
                 </Dropdown.Item>
             )
