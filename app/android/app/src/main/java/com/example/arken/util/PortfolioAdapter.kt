@@ -51,7 +51,9 @@ class PortfolioAdapter(
                 deleteButton.visibility = View.VISIBLE
             }
             else if(mode == 1){
-                eyeButton.visibility = View.INVISIBLE
+                eyeButton.setImageResource(R.drawable.ic_star_full)
+                eyeButton.tag="full"
+                eyeButton.visibility = View.VISIBLE
                 editButton.visibility = View.GONE
                 deleteButton.visibility = View.GONE
                 if(portfolio.username != null){
@@ -77,17 +79,18 @@ class PortfolioAdapter(
             }
             if(portfolio.username != null){
                 userName.text = portfolio.username + " "+ portfolio.surname
+                userName.visibility = View.VISIBLE
             }
             else{
                 userName.visibility = View.GONE
-                if(mode== 1){
-                    eyeButton.visibility = View.GONE
-                }
             }
             eyeButton.setOnClickListener {
                 if(eyeButton.tag!= null){
                     portfolioListener.onPortfolioFollowed(position, eyeButton.tag == "full")
                 }
+            }
+            userName.setOnClickListener{
+                portfolioListener.onOwnerClicked(portfolio.userId!!)
             }
 
             deleteButton.setOnClickListener {
@@ -135,4 +138,5 @@ interface PortfolioListener {
     fun onPortfolioDeleted(position: Int)
     fun onPortfolioEdited(position: Int)
     fun onPortfolioFollowed(position: Int, following: Boolean)
+    fun onOwnerClicked(userId: String)
 }

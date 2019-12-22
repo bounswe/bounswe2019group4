@@ -11,9 +11,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
+import com.example.arken.fragment.event.ListEventFragmentDirections
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.FollowingPortfolio
 import com.example.arken.model.Portfolio
@@ -276,15 +279,14 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                 override fun onResponse(call: Call<com.example.arken.model.GetPortfolio>, response: Response<com.example.arken.model.GetPortfolio>) {
                     if (response.isSuccessful) {
                         p = response.body()!!.portfolio
-                        p?.username = port?.userName
-                        p?.surname = port?.userSurname
+                        p?.username = port?.username
+                        p?.surname = port?.surname
                         p?.tradingEqs = response.body()!!.tradingEqs
                         portfolioAdapter.dataSet.add(p!!)
                         portfolioAdapter.notifyDataSetChanged()
 
                     } else {
                         Log.i("getPort", "err")
-
 
                     }
                 }
@@ -328,6 +330,12 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
             return arr
         }
 
+    }
+    override fun onOwnerClicked(userId: String) {
+        if (findNavController().currentDestination!!.id == R.id.portfolioFragment) {
+            val act = PortfolioFragmentDirections.actionPortfolioFragmentToProfileFragment(userId)
+            findNavController().navigate(act)
+        }
     }
 
 }
