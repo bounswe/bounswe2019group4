@@ -46,6 +46,7 @@ module.exports.postArticle = async (request, response) => {
     let article = new Article({
       ...request.body,
       userId: request.session['user']._id,
+      imageId: Math.floor(Math.random() * 10) + 1,
       date: new Date()
     });
 
