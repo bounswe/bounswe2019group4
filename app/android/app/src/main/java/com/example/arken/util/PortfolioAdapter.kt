@@ -1,5 +1,6 @@
 package com.example.arken.util
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,21 +9,25 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Portfolio
+import androidx.recyclerview.widget.LinearLayoutManager
 
+//mode 0 your your
+//mode1 your folllow
+//mode2 sb else
 class PortfolioAdapter(
     var dataSet: MutableList<Portfolio>,
     val portfolioListener: PortfolioListener,
-    val mode: Boolean,
-    var followingPortfolioIds: List<String>?
+    var mode: Int,
+    var followingPortfolioIds: List<String>?,
+    val context: Context
 ) :
     RecyclerView.Adapter<PortfolioAdapter.ViewHolder>() {
 
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v), TEClickListener {
-        override fun onTEClicked(position: Int) {}
+    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         private val title: TextView = v.findViewById(R.id.portfolio_title)
         private val definition: TextView = v.findViewById(R.id.portfolio_definition)
-        private val recyclerView: RecyclerView = v.findViewById(R.id.portfolio_te_list)
+        val recyclerView: RecyclerView = v.findViewById(R.id.portfolio_te_list)
         private val deleteButton: ImageView = v.findViewById(R.id.portfolio_delete)
         private val editButton: ImageView = v.findViewById(R.id.portfolio_edit)
         private val eyeButton: ImageView = v.findViewById(R.id.portfolio_eye)
@@ -33,35 +38,50 @@ class PortfolioAdapter(
             portfolio: Portfolio,
             portfolioListener: PortfolioListener,
             position: Int,
-            mode: Boolean,
-            followingPortfolioIds: List<String>?
+            mode: Int,
+            followingPortfolioIds: List<String>?,
+            context: Context
         ) {
             title.text = portfolio.title
             definition.text = portfolio.definition
-            if (mode) {
+            if (mode == 0) {
                 eyeButton.visibility = View.GONE
                 userName.visibility = View.GONE
-            } else {
+            }
+            else if(mode == 1){
+                eyeButton.visibility = View.INVISIBLE
+                if(portfolio.username != null){
+                    userName.text = portfolio.username + " "+ portfolio.surname
+                }
+            }
+            else{
                 if(followingPortfolioIds != null) {
-                    if (followingPortfolioIds.contains(portfolio._id)) {
+                    if (!followingPortfolioIds.contains(portfolio._id)) {
                         eyeButton.visibility = View.VISIBLE
                         eyeButton.setImageResource(R.drawable.ic_star_empty)
+                        eyeButton.tag="empty"
                         editButton.visibility = View.GONE
                         deleteButton.visibility = View.GONE
                     } else {
                         eyeButton.visibility = View.VISIBLE
                         eyeButton.setImageResource(R.drawable.ic_star_full)
+                        eyeButton.tag="full"
                         editButton.visibility = View.GONE
                         deleteButton.visibility = View.GONE
                     }
                 }
-                if(portfolio.userId != null){
-                    userName.text = portfolio.userName + " "+ portfolio.userSurname
+                if(portfolio.username != null){
+                    userName.text = portfolio.username + " "+ portfolio.surname
+                }
+                else{
+                    userName.visibility = View.INVISIBLE
                 }
             }
 
             eyeButton.setOnClickListener {
-                portfolioListener.onPortfolioFollowed(position, eyeButton.sourceLayoutResId == R.drawable.ic_star_full)
+                if(eyeButton.tag!= null){
+                    portfolioListener.onPortfolioFollowed(position, eyeButton.tag == "full")
+                }
             }
 
             deleteButton.setOnClickListener {
@@ -75,7 +95,10 @@ class PortfolioAdapter(
                 arr = mutableListOf()
 
             }
-            pAdapter = PortfolioTEAdapter(arr, this)
+
+            recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            pAdapter = PortfolioTEAdapter(arr, null)
             pAdapter.notifyDataSetChanged()
             recyclerView.adapter = pAdapter
         }
@@ -95,7 +118,7 @@ class PortfolioAdapter(
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         val portfolio = dataSet[position]
-        viewHolder.bind(portfolio, portfolioListener, position, mode, followingPortfolioIds)
+        viewHolder.bind(portfolio, portfolioListener, position, mode, followingPortfolioIds, context)
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 
 class PortfolioTEAdapter(
-    var nameSet: List<String>, val teClickListener: TEClickListener
+    var nameSet: List<String>, val teClickListener: TEClickListener?
 ) :
     RecyclerView.Adapter<PortfolioTEAdapter.ViewHolder>() {
 
@@ -34,7 +34,7 @@ class PortfolioTEAdapter(
 
         viewHolder.textView.text = nameSet[position]
         viewHolder.itemView.setOnClickListener{
-            teClickListener.onTEClicked(position)
+            teClickListener?.onTEClicked(position)
         }
     }
 

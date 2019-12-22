@@ -1,7 +1,8 @@
 package com.example.arken.fragment.portfolio
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
-import com.example.arken.fragment.profile.ProfileFragmentArgs
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.FollowingPortfolio
 import com.example.arken.model.Portfolio
@@ -21,12 +21,12 @@ import com.example.arken.model.Profile
 import com.example.arken.util.PortfolioAdapter
 import com.example.arken.util.PortfolioListener
 import com.example.arken.util.RetroClient
-import com.example.arken.util.TEClickListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.PortfolioAddListener{
 
@@ -38,12 +38,12 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     private lateinit var userCookie:String
     private lateinit var realId:String
     private val args: PortfolioFragmentArgs by navArgs()
-    private var myPage = true
     private var userId:String = ""
     private lateinit var followingButton: Button
     var following = false
     private var followingList: MutableList<String>? = null
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,9 +60,9 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
         realId = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
             .getString("userId", "defaultId")!!
         recyclerView = rootView.findViewById(R.id.portfolios_recyclerView)
-        myPage = (realId == userId)
 
-        portfolioAdapter = PortfolioAdapter(dataset, this, myPage, null)
+        val i = getIndex()
+        portfolioAdapter = PortfolioAdapter(dataset, this, i, null, context!!)
         recyclerView.adapter = portfolioAdapter
 
         initDataset()
@@ -83,7 +83,23 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                 followingButton.text = "FOLLOWING"
             }
             initDataset()
+            val i = getIndex()
+            portfolioAdapter.mode = i
+            (recyclerView.adapter as PortfolioAdapter).notifyDataSetChanged()
+
+            if(i == 1){
+                addFloatingButton.visibility = View.GONE
+            }
+            else if (i == 0){
+                addFloatingButton.visibility = View.VISIBLE
+
+            }
         }
+        if(i== 2){
+            followingButton.visibility = View.GONE
+            addFloatingButton.visibility = View.GONE
+        }
+
 
         return rootView
     }
@@ -107,30 +123,14 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                                 followingList!!.add(port.PortfolioId)
                             }
                             for(port in arr){
-                                val callPort: Call<Portfolio> =
-                                    RetroClient.getInstance().apiService.getPortfolio(userCookie, port.PortfolioId)
-
-                                callPort.enqueue(object : Callback<Portfolio> {
-                                    override fun onResponse(call: Call<Portfolio>, response: Response<Portfolio>) {
-                                        if (response.isSuccessful) {
-                                            val p = response.body()!!
-                                            p.userId = port.userId
-                                            p.userName = port.userName
-                                            p.userSurname = port.userSurname
-
-                                            dataset.add(response.body()!!)
-
-                                        } else {
-                                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
-
-                                    override fun onFailure(call: Call<Portfolio>, t: Throwable) {
-                                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                                    }
-                                })
+                                val getP = GetPortfolio()
+                                getP.port = port
+                                getP.userCookie = userCookie
+                                var port2 = getP.execute().get()
+                                if(port2!= null){
+                                    dataset.add(port2)
+                                }
                             }
-
                         }
                         else{
                             dataset = mutableListOf()
@@ -142,6 +142,12 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                         else{
                             dataset = profile.portfolios!!
                         }
+                    }
+                    if(followingList== null || followingList!!.size==0){
+                        val followAsync = GetFollowingList()
+                        followAsync.userCookie = userCookie
+                        followAsync.userId = realId
+                        followingList = followAsync.execute().get()
                     }
 
                     portfolioAdapter.dataSet = dataset
@@ -205,14 +211,17 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                         Toast.makeText(context, "Following portfolio", Toast.LENGTH_SHORT).show()
 
                         initDataset()
+                        recyclerView.adapter?.notifyDataSetChanged()
 
                     } else {
                         Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                        Log.i("followerr", response.raw().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.i("followerr2", t.message)
                 }
             })
         }
@@ -226,6 +235,7 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                         Toast.makeText(context, "Unfollowing portfolio ", Toast.LENGTH_SHORT).show()
 
                         initDataset()
+                        recyclerView.adapter?.notifyDataSetChanged()
 
                     } else {
                         Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
@@ -236,6 +246,80 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                     Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+
+    }
+
+
+    fun getIndex():Int{
+        val i:Int = if(realId == userId){
+            if(!following){
+                0
+            } else{
+                1
+            }
+        } else{
+            2
+        }
+        return i
+    }
+
+
+    class GetPortfolio : AsyncTask<FollowingPortfolio, Void, Portfolio>() {
+        var port: FollowingPortfolio? = null
+        var userCookie:String? = null
+        override fun doInBackground(vararg params: FollowingPortfolio?): Portfolio? {
+            val callPort: Call<com.example.arken.model.GetPortfolio> =
+                RetroClient.getInstance().apiService.getPortfolio(userCookie, port?.PortfolioId)
+            var p: Portfolio?  =null
+
+            callPort.enqueue(object : Callback<com.example.arken.model.GetPortfolio> {
+                override fun onResponse(call: Call<com.example.arken.model.GetPortfolio>, response: Response<com.example.arken.model.GetPortfolio>) {
+                    if (response.isSuccessful) {
+                        p = response.body()!!.portfolio
+                        p?.username = port?.userName
+                        p?.surname = port?.userSurname
+                        p?.tradingEqs = response.body()!!.tradingEqs
+
+                    } else {
+                        Log.i("getPort", "err")
+                    }
+                }
+
+                override fun onFailure(call: Call<com.example.arken.model.GetPortfolio>, t: Throwable) {
+                    Log.i("getPort", "err")
+                }
+            })
+            return p
+        }
+
+    }
+
+    class GetFollowingList : AsyncTask<FollowingPortfolio, Void, MutableList<String>>() {
+        var userId: String? = null
+        var userCookie:String? = null
+        override fun doInBackground(vararg params: FollowingPortfolio?): MutableList<String>? {
+            val call: Call<Profile> =
+                RetroClient.getInstance().apiService.getProfile(userCookie, userId)
+            val arr = mutableListOf<String>()
+            call.enqueue(object : Callback<Profile> {
+                override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
+                    if (response.isSuccessful) {
+
+                        val follow = response.body()?.followingPortfolios
+                        if (follow != null) {
+                            for( i in follow){
+                                arr.add(i.PortfolioId)
+                            }
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<Profile>, t: Throwable) {
+                }
+            })
+            return arr
         }
 
     }

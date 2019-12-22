@@ -7,6 +7,7 @@ import com.example.arken.model.Comment;
 import com.example.arken.model.Email;
 import com.example.arken.model.Event;
 import com.example.arken.model.EventWithComment;
+import com.example.arken.model.GetPortfolio;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
 import com.example.arken.model.ListArticle;
@@ -175,11 +176,11 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @PATCH("portfolios/{id}")
-    Call<ResponseBody> editPortfolio(@Header("Cookie") String cookie, @Body Portfolio portfolio);
+    Call<ResponseBody> editPortfolio(@Header("Cookie") String cookie, @Path("id") String id, @Body Portfolio portfolio);
 
     @Headers({"Content-Type: application/json"})
-    @POST("portfolios/{id}")
-    Call<Portfolio> getPortfolio(@Header("Cookie") String userCookie, @Path("id") String id );
+    @GET("portfolios/{id}")
+    Call<GetPortfolio> getPortfolio(@Header("Cookie") String userCookie, @Path("id") String id );
 
     @Headers({"Content-Type: application/json"})
     @POST("portfolios/{id}/follow")

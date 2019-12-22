@@ -100,6 +100,8 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
             switch.isChecked = portfolio.isPrivate
             if(portfolio.tradingEqs!= null){
                 selectedTEs = portfolio.tradingEqs as ArrayList<String>
+                TEAdapter.nameSet = selectedTEs
+                TEAdapter.notifyDataSetChanged()
             }
             else{
                 selectedTEs = ArrayList()
@@ -118,10 +120,10 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
             spinner.adapter = adapter
         }
         if(portfolio == null){
-            text = "Add"
+            text = "ADD"
         }
         else{
-            text = "Edit"
+            text = "EDIT"
         }
 
         addButton = view.findViewById(R.id.portfolio_add_button)
@@ -170,11 +172,11 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
             else{
                 val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
 
-                val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs, null, null, null)
+                val portfolio2 = Portfolio(null , editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs, null, null, null)
 
                 val call: Call<ResponseBody> =
                     RetroClient.getInstance().apiService.editPortfolio(
-                        prefs.getString("user_cookie", null), portfolio)
+                        prefs.getString("user_cookie", null), portfolio._id, portfolio2)
 
                 call.enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(
