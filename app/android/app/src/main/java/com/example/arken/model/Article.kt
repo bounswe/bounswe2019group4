@@ -15,5 +15,6 @@ class Article (
     val yourRate: Int? = null,
     val title: String? = null,
     val text: String? = null,
-    var comments: MutableList<Comment>? = null
+    var comments: MutableList<Comment>? = null,
+    var imageId:Int = 0
     ) : Serializable

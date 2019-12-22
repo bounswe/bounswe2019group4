@@ -23,7 +23,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /*
-1) comment ekle
 2) resim ekle imageview en alta
 3) annotation layout oluştur
 4) iğne gibi bir şey ekle yer belirtem açısından
@@ -43,6 +42,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var totalVotes: TextView
     private val args: ArticleDetailArgs by navArgs()
     private lateinit var prefs: SharedPreferences
+    private lateinit var imageView: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +65,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
         totalVotes= rootView.findViewById(R.id.rate_line_total_votes)
         vote.setOnClickListener { vote() }
         rateSpinner = rootView.findViewById(R.id.rate_line_vote_spinner)
+        imageView = rootView.findViewById(R.id.article_detail_image)
 
         val imp = arrayOf(1, 2, 3, 4, 5)
 
@@ -101,6 +102,10 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                     myVote.text="${myVote.text}${article?.yourRate}"
                     currentRate.text="${currentRate.text}${article?.rateAverage}"
                     totalVotes.text="${totalVotes.text}${article?.numberOfRates}"
+                    val imageId = article?.imageId
+                    if(imageId!= 0){
+                        imageView.setImageResource(R.drawable."${imageId}")
+                    }
                     setVisibility(article!!.userId!!)
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
