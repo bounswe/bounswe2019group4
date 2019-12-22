@@ -27,12 +27,33 @@
     <string name="slider_desc_4">This is description 4</string>
     <string name="slider_desc_5">This is description 5</string>
     <string name="already_have_account">Already have an account?</string>
+    <string name="portfolios">Portfolios</string>
     <integer-array name="importance">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </integer-array>
 
+    <string-array name="TeList">
+        <item>EUR</item>
+        <item>TRY</item>
+        <item>USD</item>
+        <item>AUD</item>
+        <item>CNY</item>
+        <item>HKD</item>
+        <item>INR</item>
+        <item>JPY</item>
+        <item>AED</item>
+        <item>BTC</item>
+        <item>ETH</item>
+        <item>XRP</item>
+        <item>LTC</item>
+        <item>GOOG</item>
+        <item>MSFT</item>
+        <item>AAPL</item>
+        <item>AMZN</item>
+        <item>FB</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

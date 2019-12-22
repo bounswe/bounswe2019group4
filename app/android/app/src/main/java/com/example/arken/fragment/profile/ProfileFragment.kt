@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
@@ -47,6 +48,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
     private var followerList: MutableList<FollowRequest> = mutableListOf()
     private var followingList: MutableList<FollowRequest> = mutableListOf()
     private lateinit var dialog: PendingUserDialog
+    private lateinit var portfolioButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +70,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
         followingCountText = view.findViewById(R.id.following_value_textView)
         pendingReqText = view.findViewById(R.id.profile_pending_req)
         article_button = view.findViewById(R.id.article_button)
+        portfolioButton = view.findViewById(R.id.portfolio_button)
 
         article_button.setOnClickListener {
             val act = ProfileFragmentDirections.actionProfileFragmentToListArticleFragment()
@@ -175,6 +178,13 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                 })
             }
         }
+
+        portfolioButton.setOnClickListener{
+
+            val act = ProfileFragmentDirections.actionProfileFragmentToPortfolioFragment(userId!!)
+            findNavController().navigate(act)
+
+        }
         followerCountText.setOnClickListener {
             if (followerList.size > 0) {
                 dialog = PendingUserDialog(followerList, this, 1)
@@ -194,7 +204,6 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                 dialog.show(fragmentManager!!, "PioneersFragment_tag")
             }
         }
-
 
         return view
     }
