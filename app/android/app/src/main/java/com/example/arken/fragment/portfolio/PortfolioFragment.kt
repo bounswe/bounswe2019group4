@@ -143,12 +143,11 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                             dataset = profile.portfolios!!
                         }
                     }
-                    if(followingList== null || followingList!!.size==0){
-                        val followAsync = GetFollowingList()
-                        followAsync.userCookie = userCookie
-                        followAsync.userId = realId
-                        followingList = followAsync.execute().get()
-                    }
+
+                    val followAsync = GetFollowingList(portfolioAdapter)
+                    followAsync.userCookie = userCookie
+                    followAsync.userId = realId
+                    followingList = followAsync.execute().get()
 
                     portfolioAdapter.dataSet = dataset
                     portfolioAdapter.followingPortfolioIds = followingList
@@ -268,7 +267,6 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     class GetPortfolio (var portfolioAdapter: PortfolioAdapter): AsyncTask<FollowingPortfolio, Void, Portfolio>() {
         var port: FollowingPortfolio? = null
         var userCookie:String? = null
-        var followedDataSet: MutableList<Portfolio> = mutableListOf()
         override fun doInBackground(vararg params: FollowingPortfolio?): Portfolio? {
             val callPort: Call<com.example.arken.model.GetPortfolio> =
                 RetroClient.getInstance().apiService.getPortfolio(userCookie, port?.PortfolioId)
@@ -281,7 +279,7 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                         p?.username = port?.userName
                         p?.surname = port?.userSurname
                         p?.tradingEqs = response.body()!!.tradingEqs
-portfolioAdapter.dataSet.add(p!!)
+                        portfolioAdapter.dataSet.add(p!!)
                         portfolioAdapter.notifyDataSetChanged()
 
                     } else {
@@ -301,7 +299,7 @@ portfolioAdapter.dataSet.add(p!!)
 
     }
 
-    class GetFollowingList : AsyncTask<FollowingPortfolio, Void, MutableList<String>>() {
+    class GetFollowingList(var portfolioAdapter: PortfolioAdapter) : AsyncTask<FollowingPortfolio, Void, MutableList<String>>() {
         var userId: String? = null
         var userCookie:String? = null
         override fun doInBackground(vararg params: FollowingPortfolio?): MutableList<String>? {
@@ -317,6 +315,8 @@ portfolioAdapter.dataSet.add(p!!)
                             for( i in follow){
                                 arr.add(i.PortfolioId)
                             }
+                            portfolioAdapter.followingPortfolioIds = arr
+                            portfolioAdapter.notifyDataSetChanged()
                         }
 
                     }

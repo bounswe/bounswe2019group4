@@ -50,11 +50,12 @@ class PortfolioAdapter(
             }
             else if(mode == 1){
                 eyeButton.visibility = View.INVISIBLE
+                editButton.visibility = View.GONE
+                deleteButton.visibility = View.GONE
                 if(portfolio.username != null){
                     userName.text = portfolio.username + " "+ portfolio.surname
                 }
-            }
-            else{
+            } else{
                 if(followingPortfolioIds != null) {
                     if (!followingPortfolioIds.contains(portfolio._id)) {
                         eyeButton.visibility = View.VISIBLE
@@ -70,14 +71,17 @@ class PortfolioAdapter(
                         deleteButton.visibility = View.GONE
                     }
                 }
-                if(portfolio.username != null){
-                    userName.text = portfolio.username + " "+ portfolio.surname
-                }
-                else{
-                    userName.visibility = View.INVISIBLE
+
+            }
+            if(portfolio.username != null){
+                userName.text = portfolio.username + " "+ portfolio.surname
+            }
+            else{
+                userName.visibility = View.GONE
+                if(mode== 1){
+                    eyeButton.visibility = View.GONE
                 }
             }
-
             eyeButton.setOnClickListener {
                 if(eyeButton.tag!= null){
                     portfolioListener.onPortfolioFollowed(position, eyeButton.tag == "full")
