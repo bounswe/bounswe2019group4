@@ -43,6 +43,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private val args: ArticleDetailArgs by navArgs()
     private lateinit var prefs: SharedPreferences
     private lateinit var imageView: ImageView
+    private lateinit var imageIds:Array<Int>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +67,9 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
         vote.setOnClickListener { vote() }
         rateSpinner = rootView.findViewById(R.id.rate_line_vote_spinner)
         imageView = rootView.findViewById(R.id.article_detail_image)
+        imageIds = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4,
+            R.drawable.image5, R.drawable.image6, R.drawable.image7, R.drawable.image8,
+            R.drawable.image9, R.drawable.image10)
 
         val imp = arrayOf(1, 2, 3, 4, 5)
 
@@ -104,7 +108,9 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                     totalVotes.text="${totalVotes.text}${article?.numberOfRates}"
                     val imageId = article?.imageId
                     if(imageId!= 0){
-                        imageView.setImageResource(R.drawable."${imageId}")
+                        if (imageId != null) {
+                            imageView.setImageResource(imageIds[imageId - 1])
+                        }
                     }
                     setVisibility(article!!.userId!!)
                 } else {
