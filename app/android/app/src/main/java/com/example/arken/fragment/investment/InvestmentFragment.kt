@@ -82,7 +82,7 @@ depositButton=rootView.findViewById(R.id.fragment_investment_deposit)
 
         orderButton=rootView.findViewById(R.id.fragment_investment_give_order)
         orderButton.setOnClickListener {
-            val dialogFragment = OrderDialog(this)
+            val dialogFragment = OrderDialog(this,investment.currentRates)
 
             dialogFragment.show(fragmentManager!!,"order")
         }

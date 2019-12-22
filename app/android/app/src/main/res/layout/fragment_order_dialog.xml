@@ -38,7 +38,6 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/currentValueorder"
         app:layout_constraintEnd_toStartOf="@id/order_currency_spinner"
-        app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/amountorderEditText"  />
 
@@ -49,8 +48,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintTop_toBottomOf="@id/amountorderEditText"
+        app:layout_constraintBaseline_toBaselineOf="@id/order_spinner"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.568"
         app:layout_constraintStart_toEndOf="@id/order_spinner"
         app:layout_constraintBottom_toTopOf="@id/currentValueorder" />
 
@@ -104,6 +104,20 @@
         app:layout_constraintStart_toEndOf="@id/comparisonValueEditText"
         app:layout_constraintTop_toBottomOf="@id/currentValueorder" />
 
+    <TextView
+        android:id="@+id/orderText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text=""
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintTop_toBottomOf="@id/comparisonValueEditText"
+        app:layout_constraintBottom_toTopOf="@id/submit_order_button"
+        />
+
+
     <Button
         android:id="@+id/submit_order_button"
         android:layout_width="130dp"
@@ -117,7 +131,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.82"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/comparisonValueEditText" />
+        app:layout_constraintTop_toBottomOf="@id/orderText" />
 
     <Button
         android:id="@+id/cancel_order_button"

@@ -273,11 +273,12 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
                     profile = response.body()!!
+                    if( realId == userId && profile.user?.isTrader!!){
                     myinvestment_button.visibility=View.VISIBLE
                     myinvestment_button.setOnClickListener {
                         val act = ProfileFragmentDirections.actionProfileFragmentToİnvestmentFragment(profile.user!!.iban!!)
                         findNavController().navigate(act)
-                    }
+                    }}
                     article_button.visibility = View.VISIBLE
                     name_textView.text = profile.user?.name
                     surname_textView.text = profile.user?.surname
