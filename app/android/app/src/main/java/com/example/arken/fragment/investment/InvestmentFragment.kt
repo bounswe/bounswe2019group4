@@ -75,7 +75,7 @@ depositButton=rootView.findViewById(R.id.fragment_investment_deposit)
         }
         buysellButton=rootView.findViewById(R.id.fragment_investment_buysell)
         buysellButton.setOnClickListener {
-            val dialogFragment = BuySellDialog(this)
+            val dialogFragment = BuySellDialog(this,investment.currentRates)
 
             dialogFragment.show(fragmentManager!!,"buysell")
         }

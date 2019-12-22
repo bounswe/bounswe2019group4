@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.arken.R
 import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.investment.Account
+import com.example.arken.model.investment.Deposit
 import com.example.arken.util.RetroClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,7 +32,7 @@ class OrderDialog (val onDepositClickListener: DepositClickListener): DialogFrag
         var cancel_button = rootView.findViewById<Button>(R.id.cancel_deposit_button)
 
         var iban_editText = rootView.findViewById<EditText>(R.id.deposit_iban_editText)
-        iban_editText.setText(ibanDefault)
+
         var amount_editText = rootView.findViewById<EditText>(R.id.amountEditText)
 
         cancel_button.setOnClickListener(object : View.OnClickListener {
@@ -87,8 +88,6 @@ class OrderDialog (val onDepositClickListener: DepositClickListener): DialogFrag
 
             }
         })
-
-
 
         return rootView
     }
