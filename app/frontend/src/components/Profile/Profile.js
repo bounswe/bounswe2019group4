@@ -196,6 +196,7 @@ class Profile extends Component {
                             <Grid.Row>
                                 <Segment  style={{ margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <Header style={{color: "#c9c9c9"}}>Portfolios</Header>
+                                    <Header style={{color: "#c9c9c9"}}>Articles<Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/portfolios/new")}}>Add</Button></Header>
                                     <Divider style={{color: "#c9c9c9"}} />
                                     {user.portfolios && user.portfolios.length>0 ?
                                         user.portfolios.map(portfolio => {

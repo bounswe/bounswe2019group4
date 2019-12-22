@@ -37,24 +37,24 @@ class Create_Portfolio extends Component {
             ratesubmitted:false,
             dimmer:false,
             options: [
-                { key: 'angular', text: 'Angular', value: 'angular' },
-                { key: 'css', text: 'CSS', value: 'css' },
-                { key: 'design', text: 'Graphic Design', value: 'design' },
-                { key: 'ember', text: 'Ember', value: 'ember' },
-                { key: 'html', text: 'HTML', value: 'html' },
-                { key: 'ia', text: 'Information Architecture', value: 'ia' },
-                { key: 'javascript', text: 'Javascript', value: 'javascript' },
-                { key: 'mech', text: 'Mechanical Engineering', value: 'mech' },
-                { key: 'meteor', text: 'Meteor', value: 'meteor' },
-                { key: 'node', text: 'NodeJS', value: 'node' },
-                { key: 'plumbing', text: 'Plumbing', value: 'plumbing' },
-                { key: 'python', text: 'Python', value: 'python' },
-                { key: 'rails', text: 'Rails', value: 'rails' },
-                { key: 'react', text: 'React', value: 'react' },
-                { key: 'repair', text: 'Kitchen Repair', value: 'repair' },
-                { key: 'ruby', text: 'Ruby', value: 'ruby' },
-                { key: 'ui', text: 'UI Design', value: 'ui' },
-                { key: 'ux', text: 'User Experience', value: 'ux' },
+                { key: 'USD', text: 'USD', value: 'USD' },
+                { key: 'TRY', text: 'TRY', value: 'TRY' },
+                { key: 'EUR', text: 'EUR', value: 'EUR' },
+                { key: 'AUD', text: 'AUD', value: 'AUD' },
+                { key: 'CNY', text: 'CNY', value: 'CNY' },
+                { key: 'HKD', text: 'HKD', value: 'HKD' },
+                { key: 'INR', text: 'INR', value: 'INR' },
+                { key: 'JPY', text: 'JPY', value: 'JPY' },
+                { key: 'AED', text: 'AED', value: 'AED' },
+                { key: 'BTC', text: 'BTC', value: 'BTC' },
+                { key: 'ETH', text: 'ETH', value: 'ETH' },
+                { key: 'XRP', text: 'XRP', value: 'XRP' },
+                { key: 'LTC', text: 'LTC', value: 'LTC' },
+                { key: 'GOOG', text: 'GOOG', value: 'GOOG' },
+                { key: 'MSFT', text: 'MSFT', value: 'MSFT' },
+                { key: 'AAPL', text: 'AAPL', value: 'AAPL' },
+                { key: 'AMZN', text: 'AMZN', value: 'AMZN' },
+                { key: 'FB', text: 'FB', value: 'FB' },
             ],
             tradingEqs : [],
             isPrivate : false
@@ -114,7 +114,7 @@ class Create_Portfolio extends Component {
 
                             {user && user.loggedIn?(
                                     <Header style={{fontFamily: "timesnewroman",color:"grey",fontSize:30}}>
-                                        Create new portfolio
+                                        Create a New Portfolio
                                     </Header>
                                 ) :
                                 (
@@ -130,7 +130,7 @@ class Create_Portfolio extends Component {
                             {user && user.loggedIn ? (
                                     <Dimmer.Dimmable dimmed={active}>
                                         <Form
-                                            loading={this.state.editloading}
+                                            Loading={this.state.editloading}
                                         >
                                             <Form.TextArea
                                                 label={"Title"}
@@ -156,9 +156,7 @@ class Create_Portfolio extends Component {
                                                 <Dropdown
                                                     style={{marginLeft:5}}
                                                     placeholder='All'
-
                                                     multiple
-
                                                     selection
                                                     options={this.state.options}
                                                     onChange={this.onDropChange}
