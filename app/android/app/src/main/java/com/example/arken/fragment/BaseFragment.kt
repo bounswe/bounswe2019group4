@@ -19,6 +19,8 @@ import com.example.arken.fragment.event.ListEventFragmentDirections
 import com.example.arken.fragment.search.SearchFragmentDirections
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.fragment.tEq.ListCurrentFragmentDirections
+import com.example.arken.fragment.portfolio.PortfolioFragmentDirections
+import com.example.arken.fragment.profile.ProfileFragmentDirections
 import com.example.arken.util.MenuAdapter
 import com.example.arken.util.OnMenuItemClickListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -57,9 +59,10 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
             R.drawable.ic_search,
             R.drawable.ic_event,
             R.drawable.ic_person_white,
+            R.drawable.ic_portfolio,
             R.drawable.ic_logout
         )
-        val stringArr = arrayOf("Events", "Trading Eq", "Search", "Article", "Profile", "Log Out")
+        val stringArr = arrayOf("Events", "Trading Eq", "Search", "Article", "Profile", "Portfolio", "Log Out")
         val adapter = MenuAdapter(imageArr, stringArr, isLogged, this)
 
         recyclerView!!.adapter = adapter
@@ -124,6 +127,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_listArticleFragment_to_eventListFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_eventListFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_eventListFragment)
             }
         } else if (index == 1) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -145,6 +150,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_listArticleFragment_to_listCurrentFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_listCurrentFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_listCurrentFragment)
             }
         } else if (index == 2) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -163,6 +170,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_listArticleFragment_to_searchFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_searchFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_searchFragment)
             }
         } else if (index == 4) {
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
@@ -195,6 +204,11 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                     ArticleDetailDirections.actionArticleDetailToProfileFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             }
+            else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                val act =
+                    PortfolioFragmentDirections.actionPortfolioFragmentToProfileFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            }
         } else if (index == 3) {
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
                 .getString("userId", "defaultId")
@@ -217,8 +231,47 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_listCurrentFragment_to_listArticleFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_eventListFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_listArticleFragment)
             }
-        } else if (index == 5) {
+        } else if(index == 5){
+            val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+                .getString("userId", "defaultId")
+            if (findNavController(fragment!!).currentDestination!!.id == R.id.eventListFragment) {
+                val act = ListEventFragmentDirections.actionEventListFragmentToPortfolioFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
+                val act =
+                    ListCurrentFragmentDirections.actionListCurrentFragmentToPortfolioFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.eventFragment) {
+                findNavController(fragment!!).popBackStack()
+                val act = ListEventFragmentDirections.actionEventListFragmentToPortfolioFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.searchFragment) {
+                val act = SearchFragmentDirections.actionSearchFragmentToPortfolioFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
+                findNavController(fragment!!).popBackStack()
+                val act =
+                    ListCurrentFragmentDirections.actionListCurrentFragmentToPortfolioFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listArticleFragment) {
+                val act =
+                    ListArticleFragmentDirections.actionListArticleFragmentToPortfolioFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
+                findNavController(fragment!!).popBackStack()
+                val act =
+                    ListArticleFragmentDirections.actionListArticleFragmentToPortfolioFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            }
+            else if(findNavController(fragment!!).currentDestination!!.id == R.id.profileFragment){
+                val act =
+                    ProfileFragmentDirections.actionProfileFragmentToPortfolioFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            }
+        } else if (index == 6) {
             signOutPressed()
         }
 

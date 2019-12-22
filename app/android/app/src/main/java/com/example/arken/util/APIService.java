@@ -1,17 +1,23 @@
 package com.example.arken.util;
 
+import com.example.arken.model.Alert;
 import com.example.arken.model.Article;
 import com.example.arken.model.ArticleCreateRequest;
 import com.example.arken.model.ArticleRateRequest;
 import com.example.arken.model.Comment;
 import com.example.arken.model.Email;
 import com.example.arken.model.EventWithComment;
+import com.example.arken.model.GetPortfolio;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
+import com.example.arken.model.ListAlert;
 import com.example.arken.model.ListArticle;
 import com.example.arken.model.ListEvent;
+import com.example.arken.model.ListNotification;
 import com.example.arken.model.LoginUser;
+import com.example.arken.model.Portfolio;
 import com.example.arken.model.Profile;
+import com.example.arken.model.Recommendation;
 import com.example.arken.model.SearchResult;
 import com.example.arken.model.SignupUser;
 import com.example.arken.model.User;
@@ -169,8 +175,51 @@ public interface APIService {
 
     @Headers({"Content-Type: application/json"})
     @POST("articles/{id}/rate")
-    Call<ResponseBody> rateArticle(@Header("Cookie") String userCookie, @Path("id") String id, @Body ArticleRateRequest articleRateRequest);
+    Call<ResponseBody> rateArticle( @Header("Cookie") String userCookie,@Path("id") String id, @Body ArticleRateRequest articleRateRequest);
 
+    @Headers({"Content-Type: application/json"})
+    @DELETE("portfolios/{id}")
+    Call<ResponseBody> deletePortfolio( @Header("Cookie") String userCookie,@Path("id") String id);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("portfolios")
+    Call<ResponseBody> createPortfolio(@Header("Cookie") String cookie, @Body Portfolio portfolio);
+
+    @Headers({"Content-Type: application/json"})
+    @PATCH("portfolios/{id}")
+    Call<ResponseBody> editPortfolio(@Header("Cookie") String cookie, @Path("id") String id, @Body Portfolio portfolio);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("portfolios/{id}")
+    Call<GetPortfolio> getPortfolio(@Header("Cookie") String userCookie, @Path("id") String id );
+
+    @Headers({"Content-Type: application/json"})
+    @POST("portfolios/{id}/follow")
+    Call<ResponseBody> followPortfolio(@Header("Cookie") String userCookie, @Path("id") String id );
+
+    @Headers({"Content-Type: application/json"})
+    @POST("portfolios/{id}/unfollow")
+    Call<ResponseBody> unfollowPortfolio(@Header("Cookie") String userCookie, @Path("id") String id );
+
+    @Headers({"Content-Type: application/json"})
+    @GET("trading-equipments/alert")
+    Call<ListAlert> getAlerts(@Header("Cookie") String userCookie);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("trading-equipments/alert")
+    Call<ResponseBody> createAlert(@Header("Cookie") String userCookie, @Body Alert alert);
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("trading-equipments/alert/{id}")
+    Call<ResponseBody> deleteeAlert(@Header("Cookie") String userCookie, @Path("id") String id);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("notifications")
+    Call<ListNotification> getNotifications(@Header("Cookie") String userCookie);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("recommendations")
+    Call<Recommendation> getRecommendations(@Header("Cookie") String userCookie);
     @Headers({"Content-Type: application/json"})
     @GET("investments")
     Call<Investment> getInvestment(@Header("Cookie") String userCookie);

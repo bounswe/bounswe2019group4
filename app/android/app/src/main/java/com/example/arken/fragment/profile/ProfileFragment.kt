@@ -11,12 +11,12 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.FollowRequest
+import com.example.arken.model.Notification
 import com.example.arken.model.Profile
 import com.example.arken.util.OnRequestClickedListener
 import com.example.arken.util.RetroClient
@@ -33,6 +33,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
     private lateinit var location_value_textView: TextView
     private lateinit var user_type_textView: TextView
     private lateinit var article_button: Button
+    private lateinit var notification_button: Button
     private lateinit var myinvestment_button: Button
     private lateinit var email_value_textView: TextView
     private lateinit var pred_value_textView: TextView
@@ -48,7 +49,10 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
     private var pendingReqList: MutableList<FollowRequest> = mutableListOf()
     private var followerList: MutableList<FollowRequest> = mutableListOf()
     private var followingList: MutableList<FollowRequest> = mutableListOf()
+    private var notifications: MutableList<Notification> = mutableListOf()
     private lateinit var dialog: PendingUserDialog
+    private lateinit var notificationDialog: NotificationListDialog
+    private lateinit var portfolioButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,11 +76,29 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
         myinvestment_button=view.findViewById(R.id.investment_button)
 
         article_button = view.findViewById(R.id.article_button)
+        notification_button = view.findViewById(R.id.notification_button)
+        portfolioButton = view.findViewById(R.id.portfolio_button)
+
         article_button.setOnClickListener {
             val act = ProfileFragmentDirections.actionProfileFragmentToListArticleFragment()
             act.profile = profile
             findNavController().navigate(act)
         }
+
+        notification_button.setOnClickListener {
+            //if (notifications.size > 0){
+            val dial = NotificationListDialog()
+            dial.show(fragmentManager!!, "notificationFragment")
+            //}
+        }
+
+/*
+        notification_button.setOnClickListener {
+            val dial = NotificationListDialog(notifications,this)
+            notificationDialog.initDataset()
+            notificationDialog.show(fragmentManager!!, "notificationFragment")
+        }
+        */
         if (userId == null) {
             userId = args.userId
         }
@@ -177,6 +199,13 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                     }
                 })
             }
+        }
+
+        portfolioButton.setOnClickListener{
+
+            val act = ProfileFragmentDirections.actionProfileFragmentToPortfolioFragment(userId!!)
+            findNavController().navigate(act)
+
         }
         followerCountText.setOnClickListener {
             if (followerList.size > 0) {
@@ -285,43 +314,47 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                     followerCountText.text = "" + profile.follower
                     followingCountText.text = "" + profile.following
                     followerCount = profile.follower!!
-                    if ((userCookie != "" && realId == userId) || profile.user?.isPublic!! || profile.followStatus == "TRUE") {
-                        user_type_textView.text = if (profile.user?.isTrader!!) {
-                            "Trader"
-                        } else {
-                            "Basic"
-                        }
-                        location_value_textView.text = profile.user?.location
-                        email_value_textView.text = profile.user?.email
-                        followingList = profile.followings!!
-                        followerList = profile.followers!!
-                        pred_value_textView.text = "  "+ profile.user?.predictionRate
-                    }else{
-                        user_type_textView.visibility = View.GONE
-                        location_value_textView.visibility = View.GONE
-                        email_value_textView.visibility = View.GONE
-                    }
 
-                    isPublic = profile.user?.isPublic!!
-                    if (userCookie != "" && realId != userId) {
-                        followButton.visibility = View.VISIBLE
-                        if(profile.followStatus=="FALSE")
-                            followButton.text = "FOLLOW"
-                        else if(profile.followStatus=="TRUE")
-                            followButton.text = "UNFOLLOW"
-                        else
-                            followButton.text = "PENDING"
-                    } else if (userCookie != "") {
-                        pendingReqText.visibility = View.VISIBLE
-                        if(profile.followRequest==null){
-                            pendingReqText.text = "Pending Requests: " + 0
+                    // TODO: add an if to check whether it is the logged in user's profile or not
+                    //notificationDialog.initDataset()
+
+
+                        if ((userCookie != "" && realId == userId) || profile.user?.isPublic!! || profile.followStatus == "TRUE") {
+                            user_type_textView.text = if (profile.user?.isTrader!!) {
+                                "Trader"
+                            } else {
+                                "Basic"
+                            }
+                            location_value_textView.text = profile.user?.location
+                            email_value_textView.text = profile.user?.email
+                            followingList = profile.followings!!
+                            followerList = profile.followers!!
+                            pred_value_textView.text = "  " + profile.user?.predictionRate
+                        } else {
+                            user_type_textView.visibility = View.GONE
+                            location_value_textView.visibility = View.GONE
+                            email_value_textView.visibility = View.GONE
                         }
-                        else {
-                            pendingReqText.text = "Pending Requests: " + profile.followRequest
+
+                        isPublic = profile.user?.isPublic!!
+                        if (userCookie != "" && realId != userId) {
+                            followButton.visibility = View.VISIBLE
+                            if (profile.followStatus == "FALSE")
+                                followButton.text = "FOLLOW"
+                            else if (profile.followStatus == "TRUE")
+                                followButton.text = "UNFOLLOW"
+                            else
+                                followButton.text = "PENDING"
+                        } else if (userCookie != "") {
+                            pendingReqText.visibility = View.VISIBLE
+                            if (profile.followRequest == null) {
+                                pendingReqText.text = "Pending Requests: " + 0
+                            } else {
+                                pendingReqText.text = "Pending Requests: " + profile.followRequest
+                            }
+                            article_button.visibility = View.VISIBLE
+                            pendingReqList = profile.followRequests
                         }
-                        article_button.visibility = View.VISIBLE
-                        pendingReqList = profile.followRequests
-                    }
 
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()

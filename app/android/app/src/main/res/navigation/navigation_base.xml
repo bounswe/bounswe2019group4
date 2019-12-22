@@ -29,6 +29,12 @@
         <action
             android:id="@+id/action_eventListFragment_to_listArticleFragment"
             app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_portfolioFragment2"
+            app:destination="@id/portfolioFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -60,6 +66,9 @@
         <action
             android:id="@+id/action_listCurrentFragment_to_listArticleFragment"
             app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
     </fragment>
     <fragment
         android:id="@+id/currencyFragment"
@@ -89,6 +98,9 @@
             android:id="@+id/action_profileFragment_to_listArticleFragment"
             app:destination="@id/listArticleFragment" />
         <action
+            android:id="@+id/action_profileFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+        <action
             android:id="@+id/action_profileFragment_to_investmentFragment"
             app:destination="@id/investmentFragment" />
     </fragment>
@@ -115,6 +127,9 @@
         <action
             android:id="@+id/action_searchFragment_to_currencyFragment"
             app:destination="@id/currencyFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
 
     </fragment>
     <fragment
@@ -145,6 +160,9 @@
         <action
             android:id="@+id/action_listArticleFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
     </fragment>
     <dialog
         android:id="@+id/articleDialogFragment"
@@ -185,5 +203,30 @@
         <argument
             android:name="ibandefault"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/portfolioFragment"
+        android:name="com.example.arken.fragment.portfolio.PortfolioFragment"
+        android:label="fragment_portfolio"
+        tools:layout="@layout/fragment_portfolio">
+        <argument
+            android:name="userId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>
