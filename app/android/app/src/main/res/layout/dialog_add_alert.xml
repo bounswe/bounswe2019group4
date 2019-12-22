@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:padding="24dp">
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        style="@style/style_editText"
+        android:id="@+id/add_alert_edittext"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+    
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/alert_isHigher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_alert_edittext"
+        android:layout_margin="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lower"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/alert_isHigher"
+        app:layout_constraintTop_toTopOf="@id/alert_isHigher"
+        app:layout_constraintEnd_toStartOf="@id/alert_isHigher"
+        android:layout_margin="12dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Higher"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/alert_isHigher"
+        app:layout_constraintTop_toTopOf="@id/alert_isHigher"
+        app:layout_constraintStart_toEndOf="@id/alert_isHigher"
+        android:layout_margin="12dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/filter_button_background"
+        android:id="@+id/add_alert_button"
+        app:layout_constraintTop_toBottomOf="@id/alert_isHigher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="12dp"
+        android:textColor="@color/colorWhite"
+        android:text="Add"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

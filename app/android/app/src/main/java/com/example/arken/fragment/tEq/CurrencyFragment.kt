@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -22,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anychart.AnyChartView
 import com.example.arken.R
 import com.example.arken.fragment.comment.ListCommentFragment
+import com.example.arken.fragment.profile.PendingUserDialog
+import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.tradingEquipment.Currency
 import com.example.arken.util.CurrencyValueAdapter
 import com.example.arken.viewModel.TradingEquipmentViewModel
@@ -44,6 +47,7 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var currencyValueAdapter: CurrencyValueAdapter
     private lateinit var name: String
+    private lateinit var alertButton:ImageButton
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,9 +68,11 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
         predictionUpButton = view.findViewById(R.id.prediction_upButton)
         predictionValue = view.findViewById(R.id.predictionRate)
         followButton = view.findViewById(R.id.follow_button)
+        alertButton = view.findViewById(R.id.alert_button)
         predictionUpButton.setOnClickListener(this)
         predictionDownButton.setOnClickListener(this)
         followButton.setOnClickListener(this)
+        alertButton.setOnClickListener(this)
         recyclerView.setHasFixedSize(true)
         currencyValueAdapter = CurrencyValueAdapter()
         recyclerView.adapter = currencyValueAdapter
@@ -127,6 +133,21 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
             } else {
                 Toast.makeText(context, "You need to login to use this action", Toast.LENGTH_SHORT)
                     .show()
+            }
+
+            R.id.alert_button -> if (loggedIn) {
+                var str = currencyName.text.toString()
+                if(str == "EUR"){
+                    str = "EUR/USD"
+                }
+                else{
+                    str+="/EUR"
+                }
+                val dialog = AlertListDialog(currencyName.text.toString(), currencyValue.text.toString().toDouble())
+                dialog.show(fragmentManager!!, "alertFragment")
+            } else {
+                Toast.makeText(context, "You need to login to use this action", Toast.LENGTH_SHORT)
+                .show()
             }
         }
     }
