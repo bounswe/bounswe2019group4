@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
+import com.example.arken.fragment.comment.ListCommentFragment
 import com.example.arken.model.Article
 import com.example.arken.model.ArticleCreateRequest
 import com.example.arken.model.ArticleRateRequest
@@ -21,7 +22,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
+/*
+1) comment ekle
+2) resim ekle imageview en alta
+3) annotation layout oluştur
+4) iğne gibi bir şey ekle yer belirtem açısından
+5) make annotation diye tus olsun tıkladığı yüzdeyi alıp tutalım
+ */
 class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
@@ -36,6 +43,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var totalVotes: TextView
     private val args: ArticleDetailArgs by navArgs()
     private lateinit var prefs: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -104,6 +112,14 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
+        fragmentManager?.beginTransaction()?.add(
+            R.id.list_comment_fragment_article,
+            ListCommentFragment.newInstance(
+                args.articleId,
+                "ARTICLE"
+            ),
+            "commentList"
+        )?.commit()
     }
 private fun refresh(){
     val call: Call<Article> =

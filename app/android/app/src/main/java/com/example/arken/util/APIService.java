@@ -107,6 +107,10 @@ public interface APIService {
     Call<ResponseBody> deleteEventComment(@Header("Cookie") String userCookie, @Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
+    @DELETE("comments/article/{id}")
+    Call<ResponseBody> deleteArticleComment(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
     @DELETE("comments/trading-equipment/{id}")
     Call<ResponseBody> deleteTEComment(@Header("Cookie") String userCookie, @Path("id") String k);
 
