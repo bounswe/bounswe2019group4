@@ -1,5 +1,6 @@
 package com.example.arken.util;
 
+import com.example.arken.model.Alert;
 import com.example.arken.model.Article;
 import com.example.arken.model.ArticleCreateRequest;
 import com.example.arken.model.ArticleRateRequest;
@@ -10,6 +11,7 @@ import com.example.arken.model.EventWithComment;
 import com.example.arken.model.GetPortfolio;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
+import com.example.arken.model.ListAlert;
 import com.example.arken.model.ListArticle;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.LoginUser;
@@ -145,6 +147,9 @@ public interface APIService {
     Call<Article> getArticle(
             @Header("Cookie") String userCookie, @Path("id") String article
     );
+    @Headers({"Content-Type: application/json"})
+    @GET("profile/cancel/{id}")
+    Call<ResponseBody> cancelReq(@Header("Cookie") String userCookie, @Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
     @DELETE("articles/{id}")
@@ -189,4 +194,16 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @POST("portfolios/{id}/unfollow")
     Call<ResponseBody> unfollowPortfolio(@Header("Cookie") String userCookie, @Path("id") String id );
+  
+    @Headers({"Content-Type: application/json"})
+    @GET("trading-equipments/alert")
+    Call<ListAlert> getAlerts(@Header("Cookie") String userCookie);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("trading-equipments/alert")
+    Call<ResponseBody> createAlert(@Header("Cookie") String userCookie, @Body Alert alert);
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("trading-equipments/alert/{id}")
+    Call<ResponseBody> deleteeAlert(@Header("Cookie") String userCookie, @Path("id") String id);
 }

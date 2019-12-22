@@ -8,29 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
+import com.example.arken.fragment.event.ListEventFragmentDirections
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
+import com.example.arken.fragment.tEq.ListCurrentFragmentDirections
 import com.example.arken.model.Comment
 import com.example.arken.model.Event
 import com.example.arken.model.EventWithComment
 import com.example.arken.model.tradingEquipment.Currency
 import com.example.arken.util.CommentAdapter
-import com.example.arken.util.OnCommentDeletedListener
+import com.example.arken.util.OnCommentClickedListener
 import com.example.arken.util.RetroClient
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/*
-    1)teye comment ekleme
-    2) guest ise comment yazma yok
-    3) dataset yenileme
- */
-
 class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
-    OnCommentDeletedListener {
+    OnCommentClickedListener {
 
     private lateinit var recyclerView: RecyclerView
     private var dataset: MutableList<Comment> = mutableListOf()
@@ -204,10 +201,22 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
         }
 
     }
+    override fun onUserNameClicked(userId: String) {
+        if(findNavController().currentDestination?.id == R.id.eventFragment){
+            findNavController().popBackStack()
+            val act = ListEventFragmentDirections.actionEventListFragmentToProfileFragment(userId)
+            findNavController().navigate(act)
+        }
+        else if(findNavController().currentDestination?.id == R.id.currencyFragment){
+            findNavController().popBackStack()
+            val act = ListCurrentFragmentDirections.actionListCurrentFragmentToProfileFragment(userId)
+            findNavController().navigate(act)
+        }
+
+    }
 
     companion object {
         private val TAG = "RecyclerViewFragment"
-        private val KEY_LAYOUT_MANAGER = "layoutManager"
         fun newInstance(related: String, about: String): ListCommentFragment {
             val instance = ListCommentFragment()
             instance.related = related
