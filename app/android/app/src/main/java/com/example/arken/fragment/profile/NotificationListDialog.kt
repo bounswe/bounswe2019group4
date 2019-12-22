@@ -30,7 +30,8 @@ class NotificationListDialog : DialogFragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_listnotification, container)
         recyclerView = rootView.findViewById(R.id.notification_recyclerView)
-        recyclerView.adapter = NotificationAdapter(notifications)
+        notificationAdapter = NotificationAdapter(notifications)
+        recyclerView.adapter = notificationAdapter
 
         this.dialog?.setTitle("Notifications")
 
