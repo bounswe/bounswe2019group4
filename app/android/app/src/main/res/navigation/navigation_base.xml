@@ -203,6 +203,24 @@
         <argument
             android:name="ibandefault"
             app:argType="string" />
+        <action
+            android:id="@+id/action_investmentFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_investmentFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_investmentFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_investmentFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+        <action
+            android:id="@+id/action_investmentFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_investmentFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment
