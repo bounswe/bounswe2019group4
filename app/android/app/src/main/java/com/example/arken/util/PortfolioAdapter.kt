@@ -47,6 +47,8 @@ class PortfolioAdapter(
             if (mode == 0) {
                 eyeButton.visibility = View.GONE
                 userName.visibility = View.GONE
+                editButton.visibility = View.VISIBLE
+                deleteButton.visibility = View.VISIBLE
             }
             else if(mode == 1){
                 eyeButton.visibility = View.INVISIBLE

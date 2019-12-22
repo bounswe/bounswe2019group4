@@ -127,6 +127,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_listArticleFragment_to_eventListFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_eventListFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_eventListFragment)
             }
         } else if (index == 1) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -148,6 +150,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_listArticleFragment_to_listCurrentFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_listCurrentFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_listCurrentFragment)
             }
         } else if (index == 2) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -166,6 +170,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_listArticleFragment_to_searchFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_searchFragment)
+            } else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_searchFragment)
             }
         } else if (index == 4) {
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
@@ -198,6 +204,11 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                     ArticleDetailDirections.actionArticleDetailToProfileFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             }
+            else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                val act =
+                    PortfolioFragmentDirections.actionPortfolioFragmentToProfileFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            }
         } else if (index == 3) {
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
                 .getString("userId", "defaultId")
@@ -220,6 +231,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_listCurrentFragment_to_listArticleFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_eventListFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
+                findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_listArticleFragment)
             }
         } else if(index == 5){
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
@@ -229,27 +242,28 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(act)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
                 val act =
-                    ListCurrentFragmentDirections.actionListCurrentFragmentToProfileFragment(id!!)
+                    ListCurrentFragmentDirections.actionListCurrentFragmentToPortfolioFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.eventFragment) {
                 findNavController(fragment!!).popBackStack()
-                val act = ListEventFragmentDirections.actionEventListFragmentToProfileFragment(id!!)
+                val act = ListEventFragmentDirections.actionEventListFragmentToPortfolioFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.searchFragment) {
-                val act = SearchFragmentDirections.actionSearchFragmentToProfileFragment(id!!)
+                val act = SearchFragmentDirections.actionSearchFragmentToPortfolioFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.currencyFragment) {
                 findNavController(fragment!!).popBackStack()
                 val act =
-                    ListCurrentFragmentDirections.actionListCurrentFragmentToProfileFragment(id!!)
+                    ListCurrentFragmentDirections.actionListCurrentFragmentToPortfolioFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.listArticleFragment) {
                 val act =
-                    ListArticleFragmentDirections.actionListArticleFragmentToProfileFragment(id!!)
+                    ListArticleFragmentDirections.actionListArticleFragmentToPortfolioFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.articleDetail) {
+                findNavController(fragment!!).popBackStack()
                 val act =
-                    ArticleDetailDirections.actionArticleDetailToProfileFragment(id!!)
+                    ListArticleFragmentDirections.actionListArticleFragmentToPortfolioFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             }
             else if(findNavController(fragment!!).currentDestination!!.id == R.id.profileFragment){
