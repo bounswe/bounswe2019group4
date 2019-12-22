@@ -44,9 +44,9 @@ module.exports.postArticle = async (request, response) => {
   
     // Article instance to add to the database
     let article = new Article({
+      imageId: Math.floor(Math.random() * 10) + 1,
       ...request.body,
       userId: request.session['user']._id,
-      imageId: Math.floor(Math.random() * 10) + 1,
       date: new Date()
     });
 
