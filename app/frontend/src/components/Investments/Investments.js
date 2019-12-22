@@ -323,14 +323,20 @@ class Investments extends Component {
                             <List>
                                 {investments.histories.slice((this.state.shownPage-1)*6,this.state.shownPage*6).map(investment => {
                                     let profit=Math.round(investment.profit*1000)/1000;
+                                    let type=investment.type;
+                                    let rate=(Math.round(investment.fromRate*10000)/10000);
+                                    let current=Math.round(investments.currentRates.find(x=>x.from===investment.currency).rate*10000)/10000;
                                     return <List.Item style={{marginBottom:7}}>
                                         <List.Icon inverted name="long arrow alternate right" />
                                         <List.Content>
-                                        <List.Header style={{color: "#c9c9c9"}}>{investment.text.slice(0, -1) +" "+((investment.type==="SELL"||investment.type==="BUY")?("from rate "+Math.round(investment.fromRate*1000)/1000):"")}
+                                        <List.Header style={{color: "#c9c9c9"}}>{investment.text}
 
-                                        {
-                                            profit>0?<List.Icon style={{marginLeft:10}} color={"green"} name={"euro"} ><span style={{marginLeft:3}}>{profit}</span></List.Icon>:profit<0?<List.Icon style={{marginLeft:10}} color={"red"} name={"euro"} ><span style={{marginLeft:3}}>{profit}</span></List.Icon>:null
-                                        }
+                                            {type==="BUY"?
+                                                <Label style={{marginLeft: 10}} color={"grey"}>Buying / Current Rate: {rate+" / "+current}</Label>:type==="SELL"?<Label style={{marginLeft: 10}} color={"grey"}>Selling / Current Rate: {rate+" / "+current}</Label>:null
+                                            }
+                                            {
+                                                profit>0?<List.Icon style={{marginLeft:10}} color={"green"} name={"euro"} ><span style={{marginLeft:3}}>{profit}</span></List.Icon>:profit<0?<List.Icon style={{marginLeft:10}} color={"red"} name={"euro"} ><span style={{marginLeft:3}}>{profit}</span></List.Icon>:null
+                                            }
 
                                         </List.Header>
                                         <List.Description style={{color: "grey",fontSize:12}}>{moment(investment.date).format("DD/MM/YYYY HH:mm")}</List.Description>
