@@ -27,6 +27,7 @@ class PortfolioAdapter(
         private val editButton: ImageView = v.findViewById(R.id.portfolio_edit)
         private val eyeButton: ImageView = v.findViewById(R.id.portfolio_eye)
         private val userName:TextView = v.findViewById(R.id.portfolio_userName)
+        private lateinit var pAdapter:PortfolioTEAdapter
 
         fun bind(
             portfolio: Portfolio,
@@ -74,9 +75,9 @@ class PortfolioAdapter(
                 arr = mutableListOf()
 
             }
-            val pAdapter = PortfolioTEAdapter(arr!!, this)
+            pAdapter = PortfolioTEAdapter(arr, this)
+            pAdapter.notifyDataSetChanged()
             recyclerView.adapter = pAdapter
-            recyclerView.adapter?.notifyDataSetChanged()
         }
     }
 
@@ -93,8 +94,8 @@ class PortfolioAdapter(
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        val comment = dataSet[position]
-        viewHolder.bind(comment, portfolioListener, position, mode, followingPortfolioIds)
+        val portfolio = dataSet[position]
+        viewHolder.bind(portfolio, portfolioListener, position, mode, followingPortfolioIds)
     }
 
     // Return the size of your dataset (invoked by the layout manager)

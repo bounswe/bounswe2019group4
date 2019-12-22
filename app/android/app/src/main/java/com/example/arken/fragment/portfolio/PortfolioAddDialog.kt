@@ -67,13 +67,11 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
         fun onDialogPositiveClick()
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // Build the dialog and set up the button click handlers
-        val builder = AlertDialog.Builder(activity!!)
-        val inflater = requireActivity().layoutInflater
-
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.dialog_create_portfolio, null)
         recyclerView = view.findViewById(R.id.portfolio_te_list)
         TEAdapter = PortfolioTEAdapter(selectedTEs, this)
@@ -127,6 +125,7 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
         }
 
         addButton = view.findViewById(R.id.portfolio_add_button)
+        addButton.text = text
         addButton.setOnClickListener{
             if(editTextTitle.text.toString().trim() == ""){
                 editTextTitle.error = "Please type a title"
@@ -207,8 +206,6 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
         cancelButton.setOnClickListener{
             dialog?.dismiss()
         }
-
-
-        return builder.create()
+        return view
     }
 }
