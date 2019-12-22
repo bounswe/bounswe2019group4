@@ -123,7 +123,7 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                                 followingList!!.add(port.PortfolioId)
                             }
                             for(port in arr){
-                                val getP = GetPortfolio()
+                                val getP = GetPortfolio(portfolioAdapter)
                                 getP.port = port
                                 getP.userCookie = userCookie
                                 var port2 = getP.execute().get()
@@ -265,9 +265,10 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
     }
 
 
-    class GetPortfolio : AsyncTask<FollowingPortfolio, Void, Portfolio>() {
+    class GetPortfolio (var portfolioAdapter: PortfolioAdapter): AsyncTask<FollowingPortfolio, Void, Portfolio>() {
         var port: FollowingPortfolio? = null
         var userCookie:String? = null
+        var followedDataSet: MutableList<Portfolio> = mutableListOf()
         override fun doInBackground(vararg params: FollowingPortfolio?): Portfolio? {
             val callPort: Call<com.example.arken.model.GetPortfolio> =
                 RetroClient.getInstance().apiService.getPortfolio(userCookie, port?.PortfolioId)
@@ -280,14 +281,19 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                         p?.username = port?.userName
                         p?.surname = port?.userSurname
                         p?.tradingEqs = response.body()!!.tradingEqs
+portfolioAdapter.dataSet.add(p!!)
+                        portfolioAdapter.notifyDataSetChanged()
 
                     } else {
                         Log.i("getPort", "err")
+
+
                     }
                 }
 
                 override fun onFailure(call: Call<com.example.arken.model.GetPortfolio>, t: Throwable) {
                     Log.i("getPort", "err")
+
                 }
             })
             return p
