@@ -178,7 +178,7 @@ class Comments extends Component{
 
                     {this.state.user&&this.state.user.loggedIn?
                         (<Form >
-                            <Form.TextArea maxLength={1000} style={{borderWidth:1,borderColor:"gray"}} value={this.state.text}  onChange={(item)=>this.setState({rest:1000-item.target.value.length,text:item.target.value})}/>
+                            <Form.TextArea maxLength={1000} style={{borderWidth:1,borderColor:"gray",backgroundColor:"lightgrey",width:"80%"}} value={this.state.text}  onChange={(item)=>this.setState({rest:1000-item.target.value.length,text:item.target.value})}/>
 
                             <div style={{display:"flex",flex:1}}>
                                 <div style={{display:"flex",flexDirection:"row",flex:3}}/>
