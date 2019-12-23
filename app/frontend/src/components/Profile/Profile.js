@@ -229,10 +229,10 @@ class Profile extends Component {
                                     {user.followingPortfolios && user.followingPortfolios.length>0 ?
                                         user.followingPortfolios.map(portfolio => {
                                             return (
-                                                <Card style={{width: "100%"}} onClick={()=>{history.push("/portfolios/"+portfolio._id)}}>
+                                                <Card style={{background: "rgba(255,255,255,0.15)",width: "100%"}} onClick={()=>{history.push("/portfolios/"+portfolio._id)}}>
                                                     <Card.Content>
-                                                        <Card.Header>{portfolio.title}</Card.Header>
-                                                        <Card.Description>{portfolio.definition}</Card.Description>
+                                                        <Card.Header style={{color: "#c9c9c9"}}>{portfolio.title} <span style={{fontSize:13}}> by <u>{portfolio.username+" "+portfolio.surname}</u> </span></Card.Header>
+                                                        <Card.Description style={{color: "#c9c9c9"}}>{portfolio.definition}</Card.Description>
                                                     </Card.Content>
 
                                                 </Card>
