@@ -153,7 +153,7 @@ class Portfolio_Details extends Component {
                 <div style={{display:"flex",justifyContent:"center"}}>
                     {user!==null&&portfolio.userId!==user._id?
                         <Segment style={{margin: 20, width: "50%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
-                            <Header style={{color:"grey",marginBottom:50,textAlign:"left"}}>{portfolio.title}<Button style={{float:"right"}} basic color="blue" onClick={this.follow}>{this.state.followed==="TRUE"?"Unfollow":"Follow"}</Button></Header>
+                            <Header style={{color:"grey",marginBottom:50,textAlign:"left"}}>{portfolio.title}<span style={{fontSize:15}}> by <u style={{cursor:"pointer"}} onClick={()=>history.push("/profile/"+portfolio.userId)}>{portfolio.username}</u></span><Button style={{float:"right"}} basic color="blue" onClick={this.follow}>{this.state.followed==="TRUE"?"Unfollow":"Follow"}</Button></Header>
 
 
                             <Segment style={{backgroundColor:"grey",color:"white",marginBottom:50}}>
