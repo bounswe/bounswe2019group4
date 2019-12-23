@@ -142,8 +142,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                 MotionEvent.ACTION_DOWN -> {
                     if(mode == 0){
                         annotation = Annotation()
-                        annotation!!.x = ((motionEvent.rawX - imageView.x) / imageView.width).toDouble()
-                        annotation!!.y = ((motionEvent.rawY - imageView.y)/ imageView.height).toDouble()
+                        annotation!!.x = ((motionEvent.x - imageView.x) / imageView.width).toDouble()
+                        annotation!!.y = ((motionEvent.y - imageView.y)/ imageView.height).toDouble()
                         val lp = RelativeLayout.LayoutParams(50, 50)
                         if(icon!= null){
                             relativeLayout.removeView(icon)
@@ -168,8 +168,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                 }
                 MotionEvent.ACTION_UP -> {
                     if(mode== 0 && annotation!= null){
-                        val placeX = ((motionEvent.rawX - imageView.x) / imageView.width).toDouble()
-                        val placeY = ((motionEvent.rawY - imageView.y) / imageView.height).toDouble()
+                        val placeX = ((motionEvent.x - imageView.x) / imageView.width).toDouble()
+                        val placeY = ((motionEvent.y - imageView.y) / imageView.height).toDouble()
                         annotation!!.w = (placeX - annotation!!.x)
                         annotation!!.h = (placeY - annotation!!.y)
                     }
@@ -177,8 +177,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                 }
                 MotionEvent.ACTION_MOVE -> {
                     if(mode == 0 && annotation!=null ){
-                        val placeX = ((motionEvent.rawX - imageView.x) / imageView.width).toDouble()
-                        val placeY = ((motionEvent.rawY - imageView.y) / imageView.height).toDouble()
+                        val placeX = ((motionEvent.x - imageView.x) / imageView.width).toDouble()
+                        val placeY = ((motionEvent.y - imageView.y) / imageView.height).toDouble()
                         if(placeX > annotation!!.x && placeY > annotation!!.y){
                             val lp = RelativeLayout.LayoutParams(((placeX - annotation!!.x) * imageView.width).toInt(), ((placeY - annotation!!.y) * imageView.height).toInt())
                             editText.layoutParams = lp

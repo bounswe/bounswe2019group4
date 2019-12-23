@@ -2,7 +2,6 @@ package com.example.arken.util;
 
 import com.example.arken.model.AnnoCreateRequest;
 import com.example.arken.model.Annotation;
-import com.example.arken.model.ListAnnotations;
 
 import org.json.JSONObject;
 
