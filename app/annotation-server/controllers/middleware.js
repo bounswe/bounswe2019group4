@@ -17,7 +17,11 @@ module.exports.jsonld = async (req, res, next) => {
     next();
   } else if (isCorrectContentType) {
     if (req.body) {
-      req.body = JSON.parse(await new TextDecoder().decode(req.body));
+      try {
+        req.body = JSON.parse(await new TextDecoder().decode(req.body));
+      } catch (error) {
+        return res.sendStatus(400);
+      }
     }
     next();
   } else {
