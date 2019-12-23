@@ -31,13 +31,13 @@ class Annotation {
         body.put("username", username)
         body.put("surname", surname)
         body.put("type", type)
-        target.put("source", articleId)
         selector.put("measurement", String.format("xywh=percent:%.3f,%.3f,%.3f,%.3f", x, y, w, h))
         selector.put("startIndex", startIndex)
         selector.put("finishIndex", finishIndex)
-        body.put("selector", selector)
+        target.put("selector", selector)
         jo.put("body", body)
         jo.put("target", target)
+        jo.put("articleId", articleId)
         return jo
     }
 
@@ -53,11 +53,11 @@ class Annotation {
             ta.username = jsonObject.getJSONObject("body").getString("username")
             ta.surname = jsonObject.getJSONObject("body").getString("surname")
             ta.type= jsonObject.getJSONObject("body").getString("type")
-            ta.articleId = jsonObject.getJSONObject("target").getString("source")
-            ta.startIndex = jsonObject.getJSONObject("body").getJSONObject("selector").getInt("startIndex")
-            ta.finishIndex = jsonObject.getJSONObject("body").getJSONObject("selector").getInt("finishIndex")
+            ta.articleId = jsonObject.getString("articleId")
+            ta.startIndex = jsonObject.getJSONObject("target").getJSONObject("selector").getInt("startIndex")
+            ta.finishIndex = jsonObject.getJSONObject("target").getJSONObject("selector").getInt("finishIndex")
             val measurement =
-                jsonObject.getJSONObject("body").getJSONObject("selector").getString("measurement")
+                jsonObject.getJSONObject("target").getJSONObject("selector").getString("measurement")
             val pat = Pattern.compile("xywh=percent:(.*),(.*),(.*),(.*)")
             val mat = pat.matcher(measurement)
             if (mat.find() == false)
