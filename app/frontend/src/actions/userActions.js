@@ -94,6 +94,19 @@ export function editPortfolio(path,params) {
         payload: userService.editPortfolio(path,params)
     };
 };
+export function deletePortfolio(path) {
+    return {
+        type:"PORTFOLIO_DELETE",
+        payload: userService.deletePortfolio(path)
+    };
+};
+
+export function followPortfolio(path) {
+    return {
+        type:"PORTFOLIO_FOLLOW",
+        payload: userService.followPortfolio(path)
+    };
+};
 
 export function createPortfolio(params) {
     return {

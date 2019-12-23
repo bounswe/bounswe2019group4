@@ -24,6 +24,9 @@ import {normalizeDate} from "../Events/Events";
 import Portfolio_photo from "../../assets/Portfolio_photo.png"
 import Loading from "../Loading";
 import history from "../../_core/history";
+import {colorBG, colorPrimary} from "../../utils/constants/Colors";
+import tradingEquipment from "../../utils/constants/tradingEquipment";
+import user from "../../reducers/user";
 class Portfolio_Details extends Component {
 
     constructor(props) {
@@ -58,7 +61,9 @@ class Portfolio_Details extends Component {
                 { key: 'FB', text: 'FB', value: 'FB' },
             ],
             tradingEqs:[],
-            isPrivate:false
+            isPrivate:false,
+            trEq:[],
+            followed:"FALSE"
         }
     }
 
@@ -81,178 +86,174 @@ class Portfolio_Details extends Component {
     async getPortfolio(){
 
         await this.props.getPortfolio("/"+this.props.match.params.id).then(async result=> {
-                let newportfolio=result.value;
-                this.setState({portfolio:newportfolio,text:newportfolio.text,titletext:newportfolio.title,tradingEqs:newportfolio.tradingEqs,isPrivate:newportfolio.isPrivate})
+
+                let newportfolio=result.value.portfolio;
+                this.setState({portfolio:newportfolio,trEq:result.value.tradingEqs,followed:result.value.followStatus})
 
             }
         )
 
     }
+    onDropChange=(e,{value})=>{
+        this.setState({trEq:value})
+        //console.log(this.state.tradingEqs)
+    };
+    onChange=(e)=>{
+        let val=e.target.value;
+        if(e.target.name==="isPrivate"){
+           val=e.target.checked;
+        }
+        this.setState({portfolio:{...this.state.portfolio,[e.target.name]:val}})
+    };
 
     onSubmit=async ()=>{
-        let {text,titletext,isPrivate, tradingEqs}=this.state;
-        if(text!==""&&titletext!=="") {
+        let {portfolio,trEq}=this.state;
+        if(portfolio.title.trim()!==""&&portfolio.definition.trim()!=="") {
             let param = {
-                text: text,
-                title: titletext,
-                isPrivate : isPrivate,
-                tradingEqs : tradingEqs
+                definition:portfolio.definition,
+                title: portfolio.title,
+                isPrivate : portfolio.isPrivate,
+                tradingEqs : trEq
             };
             this.setState({editloading: true});
-            await this.props.createPortfolio(param).then(async() => {
+            await this.props.editPortfolio("/"+portfolio._id,param).then(async() => {
                 this.setState({editloading: false, dimmer: true});
                 setTimeout(() => {this.setState({dimmer: false});
                     history.push("/profile")
                 }, 2000);
             })
         }else{
-            alert("Title or text should not be empty!");
+            alert("Title or definition should not be empty!");
         }
     };
 
+    deletePortfolio=async()=>{
+        await this.props.deletePortfolio("/"+this.state.portfolio._id).then(()=>{
+            history.push("/profile");
+        }).catch(e=>alert("Portfolio could not be deleted!"))
+
+    };
+
+    follow=async()=>{
+        await this.props.followPortfolio("/"+this.state.portfolio._id+"/"+(this.state.followed==="TRUE"?"unfollow":"follow")).then(()=>{
+
+            this.getPortfolio();
+        })
+    };
+
     render() {
-        const Portfolio  = this.state.Portfolio;
+        const portfolio  = this.state.portfolio;
         let user=this.state.user;
         let active=this.state.dimmer;
         return (
 
-            Portfolio?(
-                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-                    <div style={{width:"100%"}}>
-                        <Grid>
+            portfolio?(
 
-                            <Grid.Column width={4} >
-                                <Segment  textAlign="left" style={{marginRight:50,marginLeft:20,display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
-                                    {<Image size="medium" src={Portfolio_photo} />}
 
-                                    <List relaxed>
-                                        <List.Item>
-                                            <List.Icon name={"user"}/>
-                                            <List.Content>
-                                                <a href={"/profile/"+Portfolio.userId}>{Portfolio.username+" "+Portfolio.usersurname}</a>
-                                            </List.Content>
-                                        </List.Item>
-                                        <List.Item>
-                                            <List.Icon name={"calendar alternate"}/>
-                                            <List.Content>
-                                                {normalizeDate(Portfolio.date)}
-                                            </List.Content>
-                                        </List.Item>
+                <div style={{display:"flex",justifyContent:"center"}}>
+                    {user!==null&&portfolio.userId!==user._id?
+                        <Segment style={{margin: 20, width: "50%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                            <Header style={{color:"grey",marginBottom:50,textAlign:"left"}}>{portfolio.title}<Button style={{float:"right"}} basic color="blue" onClick={this.follow}>{this.state.followed==="TRUE"?"Unfollow":"Follow"}</Button></Header>
 
-                                    </List>
 
+                            <Segment style={{backgroundColor:"grey",color:"white",marginBottom:50}}>
+                                {portfolio.definition}
+                            </Segment>
+                            <Segment  textAlign="left" style={{display:"flex",flexDirection:"column",alignItems:"center",borderWidth:0.5,borderRadius:10,borderColor:"lightgrey",backgroundColor:colorBG}}>
+                                <Header style={{color:"white",borderWidth:1,borderColor:"lightgrey"}}>Trading Equipment</Header>
+                                <Segment style={{backgroundColor:colorBG}}>
+                                <List relaxed >
+
+                                {
+                                    this.state.trEq.map(item=>{
+
+                                        return(
+                                            <List.Item onClick={()=>history.push({pathname:"/trading-equipment",state:{currency:item}})} style={{color:"white",cursor:"pointer"}}>
+                                                <List.Icon name={tradingEquipment.find(x=>x.value===item).icon} />
+                                                <List.Content >{item==="EUR"?(item+"/USD"):(item+"/EUR")}</List.Content>
+                                            </List.Item>
+                                        )
+
+                                    })
+
+                                }
+                                </List>
                                 </Segment>
-                            </Grid.Column>
-                            <Grid.Column width={10}>
-                                <Segment raised piled padded compact style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-                                    <div style={{margin:20,fontFamily:"timesnewroman",fontSize:15,width:"80%"}}>
+                            </Segment>
+                        </Segment>:
+                        <div style={{display:"flex",justifyContent:"center"}}>
+                            <Segment style={{margin: 20,background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
 
-                                        {user && user.loggedIn&&Portfolio.userId===user._id ? (
-                                                <Header style={{fontFamily: "timesnewroman"}}>
-                                                    Edit your Portfolio
-                                                </Header>
-                                            ) :
-                                            (
-                                                <Header style={{fontFamily: "timesnewroman"}}>
-                                                    {Portfolio.title}
-                                                </Header>
-                                            )
-                                        }
+                                        <Header style={{fontFamily: "timesnewroman",color:"grey",fontSize:30}}>
+                                            Update Portfolio
+                                        </Header>
+
+
+                                <div style={{display:"flex",flexDirection:"row"}}>
 
 
 
+                                    {user!==null && user.loggedIn ? (
+                                            <Dimmer.Dimmable dimmed={active}>
+                                                <Form
+                                                    loading={this.state.editloading}
+                                                >
+                                                    <Form.Field>
+                                                        <label style={{color:"white"}}>Title</label>
+                                                        <input style={{width:"50%"}} name={"title"} onChange={this.onChange} value={portfolio.title} placeholder='Title' />
+                                                    </Form.Field>
 
-                                        {user && user.loggedIn&&Portfolio.userId===user._id ? (
-                                                <Dimmer.Dimmable dimmed={active}>
-                                                    <Form
-                                                        loading={this.state.editloading}
-                                                    >
+                                                    <Form.Field>
+                                                        <label style={{color:"white"}}>Definition</label>
                                                         <Form.TextArea
-                                                            label={"Title"}
+                                                            name={"definition"}
                                                             style={{borderWidth: 1, borderColor: "gray"}}
-                                                            value={this.state.titletext}
-                                                            onChange={(item) => this.setState({
-                                                                titletext: item.target.value
-                                                            })}
+                                                            value={portfolio.definition}
+                                                            onChange={this.onChange}
                                                         />
-                                                        <Form.TextArea
-                                                            label={"Text"}
-                                                            style={{borderWidth: 1, borderColor: "gray"}}
-                                                            value={this.state.text}
-                                                            onChange={(item) => this.setState({
-                                                                text: item.target.value
-                                                            })}
+                                                    </Form.Field>
+
+                                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center",color:"white"}}>
+
+                                                        Trading Equipments
+
+                                                        <Dropdown
+                                                            style={{marginLeft:5}}
+                                                            placeholder='All'
+                                                            multiple
+                                                            selection
+                                                            search
+                                                            options={tradingEquipment}
+                                                            onChange={this.onDropChange}
+                                                            value={this.state.trEq}
+
                                                         />
+                                                        <div style={{marginLeft:41, marginRight: 14,color:"white"}}>     Do you want to make your Portfolio Private?     </div>
+                                                        <input name={"isPrivate"} style={{width: 20,height: 20}} type="checkbox" defaultChecked={portfolio.isPrivate} onChange={this.onChange} />
+                                                    </div>
 
-                                                        <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+                                                    <Form.Button inverted style={{borderRadius:20,marginTop:20}} onClick={this.onSubmit}>Submit</Form.Button>
+                                                    <Form.Button color={"red"} style={{borderRadius:20,marginTop:20}} onClick={this.deletePortfolio}>Delete Portfolio</Form.Button>
+                                                </Form>
+                                                <Dimmer
+                                                    active={active}
+                                                    onClickOutside={this.handleHide}
+                                                >
+                                                    Your portfolio has been updated!
+                                                </Dimmer>
+                                            </Dimmer.Dimmable>
+                                        )
+                                        : null
+                                    }
 
-                                                            Trading Equipments
+                                </div>
 
-                                                            <Dropdown
-                                                                style={{marginLeft:5}}
-                                                                placeholder='All'
-                                                                multiple
-                                                                selection
-                                                                options={this.state.options}
-                                                                onChange={this.onDropChange}
+                            </Segment>
+                        </div>
 
-                                                            />
-                                                            <div style={{marginLeft:41, marginRight: 14}}>     Do you want to make your Portfolio Private?     </div>
-                                                            <input style={{width: 20,height: 20}} type="checkbox" defaultChecked={this.state.isPrivate} onChange={this.handleChangeChk} />
-                                                        </div>
-
-                                                        <div style={{display: "flex", flex: 1}}>
-                                                            <div style={{display: "flex", flexDirection: "row", flex: 3}}/>
-                                                            <div style={{
-                                                                display: "flex",
-                                                                flexDirection: "row",
-                                                                justifyContent: "center",
-                                                                flex: 3
-                                                            }}>
-
-                                                                <Button onClick={this.onSubmit} content='Submit'
-                                                                        labelPosition='left'
-                                                                        icon={'edit'}
-                                                                        basic color={"black"}
-                                                                />
-                                                            </div>
-                                                            <div style={{
-                                                                fontSize: 14,
-                                                                display: "flex",
-                                                                flexDirection: "row",
-                                                                justifyContent: "flex-end",
-                                                                alignItems: "flex-start",
-                                                                flex: 3
-                                                            }}>
-
-                                                            </div>
-                                                        </div>
-                                                    </Form>
-                                                    <Dimmer
-                                                        active={active}
-                                                        onClickOutside={this.handleHide}
-                                                    >
-                                                        Your Portfolio has been edited!
-                                                    </Dimmer>
-                                                </Dimmer.Dimmable>
-                                            )
-                                            : (
-                                                <p>
-                                                    {Portfolio.text}
-                                                </p>
-
-                                            )
-                                        }
-                                    </div>
-                                </Segment>
-                            </Grid.Column>
-
-                        </Grid>
-
-
-                    </div>
-
+                    }
                 </div>
+
 
             ):(<Loading/>)
 
@@ -266,7 +267,9 @@ const dispatchToProps = dispatch => {
     return {
         getPortfolio: params => dispatch(userActions.getPortfolioDetails(params)),
         userInformation:params=>dispatch(userActions.users(params)),
-        editPortfolio:(path,params)=>dispatch(userActions.editPortfolio(path,params))
+        editPortfolio:(path,params)=>dispatch(userActions.editPortfolio(path,params)),
+        deletePortfolio:(path)=>dispatch(userActions.deletePortfolio(path)),
+        followPortfolio:path=>dispatch(userActions.followPortfolio(path))
     };
 };
 
