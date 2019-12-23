@@ -171,7 +171,7 @@ class Profile extends Component {
                             <Segment style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}  >
                                 <Header style={{color: "#c9c9c9"}}>Articles</Header>
                                 <Divider/>
-                                {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.articles && newProfile.articles.length>0 ?
+                                {newProfile.user && newProfile.articles && newProfile.articles.length>0 ?
                                     newProfile.articles.map(article => {
                                         return (
                                             <Card style={{width: "100%", background: "rgba(255,255,255,0.15)"}} onClick={()=>{history.push("/articles/"+article._id)}}>
@@ -189,8 +189,7 @@ class Profile extends Component {
                                                 </Card.Content>
                                             </Card>
                                         )
-                                    }) : (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <span style={{color: "#c9c9c9"}}>Can't See User's Articles</span>
-                                        : <span style={{color: "#c9c9c9"}}>No Article Created!</span>
+                                    }): <span style={{color: "#c9c9c9"}}>No Article Created!</span>
                                 }
                             </Segment>
                         </Grid.Column>
