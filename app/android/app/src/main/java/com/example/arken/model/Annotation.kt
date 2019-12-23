@@ -52,7 +52,10 @@ class Annotation {
             ta.userId = jsonObject.getJSONObject("body").getString("userId")
             ta.username = jsonObject.getJSONObject("body").getString("username")
             ta.surname = jsonObject.getJSONObject("body").getString("surname")
+            ta.type= jsonObject.getJSONObject("body").getString("type")
             ta.articleId = jsonObject.getJSONObject("target").getString("source")
+            ta.startIndex = jsonObject.getJSONObject("body").getJSONObject("selector").getInt("startIndex")
+            ta.finishIndex = jsonObject.getJSONObject("body").getJSONObject("selector").getInt("finishIndex")
             val measurement =
                 jsonObject.getJSONObject("body").getJSONObject("selector").getString("measurement")
             val pat = Pattern.compile("xywh=percent:(.*),(.*),(.*),(.*)")
