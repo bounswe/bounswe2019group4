@@ -103,6 +103,7 @@ async function profileResponse(user, me, followStatus, TradingEqFollow, Article,
           user: tempUser,
           following: followings.length,
           follower: followers.length,
+          articles,
           followStatus
         }
         return obj
