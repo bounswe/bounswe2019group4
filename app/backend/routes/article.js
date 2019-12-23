@@ -8,6 +8,12 @@ const { ArticleUser } = require('../models/article-user')
 const { validateBody } = require('../controllers/middleware')
 
 /*
+  Get endpoint for articles.
+  Check controller function for more detail
+*/
+router.get('/', modelBinder(Article, 'Article'), articleController.getArticles)
+
+/*
   Post endpoint for article.
   Check controller function for more detail
 */
@@ -43,7 +49,7 @@ router.post('/:id/rate', [
   Get endpoint for article.
   Check controller function for more detail
 */
-router.get('/:id', modelBinder(Article, 'Article'), articleController.getArticle)
+router.get('/:id', modelBinder(ArticleUser, 'ArticleUser'), articleController.getArticle)
 
 /*
   Delete endpoint for article.

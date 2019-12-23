@@ -8,6 +8,8 @@ const { UserFollow } = require('../models/user-follow')
 const { TradingEquipmentFollow } = require('../models/trading-eq-follow')
 const { Article } = require('../models/article')
 const { Portfolio } = require('../models/portfolio')
+const { PortfolioTradingEq } = require('../models/portfolio-tradingEq')
+const { PortfolioFollow } = require('../models/portfolio-follow')
 const { validateBody } = require('../controllers/middleware')
 
 /*
@@ -19,7 +21,9 @@ router.get('/:id', multipleModelBinder([
   [UserFollow, 'UserFollow'],
   [TradingEquipmentFollow, 'TradingEquipmentFollow'],
   [Article, 'Article'],
-  [Portfolio, 'Portfolio']
+  [Portfolio, 'Portfolio'],
+  [PortfolioTradingEq, 'PortfolioTradingEq'],
+  [PortfolioFollow, 'PortfolioFollow']
 ]), profileController.getDetails)
 
 /*
@@ -38,16 +42,22 @@ router.get('/:id/follow', [isAuthenticated, multipleModelBinder([
 router.get('/:id/unfollow', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.unfollowUser)
 
 /*
-  Post endpoint for rejecting user following request.
+  Get endpoint for rejecting user following request.
   Check controller function for more detail
 */
 router.get('/accept/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.acceptRequest)
 
 /*
-  Post endpoint for rejecting user following request.
+  Get endpoint for rejecting user following request.
   Check controller function for more detail
 */
 router.get('/reject/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.rejectRequest)
+
+/*
+  Get endpoint for canceling user following request.
+  Check controller function for more detail
+*/
+router.get('/cancel/:id', [isAuthenticated, modelBinder(UserFollow, 'UserFollow')], profileController.cancelRequest)
 
 
 /*

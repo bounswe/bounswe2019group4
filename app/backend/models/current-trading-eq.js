@@ -28,6 +28,18 @@ let CurrentTradingEquipment = mongoose.model('CurrentTradingEquipment', {
   Date:{
     type: String,
     require: true
+  },
+
+  change:{
+    type: String,
+    require: true,
+    default: "0%"
+  },
+
+  status:{
+    type: String,
+    require: true,
+    default: "noChange"
   }
   
 });

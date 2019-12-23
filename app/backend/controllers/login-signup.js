@@ -62,6 +62,8 @@ module.exports.signup = async (request, response) => {
     
     if(!user.googleId)
       sendVerifyEmail(email, user.token)
+    else 
+      req.session['user'] = doc
 
     return response.send({ _id, name, surname, email, location, isTrader, iban, tckn, isPublic, isVerified, googleId });  // Send only the extracted keys 
   })

@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 let { User } = require('./../models/user.js');  // The connection to the User model in the database
+let { Notification } = require('./../models/notification.js'); 
 
 const {findUserFollows, checkPassword, checkIBAN, checkTCKN} = require('../utils')
 /*
@@ -7,18 +8,47 @@ const {findUserFollows, checkPassword, checkIBAN, checkTCKN} = require('../utils
   Get user id from parameter and responses accordingly.
 */
 
-async function profileResponse(user, me, followStatus, TradingEqFollow, Article, Portfolio) {
+async function profileResponse(user, me, followStatus, TradingEqFollow, Article, Portfolio, PortfolioTradingEq, PortfolioFollow, User) {
   let followings = await findUserFollows({ FollowingId: user._id, status: true })
   let followers = await findUserFollows({ FollowedId: user._id, status: true })
   let followRequests = await findUserFollows({ FollowedId: user._id, status: false})
   let followingTradings = await TradingEqFollow.find({ UserId : user._id })
+  let followingPortfoliosTemp = await PortfolioFollow.find({ UserId : user._id })
   let articles = await Article.find().where('userId').equals(user._id)
-  let portfolios = null
+  let portfoliosBefore = null
+  let followingPortfolios = []
+  let portfolios = []
   if(me){
-    portfolios = await Portfolio.find().where('userId').equals(user._id)
+    portfoliosBefore = await Portfolio.find().where('userId').equals(user._id)   
   }
   else{
-    portfolios = await Portfolio.find({userId: user._id, isPrivate: false})
+    portfoliosBefore = await Portfolio.find({userId: user._id, isPrivate: false})
+  }
+
+  for (const portfolio of portfoliosBefore) {
+    let tradingEqsObj = await PortfolioTradingEq.find({ PortfolioId : portfolio._id})
+    let tradingEqs = []
+    for (const tradingEq of tradingEqsObj) {
+      tradingEqs.push(tradingEq['TradingEq']);
+    }
+    obj = {
+      ...portfolio["_doc"],
+      tradingEqs: tradingEqs
+    }
+    portfolios.push(obj)
+  }
+
+  for(const p of followingPortfoliosTemp){
+    let temp = await Portfolio.find({ _id : p['PortfolioId']})
+    let user = await User.find({_id : temp[0]['userId']})
+    obj = {
+      ...temp[0]["_doc"],
+      userId: user[0]['_id'],
+      username: user[0]['name'],
+      surname: user[0]['surname'],
+      PortfolioId: p['PortfolioId']
+    }
+    followingPortfolios.push(obj)
   }
 
   if(me){ // if profile is mine
@@ -32,7 +62,8 @@ async function profileResponse(user, me, followStatus, TradingEqFollow, Article,
       followRequests,
       followingTradings,
       articles,
-      portfolios
+      portfolios,
+      followingPortfolios
     }
     return obj;
   } else { // if profile is others
@@ -44,7 +75,8 @@ async function profileResponse(user, me, followStatus, TradingEqFollow, Article,
           surname : user.surname, 
           email : user.email, 
           location: user.location,
-          predictionRate: user.predictionRate
+          predictionRate: user.predictionRate,
+          followingPortfolios
         }
 
         obj = {
@@ -56,7 +88,8 @@ async function profileResponse(user, me, followStatus, TradingEqFollow, Article,
           followStatus,
           followingTradings,
           articles,
-          portfolios
+          portfolios,
+          followingPortfolios
       }
       return obj;
       } else { // if profile is private and i am not following right now.
@@ -70,6 +103,7 @@ async function profileResponse(user, me, followStatus, TradingEqFollow, Article,
           user: tempUser,
           following: followings.length,
           follower: followers.length,
+          articles,
           followStatus
         }
         return obj
@@ -77,31 +111,37 @@ async function profileResponse(user, me, followStatus, TradingEqFollow, Article,
   }
 }
 
+
 module.exports.getDetails = async (request, response) => {
   let UserFollow = request.models['UserFollow']
   let User = request.models['User']
   let TradingEqFollow = request.models['TradingEquipmentFollow']
   let Article = request.models['Article']
   let Portfolio = request.models['Portfolio']
+  let PortfolioFollow = request.models['PortfolioFollow']
+  let PortfolioTradingEq = request.models['PortfolioTradingEq']
 
   const requestedUserId = request.params['id']
   const currentUser = request.session['user']
 
   try {
     if(currentUser && currentUser._id == requestedUserId) {  // when the user asks for his own details
-      res = await profileResponse(currentUser, true, null, TradingEqFollow, Article, Portfolio)
+      requestedUser = await User.findOne({ _id : requestedUserId })
+      res = await profileResponse(requestedUser, true, null, TradingEqFollow, Article, Portfolio, PortfolioTradingEq, PortfolioFollow, User)
       return response.send(res);
     } else {  // when the user requested isn't the user logged in himself
       const requestedUser = await User.findOne({ _id : requestedUserId })   // finds the user instance requested if it exists
       if(requestedUser){ // if it exists
         followStatus = 'FALSE'
         if(currentUser){ // if user logged in
-          entry = await UserFollow.findOne({ FollowingId : currentUser._id, FollowedId : requestedUser._id }) // check whether they follow each other
+          entry = await UserFollow.findOne({ FollowingId : request.session['user']._id, FollowedId : requestedUserId }) // check whether they follow each other
           if(entry){ // if following or request sent
             followStatus = entry.status ? 'TRUE' : 'PENDING' 
+          } else {
+            followStatus = 'FALSE'
           }
         }
-        res = await profileResponse(requestedUser, false, followStatus, TradingEqFollow, Article, Portfolio)
+        res = await profileResponse(requestedUser, false, followStatus, TradingEqFollow, Article, Portfolio, PortfolioTradingEq, PortfolioFollow, User)
         return response.send(res);        
       } else {  // when there's no user with given ID
         return response.status(400).send({
@@ -142,7 +182,20 @@ module.exports.followUser = async (request, response) => {
       }
 
     follow.save()
-      .then(doc => {
+      .then(async doc => {
+        let text = request.session['user'].name + " " + request.session['user'].surname + " followed you."
+
+        if(follow.status == false)
+          text = request.session['user'].name + " " + request.session['user'].surname + " wants to follow you."
+
+        let notification = new Notification({
+          userId: followedId,
+          text: text,
+          date: new Date()
+        })
+      
+        await notification.save()
+        
         return response.status(204).send();
       }).catch(error => {
         return response.status(400).send(error);
@@ -196,7 +249,15 @@ module.exports.acceptRequest = async (request, response) => {
 
     // Save it into user-follow table
     req.save() 
-      .then(doc => {
+      .then(async doc => {
+        let notification = new Notification({
+          userId: req.FollowingId,
+          text: request.session['user'].name + " " + request.session['user'].surname + " has accepted your follow request.",
+          date: new Date()
+        })
+      
+        await notification.save()
+
         return response.status(204).send();
       }).catch(error => {
         return response.status(400).send(error);
@@ -218,6 +279,23 @@ module.exports.rejectRequest = async (request, response) => {
   const requestId = request.params['id']
 
   await UserFollow.deleteOne({ _id : requestId, FollowedId: request.session['user']._id, status: false }, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+    
+    return response.sendStatus(204);
+  })
+}
+
+/*
+  Get method for canceling user follow request.
+*/
+module.exports.cancelRequest = async (request, response) => {
+  const UserFollow = request.models['UserFollow']
+  
+  await UserFollow.deleteOne({ FollowedId : request.params['id'], FollowingId: request.session['user']._id, status: false }, (err, results) => {
     if(err){
       return response.status(404).send({
         errmsg: "Failed."
@@ -262,7 +340,9 @@ module.exports.editProfile = async (request, response) => {
     try{
         await User.updateOne({_id:userId},{ name: name, surname: surname, location: location, 
                                             iban: iban, tckn: tckn, isPublic: isPublic, isTrader: isTrader}) 
-        .then( doc => {
+        .then(async  doc => {
+          let edittedUser = await User.findOne({ _id : userId});
+          request.session['user'] = edittedUser;
           return response.status(204).send();
         }).catch(error => {
           return response.status(400).send(error);

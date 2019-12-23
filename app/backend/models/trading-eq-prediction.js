@@ -22,6 +22,11 @@ let TradingEquipmentPrediction = mongoose.model('TradingEquipmentPrediction', {
     require : true
   },
 
+  DateWithTime: {
+    type: Date,
+    require : true
+  },
+
   Prediction: {
     type: String,  // up, down
     require: true

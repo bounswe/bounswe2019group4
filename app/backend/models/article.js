@@ -6,6 +6,9 @@ let Article = mongoose.model('Article', {
     type: String,
     require: true
   },
+  imageId: {
+      type: Number,
+  },
 
   text: {
     type: String,
@@ -17,6 +20,10 @@ let Article = mongoose.model('Article', {
       require: true
   },
 
+  tags: {
+    type: [String]
+  },
+  
   date:{
     type: Date,
     require: true

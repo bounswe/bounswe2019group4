@@ -6,6 +6,7 @@ let TradingEquipment = mongoose.model('TradingEquipment', {
     code:String, 
     Date:String,
   },
+  
   code: {
     type: String
   },

@@ -13,7 +13,11 @@ const { scheduleAPICalls } = require('./utils')
 
 const app = express()   // the express instance that's doing everything
 
-app.use(cors())         // adds support for CORS requests
+// adds support for CORS requests
+app.use(cors({
+    credentials: true,
+    origin: /.*/,
+}))
 // cookie session middleware. Saves session ID's in cache, since we didn'te provide a store
 app.use(session({
     name: 'arkenstone',
@@ -43,6 +47,13 @@ app.use('/articles/', require('./routes/article')) // includes article endpoints
 app.use('/portfolios/', require('./routes/portfolio')) // includes portfolio endpoints to the main app
 
 app.use('/search/', require('./routes/search'))     // includes search endpoints to the main app
+
+app.use('/investments/', require('./routes/investment'))     // includes investent endpoints to the main app
+
+app.use('/notifications/', require('./routes/notification'))  // includes notification endpoints to the main app
+
+app.use('/recommendations/', require('./routes/recommendation'))  // includes recommendation endpoints to the main app
+
 // catch-all error handler for debugging
 app.use((err, req, res, next) => {
     console.log(err.stack)  // logs the error
@@ -60,6 +71,6 @@ app.use(/.*/, (request, response, nextHandler) => {
 
 scheduleAPICalls(); // schedule API Calls that are implemented in utils.js
 
-const PORT = parseInt(process.argv[2]) || 8080  // optionally runs on the port given to the command 'yarn dev'
+const PORT = process.env && process.env.PORT ? process.env.PORT : 8080  // optionally runs on the port given to the command 'yarn dev'
 console.log(`Listening on port ${PORT}`)
 app.listen(PORT)    // the app watches for incoming requests on given port

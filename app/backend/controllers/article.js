@@ -1,4 +1,39 @@
 const {findUserArticle} = require('../utils')
+const {findUserComments} = require('../utils')
+const {User} = require('../models/user')
+const axios = require('axios')
+  /*
+    Get method for articles.
+    It returns all articles in database.
+  */
+module.exports.getArticles = async (request, response) => {
+  let Article = request.models['Article']
+
+  const limit = parseInt(request.query.limit || 10)
+  const skip = (parseInt(request.query.page || 1) - 1) * limit
+
+  try {
+    rows = await Article.find({ }, undefined, {skip, limit}).sort({date: -1}).lean()
+
+    articles = await Promise.all(rows.map(async el => {
+    const user = await User.findOne({_id: el.userId})
+    return {
+      ...el,
+      rateAverage: Math.round(el.rateAverage * 10) / 10,
+      username: user.name,
+      usersurname: user.surname
+    }}))
+    const totalNumberOfArticles = await Article.countDocuments({})
+    return response.send({
+      totalNumberOfArticles,
+      totalNumberOfPages: Math.ceil(totalNumberOfArticles / limit),
+      articlesInPage: rows.length,
+      articles
+    }); 
+  } catch(e) {
+    console.log(e)
+  }
+}
 
 /*
   Post method for articles.
@@ -9,11 +44,22 @@ module.exports.postArticle = async (request, response) => {
   
     // Article instance to add to the database
     let article = new Article({
+      imageId: Math.floor(Math.random() * 10) + 1,
       ...request.body,
       userId: request.session['user']._id,
       date: new Date()
     });
-  
+
+    let queryKeyword = request.body.title.split(' ').join('+')
+    let tags = await axios.get(`https://api.datamuse.com/words?max=20&ml=${queryKeyword}`)
+    tags = tags.data.map(el => el.word)
+    article.tags = tags
+
+    queryKeyword = request.body.text.split(' ').join('+')
+    tags = await axios.get(`https://api.datamuse.com/words?max=20&ml=${queryKeyword}`)
+    tags = tags.data.map(el => el.word)
+    article.tags.concat(tags)
+    
     // Saves the instance into the database, returns any error occured
     article.save()
       .then(doc => {
@@ -28,11 +74,24 @@ module.exports.postArticle = async (request, response) => {
     It returns given article.
   */
   module.exports.getArticle = async (request, response) => {
+    let ArticleUser = request.models['ArticleUser']
 
-    let article = await findUserArticle({ _id : request.params['id']})
+    let articleId = request.params['id']
+    let article = await findUserArticle({ _id : articleId})
   
     if(article){
-      return response.send(article)
+      let yourRate = 0
+
+      comments = await findUserComments({ related : articleId, about : "ARTICLE"})
+
+      if(request.session['user']){
+        let userId = request.session['user']._id
+        row = await ArticleUser.findOne({userId, articleId})
+        if(row){
+          yourRate = row.rate
+        }
+      }
+      return response.send({...article[0], yourRate, comments})
     } else {
       return response.status(400).send({
         errmsg: "No such article."
@@ -87,7 +146,7 @@ module.exports.editArticle = async (request, response) => {
             errmsg: "Failed."
           })
         }
-        return response.send(204);
+        return response.sendStatus(204);
       });
     });
   }

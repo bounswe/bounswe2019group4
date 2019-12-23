@@ -10,21 +10,24 @@ module.exports.getTradingEquipment = async (request, response) => {
   let Comment = request.models['Comment']
   let TradingEq = request.params['code'].toUpperCase()
   let following = false
+  let yourPrediction = "noVote"
 
   let TradingEqPrediction = request.models['TradingEquipmentPrediction']
   var currentDay = new Date();
   var day_format = currentDay.toISOString().slice(0,10); // yyyy-mm-dd
-
   // If user is logged in, control whether user follows that equipment or not.
   if(request.session['user']){
     UserId = request.session['user']._id
     result = await TradingEqFollow.findOne({UserId , TradingEq})
+    row = await TradingEqPrediction.findOne({UserId, TradingEq, Date: day_format})
+    if(row){
+      yourPrediction = row.Prediction
+    }
 
     if(result){
       following = true
     }
   }
-
   current = await CurrentTradingEquipment.findOne({ from : TradingEq});
 
   comments = await findUserComments({ related : TradingEq, about : "TRADING-EQUIPMENT"})
@@ -44,6 +47,7 @@ module.exports.getTradingEquipment = async (request, response) => {
   }
 
   return response.send({
+    yourPrediction,
     following,
     current,
     comments,
@@ -118,7 +122,7 @@ module.exports.unfollowTradingEq = async (request, response) => {
       })
     }
 
-    return response.send(204);
+    return response.sendStatus(204);
   });
 }
 
@@ -146,6 +150,7 @@ module.exports.predictTradingEq = async (request, response) => {
         UserId: UserId,
         TradingEq: TradingEq,
         Date: day_format,
+        DateWithTime: currentDay,
         Prediction: prediction_value,
         CurrentValue: value,
         Result: ""
@@ -158,6 +163,15 @@ module.exports.predictTradingEq = async (request, response) => {
         return response.status(400).send(error);
       });
 
+    } else if(row.Prediction == prediction_value) {
+      TradingEqPrediction.deleteOne({ UserId, TradingEq, Date: day_format }, (err, results) => {
+        if(err){
+          return response.status(404).send({
+            errmsg: "Failed."
+          })
+        }
+        return response.sendStatus(204);
+      })
     } else{
       // User already made a prediction for that currency. Change the prediction and update database
       TradingEqPrediction.updateOne({_id:row._id},{ Prediction: prediction_value, CurrentValue: value, value }) 
@@ -172,4 +186,80 @@ module.exports.predictTradingEq = async (request, response) => {
       errmsg: error.message
     })
   }
+}
+
+  /*
+    Get method for list all alerts  of such user.
+  */
+module.exports.getAlerts = async (request, response) => {
+  let TradingEquipmentAlert = request.models['TradingEquipmentAlert']
+  alerts = await TradingEquipmentAlert.find({userId: request.session['user']._id})
+  return response.send({alerts})
+}
+
+  /*
+    Post method for setting alert for trading equipment.
+  */
+module.exports.setAlert = async (request, response) => {
+  let TradingEquipmentAlert = request.models['TradingEquipmentAlert']
+  let CurrentTradingEquipment = request.models['CurrentTradingEquipment']
+
+  let currency = request.body.currency.toUpperCase()
+
+  let compare = request.body.compare.toUpperCase()
+
+  if(compare != "HIGHER" && compare != "LOWER"){
+    return response.status(400).send({
+      errmsg: "Compare of order must either HIGHER or LOWER"
+    })
+  }
+
+  let to = 'EUR'
+
+  if(currency == 'EUR')
+    to = 'USD'
+
+  let currentTeq = await CurrentTradingEquipment.findOne({from: currency, to: to})
+
+  if(parseFloat(currentTeq.rate) > request.body.rate && compare == "HIGHER"){
+    return response.status(400).send({
+      errmsg: "Exchange rate is already higher than given rate."
+    })
+  }
+
+  if(parseFloat(currentTeq.rate) < request.body.rate && compare == "LOWER"){
+    return response.status(400).send({
+      errmsg: "Exchange rate is already lower than given rate."
+    })
+  }
+
+  let alert = new TradingEquipmentAlert({
+    ...request.body,
+    userId: request.session['user']._id,
+    compare: compare,
+    currency: currency
+  })
+
+  alert.save().then(doc => {
+    return response.status(204).send()
+  }).catch(error => {
+    return response.status(400).send()
+  })
+}
+
+  /*
+    Delete method for deleting an order investment.
+  */
+module.exports.deleteAlert = async (request, response) => {
+  let TradingEquipmentAlert = request.models['TradingEquipmentAlert']
+
+  TradingEquipmentAlert.deleteOne({_id: request.params['id'], userId: request.session['user']._id}, (err, results) => {
+    if(err){
+      return response.status(404).send({
+        errmsg: "Failed."
+      })
+    }
+
+    return response.sendStatus(204);
+  })
 }
