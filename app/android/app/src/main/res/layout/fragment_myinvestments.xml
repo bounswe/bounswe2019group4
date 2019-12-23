@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/fragment_investment_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
+        android:paddingLeft="12dp"
+        android:text="My Investments"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/fragment_investment_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/fragment_investment_actions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_investment_header">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/fragment_investment_balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Balance"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toTopOf="@id/fragment_investment_account_values"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/fragment_investment_account_values"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_investment_balance"
+                app:layout_constraintBottom_toTopOf="@id/fragment_investment_transactions"/>
+            <TextView
+                android:id="@+id/fragment_investment_transactions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Transactions"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toTopOf="@id/fragment_investment_transaction_recyclerview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_investment_account_values" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_investment_transaction_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_investment_transactions"
+                app:layout_constraintBottom_toTopOf="@id/fragment_investment_orders"/>
+            <TextView
+                android:id="@+id/fragment_investment_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Orders"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toTopOf="@id/fragment_investment_order_recyclerview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_investment_transaction_recyclerview" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_investment_order_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_investment_orders"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_investment_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_investment_view">
+
+        <Button
+            android:id="@+id/fragment_investment_deposit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deposit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/fragment_investment_buysell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/fragment_investment_buysell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buy/Sell"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/fragment_investment_give_order"
+            app:layout_constraintStart_toEndOf="@id/fragment_investment_deposit"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/fragment_investment_give_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Give Order"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fragment_investment_buysell"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

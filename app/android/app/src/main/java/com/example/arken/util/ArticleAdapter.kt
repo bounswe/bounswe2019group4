@@ -55,7 +55,7 @@ var isAll:Boolean=false
         if(isAll && position == dataSet.size - 1){
             newPage()
         }
-    }//TODO listArticle modeli oluştur
+    }
 
     fun newPage() {
         page += 1

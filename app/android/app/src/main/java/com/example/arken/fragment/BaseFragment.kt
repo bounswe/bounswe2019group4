@@ -16,6 +16,7 @@ import com.example.arken.activity.MainActivity
 import com.example.arken.fragment.article.ArticleDetailDirections
 import com.example.arken.fragment.article.ListArticleFragmentDirections
 import com.example.arken.fragment.event.ListEventFragmentDirections
+import com.example.arken.fragment.investment.MyinvestmentFragmentDirections
 import com.example.arken.fragment.search.SearchFragmentDirections
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.fragment.tEq.ListCurrentFragmentDirections
@@ -129,6 +130,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_eventListFragment)
             }else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
                 findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_eventListFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.myinvestmentFragment) {
+                findNavController(fragment!!).navigate(R.id.action_myinvestmentFragment_to_eventListFragment)
             }
         } else if (index == 1) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -152,6 +155,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_listCurrentFragment)
             }else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
                 findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_listCurrentFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.myinvestmentFragment) {
+                findNavController(fragment!!).navigate(R.id.action_myinvestmentFragment_to_listCurrentFragment)
             }
         } else if (index == 2) {
             if (findNavController(fragment!!).currentDestination!!.id == R.id.listCurrentFragment) {
@@ -172,6 +177,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_searchFragment)
             } else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
                 findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_searchFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.myinvestmentFragment) {
+                findNavController(fragment!!).navigate(R.id.action_myinvestmentFragment_to_searchFragment)
             }
         } else if (index == 4) {
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
@@ -208,6 +215,10 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 val act =
                     PortfolioFragmentDirections.actionPortfolioFragmentToProfileFragment(id!!)
                 findNavController(fragment!!).navigate(act)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.myinvestmentFragment) {
+                val act =
+                    MyinvestmentFragmentDirections.actionMyinvestmentFragmentToProfileFragment2(id!!)
+                findNavController(fragment!!).navigate(act)
             }
         } else if (index == 3) {
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
@@ -233,6 +244,8 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
                 findNavController(fragment!!).navigate(R.id.action_articleDetail_to_eventListFragment)
             }else if (findNavController(fragment!!).currentDestination!!.id == R.id.portfolioFragment) {
                 findNavController(fragment!!).navigate(R.id.action_portfolioFragment_to_listArticleFragment)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.myinvestmentFragment) {
+                findNavController(fragment!!).navigate(R.id.action_myinvestmentFragment_to_listArticleFragment)
             }
         } else if(index == 5){
             val id = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
@@ -269,6 +282,10 @@ class BaseFragment : Fragment(), OnMenuItemClickListener {
             else if(findNavController(fragment!!).currentDestination!!.id == R.id.profileFragment){
                 val act =
                     ProfileFragmentDirections.actionProfileFragmentToPortfolioFragment(id!!)
+                findNavController(fragment!!).navigate(act)
+            }else if (findNavController(fragment!!).currentDestination!!.id == R.id.myinvestmentFragment) {
+                val act =
+                    MyinvestmentFragmentDirections.actionMyinvestmentFragmentToPortfolioFragment(id!!)
                 findNavController(fragment!!).navigate(act)
             }
         } else if (index == 6) {

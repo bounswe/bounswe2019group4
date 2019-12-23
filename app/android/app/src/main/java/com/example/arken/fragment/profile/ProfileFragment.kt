@@ -11,13 +11,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.model.FollowRequest
-import com.example.arken.model.ListNotification
 import com.example.arken.model.Notification
 import com.example.arken.model.Profile
 import com.example.arken.util.OnRequestClickedListener
@@ -36,6 +34,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
     private lateinit var user_type_textView: TextView
     private lateinit var article_button: Button
     private lateinit var notification_button: Button
+    private lateinit var myinvestment_button: Button
     private lateinit var email_value_textView: TextView
     private lateinit var pred_value_textView: TextView
     private lateinit var profile: Profile
@@ -74,6 +73,8 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
         followerCountText = view.findViewById(R.id.follower_value_textView)
         followingCountText = view.findViewById(R.id.following_value_textView)
         pendingReqText = view.findViewById(R.id.profile_pending_req)
+        myinvestment_button=view.findViewById(R.id.investment_button)
+
         article_button = view.findViewById(R.id.article_button)
         notification_button = view.findViewById(R.id.notification_button)
         portfolioButton = view.findViewById(R.id.portfolio_button)
@@ -225,14 +226,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                 dialog.show(fragmentManager!!, "PioneersFragment_tag")
             }
         }
-        /*
-        notification_button.setOnClickListener {
-            //if (notifications.size > 0){
-                notificationDialog = NotificationListDialog()
-                notificationDialog.show(fragmentManager!!, "notificationFragment")
-            //}
-        }
-        */
+
 
         return view
     }
@@ -308,6 +302,12 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
                     profile = response.body()!!
+                    if( realId == userId && profile.user?.isTrader!!){
+                    myinvestment_button.visibility=View.VISIBLE
+                    myinvestment_button.setOnClickListener {
+                        val act = ProfileFragmentDirections.actionProfileFragmentToMyinvestmentFragment(profile.user!!.iban!!)
+                        findNavController().navigate(act)
+                    }}
                     article_button.visibility = View.VISIBLE
                     name_textView.text = profile.user?.name
                     surname_textView.text = profile.user?.surname
