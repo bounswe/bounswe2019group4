@@ -18,6 +18,8 @@ import retrofit2.Response
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AlertDialog
+import okhttp3.ResponseBody
 
 //burada da menuyü kullanalım on long press olduğunda
 
@@ -28,10 +30,12 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
     var annotationIcons: MutableList<ImageView> = mutableListOf()
     var annotations: MutableList<Annotation> = mutableListOf()
     lateinit var relativeLayout: RelativeLayout
-    lateinit var linearLayout: LinearLayout
+    lateinit var relativeEdit: RelativeLayout
     lateinit var editText: EditText
     lateinit var checkBox: CheckBox
     var annotation: Annotation? = null
+    var icon:ImageView? = null
+    lateinit var deleteButton: ImageView
 
     @SuppressLint("RestrictedApi", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -41,23 +45,83 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
     ): View? {
         val rootView = inflater.inflate(R.layout.dialog_see_image_annotations, container)
         imageView = rootView.findViewById(R.id.annotation_image)
-        linearLayout = rootView.findViewById(R.id.annotation_edit_layout)
+        relativeEdit = rootView.findViewById(R.id.annotation_edit_layout)
         checkBox = rootView.findViewById(R.id.annotation_add_check)
         editText  = rootView.findViewById(R.id.annotation_editText)
+        deleteButton = rootView.findViewById(R.id.delete_annotation)
         if(mode == 1){
             showAnnotations()
-            linearLayout.visibility = View.GONE
+            relativeEdit.visibility = View.GONE
         }
         checkBox.setOnClickListener{
             if(annotation!= null){
                 //create anntoation
+                val builder = AlertDialog.Builder(context!!)
+
+                // Set the alert dialog title
+                builder.setTitle("Make annotation")
+
+                // Display a message on alert dialog
+                builder.setMessage("Do your want to create that annotation?")
+
+                // Set a positive button and its click listener on alert dialog
+                builder.setPositiveButton("YES"){dialog, which ->
+
+                    val realId = activity!!.getSharedPreferences(
+                        LoginFragment.MY_PREFS_NAME,
+                        Context.MODE_PRIVATE
+                    )
+                        .getString("userId", "defaultId")
+                    // create anno
+                    annotation!!.type="image"
+                    annotation!!.userId = realId
+                    annotation!!.articleId = articleId
+                    val obj = annotation!!.toJSON()
+                    val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.createAnnotation(activity!!.getSharedPreferences(
+                        LoginFragment.MY_PREFS_NAME,
+                        Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), obj)
+
+
+                    call.enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            if (response.isSuccessful) {
+                                editText.text.clear()
+                                checkBox.isChecked = false
+                                dismiss()
+
+                            } else {
+                                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+
+                }
+                // Display a negative button on alert dialog
+                builder.setNegativeButton("No"){dialog,which ->
+
+                }
+
+                val dialog: AlertDialog = builder.create()
+
+                dialog.show()
+
+            }
+        }
+        deleteButton.setOnClickListener{
+            if(mode == 0){
                 editText.text.clear()
-                relativeLayout.visibility = View.GONE
-                checkBox.isChecked = false
+                editText.layoutParams.width = 100
+                editText.layoutParams.height = 50
+                relativeEdit.requestLayout()
+                relativeEdit.visibility = View.GONE
             }
         }
 
-        relativeLayout = rootView.findViewById(R.id.annotation_background)
+        relativeLayout = rootView as RelativeLayout
 
         this.dialog?.setTitle("Add Alert")
         userCookie  = activity!!.getSharedPreferences(
@@ -70,27 +134,34 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
                 MotionEvent.ACTION_DOWN -> {
                     if(mode == 0){
                         annotation = Annotation()
-                        annotation!!.x = ((motionEvent.x - imageView.x) / imageView.width).toDouble()
-                        annotation!!.y = ((motionEvent.y - imageView.y)/ imageView.height).toDouble()
-                        val lp = RelativeLayout.LayoutParams(30, 30)
-                        lp.addRule(RelativeLayout.CENTER_IN_PARENT)
-                        val icon = ImageView(context) // initialize ImageView
-                        icon.layoutParams = lp
+                        annotation!!.x = ((motionEvent.rawX - imageView.x) / imageView.width).toDouble()
+                        annotation!!.y = ((motionEvent.rawY - imageView.y)/ imageView.height).toDouble()
+                        val lp = RelativeLayout.LayoutParams(50, 50)
+                        if(icon!= null){
+                            relativeLayout.removeView(icon)
+                        }
+                        icon= ImageView(context) // initialize ImageView
+                        icon?.layoutParams = lp
                         // imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                        icon.setImageResource(R.drawable.ic_annotation)
-                        icon.x = motionEvent.rawX
-                        icon.y = motionEvent.rawY
+                        icon?.setImageResource(R.drawable.ic_annotation)
+                        icon?.scaleType = ImageView.ScaleType.FIT_XY
+                        icon?.x = motionEvent.x - 50
+                        icon?.y = motionEvent.y - 50
                         relativeLayout.addView(icon)
-                        linearLayout.x = icon.x
-                        linearLayout.y = icon.y
-                        linearLayout.visibility = View.VISIBLE
+                        relativeEdit.x = motionEvent.x
+                        relativeEdit.y = motionEvent.y
+                        editText.layoutParams.width = 100
+                        editText.layoutParams.height = 50
+                        editText.text.clear()
+                        relativeEdit.requestLayout()
+                        relativeEdit.visibility = View.VISIBLE
                     }
                     true
                 }
                 MotionEvent.ACTION_UP -> {
                     if(mode== 0 && annotation!= null){
-                        val placeX = ((motionEvent.x - imageView.x) / imageView.width).toDouble()
-                        val placeY = ((motionEvent.y - imageView.y) / imageView.height).toDouble()
+                        val placeX = ((motionEvent.rawX - imageView.x) / imageView.width).toDouble()
+                        val placeY = ((motionEvent.rawY - imageView.y) / imageView.height).toDouble()
                         annotation!!.w = (placeX - annotation!!.x)/ imageView.width
                         annotation!!.h = (placeY - annotation!!.y)/ imageView.height
                     }
@@ -98,10 +169,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
                 }
                 MotionEvent.ACTION_MOVE -> {
                     if(mode == 0 && annotation!=null ){
-                        val placeX = ((motionEvent.x - imageView.x) / imageView.width).toDouble()
-                        val placeY = ((motionEvent.y - imageView.y) / imageView.height).toDouble()
+                        val placeX = ((motionEvent.rawX - imageView.x) / imageView.width).toDouble()
+                        val placeY = ((motionEvent.rawY - imageView.y) / imageView.height).toDouble()
                         if(placeX > annotation!!.x && placeY > annotation!!.y){
-                            val lp = LinearLayout.LayoutParams(((placeX - annotation!!.x) * imageView.width).toInt(), ((placeY - annotation!!.y) * imageView.height).toInt())
+                            val lp = RelativeLayout.LayoutParams(((placeX - annotation!!.x) * imageView.width).toInt(), ((placeY - annotation!!.y) * imageView.height).toInt())
                             editText.layoutParams = lp
                             relativeLayout.requestLayout()
                         }
@@ -115,27 +186,27 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
         return rootView
     }
     fun getAnnotations(){
-        val call: Call<ListAnnotations> = AnnotationRetroClient.getInstance().annotationAPIService.getAnnotations(activity!!.getSharedPreferences(
+        val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.getAnnotations(activity!!.getSharedPreferences(
             LoginFragment.MY_PREFS_NAME,
             Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), articleId)
 
 
-        call.enqueue(object : Callback<ListAnnotations> {
-            override fun onResponse(call: Call<ListAnnotations>, response: Response<ListAnnotations>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    if(response.body()?.annotations!= null){
+                    /*if(response.body()?.annotations!= null){
                         annotations = response.body()?.annotations!!
                     }
                     else{
                         annotations = mutableListOf()
-                    }
+                    }*/
 
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<ListAnnotations>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })

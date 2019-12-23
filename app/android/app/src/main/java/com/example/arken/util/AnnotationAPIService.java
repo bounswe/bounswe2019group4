@@ -3,6 +3,8 @@ package com.example.arken.util;
 import com.example.arken.model.Annotation;
 import com.example.arken.model.ListAnnotations;
 
+import org.json.JSONObject;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,11 +20,11 @@ public interface AnnotationAPIService {
 
     @Headers({"Content-Type: application/json"})
     @GET("annotations/article/{id}")
-    Call<ListAnnotations> getAnnotations(@Header("Cookie") String userCookie, @Path("id") String id);
+    Call<ResponseBody> getAnnotations(@Header("Cookie") String userCookie, @Path("id") String id);
 
     @Headers({"Content-Type: application/json"})
     @POST("annotations")
-    Call<ResponseBody> createAnnotation(@Header("Cookie") String userCookie, @Body Annotation annotation);
+    Call<ResponseBody> createAnnotation(@Header("Cookie") String userCookie, @Body JSONObject annotation);
 
     //pek anlamadım headerları
     @Headers({"Content-Type: application/json"})
@@ -37,5 +39,5 @@ public interface AnnotationAPIService {
     //pek anlamadı headerları
     @Headers({"Content-Type: application/json"})
     @GET("annotations/{id}")
-    Call<Annotation> getAnnotation(@Header("Cookie") String userCookie, @Path("id") String annotationId);
+    Call<ResponseBody> getAnnotation(@Header("Cookie") String userCookie, @Path("id") String annotationId);
 }
