@@ -116,6 +116,9 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefs = getActivity()!!.getSharedPreferences("MyPrefsFile", Context.MODE_PRIVATE)
+        if(prefs.getString("user_cookie",null)==null){
+            enableAnnotate.visibility=View.GONE
+        }
         val call: Call<Article> =
             RetroClient.getInstance().apiService.getArticle(
                 prefs.getString("user_cookie", null),
@@ -152,7 +155,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
                             mode: ActionMode,
                             item: MenuItem
                         ): Boolean {
-                            if (item.getItemId() === R.id.annotate && prefs.getString(
+                            if (item.getItemId() == R.id.annotate && prefs.getString(
                                     "user_cookie",
                                     null
                                 ) != null
