@@ -1,5 +1,6 @@
 package com.example.arken.fragment.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,8 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.arken.R
-import com.example.arken.model.Article
-import com.example.arken.model.Event
-import com.example.arken.model.SearchResult
-import com.example.arken.model.User
+import com.example.arken.fragment.signup_login.LoginFragment
+import com.example.arken.model.*
 import com.example.arken.model.tradingEquipment.Current
 import com.example.arken.util.RetroClient
 import com.example.arken.util.SearchPagerAdapter
@@ -52,6 +51,13 @@ class SearchFragment: Fragment(){
         tabLayout.setupWithViewPager(viewPager)
 
         searchView = view.findViewById(R.id.search_view)
+
+        val userCookie = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE)
+            .getString("user_cookie", "")
+
+        if(userCookie!="") {
+            getRecommendations()
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 // do something on text submit
@@ -103,6 +109,32 @@ class SearchFragment: Fragment(){
         pagerAdapter = fragmentManager?.let { SearchPagerAdapter(it, values) }!!
         viewPager.adapter = pagerAdapter
         viewPager.adapter?.notifyDataSetChanged()
+
+    }
+
+    fun getRecommendations(){
+        val userCookie = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE)
+            .getString("user_cookie", "")
+        val call: Call<Recommendation> =
+            RetroClient.getInstance().apiService.getRecommendations(userCookie)
+
+        call.enqueue(object : Callback<Recommendation> {
+            override fun onResponse(call: Call<Recommendation>, response: Response<Recommendation>) {
+                if (response.isSuccessful) {
+
+                    userList = response.body()?.users!!
+                    articleList = response.body()?.articles!!
+                    pagerAdapter.setDataset(eventList, tEList, articleList, userList)
+
+                } else {
+                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Recommendation>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
 
     }
 

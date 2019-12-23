@@ -186,7 +186,8 @@ class ListArticleFragment : Fragment(), OnArticleClickListener{
                     val listArticle = response.body()!!
                     dataset = listArticle.articles as MutableList<Article>
                     articleAdapter.dataSet = dataset!!
-                    articleAdapter.totalPages = listArticle.totalNumberOfPages!!
+                    articleAdapter.isAll=true
+                    articleAdapter.totalPages = listArticle.totalNumberOfPages
                     articleAdapter.page = 1
                     articleAdapter.notifyDataSetChanged()
                 } else {
