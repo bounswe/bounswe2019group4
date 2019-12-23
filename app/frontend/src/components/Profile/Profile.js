@@ -196,7 +196,7 @@ class Profile extends Component {
                             <Grid.Row>
                                 <Segment  style={{ margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <Header style={{color: "#c9c9c9"}}>Portfolios</Header>
-                                    <Header style={{color: "#c9c9c9"}}>Articles<Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/portfolios/new")}}>Add</Button></Header>
+                                    <Header style={{color: "#c9c9c9"}}><Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/portfolios/new")}}>Add</Button></Header>
                                     <Divider style={{color: "#c9c9c9"}} />
                                     {user.portfolios && user.portfolios.length>0 ?
                                         user.portfolios.map(portfolio => {
@@ -210,6 +210,25 @@ class Profile extends Component {
                                                 </Card>
                                             )
                                         }) : <span style={{color: "#c9c9c9"}}>No Portfolio Created!</span>
+                                    }
+                                </Segment>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Segment  style={{ margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
+                                    <Header style={{color: "#c9c9c9"}}>Followed Portfolios</Header>
+                                    <Divider style={{color: "#c9c9c9"}} />
+                                    {user.followingPortfolios && user.followingPortfolios.length>0 ?
+                                        user.followingPortfolios.map(portfolio => {
+                                            return (
+                                                <Card style={{width: "100%"}} onClick={()=>{history.push("/portfolios/"+portfolio._id)}}>
+                                                    <Card.Content>
+                                                        <Card.Header>{portfolio.title}</Card.Header>
+                                                        <Card.Description>{portfolio.definition}</Card.Description>
+                                                    </Card.Content>
+
+                                                </Card>
+                                            )
+                                        }) : <span style={{color: "#c9c9c9"}}>No Portfolio Followed!</span>
                                     }
                                 </Segment>
                             </Grid.Row>
