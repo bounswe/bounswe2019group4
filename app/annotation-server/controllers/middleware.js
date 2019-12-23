@@ -20,7 +20,7 @@ module.exports.jsonld = async (req, res, next) => {
       try {
         req.body = JSON.parse(await new TextDecoder().decode(req.body));
       } catch (error) {
-        return res.sendStatus(400);
+        return res.status(400).send('Bad request body');
       }
     }
     next();
