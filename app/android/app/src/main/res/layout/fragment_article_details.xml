@@ -132,10 +132,18 @@
             android:text="Vote"
 
             app:layout_constraintStart_toEndOf="@id/rate_line_vote_spinner"
+            app:layout_constraintEnd_toStartOf="@id/rate_line_enable_annotate_button" />
+        <Button
+            android:id="@+id/rate_line_enable_annotate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Enable Annonate"
+
+            app:layout_constraintStart_toEndOf="@id/rate_line_vote_button"
             app:layout_constraintEnd_toEndOf="parent" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rate_line"
         android:layout_width="0dp"

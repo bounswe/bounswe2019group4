@@ -3,6 +3,7 @@ package com.example.arken.fragment.article
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,8 @@ class TextAnnotationDialogFragment(
     val toCreate: Boolean,
     val article:Article,
     val start:Int?,
-    val end:Int?
+    val end:Int?,
+    val str:String?
 ) : DialogFragment() {
 
     private lateinit var prefs: SharedPreferences
@@ -46,7 +48,7 @@ class TextAnnotationDialogFragment(
         delete_button = rootView.findViewById<Button>(R.id.text_anno_delete_button)
         add_button = rootView.findViewById<Button>(R.id.text_anno_add_button)
         if (!toCreate) {
-
+            anno_editText.setText(str)
             edit_button.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     dismiss()

@@ -6,6 +6,8 @@ import com.example.arken.model.tradingEquipment.AnnoCreateRequest;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,9 +21,9 @@ import retrofit2.http.Path;
 
 public interface AnnotationAPIService {
 
-    @Headers({"Content-Type: application/ld+json ; profile= http://www.w3.org/ns/anno.jsonld"})
+    @Headers({"Content-Type: application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\""})
     @GET("annotations/article/{id}")
-    Call<ListAnnotations> getAnnotations(@Header("Cookie") String userCookie, @Path("id") String id);
+    Call<List<AnnoCreateRequest>> getAnnotations(@Header("Cookie") String userCookie, @Path("id") String id);
 
     @Headers({"Content-Type: application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\""})
     @POST("annotations")

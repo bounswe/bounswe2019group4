@@ -52,7 +52,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
 
         return rootView
     }
-    fun getAnnotations(){
+ /*   fun getAnnotations(){
         val call: Call<ListAnnotations> = AnnotationRetroClient.getInstance().annotationAPIService.getAnnotations(activity!!.getSharedPreferences(
             LoginFragment.MY_PREFS_NAME,
             Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), articleId)
@@ -77,10 +77,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
-    }
+    }*/
 
     fun showAnnotations(){
-        getAnnotations()
+    //    getAnnotations()
         for(icon in annotationIcons){
             icon.visibility = View.GONE
         }
