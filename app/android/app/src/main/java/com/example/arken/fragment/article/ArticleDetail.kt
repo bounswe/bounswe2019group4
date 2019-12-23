@@ -22,10 +22,7 @@ import android.view.*
 
 
 /*
-2) resim ekle imageview en alta
 3) annotation layout oluştur
-4) iğne gibi bir şey ekle yer belirtem açısından
-5) make annotation diye tus olsun tıkladığı yüzdeyi alıp tutalım
  */
 class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var editButton: Button
