@@ -23,6 +23,7 @@ import {connect} from 'react-redux';
 import * as userActions from '../../actions/userActions';
 import {normalizeDate} from "../Events/Events";
 import Loading from "../Loading";
+import {colorLightBG, colorPrimary} from "../../utils/constants/Colors";
 class Create_Article extends Component {
 
     constructor(props) {
@@ -74,12 +75,12 @@ class Create_Article extends Component {
 
 
                 <div style={{display:"flex",flex:1,flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-                            <div style={{display:"flex",width:"80%"}}>
+                            <div style={{display:"flex",width:"80%", backgroundColor:colorLightBG}}>
                                 <Segment raised piled padded compact style={{display:"flex",flex:1,flexDirection:"column",alignItems:"center"}}>
                                     <div style={{margin:20,fontFamily:"timesnewroman",fontSize:15,width:"80%"}}>
 
                                         {user && user.loggedIn?(
-                                                <Header style={{fontFamily: "timesnewroman",color:"grey",fontSize:30}}>
+                                                <Header style={{fontFamily: "timesnewroman",color:colorPrimary,fontSize:30}}>
                                                     Create new article
                                                 </Header>
                                             ) :
@@ -100,7 +101,7 @@ class Create_Article extends Component {
                                                     >
                                                         <Form.TextArea
                                                             label={"Title"}
-                                                            style={{borderWidth: 1, borderColor: "gray"}}
+                                                            style={{borderWidth: 1, color:"white", borderColor: "gray", backgroundColor:colorLightBG}}
                                                             value={this.state.titletext}
                                                             onChange={(item) => this.setState({
                                                                 titletext: item.target.value
@@ -108,7 +109,7 @@ class Create_Article extends Component {
                                                         />
                                                         <Form.TextArea
                                                             label={"Text"}
-                                                            style={{borderWidth: 1, borderColor: "gray",height:300}}
+                                                            style={{borderWidth: 1, color:"white", borderColor: "gray",height:300, backgroundColor:colorLightBG}}
                                                             value={this.state.text}
                                                             onChange={(item) => this.setState({
                                                                 text: item.target.value
@@ -124,7 +125,7 @@ class Create_Article extends Component {
                                                                 flex: 3
                                                             }}>
 
-                                                                <Button onClick={this.onSubmit} content='Submit'
+                                                                <Button style={{}} onClick={this.onSubmit} content='Submit'
                                                                         labelPosition='left'
                                                                         icon={'edit'}
                                                                         basic color={"black"}

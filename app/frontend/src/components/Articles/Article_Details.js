@@ -22,7 +22,10 @@ import {connect} from 'react-redux';
 import * as userActions from '../../actions/userActions';
 import {normalizeDate} from "../Events/Events";
 import Loading from "../Loading";
-import article_photo from "../../assets/article_photo.png"
+import article_photo from "../../assets/article_logo.png"
+import Comments from "../Comments";
+
+
 class Article_Details extends Component {
 
     constructor(props) {
@@ -35,7 +38,8 @@ class Article_Details extends Component {
             titletext:"",
             editloading:false,
             ratesubmitted:false,
-            dimmer:false
+            dimmer:false,
+
         }
     }
 
@@ -55,14 +59,19 @@ class Article_Details extends Component {
     }
 
 
-    async getArticle(){
+    getArticle=async()=>{
 
         await this.props.article("/"+this.props.match.params.id).then(async result=> {
                 let newarticle=result.value;
                 this.setState({article:newarticle,text:newarticle.text,titletext:newarticle.title})
-
+            return newarticle.imageId;
             }
-        )
+        ).then((a)=>{
+            let src=require("../../assets/article_photos/article"+a+".jpg")
+            this.setState({src});
+
+        })
+
 
     }
 
@@ -97,8 +106,9 @@ class Article_Details extends Component {
 
     render() {
         const article  = this.state.article;
+        const comments=article?article.comments:[];
         let rating=article?article.rateAverage:0;
-            rating=rating.toFixed(1);
+            rating=rating?rating.toFixed(1):0;
         let user=this.state.user;
         let active=this.state.dimmer;
         return (
@@ -111,7 +121,7 @@ class Article_Details extends Component {
 
                             <Grid.Column width={4} >
                                 <Segment  textAlign="left" style={{marginRight:50,marginLeft:20,display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
-                                    {<Image size="medium" src={article_photo} />}
+                                    {<Image size="medium" src={this.state.src} />}
 
                                     <List relaxed>
                                         <List.Item>
@@ -183,10 +193,6 @@ class Article_Details extends Component {
                                                 </Header>
                                             )
                                         }
-
-
-
-
                                         {user && user.loggedIn&&article.userId===user._id ? (
                                             <Dimmer.Dimmable dimmed={active}>
                                                 <Form
@@ -194,7 +200,7 @@ class Article_Details extends Component {
                                                 >
                                                     <Form.TextArea
                                                         label={"Title"}
-                                                        style={{borderWidth: 1, borderColor: "gray"}}
+                                                        style={{borderWidth: 1, borderColor: "gray",height:60}}
                                                         value={this.state.titletext}
                                                         onChange={(item) => this.setState({
                                                             titletext: item.target.value
@@ -202,7 +208,7 @@ class Article_Details extends Component {
                                                     />
                                                     <Form.TextArea
                                                                     label={"Text"}
-                                                                   style={{borderWidth: 1, borderColor: "gray"}}
+                                                                   style={{borderWidth: 1, borderColor: "gray",height:500}}
                                                                    value={this.state.text}
                                                                    onChange={(item) => this.setState({
                                                                        text: item.target.value
@@ -245,13 +251,14 @@ class Article_Details extends Component {
                                             </Dimmer.Dimmable>
                                             )
                                             : (
-                                                <p>
+                                                <p style={{textAlign:"justify"}}>
                                                     {article.text}
                                                 </p>
                                             )
                                         }
                                     </div>
                                 </Segment>
+                                <Comments type={"article"} _id={this.props.match.params.id} resendComments={this.getArticle}  data={comments}/>
                             </Grid.Column>
 
                         </Grid>

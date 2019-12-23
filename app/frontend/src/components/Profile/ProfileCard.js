@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
-import {Card, Label, Image, Icon} from 'semantic-ui-react';
+import {Card, Label, Image, Icon, Button} from 'semantic-ui-react';
+import {loadState} from "../../_core/localStorage";
+import history from "../../_core/history";
+import {colorAccent, colorLightBG, colorPrimary} from "../../utils/constants/Colors";
 
 const initialState={
+    _id:"",
     name: "",
     surname: "",
     email: "",
@@ -16,6 +20,7 @@ class ProfileCard extends Component {
     constructor(props){
         super(props);
         this.state={
+            _id:"",
             name: "",
             surname: "",
             email: "",
@@ -33,22 +38,23 @@ class ProfileCard extends Component {
     }
 
     render() {
-        const {name, surname, email, predictionRate, isPublic, isTrader, followers, following} = this.state;
+        let user=loadState().user;
+        const {name, surname, email, predictionRate, isPublic, isTrader,location, followers, following} = this.state;
 
         return(
-            <Card style={{width: "100%", margin: 20, background: "rgba(255,255,255,0.15)"}}>
-                <Image src='https://cnam.ca/wp-content/uploads/2018/06/default-profile-300x300.gif' wrapped ui={false} />
+            <Card style={{width: "100%", margin: 20, backgroundColor:colorLightBG}}>
+
                 <Card.Content>
-                    <Card.Header style={{color: "#c9c9c9"}}>{name + " " + surname}</Card.Header>
+                    <Card.Header style={{color: "white",fontSize:30}}>{name + " " + surname}</Card.Header>
                 </Card.Content>
                 <Card.Content extra>
-                    <Label basic color='red' horizontal >
+                    <Label style={{color:colorAccent}} basic horizontal >
                         Prediction Rate
                     </Label>
-                    <span className='date' style={{color: "#c9c9c9"}}>{predictionRate}</span>
+                    <span className='date' style={{color: colorAccent}}>{predictionRate}</span>
                 </Card.Content>
                 <Card.Content extra>
-                    <Label color={isPublic ? "green" : "red"} horizontal >
+                    <Label style={{backgroundColor:colorAccent, color:"white"}}  horizontal >
                         {isPublic ? "Public Profile": "Private Profile"}
                     </Label>
                     <Label color="grey" horizontal>
@@ -61,8 +67,19 @@ class ProfileCard extends Component {
                     <span style={{color: "#c9c9c9"}}>{email}</span>
 
                 </Card.Content>
-                }
 
+                }
+                {location &&
+                <Card.Content extra>
+                    <Icon inverted name='map pin'/>
+                    <span style={{color: "#c9c9c9"}}>{location}</span>
+
+                </Card.Content>
+                }
+                {
+                    (user!==null&&user.loggedIn&&user._id===this.state._id)&&<Button onClick={()=>history.push("/profile/edit")}>Edit Profile</Button>
+
+                }
             </Card>
         )
     }

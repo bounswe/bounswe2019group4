@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import {Comment, Divider, Button, Modal, Image, Header, Icon, Popup, Segment, Form} from "semantic-ui-react";
 import {Link} from "react-router-dom";
-import {normalizeDate} from "./Events/Events";
+import {normalizeDate,normalizeDateToTR} from "./Events/Events";
 import {loadState} from "../_core/localStorage";
 import * as userActions from "../actions/userActions";
 import {connect} from "react-redux";
-import {colorBG, colorDarkerBlue, colorPrimary} from "../utils/constants/Colors";
+import {colorAccent, colorBG, colorDarkerBlue, colorPrimary} from "../utils/constants/Colors";
 
 
 class Comments extends Component{
@@ -93,30 +93,31 @@ class Comments extends Component{
         const comments  = this.props.data;
         let user=this.state.user;
         return(
-            <Segment  loading={this.state.loading} style={{borderRadius:10,borderWidth:2,background: "rgba(0,0,0,0)"}}>
+            <Segment  loading={this.state.loading} style={{borderColor:"#1d2526",borderRadius:10,borderWidth:5,background: "rgba(0,0,0,0)"}}>
 
-                <Header as='h4' inverted block style={{borderRadius:10}} textAlign={"left"}>
+                <Header as='h4' inverted block style={{borderRadius:10, backgroundColor:colorBG, borderColor:'#1d2526', borderWidth:3.5}} textAlign={"left"}>
                     Comments
                 </Header>
-            <div id={"cgroup"} style={{overflow:"auto",height:"250px",backgroundColor:"#fcfcfc",borderRadius:10,borderWidth:2,borderColor:"white"}}>
+            <Segment id={"cgroup"} style={{overflow:"auto",height:"250px",backgroundColor:colorBG,borderRadius:10,borderWidth:2.5,borderColor:"#1d2526"}}>
 
 
                 {comments.length>0?comments.map(item=>(
 
-                        <div style={{backgroundColor:colorBG,borderWidth:2,borderColor:colorDarkerBlue}}>
-
+                        <div style={{backgroundColor:"#1d2526", borderTopLeftRadius:7, borderTopRightRadius:7, borderWidth:2,borderColor:colorAccent}}>
+                        <br/>
                                 <div style={{display:"flex",marginLeft:10,marginRight:20}}>
                                     <div style={{display:"flex",flex:1}}>
                                     <a   style={{marginLeft:10,marginRight:4,textAlign:"left"}} href={"/profile/"+item.userId}>
                                         <h5 >{item.username+" "+item.usersurname}</h5>
                                     </a>
                                     <div style={{fontSize:10,color:"grey"}}>
-                                    {normalizeDate(item.date)}
+                                    {normalizeDateToTR(item.date)}
                                     </div>
                                     </div>
                                     {user && user.loggedIn&&user._id===item.userId?(
 
                                                     <Popup
+                                                        style={{backgroundColor:"grey"}}
                                                         flowing
                                                         on={"click"}
                                                         position={"bottom right"}
@@ -143,9 +144,9 @@ class Comments extends Component{
 
                                 </div>
                                 <Divider/>
-                                <Comment.Text style={{color:"#5F5F5F",marginLeft:20,marginRight:20}}>{item.text.length>100?
+                                <Comment.Text style={{color:"white",marginLeft:20,marginRight:20, backgroundColor:"#1d2526"}}>{item.text.length>100?
                                     (<div>{this.preview(item.text)}
-                                            <Modal trigger={<Button size={"mini"}>read further</Button>}>
+                                            <Modal trigger={<div style={{backgroundColor:"#1d2526"}}><Button style={{backgroundColor:"#1d2526",color:colorAccent,shadowColor:"transparent", shadowOpacity: 0, padding:0}} size={"mini"}>Read More</Button></div>}>
                                                 <Modal.Header>Comment</Modal.Header>
                                                 <Modal.Content image>
                                                     <Icon size={"large"} name={"comment"} />
@@ -171,25 +172,24 @@ class Comments extends Component{
                         </div>
 
                     )
-                ):<h3 style={{color:"gray"}}>No comments yet</h3>}
+                ):<h3 style={{color:"grey"}}>No comments yet</h3>}
 
-            </div>
+            </Segment>
                 <Segment style={{backgroundColor:colorBG}} >
 
                     {this.state.user&&this.state.user.loggedIn?
                         (<Form >
-                            <Form.TextArea maxLength={1000} style={{borderWidth:1,borderColor:"gray"}} value={this.state.text}  onChange={(item)=>this.setState({rest:1000-item.target.value.length,text:item.target.value})}/>
+                            <Form.TextArea maxLength={1000} style={{borderWidth:1,borderColor:"gray",backgroundColor:"lightgrey",width:"80%"}} value={this.state.text}  onChange={(item)=>this.setState({rest:1000-item.target.value.length,text:item.target.value})}/>
 
                             <div style={{display:"flex",flex:1}}>
                                 <div style={{display:"flex",flexDirection:"row",flex:3}}/>
                                 <div style={{display:"flex",flexDirection:"row",justifyContent:"center",flex:3}}>
 
                                     <Button onClick={this.onSubmit} content='Send Comment'
-                                            style={{borderRadius:30}}
-                                            inverted
+                                            style={{borderRadius:30, borderColor:"white", backgroundColor:"#1d2526", color:"white"}}
                                             labelPosition='left'
                                             icon={'edit'}
-                                            basic color={"black"}
+
                                     />
                                 </div>
                                 <div style={{fontSize:14,color:"white",display:"flex",flexDirection:"row",justifyContent:"flex-end",alignItems:"flex-start",flex:3}}>
@@ -198,7 +198,7 @@ class Comments extends Component{
                             </div>
                         </Form>)
                         :
-                        <h3>Sign in to make comments!</h3>}
+                        <h3 style={{color:"grey"}}>Sign in to make comments!</h3>}
                 </Segment>
             </Segment>
         )

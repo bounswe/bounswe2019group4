@@ -13,6 +13,7 @@ function userFactory() {
     this.createArticle=(params)=>baseRequest.post("/articles",params);
     this.deleteComment=(path)=>baseRequest.delete("/comments"+path);
     this.profile = path => baseRequest.get("/profile/"+path);
+    this.editProfile=params=>baseRequest.patch("/profile/edit",params);
     this.portfolios = path => baseRequest.get("/portfolios/"+path);
     this.getPortfolio=path=>baseRequest.get("/articles"+path);
     this.editPortfolio=(path,params)=>baseRequest.patch("/articles"+path,params);
@@ -22,6 +23,9 @@ function userFactory() {
     this.acceptFollow = params => baseRequest.get("/profile/accept/"+params);
     this.rejectFollow = params => baseRequest.get("/profile/reject/"+params);
     this.cancelFollow = params => baseRequest.get("/profile/cancel/"+params);
+    this.getNotification= (params)=> baseRequest.get("/notifications/");
+    this.getRecommended=params=>baseRequest.get("/recommendations");
+    this.readNotifs=()=>baseRequest.post("/notifications",{});
 }
 
 export default new userFactory();

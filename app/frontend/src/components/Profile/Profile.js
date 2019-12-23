@@ -22,16 +22,14 @@ class Profile extends Component {
         this.state = {
             userLocal:{},
             index:0,
-            user: {},
+            user: {following:0,follower: 0},
             portfolios:[],
             tradingEqs:{}
         }
     }
     componentDidMount() {
 
-        const localState = loadState();
-        this.setState({user: localState.user});
-        this.setState({userLocal: localState.user});
+
         this.getProfile();
         //console.log(this.state.portfolios);
         this.state.portfolios.forEach(element =>{
@@ -69,12 +67,14 @@ class Profile extends Component {
     }
 
       async getProfile() {
+
         await this.props.profile(loadState().user._id).then(async result =>{
             console.log(result.value);
             let newProfile = result.value
             console.log(newProfile.portfolios)
             this.setState({user:newProfile})
             //console.log(this.state.portfolios)
+
             }
         )
     }
@@ -87,8 +87,9 @@ class Profile extends Component {
 
 
         const { user,portfolios,userLocal,tradingEqs } = this.state;
+
         console.log(user);
-        //console.log(tradingEqs);
+
         //console.log(portfolios)
 
         //const { portfolios } = this.state;
@@ -103,24 +104,27 @@ class Profile extends Component {
                 <Button active floated='right'>Right Floated</Button>
 
             </div>
-        )
+        );
         return (
 
                 <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={3}>
+                    <Grid.Row >
+
+                        <Grid.Column style={{marginLeft:30}} width={3}>
                             <Grid.Row relaxed>
                                 <ProfileCard user={profileCardProps} style={{background: "rgba(255,255,255,0.5)"}}/>
                             </Grid.Row>
                             {user.followRequests && user.followRequests.length > 0 &&
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width: "100%", background: "rgba(255,255,255,0.5)"}}>
+                                <Segment textAlign="left" style={{margin: 20, width: "100%", backgroundColor: "white",borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <List divided relaxed textAlign="left">
-                                        <List.Header as="h3">Pending Requests</List.Header>
+                                        <List.Header style={{color: "#c9c9c9"}} as="h3">Pending Requests</List.Header>
                                         {user.followRequests.map(follower => {
-                                            return <List.Item>
+                                            return <List.Item  icon="user"
+                                                               style={{color: "#c9c9c9",cursor:"pointer"}}
+                                                               >
                                                 <div>
-                                                <Icon name="user"/><span>{follower.FollowingName + " " + follower.FollowingSurname}</span>
+                                                <Icon name="user"/><span onClick={()=>{history.push("/profile/"+follower.FollowingId)}}>{follower.FollowingName + " " + follower.FollowingSurname}</span>
                                                 <Label circular content="Reject" basic color="red" style={{float: "right"}} onClick={this.rejectFollow.bind(this,follower._id)} />
                                                     <Label circular content="Accept" basic color="green" style={{float: "right"}} onClick={this.acceptFollow.bind(this,follower._id)} />
                                                 </div>
@@ -131,25 +135,25 @@ class Profile extends Component {
                             </Grid.Row>
                             }
                             <Grid.Row relaxed>
-                                <Segment textAlign="left" color="teal" style={{margin: 20, width:"100%", background: "rgba(255,255,255,0.15)"}}>
+                                <Segment textAlign="left" style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                 <List animated divided relaxed textAlign="left">
                                     <List.Header as="h3" style={{color: "#c9c9c9"}}>{user.follower + " Followers"}</List.Header>
                                     {user.followers && user.followers.map(follower => {
                                         return <List.Item icon="user"
-                                                          style={{color: "#c9c9c9"}}
+                                                          style={{color: "#c9c9c9",cursor:"pointer"}}
                                                           onClick={()=>{history.push("/profile/"+follower.FollowingId)}}
                                                           content={follower.FollowingName + " " + follower.FollowingSurname} />
                                     })}
-                                </List>
+                                   </List>
                                 </Segment>
                             </Grid.Row>
                             <Grid.Row relaxed>
-                                <Segment textAlign="left"  style={{margin: 20, width:"100%", background: "rgba(255,255,255,0.15)"}}>
+                                <Segment textAlign="left"  style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <List animated divided relaxed textAlign="left">
                                         <List.Header as="h3" style={{color: "#c9c9c9"}}>{user.following + " Following"}</List.Header>
                                         {user.followings && user.followings.map(follower => {
                                             return <List.Item icon="user"
-                                                              style={{color: "#c9c9c9"}}
+                                                              style={{color: "#c9c9c9",cursor:"pointer"}}
                                                               onClick={()=>{history.push("/profile/"+follower.FollowedId)}}
                                                               content={follower.FollowedName + " " + follower.FollowedSurname} />
                                         })}
@@ -159,19 +163,23 @@ class Profile extends Component {
                         </Grid.Column>
                         <Grid.Column width={8}>
                             <Segment style={{margin: 20, width: "100%",  background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
-                                <Header style={{color: "#c9c9c9"}}>Articles<Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/articles/new")}}>Add</Button></Header>
+                                <Header style={{color: "#c9c9c9"}}>Articles<Button style={{float:"right"}} basic color="blue" onClick={()=>{history.push("/articles/new")}}>Add</Button></Header>
                                 <Divider/>
                                 {user.articles && user.articles.length>0 ?
                                     user.articles.map(article => {
                                         return (
-                                            <Card style={{width: "100%"}} onClick={()=>{history.push("/articles/"+article._id)}}>
+                                            <Card style={{width: "100%", background: "rgba(255,255,255,0.15)"}} onClick={()=>{history.push("/articles/"+article._id)}}>
                                                 <Card.Content>
-                                                    <Card.Header>{article.title}</Card.Header>
-                                                    <Card.Meta type="date">{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
-                                                    <Card.Description>{article.text}</Card.Description>
+                                                    <Card.Header style={{color: "#c9c9c9"}}>{article.title}</Card.Header>
+                                                    <Card.Meta type="date" style={{color: "#c9c9c9"}}>{moment(article.date).format("DD/MM/YYYY HH:mm")}</Card.Meta>
+                                                    <Card.Description style={{color: "#c9c9c9"}}>{article.text.substring(0,350)+"..."}</Card.Description>
                                                 </Card.Content>
-                                                <Card.Content extra>
-                                                    <Rating defaultRating={article.rateAverage} maxRating={5} disabled />{" by "+ article.numberOfRates + " votes"}
+                                                <Card.Content style={{color: "#c9c9c9"}} extra>
+                                                    <Label style={{fontSize:14,backgroundColor:colorAccent,color:"white"}} >
+                                                        <div style={{display:"flex",flexDirection:"row",width:25,justifyContent:"center"}}>
+                                                            {(article.rateAverage?article.rateAverage.toFixed(1):0)}
+                                                        </div>
+                                                    </Label>{" by "+ article.numberOfRates + " votes"}
                                                 </Card.Content>
                                         </Card>
                                         )
@@ -179,29 +187,30 @@ class Profile extends Component {
                                 }
                             </Segment>
                         </Grid.Column>
-                        <Grid.Column width={5}>
+                        <Grid.Column width={4}>
                             <Grid.Row>
                             <Segment textAlign="left"  style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                 <List animated divided relaxed textAlign="left">
                                     <List.Header as="h3" style={{color: "#c9c9c9"}}>Followed Trading Equipment</List.Header>
                                     {user.followingTradings && user.followingTradings.length >0 ? user.followingTradings.map(teq => {
                                         return <List.Item icon="chart line"
-                                                          style={{color: "#c9c9c9"}}
+                                                          style={{color: "#c9c9c9",cursor:"pointer"}}
                                                           onClick={()=>{history.push({pathname: "trading-equipment",state:{currency: teq.TradingEq}})}}
-                                                          content={teq.TradingEq === 'EUR'?  "EUR/USD" : teq.TradingEq + "/EUR"}/>
+
+                                                          content={teq.TradingEq==="EUR"?(teq.TradingEq+"/USD"):(teq.TradingEq+"/EUR")}/>
                                     }): <List.Item style={{color: "#c9c9c9"}} content="No Trading Equipment Is Followed" />}
+
                                 </List>
                             </Segment>
                             </Grid.Row>
                             <Grid.Row>
                                 <Segment  style={{ margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <Header style={{color: "#c9c9c9"}}>Portfolios</Header>
-                                    <Header style={{color: "#c9c9c9"}}>Articles<Button style={{float:"right"}} basic color="green" onClick={()=>{history.push("/portfolios/new")}}>Add</Button></Header>
                                     <Divider style={{color: "#c9c9c9"}} />
                                     {user.portfolios && user.portfolios.length>0 ?
                                         user.portfolios.map(portfolio => {
                                             return (
-                                                <Card style={{width: "100%"}} onClick={()=>{history.push("/portfolios/"+portfolio._id)}}>
+                                                <Card style={{width: "100%"}}>
                                                     <Card.Content>
                                                         <Card.Header>{portfolio.title}</Card.Header>
                                                         <Card.Description>{portfolio.definition}</Card.Description>

@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
 import {connect} from 'react-redux';
-import {Search, Segment, Header, Grid, Label} from 'semantic-ui-react';
+import {Search, Segment, Header, Grid, Label,Popup} from 'semantic-ui-react';
 
 import * as searchActions from '../../actions/searchActions';
 import history from "../../_core/history";
+import {normalizeDateToTR} from "../Events/Events";
 
 const categoryRenderer = ({ name, results }) => {
     if(results.length>0) {
@@ -19,7 +20,7 @@ const configureResults = (key, values) => {
     if(key === "users") {
         return values.map(res =>  {return {...res, title: res.name + " " + res.surname, price: res.predictionRate, description: res.location}})
     } else if(key === "events") {
-        return values.map(res => { return {...res, title: res.Event, price: res.Importance, description: res.Country + " - " + res.Date}})
+        return values.map(res => { return {...res, title: res.Event, price: res.Importance, description: res.Country + " - " + normalizeDateToTR(res.Date)}})
     } else if(key === "articles") {
         return values.map(res => { return {...res, title: res.title}})
     } else if(key === "trading-equipments") {
@@ -33,7 +34,8 @@ class SearchBar extends Component {
         this.state= {
             isLoading: false,
             results: [],
-            value: ""
+            value: "",
+            noResult:false
         }
     }
 
@@ -55,9 +57,15 @@ class SearchBar extends Component {
     };
 
     handleSearchChange = (e, { value }) => {
-        this.setState({ isLoading: true, value });
 
-        setTimeout(() => {
+        this.setState({  value,results:[],noResult:false });
+
+    };
+
+    search=()=>{
+        this.setState({isLoading:true});
+        let value=this.state.value;
+
             if (this.state.value.length < 1) {
                 return this.setState({ isLoading: false, results: [], value: '' });
             } else {
@@ -80,28 +88,47 @@ class SearchBar extends Component {
                         }
                     });
                     this.setState({isLoading: false, results});
+                    if(Object.keys(results).length===0){
+                        this.setState({noResult:true})
+                    }
                 })
             }
-        }, 300)
-    };
 
+    }
+
+    enterPressed=(e)=>{
+        if (e.key === 'Enter') {
+            this.search();
+        }
+
+    }
     render() {
         const { isLoading, value, results } = this.state;
 
         return (
+            <Popup
+                trigger={
                     <Search
-                        style={{marginTop:2}}
+
+                        style={{marginTop: 2}}
                         category
                         categoryRenderer={categoryRenderer}
                         loading={isLoading}
                         onResultSelect={this.handleResultSelect}
-                        onSearchChange={_.debounce(this.handleSearchChange, 500, {
-                            leading: true,
-                        })}
+                        onSearchChange={this.handleSearchChange}
+                        onKeyUp={this.enterPressed}
                         results={results}
+                        showNoResults={false}
                         value={value}
                         {...this.props}
                     />
+                }
+             open={this.state.noResult}
+
+
+            >
+            No Results Found!
+            </Popup>
         )
     }
 

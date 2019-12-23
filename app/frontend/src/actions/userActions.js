@@ -62,6 +62,18 @@ export function profile(params) {
         payload: userService.profile(params)
     };
 }
+export function editProfile(params) {
+    return {
+        type:"EDIT_PROFILE",
+        payload: userService.editProfile(params)
+    };
+}
+export function changeUserState(params) {
+    return {
+        type:"CHANGE_USER_STATE",
+        payload: params
+    };
+}
 export function portfolios(params) {
     return {
         type:"PORTFOLIOS",
@@ -131,6 +143,12 @@ export function getArticleDetails(params) {
     };
 }
 
+export function getAllArticles(params) {
+    return {
+        type:"ALL_ARTICLES",
+        payload: userService.getArticle(params)
+    };
+}
 export function rateArticle(path,params) {
     return {
         type:"ARTICLE_RATE",
@@ -168,3 +186,23 @@ export function cancelFollow(path) {
         payload: userService.cancelFollow(path)
     };
 }
+
+export function getNotif(params) {
+    return {
+        type:"GET_NOTIFICATIONS",
+        payload: userService.getNotification(params)
+    };
+}
+export function readNotif(params) {
+    return {
+        type:"READ_NOTIFICATIONS",
+        payload: userService.readNotifs(params)
+    };
+}
+export function getRecommended(params) {
+    return {
+        type:"GET_RECOMMENDED",
+        payload: userService.getRecommended(params)
+    };
+}
+

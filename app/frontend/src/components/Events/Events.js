@@ -1,15 +1,17 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
-import {Header, Icon, Pagination, Segment,Dropdown,Popup,Button,Rating} from 'semantic-ui-react';
+import {Header, Icon, Pagination, Segment, Dropdown, Popup, Button, Rating, Grid} from 'semantic-ui-react';
 import {connect} from 'react-redux';
+import Star from "../../assets/star.png"
 import OneStar from '../../assets/onestar.png'
 import TwoStar from '../../assets/twostar.png'
 import ThreeStar from '../../assets/threestar.png'
 import {Link} from 'react-router-dom'
 import * as userActions from '../../actions/userActions';
 import Loading from "../Loading";
-import DatePicker from "react-datepicker"
+import DatePicker, {registerLocale} from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
+
 
 class Events extends Component {
 
@@ -22,7 +24,7 @@ class Events extends Component {
             shown:[],
             shownPage:1,
             totalNumOfEvents:0,
-            eventPerPage:15,
+            eventPerPage:10,
             dateDir:false,
             impDir:false,
             dropdownItems:[],
@@ -174,18 +176,7 @@ class Events extends Component {
         });
     }
 
-    sortfunc=(f,g)=>{
-        let dateDir=this.state.dateDir;
-        let a=new Date(f.normalDate);
-        let b=new Date(g.normalDate);
-        let c=f.Importance;
-        let d=g.Importance;
-        if(a.getTime()===b.getTime()) {
-            return d-c;
-        }
-        return dateDir?a-b:b-a;
 
-    };
 
     /*
     sortfunc2=(f,g)=>{
@@ -219,6 +210,18 @@ class Events extends Component {
         this.setState({shownPage:1},this.setShownEvents)
     };
     */
+    sortfunc=(f,g)=>{
+        let dateDir=this.state.dateDir;
+        let a=new Date(f.normalDate);
+        let b=new Date(g.normalDate);
+        let c=f.Importance;
+        let d=g.Importance;
+        if(a.getTime()===b.getTime()) {
+            return d-c;
+        }
+        return dateDir?a-b:b-a;
+
+    };
     sortEventsByDate=()=>{
 
         let dateDir=this.state.dateDir;
@@ -243,6 +246,7 @@ class Events extends Component {
         for(i=0;i<newevents.length;i++) {
             let d=newevents[i].Date;
             newevents[i].normalDate=normalizeDate(d);
+            newevents[i].normalDateTr=normalizeDateToTR(d);
         }
         this.setState({events:newevents});
 
@@ -286,53 +290,16 @@ class Events extends Component {
     onCountryChange=async(e,{value})=>{
         this.setState({drCo:value},this.onDropdownsChange);
 
-/*
-        let list=[];
-        if(value.length>0) {
-            for (let i of this.state.events) {
-                if (value.includes(i.Country)) {
-                    list.push(i);
-                }
-            }
-        }else{
-            list=this.state.events;
-        }
 
-        //await this.changeEvents2();
-        //this.setState({shownPage:1},this.setShownEvents)
-        this.setState({events2:list},()=>{this.setState(
-            {shownPage:1},this.setShownEvents);
-            this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
-        })
-
-*/
 
     };
     onEventChange=async(e,{value})=>{
         this.setState({drEv:value},this.onDropdownsChange);
-/*
-        let list=[];
-        if(value.length>0) {
-            for (let i of this.state.events) {
-                if (value.includes(i.Event)) {
-                    list.push(i);
-                }
-            }
-        }else{
-            list=this.state.events;
-        }
-
-        //await this.changeEvents2();
-        //this.setState({shownPage:1},this.setShownEvents)
-        this.setState({events2:list},()=>{this.setState(
-            {shownPage:1},this.setShownEvents);
-            this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
-        })
-*/
 
 
     };
     onImpChange=(e,{value})=>{
+
         this.setState({drImp:value},this.onDropdownsChange)
     };
     onSourceChange=(e,{value})=>{
@@ -356,10 +323,15 @@ class Events extends Component {
         return (
 
             !loading?(
-
-                <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center", width: "100%", margin: 30, fontWeight: "bold", fontSize: 16}} >
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={2}/>
+                        <Grid.Column width={12}>
+                <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center"}}>
+                <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20}} >
 
                         <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
+
                             <thead>
                             <tr>
                                 <th>
@@ -368,9 +340,8 @@ class Events extends Component {
                                         Event
 
                                         <Dropdown
-                                            style={{marginLeft:5}}
+                                            style={{marginLeft:5,width:"auto"}}
                                             placeholder='All'
-
                                             multiple
                                             search
                                             selection
@@ -379,7 +350,7 @@ class Events extends Component {
                                         />
                                     </div>
                                 </th>
-                                <th>
+                                <th >
                                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
                                         Country
@@ -398,7 +369,7 @@ class Events extends Component {
                                     </div>
 
                                 </th>
-                                <th>
+                                <th  class={"two wide"}>
                                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
 
                                         Date
@@ -422,11 +393,13 @@ class Events extends Component {
                                             <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:5}}>
 
                                                 <DatePicker
+                                                    locale={"tr"}
                                                     selected={this.state.startDate}
                                                     onChange={this.startDateChange}
                                                 />
                                                 to
                                                 <DatePicker
+                                                    locale={"tr"}
                                                     selected={this.state.endDate}
                                                     onChange={this.endDateChange}
                                                 />
@@ -438,7 +411,7 @@ class Events extends Component {
                                 </th>
 
                                 <th>
-                                    <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
                                         Source
 
                                         <Dropdown
@@ -455,8 +428,8 @@ class Events extends Component {
                                     </div>
 
                                 </th>
-                                <th>
-                                    <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                                <th class={"four wide"}>
+                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
                                         Importance
 
                                         <Dropdown
@@ -478,13 +451,17 @@ class Events extends Component {
                             {shown.map(function(event) {
 
                                 const imp=event.Importance;
-                                var src;
-                                if(imp===3){
-                                    src=(<Rating defaultRating={0} maxRating={3} disabled />);
+
+                                let items=[];
+                                if(imp===1){
+                                    items=[1]
+                                    //src=OneStar;
                                 }else if(imp===2){
-                                    src=TwoStar;
+                                    items=[1,2]
+                                    //src=TwoStar;
                                 }else{
-                                    src=OneStar;
+                                    items=[1,2,3]
+                                    //src=ThreeStar;
                                 }
                                 return(
                                     <tr>
@@ -496,13 +473,18 @@ class Events extends Component {
 
                                         </td>
                                         <td>
-                                            {event.normalDate}
+                                            {event.normalDateTr}
                                         </td>
                                         <td>
                                             {event.Source}
                                         </td>
                                         <td>
-                                            {<Rating defaultRating={imp} maxRating={3} disabled icon='star' style={{color:"white"}} />}
+                                            {
+                                                items.map(item=><img style={{width:20,height:20}} src={Star}/>)
+
+                                            }
+
+
                                         </td>
                                     </tr>)
                             })}
@@ -522,6 +504,11 @@ class Events extends Component {
 
 
                 </div>
+                </div>
+                        </Grid.Column>
+                        <Grid.Column width={2}/>
+                    </Grid.Row>
+                </Grid>
             ):(<Loading/>)
 
 
@@ -547,7 +534,20 @@ export function normalizeDate(date){
         minute: '2-digit',
         hour12: false
     };
-    return dat.toLocaleDateString('en-US', formatOptions);
+    return dat.toLocaleDateString('en-us', formatOptions);
+}
+export function normalizeDateToTR(date){
+
+    const dat = new Date(date);
+    const formatOptions = {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    };
+    return dat.toLocaleDateString('tr', formatOptions);
 }
 export function compareDates(a,b) { //date a <= date b
     let c=a.getFullYear();

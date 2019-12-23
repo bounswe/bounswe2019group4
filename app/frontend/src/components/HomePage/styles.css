@@ -1,6 +1,28 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900');
 
 
+div.item_2 {
+    vertical-align:top;
+    display: inline-block;
+    text-align: center;
+    width: 400px;
+
+}
+.img_class {
+    width: 400px;
+    padding: 50px;
+    height: 400px;
+
+}
+.caption {
+    display: block;
+    font-size: 22px;
+    line-height: 1.4;
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
+    color: #FFFFFF;
+}
 
 header {
     position: fixed;
@@ -55,7 +77,6 @@ button {
     padding: 15px 40px;
     font-weight: 400;
     font-size: 13px;
-    cursor: cursor;
 }
 
 button:hover {
@@ -83,8 +104,8 @@ button:hover {
 
 .slider-wrapper {
     position: relative;
-    height: 80vh;
-    overflow-y: auto;
+    height: 160vh;
+    overflow-y:auto;
     overflow-x: hidden;
 }
 
@@ -107,7 +128,7 @@ button:hover {
 
 .previousButton, .nextButton {
     position: absolute;
-    top: 50%;
+    top: 35%;
     transform: translateY(-50%);
     z-index: 10;
     background: url('arrow-point-to-right.svg') no-repeat center center / 32px;
@@ -210,9 +231,9 @@ button:hover {
     display: block;
 }
 
-@media (max-height: 500px) {
+@media (max-height: 650px) {
     .slider-wrapper, .slide {
-        height: calc(100vh - 75px);
+        height: calc(140vh - 75px);
     }
 }
 

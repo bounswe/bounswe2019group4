@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import EmptyPage from "../EmptyPage";
 import history from "../_core/history";
-
 import SignUp from "../components/SignUp/SignUp";
 import SignUpGoogle from "../components/SignUp/SignUpGoogle";
 import SignUpComplete from "../components/SignUp/SignUpComplete";
@@ -16,7 +15,14 @@ import TradingEquipment from "./TradingEquipment/TradingEquipment";
 import Create_Article from "./Articles/Create_Article";
 import authService from "../factories/authFactory";
 import Profile_Others from "./Profile/Profile_Others";
+import Investments from "./Investments/Investments";
+
+import AllArticles from "./Articles/AllArticles";
 import HomePage from "./HomePage/HomePage";
+import EditProfile from "./Profile/EditProfile";
+
+
+
 import Portfolio_Details from "./Portfolios/Portfolio_Details";
 import Create_Portfolio from "./Portfolios/Create_Portfolio";
 
@@ -44,9 +50,11 @@ class Routes extends Component {
                     <Route path="/events" render={() => { return <Events />; }} />
                     <Route path="/articles/new" render={(props) => { return <Create_Article {...props} />; }} />
                     <Route path="/articles/:id" render={(props) => { return <Article_Details{...props} />; }} />
+                    <Route path="/articles" render={(props) => {return <AllArticles{...props} />; }} />
                     <Route path="/portfolios/new" render={(props) => { return <Create_Portfolio {...props} />; }} />
                     <Route path="/portfolios/:id" render={(props) => { return <Portfolio_Details{...props} />; }} />
                     <Route path="/trading-equipment" render={(props) => { return <TradingEquipment {...props} />; }} />
+                    <Route exact path="/profile/edit" render={(props) => { return <EditProfile{...props} />; }} />
                     <Route exact path="/profile/:id" render={(props) => { return <Profile_Others{...props} />; }} />
                     <Route path="/home" render={() => { return <HomePage  />; }} />
                     <Route exact path="/profile" render={
@@ -58,6 +66,7 @@ class Routes extends Component {
                             }
                         }
                     } />
+                    <Route exact path="/investments" render={() => {return <Investments />}} />
                     <Route path="/" render={() => { return <EmptyPage />; }} />
 
                 </Switch>

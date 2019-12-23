@@ -6,6 +6,8 @@ import image2 from "./slide_image_2.png"
 import image3 from "./slide_image_3.png"
 import image4 from "./slide_image_4.png"
 import image5 from "./slide_image_5.png"
+import logo from "../../assets/arken_logo.png"
+import plain_bg from "../../assets/plain_bg.png"
 import {loadState} from "../../_core/localStorage";
 import "./normalize.css";
 import "./style-animations.css";
@@ -13,6 +15,7 @@ import "./styles.css"
 import './normalize.css';
 import {Menu} from "semantic-ui-react";
 import history from "../../_core/history";
+import {colorAccent, colorBG, colorLightBG} from "../../utils/constants/Colors";
 
 
 class HomePage extends Component {
@@ -27,7 +30,7 @@ user:{}
     }
 
     navigateEvents(e) {
-        history.push("/events");
+        history.push("/trading-equipment");
     }
 
     componentDidMount() {
@@ -39,33 +42,48 @@ user:{}
         const {user}=this.state;
         const slides = [
             { title: 'Welcome to Arkenstone',
-                description: 'Arkenstone is an interactive trading platform with full of people who are interested in trading and investing in financial markets worldwide',
-                images:image1},
+                description: 'Arkenstone is an interactive trading platform with full of people who are interested in trading and investing in financial markets worldwide.',
+                bg_images:plain_bg,
+            images:logo},
             { title: 'Connect',
-                description: 'Connect with other finance enthusiasts like you. Follow their portfolios, articles and interact with them to stay up to date.',
-                images:image2},
-            { title: 'Invest',
-                description: 'Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.'
-                ,images:image3},
-            { title: 'Discover',
-                description: 'Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely',
-                images:image4},
-            { title: 'Keep in Touch',
-                description: 'Arkenstone has a native Web and  Mobile(Android) platform to make things easier for you. Earn wherever you go and whenever you want!',
-                images:image5}
+                description_1: 'Connect with other finance enthusiasts like you. Follow their portfolios, articles and interact with them to stay up to date.',
+                description_2: 'Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.',
+                description_3: 'Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely.',
+                bg_images:plain_bg}
         ];
         return (
 
             <Slider className="slider-wrapper" autoplay={3500} infinite={true} >
                 {slides.map((slide, index) =>
-                    <div key={index} className="inner slider-content">
+                    <div key={index} className="inner slider-content" style= {{ backgroundImage: "url("+slide.bg_images+")" }}>
 
-                    <h1 style={{color: "#1678C2",fontSize: "30px"}}>{slide.title}</h1>
-                    <img src={slide.images} width={300} height={300} mode='fit'/>
-                    <p  style={{color: "#FFFFFF", fontSize: "20px" }} >{slide.description}</p>
-                        {!user||!user.loggedin ? <button  name="sign_up"
-                             onClick={this.navigateSignUp}>Register</button> :
-                            <button  name="events" onClick={this.navigateEvents}>Events</button> }
+                        {index !== 0 && <div style={{backgroundColor:colorBG}}> <div className="item_2">
+                            <img class="img_class" src={image1}/>
+                            <span className="caption">{slide.description_1}</span>
+                        </div>
+                        < div className="item_2">
+                            <img class="img_class" src={image2}/>
+                            <span className="caption">{slide.description_2}</span>
+                            </div>
+                            <div  className="item_2">
+                            <img class="img_class" src={image3}/>
+                            <span className="caption">{slide.description_3}</span>
+                            </div>
+                        </div>
+
+                        }
+
+                        {index === 0 && <img src={slide.images} width={350} height={300} mode='fit'/>}
+
+                        {index === 0 && <div style={{backgroundColor:colorLightBG, padding:30}}> <h1 style={{fontSize:"45px", color:colorAccent}}>Join the Trading Revolution!
+                        </h1></div>}
+                        <br/>
+                        {index === 0 &&  <p  style={{color: "#FFFFFF", fontSize: "25px", textAlign:"center", lineHeight:1.5, paddingLeft:400
+                            , paddingRight:400, }} >{slide.description}</p>}
+                        <br/>
+                        {!user||!user.loggedIn ? <button style={{width:250, color:"white"}}  name="sign_up"
+                             onClick={this.navigateSignUp}>Get Started Now</button> :
+                            <button style={{width:250, color:"white"}} name="trading-equipment" onClick={this.navigateEvents}>Start Investing</button> }
                 </div>)}
             </Slider>
 

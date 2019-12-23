@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Menu, Form} from 'semantic-ui-react';
+import {Menu, Form, Icon} from 'semantic-ui-react';
 import history from '../../_core/history';
 
 import SignInModal from '../SignIn/SignIn';
@@ -41,6 +41,16 @@ class GuestHeaderComponent extends Component {
                     onClick={this.navigate}
                 >
                     Sign Up
+                </Menu.Item>
+                <Menu.Item
+                    style={{display: "flex", alignItems: "center"}}
+                    name="settings"
+
+                >
+                    <a style={{color:"white"}} href={"https://github.com/bounswe/bounswe2019group4"}>
+                        <Icon name={"github"}/>
+                    </a>
+
                 </Menu.Item>
             </Menu.Menu>
         )
