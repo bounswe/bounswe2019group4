@@ -73,17 +73,21 @@ class Create_Portfolio extends Component {
         let {text,titletext,isPrivate, tradingEqs}=this.state;
         if(text!==""&&titletext!=="") {
             let param = {
-                text: text,
+                definition: text,
                 title: titletext,
                 isPrivate : isPrivate,
                 tradingEqs : tradingEqs
             };
+            alert(JSON.stringify(param))
             this.setState({editloading: true});
             await this.props.createPortfolio(param).then(async() => {
                 this.setState({editloading: false, dimmer: true});
                 setTimeout(() => {this.setState({dimmer: false});
                     history.push("/profile")
                 }, 2000);
+            }).catch((e)=>{
+                this.setState({editloading:false})
+                alert(e)
             })
         }else{
             alert("Title or text should not be empty!");
@@ -91,7 +95,7 @@ class Create_Portfolio extends Component {
     };
 
     onDropChange=(e,{value})=>{
-        this.setState({tradingEqs:value},this.onDropdownsChange)
+        this.setState({tradingEqs:value})
         //console.log(this.state.tradingEqs)
     };
 
@@ -134,15 +138,15 @@ class Create_Portfolio extends Component {
                                         >
                                             <Form.TextArea
                                                 label={"Title"}
-                                                style={{borderWidth: 1, borderColor: "gray"}}
+                                                style={{borderWidth: 1, borderColor: "gray",height:45,width:"50%"}}
                                                 value={this.state.titletext}
                                                 onChange={(item) => this.setState({
                                                     titletext: item.target.value
                                                 })}
                                             />
                                             <Form.TextArea
-                                                label={"Text"}
-                                                style={{borderWidth: 1, borderColor: "gray",height:300}}
+                                                label={"Definition"}
+                                                style={{borderWidth: 1, borderColor: "gray"}}
                                                 value={this.state.text}
                                                 onChange={(item) => this.setState({
                                                     text: item.target.value
