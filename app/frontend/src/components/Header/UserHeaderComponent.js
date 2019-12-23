@@ -114,7 +114,8 @@ class UserHeaderComponent extends Component {
                     </div>
 
                 </Dropdown.Item>)
-        }else if(item.text.includes("prediction")&&item.text.includes("nor false")) {
+        }else if(item.text.includes("prediction")&&item.text.includes("neither")) {
+
             return (
                 <Dropdown.Item name={"trading-equipment"} onClick={this.navigate}>
                     <div style={{display:"flex",flexDirection:"row"}}>

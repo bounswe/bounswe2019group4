@@ -93,12 +93,12 @@ class Comments extends Component{
         const comments  = this.props.data;
         let user=this.state.user;
         return(
-            <Segment  loading={this.state.loading} style={{borderRadius:10,borderWidth:2,background: "rgba(0,0,0,0)"}}>
+            <Segment  loading={this.state.loading} style={{borderColor:"#1d2526",borderRadius:10,borderWidth:5,background: "rgba(0,0,0,0)"}}>
 
-                <Header as='h4' inverted block style={{borderRadius:10, backgroundColor:colorBG, borderColor:'#212a2b', borderWidth:1.7}} textAlign={"left"}>
+                <Header as='h4' inverted block style={{borderRadius:10, backgroundColor:colorBG, borderColor:'#1d2526', borderWidth:3.5}} textAlign={"left"}>
                     Comments
                 </Header>
-            <div id={"cgroup"} style={{overflow:"auto",height:"250px",backgroundColor:colorBG,borderRadius:10,borderWidth:2,borderColor:"white"}}>
+            <Segment id={"cgroup"} style={{overflow:"auto",height:"250px",backgroundColor:colorBG,borderRadius:10,borderWidth:2.5,borderColor:"#1d2526"}}>
 
 
                 {comments.length>0?comments.map(item=>(
@@ -171,9 +171,9 @@ class Comments extends Component{
                         </div>
 
                     )
-                ):<h3 style={{color:"gray"}}>No comments yet</h3>}
+                ):<h3 style={{color:"grey"}}>No comments yet</h3>}
 
-            </div>
+            </Segment>
                 <Segment style={{backgroundColor:colorBG}} >
 
                     {this.state.user&&this.state.user.loggedIn?
@@ -197,7 +197,7 @@ class Comments extends Component{
                             </div>
                         </Form>)
                         :
-                        <h3>Sign in to make comments!</h3>}
+                        <h3 style={{color:"grey"}}>Sign in to make comments!</h3>}
                 </Segment>
             </Segment>
         )

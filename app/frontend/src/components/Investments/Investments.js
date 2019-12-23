@@ -211,7 +211,7 @@ class Investments extends Component {
                                 {tradingEquipment.map(key=> {
                                     if(key.value !== "EUR") {
                                         return (
-                                            <List.Item onClick={()=>history.push({pathname:"/trading-equipment",state:{currency:key.value}})} style={{color: "#c9c9c9",margin:5,cursor:"pointer"}} icon={key.icon ? key.icon+ " inverted" : "money inverted"} content={investments.account[key.value] + " " + key.value} />
+                                            <List.Item onClick={()=>history.push({pathname:"/trading-equipment",state:{currency:key.value}})} style={{color: "#c9c9c9",margin:5,cursor:"pointer"}} icon={key.icon ? key.icon+ " inverted" : "money inverted"} content={Math.round(investments.account[key.value]*1000)/1000 + " " + key.value} />
                                         )
                                     }
                                 })}
