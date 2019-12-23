@@ -18,7 +18,8 @@ const schema = new Schema(
     },
     "@context": {
       type: String
-    }
+    },
+    articleId: String
   },
   { timestamps: { createdAt: "created", updatedAt: "modified" } }
 );
