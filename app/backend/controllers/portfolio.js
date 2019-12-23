@@ -50,6 +50,7 @@ module.exports.postPortfolio = async (request, response) => {
 module.exports.getPortfolio = async (request, response) => {
   let PortfolioTradingEq = request.models['PortfolioTradingEq']
   let Portfolio = request.models['Portfolio']
+  let PortfolioFollow = request.models['PortfolioFollow']
 
   let portfolio = await Portfolio.findOne({ _id : request.params['id']})
   
@@ -60,9 +61,18 @@ module.exports.getPortfolio = async (request, response) => {
       tradingEqs.push(tradingEq['TradingEq']);
     }
 
+    let followStatus = "FALSE"
+
+    if(request.session['user']){
+      let row = await PortfolioFollow.findOne({UserId: request.session['user']._id, PortfolioId: request.params['id']})
+      if(row)
+        followStatus = "TRUE"
+    }
+
     obj = {
       portfolio: portfolio,
-      tradingEqs: tradingEqs
+      tradingEqs: tradingEqs,
+      followStatus
     }
     return response.send(obj)
   } else {

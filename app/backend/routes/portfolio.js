@@ -40,7 +40,8 @@ router.patch('/:id', [
 */
 router.get('/:id',[ multipleModelBinder([
   [Portfolio, 'Portfolio'],
-  [PortfolioTradingEq, 'PortfolioTradingEq']
+  [PortfolioTradingEq, 'PortfolioTradingEq'],
+  [PortfolioFollow, 'PortfolioFollow']
 ])], portfolioController.getPortfolio)
 
 /*
