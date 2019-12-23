@@ -1,12 +1,19 @@
 package com.example.arken.fragment.article
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
 import android.text.method.KeyListener
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.method.LinkMovementMethod
+import android.text.style.BackgroundColorSpan
+import android.text.style.ClickableSpan
+import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -85,11 +92,62 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
             )
 
         call.enqueue(object : Callback<Article> {
+            @SuppressLint("ClickableViewAccessibility")
             override fun onResponse(call: Call<Article>, response: Response<Article>) {
                 if (response.isSuccessful) {
                     val article: Article? = response.body()
                     title.text = article?.title
                     text.text = article?.text
+                    val ss =SpannableString(text.text.toString())
+                    var clickableSpan: ClickableSpan = object : ClickableSpan() {
+                        override fun onClick(textView: View) {
+                            //TODO create view of annotation.
+                        }
+
+                        override fun updateDrawState(ds: TextPaint) {
+                            super.updateDrawState(ds)
+                            ds.isUnderlineText = false
+                            System.out.println("asd")
+
+                        }
+                    }
+
+                    text.setMovementMethod(LinkMovementMethod.getInstance())
+                    ss.setSpan(BackgroundColorSpan(Color.YELLOW),0,6,0)
+                    ss.setSpan(clickableSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    text.setText(ss,TextView.BufferType.SPANNABLE)
+                    /*text.setCustomSelectionActionModeCallback(object :
+                        ActionMode.Callback {
+                        override fun onCreateActionMode(
+                            mode: ActionMode,
+                            menu: Menu?
+                        ): Boolean {
+                            mode.menuInflater.inflate(R.menu.anno_menu, menu)
+                            return true
+                        }
+
+                        override fun onPrepareActionMode(
+                            mode: ActionMode?,
+                            menu: Menu?
+                        ): Boolean {
+                            return false
+                        }
+
+                        override fun onActionItemClicked(
+                            mode: ActionMode,
+                            item: MenuItem
+                        ): Boolean {
+                            if (item.getItemId() === R.id.annotate) {
+                                val selStart: Int = text.getSelectionStart()
+                                val selEnd: Int = text.getSelectionEnd()
+                                mode.finish()
+                                return true// annotateClicked(selStart, selEnd)
+                            }
+                            return false
+                        }
+
+                        override fun onDestroyActionMode(mode: ActionMode) {}
+                    })*/
                     myVote.text="${myVote.text}${article?.yourRate}"
                     currentRate.text="${currentRate.text}${article?.rateAverage}"
                     totalVotes.text="${totalVotes.text}${article?.numberOfRates}"
