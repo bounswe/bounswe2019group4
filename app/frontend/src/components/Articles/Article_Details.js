@@ -24,6 +24,7 @@ import {normalizeDate} from "../Events/Events";
 import Loading from "../Loading";
 import article_photo from "../../assets/article_logo.png"
 import Comments from "../Comments";
+import history from "../../_core/history";
 
 
 class Article_Details extends Component {
@@ -104,6 +105,14 @@ class Article_Details extends Component {
 
     };
 
+    deleteArticle=async()=>{
+
+        this.props.deleteArticle("/"+this.state.article._id).then(()=>{
+
+            history.push("/profile");
+        })
+    };
+
     render() {
         const article  = this.state.article;
         const comments=article?article.comments:[];
@@ -181,11 +190,18 @@ class Article_Details extends Component {
                             <Grid.Column width={10}>
                                 <Segment raised piled padded compact style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                                     <div style={{margin:20,fontFamily:"timesnewroman",fontSize:15,width:"80%"}}>
-
+                                        {user && user.loggedIn && article.userId === user._id &&
+                                            <div style={{width: "100%", textAlign: "right"}}>
+                                                <Button color={"red"} onClick={this.deleteArticle}>Delete</Button>
+                                            </div>
+                                        }
                                         {user && user.loggedIn&&article.userId===user._id ? (
                                                 <Header style={{fontFamily: "timesnewroman"}}>
                                                     Edit your article
+
                                                 </Header>
+
+
                                             ) :
                                             (
                                                 <Header style={{fontFamily: "timesnewroman"}}>
@@ -229,6 +245,7 @@ class Article_Details extends Component {
                                                                     icon={'edit'}
                                                                     basic color={"black"}
                                                             />
+
                                                         </div>
                                                         <div style={{
                                                             fontSize: 14,
@@ -281,7 +298,8 @@ const dispatchToProps = dispatch => {
         article: params => dispatch(userActions.getArticleDetails(params)),
         userInformation:params=>dispatch(userActions.users(params)),
         rateArticle:(path,params)=>dispatch(userActions.rateArticle(path,params)),
-        editArticle:(path,params)=>dispatch(userActions.editArticle(path,params))
+        editArticle:(path,params)=>dispatch(userActions.editArticle(path,params)),
+        deleteArticle:(path)=>dispatch(userActions.deleteArticle(path))
     };
 };
 
