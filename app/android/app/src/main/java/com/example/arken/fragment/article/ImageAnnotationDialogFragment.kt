@@ -9,21 +9,22 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.arken.R
 import com.example.arken.fragment.signup_login.LoginFragment
-import com.example.arken.model.ListAnnotations
 import com.example.arken.model.Annotation
 import com.example.arken.util.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.annotation.SuppressLint
+import android.text.InputType
 import android.view.MotionEvent
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
+import com.example.arken.model.AnnoCreateRequest
 import okhttp3.ResponseBody
 
 //burada da menuyü kullanalım on long press olduğunda
 
-class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : DialogFragment(){
+class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val photoId: Int) : DialogFragment(){
 
     lateinit var imageView: ImageView
     var userCookie = ""
@@ -49,8 +50,12 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
         checkBox = rootView.findViewById(R.id.annotation_add_check)
         editText  = rootView.findViewById(R.id.annotation_editText)
         deleteButton = rootView.findViewById(R.id.delete_annotation)
+        val imageIds = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4,
+            R.drawable.image5, R.drawable.image6, R.drawable.image7, R.drawable.image8,
+            R.drawable.image9, R.drawable.image10)
+        imageView.setImageResource(imageIds[photoId - 1])
         if(mode == 1){
-            showAnnotations()
+            getAnnotations()
             relativeEdit.visibility = View.GONE
         }
         checkBox.setOnClickListener{
@@ -66,21 +71,25 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
 
                 // Set a positive button and its click listener on alert dialog
                 builder.setPositiveButton("YES"){dialog, which ->
-
-                    val realId = activity!!.getSharedPreferences(
-                        LoginFragment.MY_PREFS_NAME,
-                        Context.MODE_PRIVATE
-                    )
+                    val realId = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE)
                         .getString("userId", "defaultId")
                     // create anno
                     annotation!!.type="image"
-                    annotation!!.userId = realId
                     annotation!!.articleId = articleId
-                    val obj = annotation!!.toJSON()
+                    annotation!!.annotationText = editText.text.toString()
+                    annotation!!.userId = realId
+
                     val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.createAnnotation(activity!!.getSharedPreferences(
                         LoginFragment.MY_PREFS_NAME,
-                        Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), obj)
-
+                        Context.MODE_PRIVATE).getString("user_cookie",null),
+                        AnnoCreateRequest(
+                            "http://www.w3.org/ns/anno.jsonld",
+                            "Annotation",
+                            annotation!!,
+                            "http://www.example.com/index.htm",
+                            articleId
+                        )
+                    )
 
                     call.enqueue(object : Callback<ResponseBody> {
                         override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -123,7 +132,6 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
 
         relativeLayout = rootView as RelativeLayout
 
-        this.dialog?.setTitle("Add Alert")
         userCookie  = activity!!.getSharedPreferences(
             LoginFragment.MY_PREFS_NAME,
             Context.MODE_PRIVATE
@@ -162,8 +170,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
                     if(mode== 0 && annotation!= null){
                         val placeX = ((motionEvent.rawX - imageView.x) / imageView.width).toDouble()
                         val placeY = ((motionEvent.rawY - imageView.y) / imageView.height).toDouble()
-                        annotation!!.w = (placeX - annotation!!.x)/ imageView.width
-                        annotation!!.h = (placeY - annotation!!.y)/ imageView.height
+                        annotation!!.w = (placeX - annotation!!.x)
+                        annotation!!.h = (placeY - annotation!!.y)
                     }
                     true
                 }
@@ -186,49 +194,60 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int) : Dial
         return rootView
     }
     fun getAnnotations(){
-        val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.getAnnotations(activity!!.getSharedPreferences(
+        val call: Call<List<AnnoCreateRequest>> = AnnotationRetroClient.getInstance().annotationAPIService.getAnnotations(activity!!.getSharedPreferences(
             LoginFragment.MY_PREFS_NAME,
             Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), articleId)
 
 
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+        call.enqueue(object : Callback<List<AnnoCreateRequest>> {
+            override fun onResponse(call: Call<List<AnnoCreateRequest>>, response: Response<List<AnnoCreateRequest>>) {
                 if (response.isSuccessful) {
-                    /*if(response.body()?.annotations!= null){
-                        annotations = response.body()?.annotations!!
+                    val arr = response.body()
+                    annotations.clear()
+                    if (arr != null) {
+                        for(anno in arr){
+                            annotations.add(anno.body)
+                        }
+                        showAnnotations()
                     }
-                    else{
-                        annotations = mutableListOf()
-                    }*/
 
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<List<AnnoCreateRequest>>, t: Throwable) {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     fun showAnnotations(){
-        getAnnotations()
         for(icon in annotationIcons){
-            icon.visibility = View.GONE
+            relativeLayout.removeView(icon)
         }
         annotationIcons.clear()
         for(annotation in annotations){
             if(annotation.type == "image"){
-                val lp = RelativeLayout.LayoutParams(30, 30)
-                lp.addRule(RelativeLayout.CENTER_IN_PARENT)
-                val imageView = ImageView(context) // initialize ImageView
-                imageView.layoutParams = lp
+                val lp = RelativeLayout.LayoutParams(50, 50)
+                val icon = ImageView(context) // initialize ImageView
+                icon.layoutParams = lp
+                icon.setImageResource(R.drawable.ic_annotation)
+                icon.x = (imageView.x + (annotation.x * imageView.width)).toFloat()
+                icon.y = (imageView.y + (annotation.y * imageView.height)).toFloat()
+                annotationIcons.add(icon)
+                icon.setOnClickListener {
+                    relativeEdit.x = icon.x
+                    relativeEdit.y = icon.y
+                    editText.layoutParams.width = (annotation.w * imageView.width).toInt()
+                    editText.layoutParams.height = (annotation.h * imageView.height).toInt()
+                    editText.setText(annotation.annotationText)
+                    editText.inputType = InputType.TYPE_NULL
+                    relativeEdit.requestLayout()
+                    relativeEdit.visibility = View.VISIBLE
+                }
                 // imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imageView.setImageResource(R.drawable.ic_annotation)
-                imageView.x = (imageView.x + (annotation.x * imageView.width)).toFloat()
-                imageView.x = (imageView.y + (annotation.y * imageView.height)).toFloat()
-                annotationIcons.add(imageView)
+
             }
         }
         for(icon in annotationIcons){

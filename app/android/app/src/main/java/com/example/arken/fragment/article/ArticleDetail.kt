@@ -41,6 +41,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var prefs: SharedPreferences
     private lateinit var imageView: ImageView
     private lateinit var imageIds:Array<Int>
+    var imageId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -103,10 +104,11 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                     myVote.text="${myVote.text}${article?.yourRate}"
                     currentRate.text="${currentRate.text}${article?.rateAverage}"
                     totalVotes.text="${totalVotes.text}${article?.numberOfRates}"
-                    val imageId = article?.imageId
-                    if(imageId!= 0){
-                        if (imageId != null) {
-                            imageView.setImageResource(imageIds[imageId - 1])
+                    val imageId2 = article?.imageId
+                    if(imageId2!= 0){
+                        if (imageId2 != null) {
+                            imageView.setImageResource(imageIds[imageId2 - 1])
+                            imageId = imageId2
                         }
                     }
                     setVisibility(article!!.userId!!)
@@ -136,13 +138,13 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
             popup.setOnMenuItemClickListener{
                 when (it.getItemId()) {
                     R.id.add_annot ->{
-                        val dialog = ImageAnnotationDialogFragment(args.articleId, 0)
+                        val dialog = ImageAnnotationDialogFragment(args.articleId, 0, imageId)
                         dialog.show(fragmentManager!!, "annot")
                         true
                     }
 
                     R.id.see_annot ->{
-                        val dialog = ImageAnnotationDialogFragment(args.articleId, 1)
+                        val dialog = ImageAnnotationDialogFragment(args.articleId, 1, imageId)
                         dialog.show(fragmentManager!!, "annot")
                         true
                     }
@@ -291,22 +293,5 @@ private fun refresh(){
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         rate = position + 1
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
-            R.id.add_annot ->{
-                val dialog = ImageAnnotationDialogFragment(args.articleId, 0)
-                dialog.show(fragmentManager!!, "annot")
-                return true
-            }
-
-            R.id.see_annot ->{
-                val dialog = ImageAnnotationDialogFragment(args.articleId, 1)
-                dialog.show(fragmentManager!!, "annot")
-                return true
-            }
-            else -> return super.onContextItemSelected(item)
-        }
     }
 }

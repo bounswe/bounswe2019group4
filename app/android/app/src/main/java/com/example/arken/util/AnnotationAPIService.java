@@ -1,9 +1,12 @@
 package com.example.arken.util;
 
+import com.example.arken.model.AnnoCreateRequest;
 import com.example.arken.model.Annotation;
 import com.example.arken.model.ListAnnotations;
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -20,24 +23,24 @@ public interface AnnotationAPIService {
 
     @Headers({"Content-Type: application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\""})
     @GET("annotations/article/{id}")
-    Call<ResponseBody> getAnnotations(@Header("Cookie") String userCookie, @Path("id") String id);
+    Call<List<AnnoCreateRequest>> getAnnotations(@Header("Cookie") String userCookie, @Path("id") String id);
 
     @Headers({"Content-Type: application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\""})
     @POST("annotations")
-    Call<ResponseBody> createAnnotation(@Header("Cookie") String userCookie, @Body JSONObject annotation);
+    Call<ResponseBody> createAnnotation(@Header("Cookie") String userCookie, @Body AnnoCreateRequest jsonObject);
 
     //pek anlamadım headerları
-    @Headers({"Content-Type: If-MatchW/\"16f-0fhSPP6bcqE1GQtRLHPAftcvPjI\""})
+    // @Headers({"Content-Type: application/json"})
     @DELETE("annotations")
-    Call<ResponseBody> deleteAnnotation(@Header("Cookie") String userCookie);
+    Call<ResponseBody> deleteAnnotation(@Header("Cookie") String userCookie,@Header("If-Match") String match);
 
     //pek anlamadım headerları
-    @Headers({"Content-Type: application/json"})
+    @Headers({"Content-Type: application/ld+json ; profile= http://www.w3.org/ns/anno.jsonld"})
     @PUT("annotations")
-    Call<ResponseBody> updateAnnotation(@Header("Cookie") String userCookie);
+    Call<ResponseBody> updateAnnotation(@Header("Cookie") String userCookie, @Body JSONObject jsonObject);
 
     //pek anlamadı headerları
     @Headers({"Content-Type: application/json"})
     @GET("annotations/{id}")
-    Call<ResponseBody> getAnnotation(@Header("Cookie") String userCookie, @Path("id") String annotationId);
+    Call<Annotation> getAnnotation(@Header("Cookie") String userCookie, @Path("id") String annotationId);
 }
