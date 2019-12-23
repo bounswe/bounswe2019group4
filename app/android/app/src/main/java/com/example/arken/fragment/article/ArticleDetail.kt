@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
+import com.example.arken.fragment.comment.ListCommentFragment
 import com.example.arken.model.Article
 import com.example.arken.model.ArticleCreateRequest
 import com.example.arken.model.ArticleRateRequest
@@ -27,8 +28,12 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.*
 
 
+/*
+3) annotation layout oluştur
+ */
 class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
@@ -43,6 +48,9 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var totalVotes: TextView
     private val args: ArticleDetailArgs by navArgs()
     private lateinit var prefs: SharedPreferences
+    private lateinit var imageView: ImageView
+    private lateinit var imageIds:Array<Int>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,6 +72,10 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
         totalVotes= rootView.findViewById(R.id.rate_line_total_votes)
         vote.setOnClickListener { vote() }
         rateSpinner = rootView.findViewById(R.id.rate_line_vote_spinner)
+        imageView = rootView.findViewById(R.id.article_detail_image)
+        imageIds = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4,
+            R.drawable.image5, R.drawable.image6, R.drawable.image7, R.drawable.image8,
+            R.drawable.image9, R.drawable.image10)
 
         val imp = arrayOf(1, 2, 3, 4, 5)
 
@@ -116,7 +128,8 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                     ss.setSpan(BackgroundColorSpan(Color.YELLOW),0,6,0)
                     ss.setSpan(clickableSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     text.setText(ss,TextView.BufferType.SPANNABLE)
-                    /*text.setCustomSelectionActionModeCallback(object :
+                    text.setTextIsSelectable(true)
+              /*      text.setCustomSelectionActionModeCallback(object :
                         ActionMode.Callback {
                         override fun onCreateActionMode(
                             mode: ActionMode,
@@ -140,6 +153,8 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                             if (item.getItemId() === R.id.annotate) {
                                 val selStart: Int = text.getSelectionStart()
                                 val selEnd: Int = text.getSelectionEnd()
+                                System.out.println(selStart)
+                                System.out.println(selEnd)
                                 mode.finish()
                                 return true// annotateClicked(selStart, selEnd)
                             }
@@ -151,6 +166,12 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                     myVote.text="${myVote.text}${article?.yourRate}"
                     currentRate.text="${currentRate.text}${article?.rateAverage}"
                     totalVotes.text="${totalVotes.text}${article?.numberOfRates}"
+                    val imageId = article?.imageId
+                    if(imageId!= 0){
+                        if (imageId != null) {
+                            imageView.setImageResource(imageIds[imageId - 1])
+                        }
+                    }
                     setVisibility(article!!.userId!!)
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
@@ -162,6 +183,22 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
+        fragmentManager?.beginTransaction()?.add(
+            R.id.list_comment_fragment_article,
+            ListCommentFragment.newInstance(
+                args.articleId,
+                "ARTICLE"
+            ),
+            "commentList"
+        )?.commit()
+
+        imageView.setOnLongClickListener {
+            val popup = PopupMenu(context, it)
+            val inflater: MenuInflater = popup.menuInflater
+            inflater.inflate(R.menu.image_anno, popup.menu)
+            popup.show()
+            true
+        }
     }
 private fun refresh(){
     val call: Call<Article> =
@@ -301,5 +338,17 @@ private fun refresh(){
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         rate = position + 1
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            R.id.add_annot ->
+                // do something
+                return true
+            R.id.see_annot ->
+                // do something
+                return true
+            else -> return super.onContextItemSelected(item)
+        }
     }
 }

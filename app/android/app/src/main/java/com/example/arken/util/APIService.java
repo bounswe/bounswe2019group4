@@ -1,6 +1,7 @@
 package com.example.arken.util;
 
 import com.example.arken.model.Alert;
+import com.example.arken.model.Annotation;
 import com.example.arken.model.Article;
 import com.example.arken.model.ArticleCreateRequest;
 import com.example.arken.model.ArticleRateRequest;
@@ -11,6 +12,7 @@ import com.example.arken.model.GetPortfolio;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
 import com.example.arken.model.ListAlert;
+import com.example.arken.model.ListAnnotations;
 import com.example.arken.model.ListArticle;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.ListNotification;
@@ -111,6 +113,10 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @DELETE("comments/event/{id}")
     Call<ResponseBody> deleteEventComment(@Header("Cookie") String userCookie, @Path("id") String k);
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("comments/article/{id}")
+    Call<ResponseBody> deleteArticleComment(@Header("Cookie") String userCookie, @Path("id") String k);
 
     @Headers({"Content-Type: application/json"})
     @DELETE("comments/trading-equipment/{id}")
@@ -247,4 +253,16 @@ public interface APIService {
     @Headers({"Content-Type: application/json"})
     @DELETE("investments/order/{id}")
     Call<ResponseBody> deleteOrder(@Header("Cookie") String userCookie, @Path("id") String orderId);
+
+ /*@Headers({"Content-Type: application/json"})
+    @GET("annotations/article/{id}")
+    Call<ListAnnotations> getAnnotations(@Header("Cookie") String userCookie, @Path("id") String id);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("trading-equipments/alert")
+    Call<ResponseBody> createAnnotation(@Header("Cookie") String userCookie, @Body Annotation annotation);
+
+    @Headers({"Content-Type: application/json"})
+    @DELETE("trading-equipments/alert/{id}")
+    Call<ResponseBody> deleteeAlert(@Header("Cookie") String userCookie, @Path("id") String id);*/
 }

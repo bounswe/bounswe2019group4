@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/add_annot"
+        android:title="Add annotation" />
+    <item android:id="@+id/see_annot"
+        android:title="See annotations" />
+</menu>
