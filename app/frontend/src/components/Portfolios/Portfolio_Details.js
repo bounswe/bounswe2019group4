@@ -81,8 +81,8 @@ class Portfolio_Details extends Component {
     async getPortfolio(){
 
         await this.props.getPortfolio("/"+this.props.match.params.id).then(async result=> {
-                let newportfolio=result.value;
-                this.setState({portfolio:newportfolio,text:newportfolio.text,titletext:newportfolio.title,tradingEqs:newportfolio.tradingEqs,isPrivate:newportfolio.isPrivate})
+                let newportfolio=JSON.parse(result);
+                this.setState({portfolio:newportfolio,text:newportfolio.portfolio.definition,titletext:newportfolio.portfolio.title,tradingEqs:newportfolio.tradingEqs,isPrivate:newportfolio.portfolio.isPrivate})
 
             }
         )

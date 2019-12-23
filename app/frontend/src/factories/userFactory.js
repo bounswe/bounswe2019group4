@@ -13,10 +13,11 @@ function userFactory() {
     this.createArticle=(params)=>baseRequest.post("/articles",params);
     this.deleteComment=(path)=>baseRequest.delete("/comments"+path);
     this.profile = path => baseRequest.get("/profile/"+path);
-    this.portfolios = path => baseRequest.get("/portfolios/"+path);
-    this.getPortfolio=path=>baseRequest.get("/articles"+path);
-    this.editPortfolio=(path,params)=>baseRequest.patch("/articles"+path,params);
-    this.createPortfolio=(params)=>baseRequest.post("/articles",params);
+    this.getPortfolio=path=>baseRequest.get("/portfolios"+path);
+    this.editPortfolio=(path,params)=>baseRequest.patch("/portfolios"+path,params);
+    this.createPortfolio=(params)=>baseRequest.post("/portfolios",params);
+    this.followPortfolio = path => baseRequest.get("/portfolios/"+path+"/follow");
+    this.unfollowPortfolio = path => baseRequest.get("/portfolios/"+path+"/unfollow");
     this.follow = path => baseRequest.get("/profile/"+path+"/follow");
     this.unfollow = path => baseRequest.get("/profile/"+path+"/unfollow");
     this.acceptFollow = params => baseRequest.get("/profile/accept/"+params);
