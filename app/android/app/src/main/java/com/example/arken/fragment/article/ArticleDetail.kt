@@ -129,7 +129,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                     ss.setSpan(clickableSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     text.setText(ss,TextView.BufferType.SPANNABLE)
                     text.setTextIsSelectable(true)
-              /*      text.setCustomSelectionActionModeCallback(object :
+                    text.setCustomSelectionActionModeCallback(object :
                         ActionMode.Callback {
                         override fun onCreateActionMode(
                             mode: ActionMode,
@@ -162,7 +162,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                         }
 
                         override fun onDestroyActionMode(mode: ActionMode) {}
-                    })*/
+                    })
                     myVote.text="${myVote.text}${article?.yourRate}"
                     currentRate.text="${currentRate.text}${article?.rateAverage}"
                     totalVotes.text="${totalVotes.text}${article?.numberOfRates}"
