@@ -24,6 +24,8 @@ import {normalizeDate} from "../Events/Events";
 import Loading from "../Loading";
 import article_photo from "../../assets/article_logo.png"
 import Comments from "../Comments";
+
+
 class Article_Details extends Component {
 
     constructor(props) {
@@ -36,7 +38,8 @@ class Article_Details extends Component {
             titletext:"",
             editloading:false,
             ratesubmitted:false,
-            dimmer:false
+            dimmer:false,
+
         }
     }
 
@@ -61,9 +64,14 @@ class Article_Details extends Component {
         await this.props.article("/"+this.props.match.params.id).then(async result=> {
                 let newarticle=result.value;
                 this.setState({article:newarticle,text:newarticle.text,titletext:newarticle.title})
-
+            return newarticle.imageId;
             }
-        )
+        ).then((a)=>{
+            let src=require("../../assets/article_photos/article"+a+".jpg")
+            this.setState({src});
+
+        })
+
 
     }
 
@@ -113,7 +121,7 @@ class Article_Details extends Component {
 
                             <Grid.Column width={4} >
                                 <Segment  textAlign="left" style={{marginRight:50,marginLeft:20,display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
-                                    {<Image size="medium" src={article_photo} />}
+                                    {<Image size="medium" src={this.state.src} />}
 
                                     <List relaxed>
                                         <List.Item>
