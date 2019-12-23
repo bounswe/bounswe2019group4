@@ -18,16 +18,16 @@ import retrofit2.http.Path;
 
 public interface AnnotationAPIService {
 
-    @Headers({"Content-Type: application/json"})
+    @Headers({"Content-Type: application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\""})
     @GET("annotations/article/{id}")
     Call<ResponseBody> getAnnotations(@Header("Cookie") String userCookie, @Path("id") String id);
 
-    @Headers({"Content-Type: application/json"})
+    @Headers({"Content-Type: application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\""})
     @POST("annotations")
     Call<ResponseBody> createAnnotation(@Header("Cookie") String userCookie, @Body JSONObject annotation);
 
     //pek anlamadım headerları
-    @Headers({"Content-Type: application/json"})
+    @Headers({"Content-Type: If-MatchW/\"16f-0fhSPP6bcqE1GQtRLHPAftcvPjI\""})
     @DELETE("annotations")
     Call<ResponseBody> deleteAnnotation(@Header("Cookie") String userCookie);
 
