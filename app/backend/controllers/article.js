@@ -50,11 +50,16 @@ module.exports.postArticle = async (request, response) => {
       date: new Date()
     });
 
-    const queryKeyword = request.body.title.split(' ').join('+')
-    let tags = await axios.get(`https://api.datamuse.com/words?max=15&ml=${queryKeyword}`)
+    let queryKeyword = request.body.title.split(' ').join('+')
+    let tags = await axios.get(`https://api.datamuse.com/words?max=20&ml=${queryKeyword}`)
     tags = tags.data.map(el => el.word)
     article.tags = tags
 
+    queryKeyword = request.body.text.split(' ').join('+')
+    tags = await axios.get(`https://api.datamuse.com/words?max=20&ml=${queryKeyword}`)
+    tags = tags.data.map(el => el.word)
+    article.tags.concat(tags)
+    
     // Saves the instance into the database, returns any error occured
     article.save()
       .then(doc => {

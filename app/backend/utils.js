@@ -986,7 +986,7 @@ function js_yyyy_mm_dd_hh_mm_ss () {
 
 module.exports.filterArticleTitles = async (articles, terms) => {
   const queryKeyword = terms.split(' ').join('+')
-  let searchTags = await axios.get(`https://api.datamuse.com/words?max=15&ml=${queryKeyword}`)
+  let searchTags = await axios.get(`https://api.datamuse.com/words?max=20&ml=${queryKeyword}`)
   searchTags = searchTags.data.map(el => el.word)
 
   return articles.filter(({tags}) => {
