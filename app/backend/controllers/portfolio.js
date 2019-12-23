@@ -1,3 +1,5 @@
+const {User} = require('../models/user')
+
 /*
   Post method for portfolio.
   It saves portfolio to database.
@@ -69,7 +71,10 @@ module.exports.getPortfolio = async (request, response) => {
         if(row)
           followStatus = "TRUE"
       }
-  
+
+      const user = await User.findOne({_id: portfolio.userId})
+
+      portfolio = {...portfolio._doc, username: user.name + " " + user.surname}
       obj = {
         portfolio: portfolio,
         tradingEqs: tradingEqs,
