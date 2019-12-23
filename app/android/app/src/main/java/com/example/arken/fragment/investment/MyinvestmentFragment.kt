@@ -24,12 +24,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class InvestmentFragment : Fragment(), OnOrderClickedListener,DepositClickListener {
+class MyinvestmentFragment : Fragment(), OnOrderClickedListener,DepositClickListener {
 
     private lateinit var orderRecyclerView: RecyclerView
     private var orderDataset: MutableList<Order> = mutableListOf()
     private lateinit var orderAdapter: OrderAdapter
-    private val args: InvestmentFragmentArgs by navArgs()
+    private val args: MyinvestmentFragmentArgs by navArgs()
 
     private lateinit var transactionRecyclerView: RecyclerView
     private var transactionDataset: MutableList<TransactionHistory> = mutableListOf()
@@ -69,7 +69,7 @@ accountValues=rootView.findViewById(R.id.fragment_investment_account_values)
 
 depositButton=rootView.findViewById(R.id.fragment_investment_deposit)
         depositButton.setOnClickListener {
-            val dialogFragment = DepositDialog(this,args.İbandefault)
+            val dialogFragment = DepositDialog(this,args.str)
 
            dialogFragment.show(fragmentManager!!,"deposit")
         }

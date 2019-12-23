@@ -101,8 +101,8 @@
             android:id="@+id/action_profileFragment_to_portfolioFragment"
             app:destination="@id/portfolioFragment" />
         <action
-            android:id="@+id/action_profileFragment_to_investmentFragment"
-            app:destination="@id/investmentFragment" />
+            android:id="@+id/action_profileFragment_to_myinvestmentFragment"
+            app:destination="@id/myinvestmentFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -196,32 +196,6 @@
             android:id="@+id/action_articleDetail_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/investmentFragment"
-        android:name="com.example.arken.fragment.investment.InvestmentFragment"
-        android:label="InvestmentFragment" >
-        <argument
-            android:name="ibandefault"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_investmentFragment_to_eventListFragment"
-            app:destination="@id/eventListFragment" />
-        <action
-            android:id="@+id/action_investmentFragment_to_listArticleFragment"
-            app:destination="@id/listArticleFragment" />
-        <action
-            android:id="@+id/action_investmentFragment_to_listCurrentFragment"
-            app:destination="@id/listCurrentFragment" />
-        <action
-            android:id="@+id/action_investmentFragment_to_portfolioFragment"
-            app:destination="@id/portfolioFragment" />
-        <action
-            android:id="@+id/action_investmentFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_investmentFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
 
     <fragment
         android:id="@+id/portfolioFragment"
@@ -246,5 +220,31 @@
         <action
             android:id="@+id/action_portfolioFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myinvestmentFragment"
+        android:name="com.example.arken.fragment.investment.MyinvestmentFragment"
+        android:label="MyinvestmentFragment" >
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_profileFragment2"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <argument
+            android:name="str"
+            app:argType="string" />
     </fragment>
 </navigation>

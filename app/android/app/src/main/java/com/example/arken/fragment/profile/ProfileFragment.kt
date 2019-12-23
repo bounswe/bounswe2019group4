@@ -305,7 +305,7 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                     if( realId == userId && profile.user?.isTrader!!){
                     myinvestment_button.visibility=View.VISIBLE
                     myinvestment_button.setOnClickListener {
-                        val act = ProfileFragmentDirections.actionProfileFragmentToİnvestmentFragment(profile.user!!.iban!!)
+                        val act = ProfileFragmentDirections.actionProfileFragmentToMyinvestmentFragment(profile.user!!.iban!!)
                         findNavController().navigate(act)
                     }}
                     article_button.visibility = View.VISIBLE
