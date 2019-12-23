@@ -34,7 +34,7 @@ import android.view.*
 /*
 3) annotation layout oluştur
  */
-class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
+class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener , AnnoClickListener{
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
     private lateinit var saveButton: Button
@@ -114,6 +114,9 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                     var clickableSpan: ClickableSpan = object : ClickableSpan() {
                         override fun onClick(textView: View) {
                             //TODO create view of annotation.
+                            val dialogFragment = TextAnnotationDialogFragment(this@ArticleDetail,false,article!!,0,0)
+
+                            dialogFragment.show(fragmentManager!!,"deposit")
                         }
 
                         override fun updateDrawState(ds: TextPaint) {
@@ -150,12 +153,12 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                             mode: ActionMode,
                             item: MenuItem
                         ): Boolean {
-                            if (item.getItemId() === R.id.annotate) {
+                            if (item.getItemId() === R.id.annotate && prefs.getString("user_cookie",null)!=null) {
                                 val selStart: Int = text.getSelectionStart()
                                 val selEnd: Int = text.getSelectionEnd()
-                                System.out.println(selStart)
-                                System.out.println(selEnd)
-                                mode.finish()
+                                val dialogFragment = TextAnnotationDialogFragment(this@ArticleDetail,true,article!!,selStart,selEnd)
+
+                                dialogFragment.show(fragmentManager!!,"deposit")
                                 return true// annotateClicked(selStart, selEnd)
                             }
                             return false
@@ -350,5 +353,12 @@ private fun refresh(){
                 return true
             else -> return super.onContextItemSelected(item)
         }
+    }
+
+    override fun onAnnoClick() {
+        init()
+    }
+    private fun init(){
+        // data tekrar al ve view u yenile
     }
 }
