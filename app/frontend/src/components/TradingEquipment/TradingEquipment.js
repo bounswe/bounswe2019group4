@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import CandleStickChart from "./TEqChart";
 import { timeParse } from "d3-time-format";
 import tradingEquipmentList from "../../utils/constants/tradingEquipment";
-
 import Comments from "../Comments"
 import authService from "../../factories/authFactory";
 

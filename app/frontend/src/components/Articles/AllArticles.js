@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {loadState} from '../../_core/localStorage'
 import {Button, Dropdown, Header, Icon, Pagination, Popup, Segment,Label,Grid,Tab} from 'semantic-ui-react';
-
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import * as userActions from '../../actions/userActions';
@@ -10,6 +9,7 @@ import DatePicker, {getDefaultLocale, registerLocale, setDefaultLocale} from "re
 import "react-datepicker/dist/react-datepicker.css";
 import {normalizeDate, compareDates, normalizeDateToTR} from "../Events/Events";
 import {colorAccent, colorBG, colorDarkerBlue} from "../../utils/constants/Colors";
+import authFactory from "../../factories/authFactory";
 
 
 class AllArticles extends Component {
@@ -46,8 +46,6 @@ class AllArticles extends Component {
 
     async componentDidMount() {
 
-        const localState = loadState();
-        this.setState({user: localState.user});
         await this.getArticles();
 
         this.setShownEvents();
@@ -516,7 +514,7 @@ class AllArticles extends Component {
                     <Grid.Row>
 
                         <Grid.Column width={4}>
-                            {loadState().user!==null&&loadState().user.loggedIn&&
+                            {authFactory.isUserLoggedIn()&&
                             <div style={{display:"flex",alignItems:"flex-start",marginLeft:10, marginTop:21}}>
                                 <Button onClick={this.handleClick} inverted style={{borderRadius:20,borderWidth:1}} content={this.state.recommended?"Show All":"Recommended Articles"}/>
                             </div>
@@ -541,9 +539,8 @@ class AllArticles extends Component {
 
 const dispatchToProps = dispatch => {
     return {
-
-        articles: params => dispatch(userActions.getAllArticles(params)),
         authors:params=>dispatch(userActions.profile(params)),
+        articles: params => dispatch(userActions.getAllArticles(params)),
         getRecommendedArticles:params=>dispatch(userActions.getRecommended(params))
     };
 };
