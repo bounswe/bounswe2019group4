@@ -15,15 +15,13 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/annotation_edit_layout"
-        android:visibility="gone">
+        android:id="@+id/annotation_edit_layout">
         <EditText
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:textColor="@color/whiteTextColor"
-            android:alpha="0.5"
             android:id="@+id/annotation_editText"
-            android:background="@color/colorlightBlue"/>
+            android:background="#8000"/>
 
         <CheckBox
             android:layout_width="wrap_content"

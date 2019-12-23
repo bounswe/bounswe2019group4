@@ -123,10 +123,11 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
         deleteButton.setOnClickListener{
             if(mode == 0){
                 editText.text.clear()
-                editText.layoutParams.width = 100
-                editText.layoutParams.height = 50
+                editText.layoutParams.width = 300
+                editText.layoutParams.height = 200
                 relativeEdit.requestLayout()
                 relativeEdit.visibility = View.GONE
+                relativeLayout.removeView(icon)
             }
         }
 
@@ -158,8 +159,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                         relativeLayout.addView(icon)
                         relativeEdit.x = motionEvent.x
                         relativeEdit.y = motionEvent.y
-                        editText.layoutParams.width = 100
-                        editText.layoutParams.height = 50
+                        editText.layoutParams.width = 300
+                        editText.layoutParams.height = 200
                         editText.text.clear()
                         relativeEdit.requestLayout()
                         relativeEdit.visibility = View.VISIBLE
@@ -179,7 +180,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                     if(mode == 0 && annotation!=null ){
                         val placeX = ((motionEvent.x - imageView.x) / imageView.width).toDouble()
                         val placeY = ((motionEvent.y - imageView.y) / imageView.height).toDouble()
-                        if(placeX > annotation!!.x && placeY > annotation!!.y){
+                        if(placeX > annotation!!.x && placeY > annotation!!.y ){
                             val lp = RelativeLayout.LayoutParams(((placeX - annotation!!.x) * imageView.width).toInt(), ((placeY - annotation!!.y) * imageView.height).toInt())
                             editText.layoutParams = lp
                             relativeLayout.requestLayout()
@@ -244,9 +245,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                     editText.setText(annotation.annotationText)
                     editText.inputType = InputType.TYPE_NULL
                     relativeEdit.requestLayout()
+                    checkBox.visibility = View.GONE
+                    deleteButton.visibility = View.GONE
                     relativeEdit.visibility = View.VISIBLE
                 }
-                // imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             }
         }
