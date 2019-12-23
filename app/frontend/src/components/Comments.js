@@ -117,6 +117,7 @@ class Comments extends Component{
                                     {user && user.loggedIn&&user._id===item.userId?(
 
                                                     <Popup
+                                                        style={{backgroundColor:"grey"}}
                                                         flowing
                                                         on={"click"}
                                                         position={"bottom right"}
