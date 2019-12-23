@@ -264,7 +264,7 @@ class Portfolio_Details extends Component {
 
 const dispatchToProps = dispatch => {
     return {
-        Portfolio: params => dispatch(userActions.getPortfolioDetails(params)),
+        getPortfolio: params => dispatch(userActions.getPortfolioDetails(params)),
         userInformation:params=>dispatch(userActions.users(params)),
         editPortfolio:(path,params)=>dispatch(userActions.editPortfolio(path,params))
     };
