@@ -81,6 +81,40 @@ export function portfolios(params) {
     };
 }
 
+export function getPortfolioDetails(params) {
+    return {
+        type:"PORTFOLIO_DETAIL",
+        payload: userService.getPortfolio(params)
+    };
+}
+
+export function editPortfolio(path,params) {
+    return {
+        type:"PORTFOLIO_EDIT",
+        payload: userService.editPortfolio(path,params)
+    };
+};
+export function deletePortfolio(path) {
+    return {
+        type:"PORTFOLIO_DELETE",
+        payload: userService.deletePortfolio(path)
+    };
+};
+
+export function followPortfolio(path) {
+    return {
+        type:"PORTFOLIO_FOLLOW",
+        payload: userService.followPortfolio(path)
+    };
+};
+
+export function createPortfolio(params) {
+    return {
+        type:"PORTFOLIO_CREATE",
+        payload: userService.createPortfolio(params)
+    };
+}
+
 export function follow(path) {
     return {
         type:"FOLLOW_USER",

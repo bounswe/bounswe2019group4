@@ -15,6 +15,11 @@ function userFactory() {
     this.profile = path => baseRequest.get("/profile/"+path);
     this.editProfile=params=>baseRequest.patch("/profile/edit",params);
     this.portfolios = path => baseRequest.get("/portfolios/"+path);
+    this.getPortfolio=path=>baseRequest.get("/portfolios"+path);
+    this.editPortfolio=(path,params)=>baseRequest.patch("/portfolios"+path,params);
+    this.createPortfolio=(params)=>baseRequest.post("/portfolios",params);
+    this.deletePortfolio=(path)=>baseRequest.delete("/portfolios/"+path);
+    this.followPortfolio=path=>baseRequest.post("/portfolios/"+path);
     this.follow = path => baseRequest.get("/profile/"+path+"/follow");
     this.unfollow = path => baseRequest.get("/profile/"+path+"/unfollow");
     this.acceptFollow = params => baseRequest.get("/profile/accept/"+params);
