@@ -18,13 +18,14 @@ import {
     Label,
     Dimmer
 } from 'semantic-ui-react';
+import TextAnnotator from '../Annotation/TextAnnotator';
 import {connect} from 'react-redux';
 import * as userActions from '../../actions/userActions';
 import {normalizeDate} from "../Events/Events";
 import Loading from "../Loading";
 import article_photo from "../../assets/article_logo.png"
 import Comments from "../Comments";
-
+import annotationRequest from "../../factories/annotationFactory";
 
 class Article_Details extends Component {
 
@@ -39,7 +40,7 @@ class Article_Details extends Component {
             editloading:false,
             ratesubmitted:false,
             dimmer:false,
-
+            annotations: []
         }
     }
 
@@ -104,7 +105,17 @@ class Article_Details extends Component {
 
     };
 
+    annotate(annotation) {
+        console.log(annotation);
+        this.setState({annotations: annotation});
+    }
+
+    startAnnotate(annotationText) {
+
+    }
+
     render() {
+        const {annotations} = this.state;
         const article  = this.state.article;
         const comments=article?article.comments:[];
         let rating=article?article.rateAverage:0;
@@ -251,9 +262,27 @@ class Article_Details extends Component {
                                             </Dimmer.Dimmable>
                                             )
                                             : (
+                                                <TextAnnotator
+                                                    style={{
+                                                        maxWidth: 500,
+                                                        lineHeight: 1.5,
+                                                    }}
+                                                    content={article.text}
+                                                    articleId={article._id}
+                                                    value={annotations}
+                                                    onChange={this.annotate.bind(this)}
+                                                    annotate={this.startAnnotate.bind(this)}
+                                                    getSpan={span => ({
+                                                        ...span,
+                                                       // tag: "HELLO",
+                                                    })}
+                                                />
+                                                /*
                                                 <p style={{textAlign:"justify"}}>
                                                     {article.text}
                                                 </p>
+
+                                                 */
                                             )
                                         }
                                     </div>
