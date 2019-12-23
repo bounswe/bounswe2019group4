@@ -19,6 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.view.*
+import com.example.arken.fragment.profile.PendingUserDialog
 
 
 /*
@@ -132,6 +133,22 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
             val popup = PopupMenu(context, it)
             val inflater: MenuInflater = popup.menuInflater
             inflater.inflate(R.menu.image_anno, popup.menu)
+            popup.setOnMenuItemClickListener{
+                when (it.getItemId()) {
+                    R.id.add_annot ->{
+                        val dialog = ImageAnnotationDialogFragment(args.articleId, 0)
+                        dialog.show(fragmentManager!!, "annot")
+                        true
+                    }
+
+                    R.id.see_annot ->{
+                        val dialog = ImageAnnotationDialogFragment(args.articleId, 1)
+                        dialog.show(fragmentManager!!, "annot")
+                        true
+                    }
+                    else -> super.onContextItemSelected(it)
+                }
+            }
             popup.show()
             true
         }
@@ -278,12 +295,17 @@ private fun refresh(){
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
-            R.id.add_annot ->
-                // do something
+            R.id.add_annot ->{
+                val dialog = ImageAnnotationDialogFragment(args.articleId, 0)
+                dialog.show(fragmentManager!!, "annot")
                 return true
-            R.id.see_annot ->
-                // do something
+            }
+
+            R.id.see_annot ->{
+                val dialog = ImageAnnotationDialogFragment(args.articleId, 1)
+                dialog.show(fragmentManager!!, "annot")
                 return true
+            }
             else -> return super.onContextItemSelected(item)
         }
     }
