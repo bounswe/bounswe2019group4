@@ -170,7 +170,7 @@ module.exports.predictTradingEq = async (request, response) => {
             errmsg: "Failed."
           })
         }
-        return response.send(204);
+        return response.sendStatus(204);
       })
     } else{
       // User already made a prediction for that currency. Change the prediction and update database
@@ -260,6 +260,6 @@ module.exports.deleteAlert = async (request, response) => {
       })
     }
 
-    return response.send(204);
+    return response.sendStatus(204);
   })
 }
