@@ -1,3 +1,5 @@
+const {User} = require('../models/user')
+
 /*
   Post method for portfolio.
   It saves portfolio to database.
@@ -50,25 +52,44 @@ module.exports.postPortfolio = async (request, response) => {
 module.exports.getPortfolio = async (request, response) => {
   let PortfolioTradingEq = request.models['PortfolioTradingEq']
   let Portfolio = request.models['Portfolio']
+  let PortfolioFollow = request.models['PortfolioFollow']
 
-  let portfolio = await Portfolio.findOne({ _id : request.params['id']})
+  try {
+    let portfolio = await Portfolio.findOne({ _id : request.params['id']})
+    
+    if(portfolio){
+      let tradingEqsObj = await PortfolioTradingEq.find({ PortfolioId : request.params['id']})
+      let tradingEqs = []
+      for (const tradingEq of tradingEqsObj) {
+        tradingEqs.push(tradingEq['TradingEq']);
+      }
   
-  if(portfolio){
-    let tradingEqsObj = await PortfolioTradingEq.find({ PortfolioId : request.params['id']})
-    let tradingEqs = []
-    for (const tradingEq of tradingEqsObj) {
-      tradingEqs.push(tradingEq['TradingEq']);
-    }
+      let followStatus = "FALSE"
+  
+      if(request.session['user']){
+        let row = await PortfolioFollow.findOne({UserId: request.session['user']._id, PortfolioId: request.params['id']})
+        if(row)
+          followStatus = "TRUE"
+      }
 
-    obj = {
-      portfolio: portfolio,
-      tradingEqs: tradingEqs
+      const user = await User.findOne({_id: portfolio.userId})
+
+      portfolio = {...portfolio._doc, username: user.name + " " + user.surname}
+      obj = {
+        portfolio: portfolio,
+        tradingEqs: tradingEqs,
+        followStatus
+      }
+      return response.send(obj)
+    } else {
+      return response.status(400).send({
+        errmsg: "No such portfolio."
+      })
     }
-    return response.send(obj)
-  } else {
-    return response.status(400).send({
-      errmsg: "No such portfolio."
-    })
+  } catch (error) {
+      return response.status(400).send({
+        errmsg: "No such portfolio."
+      })
   }
 }
 
