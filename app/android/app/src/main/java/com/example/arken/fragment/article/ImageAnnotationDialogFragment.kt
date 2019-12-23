@@ -169,10 +169,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                 }
                 MotionEvent.ACTION_UP -> {
                     if(mode== 0 && annotation!= null){
-                        val placeX = ((motionEvent.x - imageView.x) / imageView.width).toDouble()
-                        val placeY = ((motionEvent.y - imageView.y) / imageView.height).toDouble()
-                        annotation!!.w = (placeX - annotation!!.x)
-                        annotation!!.h = (placeY - annotation!!.y)
+                        annotation!!.w = (editText.width.toDouble() / imageView.width)
+                        annotation!!.h = (editText.height.toDouble() / imageView.height)
                     }
                     true
                 }

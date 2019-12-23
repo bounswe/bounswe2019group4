@@ -12,7 +12,6 @@ import com.example.arken.model.GetPortfolio;
 import com.example.arken.model.GoogleId;
 import com.example.arken.model.GoogleUser;
 import com.example.arken.model.ListAlert;
-import com.example.arken.model.ListAnnotations;
 import com.example.arken.model.ListArticle;
 import com.example.arken.model.ListEvent;
 import com.example.arken.model.ListNotification;
