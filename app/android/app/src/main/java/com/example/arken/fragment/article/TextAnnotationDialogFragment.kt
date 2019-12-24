@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.arken.R
 import com.example.arken.model.Annotation
 import com.example.arken.model.Article
-import com.example.arken.model.tradingEquipment.AnnoCreateRequest
+import com.example.arken.model.AnnoCreateRequest
 import com.example.arken.util.AnnotationRetroClient
 import okhttp3.ResponseBody
 import retrofit2.Call

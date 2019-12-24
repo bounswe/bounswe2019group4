@@ -1,8 +1,7 @@
 package com.example.arken.util;
 
+import com.example.arken.model.AnnoCreateRequest;
 import com.example.arken.model.Annotation;
-import com.example.arken.model.ListAnnotations;
-import com.example.arken.model.tradingEquipment.AnnoCreateRequest;
 
 import org.json.JSONObject;
 
@@ -30,7 +29,7 @@ public interface AnnotationAPIService {
     Call<ResponseBody> createAnnotation(@Header("Cookie") String userCookie, @Body AnnoCreateRequest jsonObject);
 
     //pek anlamadım headerları
-   // @Headers({"Content-Type: application/json"})
+    // @Headers({"Content-Type: application/json"})
     @DELETE("annotations")
     Call<ResponseBody> deleteAnnotation(@Header("Cookie") String userCookie,@Header("If-Match") String match);
 

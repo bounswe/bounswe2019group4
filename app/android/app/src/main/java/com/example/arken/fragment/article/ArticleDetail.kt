@@ -22,13 +22,14 @@ import com.example.arken.fragment.comment.ListCommentFragment
 import com.example.arken.model.Article
 import com.example.arken.model.ArticleCreateRequest
 import com.example.arken.model.ArticleRateRequest
-import com.example.arken.model.tradingEquipment.AnnoCreateRequest
+import com.example.arken.model.AnnoCreateRequest
 import com.example.arken.util.AnnotationRetroClient
 import com.example.arken.util.RetroClient
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.*
 
 
 /*
@@ -50,7 +51,9 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
     private val args: ArticleDetailArgs by navArgs()
     private lateinit var prefs: SharedPreferences
     private lateinit var imageView: ImageView
-    private lateinit var imageIds: Array<Int>
+    private lateinit var imageIds:Array<Int>
+    var imageId = 0
+
     private lateinit var article: Article
     private var textAnnotations: List<AnnoCreateRequest> = mutableListOf()
     override fun onCreateView(
@@ -178,13 +181,14 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
 
                         override fun onDestroyActionMode(mode: ActionMode) {}
                     })
-                    myVote.text = "${myVote.text}${article?.yourRate}"
-                    currentRate.text = "${currentRate.text}${article?.rateAverage}"
-                    totalVotes.text = "${totalVotes.text}${article?.numberOfRates}"
-                    val imageId = article?.imageId
-                    if (imageId != 0) {
-                        if (imageId != null) {
-                            imageView.setImageResource(imageIds[imageId - 1])
+                    myVote.text="${myVote.text}${article?.yourRate}"
+                    currentRate.text="${currentRate.text}${article?.rateAverage}"
+                    totalVotes.text="${totalVotes.text}${article?.numberOfRates}"
+                    val imageId2 = article?.imageId
+                    if(imageId2!= 0){
+                        if (imageId2 != null) {
+                            imageView.setImageResource(imageIds[imageId2 - 1])
+                            imageId = imageId2
                         }
                     }
                     setVisibility(article!!.userId!!)
@@ -211,6 +215,22 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
             val popup = PopupMenu(context, it)
             val inflater: MenuInflater = popup.menuInflater
             inflater.inflate(R.menu.image_anno, popup.menu)
+            popup.setOnMenuItemClickListener{
+                when (it.getItemId()) {
+                    R.id.add_annot ->{
+                        val dialog = ImageAnnotationDialogFragment(args.articleId, 0, imageId)
+                        dialog.show(fragmentManager!!, "annot")
+                        true
+                    }
+
+                    R.id.see_annot ->{
+                        val dialog = ImageAnnotationDialogFragment(args.articleId, 1, imageId)
+                        dialog.show(fragmentManager!!, "annot")
+                        true
+                    }
+                    else -> super.onContextItemSelected(it)
+                }
+            }
             popup.show()
             true
         }
