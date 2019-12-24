@@ -62,8 +62,10 @@ class TextAnnotator extends React.Component {
 
     handleSplitClick = ({start, end}) => {
         // Find and remove the matching split.
+        this.props.deleteEmpty();
         const splitIndex = this.props.value.findIndex(s => s.start === start && s.end === end)
         if (splitIndex >= 0) {
+
             this.props.onChange([
                 ...this.props.value.slice(0, splitIndex),
                 ...this.props.value.slice(splitIndex + 1),
@@ -77,12 +79,12 @@ class TextAnnotator extends React.Component {
     }
 
     render() {
-        const {content, value, style} = this.props
+        const {content, value, style,allAnnos,getAnnos} = this.props
         const splits = splitWithOffsets(content, value)
         return (
             <div style={style} ref={this.rootRef}>
                 {splits.map(split => (
-                    <Split key={`${split.start}-${split.end}`} {...split} articleId={this.props.articleId} annotate={this.props.annotate} onClick={this.handleSplitClick} />
+                    <Split key={`${split.start}-${split.end}`} getAnnos={getAnnos} annotations={allAnnos} {...split} articleId={this.props.articleId} annotate={this.props.annotate} onClick={this.handleSplitClick} />
                 ))}
             </div>
         )
