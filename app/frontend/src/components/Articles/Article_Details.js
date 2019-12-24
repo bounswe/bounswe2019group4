@@ -174,8 +174,7 @@ class Article_Details extends Component {
 
                             <Grid.Column width={4} >
                                 <Segment  textAlign="left" style={{marginRight:50,marginLeft:20,display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
-                                    {user ? <ImageAnnotator  img={article_photo} articleId={article._id} userId={user._id} /> : <Image size={"medium"} src={this.state.src} /> }
-
+                                    {<Image size={"medium"} src={article_photo} />}
                                     <List relaxed>
                                         <List.Item>
                                             <List.Icon name={"user"}/>
@@ -233,7 +232,11 @@ class Article_Details extends Component {
                             </Grid.Column>
                             <Grid.Column width={10}>
                                 <Segment raised piled padded compact style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-                                    {<Image size={"medium"} src={this.state.src} />}
+                                    <div style={{width:"50%"}}>
+                                        <ImageAnnotator  img={this.state.src} articleId={article._id} userId={user._id} />
+
+                                    </div>
+
                                     <div style={{margin:20,fontFamily:"timesnewroman",fontSize:15,width:"80%"}}>
 
                                         {user && user.loggedIn&&article.userId===user._id ? (

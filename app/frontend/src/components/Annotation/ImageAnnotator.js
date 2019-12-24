@@ -30,18 +30,24 @@ export default class Simple extends Component {
 
 
     componentDidMount() {
-        annotationFactory.getSpecificAnnotation("/"+this.props.articleId).then(result => {
-            const annotations = _.filter(result,function(o) { return o.body.type === "Image" ; }).map(item => {
+        annotationFactory.getSpecificAnnotation("/article/"+this.props.articleId).then(result => {
+            console.log(result);
+            const annotations = _.filter(result.data,function(o) { return o.body.type === "Image" ; }).map(item => {
                 return {
+                    id: item._id,
+                    ETag: item.ETag,
                     geometry: {
-                        x: item.body.x,
-                        y: item.body.y,
-                        height: item.body.h,
-                        width: item.body.w,
+                        x: item.body.x*100,
+                        y: item.body.y*100,
+                        height: item.body.h*100,
+                        width: item.body.w*100,
                         type: "RECTANGLE"
                     },
                     data: {
-                        text: item.body.annotationText
+                        userId: item.body.userId,
+                        articleId: item.articleId,
+                        text: item.body.annotationText,
+                        "username":item.body.username
                     }
                 }
             })
@@ -55,38 +61,45 @@ export default class Simple extends Component {
 
     onSubmit = (annotation) => {
         const { geometry, data } = annotation
-        console.log(annotation);
+        console.log(geometry);
 
         annotationFactory.addAnnotation({
             "@context": "http://www.w3.org/ns/anno.jsonld",
             articleId: this.props.articleId,
             "body": {
+                "username":loadState().user.name+" "+loadState().user.surname,
                 annotationText: data.text,
                 "articleId": this.props.articleId,
                 "finishIndex": this.props.end,
-                "h": geometry.height,
+                "h": geometry.height/100,
                 "startIndex": this.props.start,
                 "type": "Image",
                 "userId": this.props.userId,
-                "w": geometry.width,
-                "x": geometry.x,
-                "y": geometry.y
+                "w": geometry.width/100,
+                "x": geometry.x/100,
+                "y": geometry.y/100
             },
             "target": "http://www.example.com/index.htm",
             "type": "Annotation"
         }).then(()=> {
-            annotationFactory.getSpecificAnnotation("/"+this.props.articleId).then(result => {
-                const annotations = _.filter(result,function(o) { return o.body.type === "Image" ; }).map(item => {
+            annotationFactory.getSpecificAnnotation("/article/"+this.props.articleId).then(result => {
+                const annotations = _.filter(result.data,function(o) { return o.body.type === "Image" ; }).map(item => {
                     return {
+                        ...item,
+
                         geometry: {
-                            x: item.body.x,
-                            y: item.body.y,
-                            height: item.body.h,
-                            width: item.body.w,
+                            x: item.body.x*100,
+                            y: item.body.y*100,
+                            height: item.body.h*100,
+                            width: item.body.w*100,
                             type: "RECTANGLE"
                         },
                         data: {
-                            text: item.body.annotationText
+                            userId: item.body.userId,
+                            articleId: item.articleId,
+                            text: item.body.annotationText,
+                            "username":item.body.username
+
                         }
                     }
                 })
@@ -107,7 +120,86 @@ export default class Simple extends Component {
         })
     }
 
+    deleteAnno=async (item)=>{
+        this.setState({loading:true})
+        console.log(item);
+        await annotationFactory.delete({"E-Tag":item.ETag}).then(()=>{
+            annotationFactory.getSpecificAnnotation("/article/"+this.props.articleId).then(result => {
+                const annotations = _.filter(result.data,function(o) { return o.body.type === "Image" ; }).map(item => {
+                    return {
+                        ...item,
+                        geometry: {
+                            x: item.body.x*100,
+                            y: item.body.y*100,
+                            height: item.body.h*100,
+                            width: item.body.w*100,
+                            type: "RECTANGLE"
+                        },
+                        data: {
+                            userId: item.body.userId,
+                            articleId: item.articleId,
+                            text: item.body.annotationText,
+                            "username":item.body.username
+
+                        }
+                    }
+                })
+                this.setState({annotations, loading: false})
+            })
+        })
+    };
+
+    editAnno=async(item)=>{
+        this.setState({loading:true})
+        let a={
+            _id:item.id,
+            id:"https://anno.arkenstone.ml/annotations/"+item.id,
+            "body": {
+                annotationText:this.state.annotationText,
+                "articleId": this.props.articleId,
+                "finishIndex": this.props.end,
+                "h": 0,
+                "startIndex": this.props.start,
+                "type": "Text",
+                "userId": loadState().user._id,
+                "w": 0,
+                "x": 0,
+                "y": 0,
+                "username":loadState().user.name+" "+loadState().user.surname
+            },
+            created:item.date,
+            modified:item.modifDate,
+            "target": "http://www.example.com/index.htm",
+            "type": "Annotation"
+        }
+        await annotationFactory.modifyAnnotation(a).then(()=>{
+            annotationFactory.getSpecificAnnotation("/article/"+this.props.articleId).then(result => {
+                const annotations = _.filter(result.data,function(o) { return o.body.type === "Image" ; }).map(item => {
+                    return {
+                        ...item,
+                        geometry: {
+                            x: item.body.x*100,
+                            y: item.body.y*100,
+                            height: item.body.h*100,
+                            width: item.body.w*100,
+                            type: "RECTANGLE"
+                        },
+                        data: {
+                            userId: item.body.userId,
+                            articleId: item.articleId,
+                            text: item.body.annotationText,
+                            "username":item.body.username
+
+                        }
+                    }
+                })
+                this.setState({annotations})
+            })
+        });
+    }
+
     renderHighlight = ({annotation}) => {
+        let commented= false;
         return (
             /*
             <Container
@@ -138,33 +230,32 @@ export default class Simple extends Component {
                     )}
                 </mark>
                 */
-                <Popup on='click' pinned trigger={<svg>
-                    <rect x={annotation.geometry.x} y={annotation.geometry.y} height={annotation.geometry.height} width={annotation.geometry.width}
-                          style={{stroke: ":#ff0000", fill: "rgba(0,0,0,0,5)"}}/>
-                </svg>}
+                <Popup on='click' pinned trigger={
+                    <div style={{position: "absolute", zIndex:"999999" ,marginLeft: annotation.geometry.x+"%", marginTop: annotation.geometry.y+"%", width: annotation.geometry.width+"%", height: annotation.geometry.height+"%", border: "5px solid red"}}></div>
+                }
                        flowing hoverable>
-                        (<div>
+                        <div>
                                 <Segment id={"annGroup"} textAlign="left" style={{display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,borderColor:"lightgrey",color:"lightgrey",maxHeight:200,overflowY:"auto"}}>
                                     <List divided relaxed>
                                         {
                                             this.state.annotations.map(item=>{
 
-                                                if(item.x===annotation.geometry.x&&item.y===annotation.geometry.y){
+                                                if(item.geometry.x===annotation.geometry.x&&item.geometry.y===annotation.geometry.y){
+                                                    if(item.data.userId===loadState().user._id) { commented= true }
                                                     return (
                                                         <List.Item>
                                                             <List.Icon name={"comment"} />
                                                             <List.Content>
                                                                 <List.Header style={{overflow:"hidden",color:"grey"}}>
-                                                                    {item.annotext}
+                                                                    {item.data.text}
                                                                 </List.Header>
                                                                 <List.Description style={{fontSize:12}}>
-                                                                    <span style={{cursor:"pointer",color:"blue"}} onClick={()=>history.push("/profile/"+item.userid)}>{item.author}</span> in {item.date}
+                                                                    <span style={{cursor:"pointer",color:"blue"}} onClick={()=>history.push("/profile/"+item.data.userId)}>{item.data.username}</span>
                                                                 </List.Description>
                                                                 {
-                                                                    authFactory.isUserLoggedIn()&&item.userid===loadState().user._id&&(
+                                                                    authFactory.isUserLoggedIn()&&item.data.userId===loadState().user._id&&(
                                                                         <div>
                                                                             <Button size={"mini"} color={"red"} onClick={()=>this.deleteAnno(item)}>X</Button>
-                                                                            <Button size={"mini"} color={"yellow"} onClick={()=>this.editAnno(item)}>edit</Button>
                                                                         </div>
                                                                     )
                                                                 }
@@ -178,11 +269,14 @@ export default class Simple extends Component {
 
 
                                 </Segment>
-
-                                <Input
-                                    value={annotation.data.annotationText}
-                                    onChange={this.onChange.bind(this)}
-                                    placeholder="AnnotationText" action={<Button  disabled={!annotation.data.annotationText} content="Annotate" />}/>
+                            {loadState().user && loadState().user.loggedIn &&
+                            <Input
+                                disabled={commented}
+                                value={annotation.data.annotationText}
+                                onChange={this.onChange.bind(this)}
+                                placeholder="AnnotationText"
+                                action={<Button disabled={!annotation.data.annotationText} content="Annotate"/>}/>
+                            }
                             </div>
                 </Popup>
             )
