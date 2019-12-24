@@ -1,9 +1,18 @@
 package com.example.arken.fragment.article
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
 import android.text.method.KeyListener
+import android.text.method.LinkMovementMethod
+import android.text.style.BackgroundColorSpan
+import android.text.style.ClickableSpan
+import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -13,21 +22,23 @@ import com.example.arken.fragment.comment.ListCommentFragment
 import com.example.arken.model.Article
 import com.example.arken.model.ArticleCreateRequest
 import com.example.arken.model.ArticleRateRequest
+import com.example.arken.model.AnnoCreateRequest
+import com.example.arken.util.AnnotationRetroClient
 import com.example.arken.util.RetroClient
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.view.*
-import com.example.arken.fragment.profile.PendingUserDialog
 
 
 /*
 3) annotation layout oluştur
  */
-class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
+class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickListener {
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
+    private lateinit var enableAnnotate: Button
     private lateinit var saveButton: Button
     private lateinit var title: TextView
     private var rate: Int? = null
@@ -43,6 +54,8 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var imageIds:Array<Int>
     var imageId = 0
 
+    private lateinit var article: Article
+    private var textAnnotations: List<AnnoCreateRequest> = mutableListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,21 +69,28 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
         title.keyListener = null
         text.tag = text.keyListener
         text.keyListener = null
+        text.setTextIsSelectable(true)
         editButton = rootView.findViewById(R.id.edit_article_button)
         deleteButton = rootView.findViewById(R.id.delete_article_button)
         vote = rootView.findViewById(R.id.rate_line_vote_button)
         currentRate = rootView.findViewById(R.id.rate_line_current_rate)
         myVote = rootView.findViewById(R.id.rate_line_my_vote)
-        totalVotes= rootView.findViewById(R.id.rate_line_total_votes)
+        totalVotes = rootView.findViewById(R.id.rate_line_total_votes)
         vote.setOnClickListener { vote() }
         rateSpinner = rootView.findViewById(R.id.rate_line_vote_spinner)
         imageView = rootView.findViewById(R.id.article_detail_image)
-        imageIds = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4,
+        imageIds = arrayOf(
+            R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4,
             R.drawable.image5, R.drawable.image6, R.drawable.image7, R.drawable.image8,
-            R.drawable.image9, R.drawable.image10)
+            R.drawable.image9, R.drawable.image10
+        )
 
         val imp = arrayOf(1, 2, 3, 4, 5)
-
+        enableAnnotate = rootView.findViewById(R.id.rate_line_enable_annotate_button)
+        enableAnnotate.setOnClickListener {
+            changeSelectable()
+        }
+        enableAnnotate.visibility=View.GONE
         ArrayAdapter(
             context!!,
             R.layout.custom_spinner, imp
@@ -86,9 +106,24 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
         return rootView
     }
 
+    private fun changeSelectable() {
+        if (text.isTextSelectable) {
+            text.setTextIsSelectable(false)
+            enableAnnotate.text = "Enable Annotate"
+            fillAnno()
+        } else {
+            text.setTextIsSelectable(true)
+            enableAnnotate.text = "Disable Annotate"
+
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefs = getActivity()!!.getSharedPreferences("MyPrefsFile", Context.MODE_PRIVATE)
+        if(prefs.getString("user_cookie",null)==null){
+            enableAnnotate.visibility=View.GONE
+        }
         val call: Call<Article> =
             RetroClient.getInstance().apiService.getArticle(
                 prefs.getString("user_cookie", null),
@@ -96,11 +131,58 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
             )
 
         call.enqueue(object : Callback<Article> {
+            @SuppressLint("ClickableViewAccessibility")
             override fun onResponse(call: Call<Article>, response: Response<Article>) {
                 if (response.isSuccessful) {
-                    val article: Article? = response.body()
+                    article = response.body()!!
                     title.text = article?.title
                     text.text = article?.text
+                    init()
+                    //     text.setTextIsSelectable(true)
+                    text.setCustomSelectionActionModeCallback(object :
+                        ActionMode.Callback {
+                        override fun onCreateActionMode(
+                            mode: ActionMode,
+                            menu: Menu?
+                        ): Boolean {
+                            mode.menuInflater.inflate(R.menu.anno_menu, menu)
+                            return true
+                        }
+
+                        override fun onPrepareActionMode(
+                            mode: ActionMode?,
+                            menu: Menu?
+                        ): Boolean {
+                            return false
+                        }
+
+                        override fun onActionItemClicked(
+                            mode: ActionMode,
+                            item: MenuItem
+                        ): Boolean {
+                            if (item.getItemId() == R.id.annotate && prefs.getString(
+                                    "user_cookie",
+                                    null
+                                ) != null
+                            ) {
+                                val selStart: Int = text.getSelectionStart()
+                                val selEnd: Int = text.getSelectionEnd()
+                                val dialogFragment = TextAnnotationDialogFragment(
+                                    this@ArticleDetail,
+                                    true,
+                                    article!!,
+                                    selStart,
+                                    selEnd,null
+                                )
+
+                                dialogFragment.show(fragmentManager!!, "deposit")
+                                return true// annotateClicked(selStart, selEnd)
+                            }
+                            return false
+                        }
+
+                        override fun onDestroyActionMode(mode: ActionMode) {}
+                    })
                     myVote.text="${myVote.text}${article?.yourRate}"
                     currentRate.text="${currentRate.text}${article?.rateAverage}"
                     totalVotes.text="${totalVotes.text}${article?.numberOfRates}"
@@ -155,63 +237,67 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
             true
         }
     }
-private fun refresh(){
-    val call: Call<Article> =
-        RetroClient.getInstance().apiService.getArticle(
-            prefs.getString("user_cookie", null),
-            args.articleId
-        )
 
-    call.enqueue(object : Callback<Article> {
-        override fun onResponse(call: Call<Article>, response: Response<Article>) {
-            if (response.isSuccessful) {
-                val article: Article? = response.body()
-                title.text = article?.title
-                text.text = article?.text
-                myVote.text="My Vote: ${article?.yourRate}"
-                currentRate.text="Current Rate: ${article?.rateAverage}"
-                totalVotes.text="Total Votes: ${article?.numberOfRates}"
-                setVisibility(article!!.userId!!)
-            } else {
-                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        override fun onFailure(call: Call<Article>, t: Throwable) {
-            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-        }
-    })
-}
-    private fun vote() {
-        if(rate!=null){
-        val call: Call<ResponseBody> =
-            RetroClient.getInstance().apiService.rateArticle(
+    private fun refresh() {
+        val call: Call<Article> =
+            RetroClient.getInstance().apiService.getArticle(
                 prefs.getString("user_cookie", null),
-                args.articleId, ArticleRateRequest(rate!!)
+                args.articleId
             )
 
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(
-                call: Call<ResponseBody>,
-                response: Response<ResponseBody>
-            ) {
+        call.enqueue(object : Callback<Article> {
+            override fun onResponse(call: Call<Article>, response: Response<Article>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(context, "Successful Vote", Toast.LENGTH_SHORT)
-                        .show()
-                    refresh()
-
+                    val article: Article? = response.body()
+                    title.text = article?.title
+                    text.text = article?.text
+                    myVote.text = "My Vote: ${article?.yourRate}"
+                    currentRate.text = "Current Rate: ${article?.rateAverage}"
+                    totalVotes.text = "Total Votes: ${article?.numberOfRates}"
+                    setVisibility(article!!.userId!!)
+                    init()
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
                         .show()
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<Article>, t: Throwable) {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
-    }}
+    }
+
+    private fun vote() {
+        if (rate != null) {
+            val call: Call<ResponseBody> =
+                RetroClient.getInstance().apiService.rateArticle(
+                    prefs.getString("user_cookie", null),
+                    args.articleId, ArticleRateRequest(rate!!)
+                )
+
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "Successful Vote", Toast.LENGTH_SHORT)
+                            .show()
+                        refresh()
+
+                    } else {
+                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+    }
 
     private fun setVisibility(userId: String) {
         if (userId == prefs.getString("userId", "")) {
@@ -293,5 +379,85 @@ private fun refresh(){
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         rate = position + 1
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            R.id.add_annot ->
+                // do something
+                return true
+            R.id.see_annot ->
+                // do something
+                return true
+            else -> return super.onContextItemSelected(item)
+        }
+    }
+
+    override fun onAnnoClick() {
+        init()
+    }
+
+    private fun init() {
+        val call: Call<List<AnnoCreateRequest>> =
+            AnnotationRetroClient.getInstance().annotationAPIService.getAnnotations(
+                prefs.getString("user_cookie", null),
+                args.articleId
+            )
+
+        call.enqueue(object : Callback<List<AnnoCreateRequest>> {
+            override fun onResponse(
+                call: Call<List<AnnoCreateRequest>>,
+                response: Response<List<AnnoCreateRequest>>
+            ) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        textAnnotations = response.body()!!
+                        fillAnno()
+                    }
+
+                } else {
+                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<AnnoCreateRequest>>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun fillAnno() {
+        val ss = SpannableString(text.text.toString())
+        textAnnotations.forEach {
+            if (it.body.type == "Text") {
+                var clickableSpan: ClickableSpan = object : ClickableSpan() {
+                    override fun onClick(textView: View) {
+                        //TODO create view of annotation.
+                        val dialogFragment = TextAnnotationDialogFragment(
+                            this@ArticleDetail,
+                            false,
+                            article!!,
+                            null,
+                            null,
+                            it.body.annotationText
+                            )
+                        dialogFragment.show(fragmentManager!!, "deposit")
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        super.updateDrawState(ds)
+                        ds.isUnderlineText = false
+                        System.out.println("asd")
+
+                    }
+                }
+
+                text.setMovementMethod(LinkMovementMethod.getInstance())
+                ss.setSpan(BackgroundColorSpan(Color.YELLOW), it.body.startIndex!!, it.body.finishIndex!!, 0)
+                ss.setSpan(clickableSpan,  it.body.startIndex!!, it.body.finishIndex!!, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                text.setText(ss, TextView.BufferType.SPANNABLE)
+            }
+        }
     }
 }
