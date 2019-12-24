@@ -135,15 +135,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/predictionRate"
+                android:id="@+id/predictionRateUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:text="%60 up"
+                android:layout_marginStart="32dp"
+                android:text="2"
                 android:textColor="#ffffff"
                 android:textSize="25sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/prediction"
+                app:layout_constraintEnd_toStartOf="@id/prediction_upButton"
                 app:layout_constraintStart_toEndOf="@id/prediction" />
 
             <ImageButton
@@ -155,8 +156,21 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_currency_prediction_up"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/predictionRate"
+                app:layout_constraintStart_toEndOf="@id/predictionRateUp"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/predictionRateDown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="32dp"
+                android:text="2"
+                android:textColor="#ffffff"
+                android:textSize="25sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/prediction"
+                app:layout_constraintEnd_toStartOf="@id/prediction_downButton"
+                app:layout_constraintStart_toEndOf="@id/prediction_upButton" />
 
             <ImageButton
                 android:id="@+id/prediction_downButton"
@@ -165,7 +179,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:backgroundTint="#D60D0D"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_currency_prediction_down"

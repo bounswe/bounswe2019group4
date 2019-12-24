@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -23,8 +22,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anychart.AnyChartView
 import com.example.arken.R
 import com.example.arken.fragment.comment.ListCommentFragment
-import com.example.arken.fragment.profile.PendingUserDialog
-import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.tradingEquipment.Currency
 import com.example.arken.util.CurrencyValueAdapter
 import com.example.arken.viewModel.TradingEquipmentViewModel
@@ -36,7 +33,9 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
     private lateinit var anyChartView: AnyChartView
     private lateinit var prefs: SharedPreferences
     private lateinit var currencyName: TextView
-    private lateinit var predictionValue: TextView
+    private lateinit var predictionValueUp: TextView
+    private lateinit var predictionValueDown: TextView
+
     private lateinit var currencyValue: TextView
     lateinit var followButton: ImageButton
     private lateinit var predictionUpButton: ImageButton
@@ -66,7 +65,9 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         predictionDownButton = view.findViewById(R.id.prediction_downButton)
         predictionUpButton = view.findViewById(R.id.prediction_upButton)
-        predictionValue = view.findViewById(R.id.predictionRate)
+        predictionValueUp = view.findViewById(R.id.predictionRateUp)
+        predictionValueDown = view.findViewById(R.id.predictionRateDown)
+
         followButton = view.findViewById(R.id.follow_button)
         alertButton = view.findViewById(R.id.alert_button)
         predictionUpButton.setOnClickListener(this)
@@ -91,14 +92,9 @@ class CurrencyFragment : Fragment(), View.OnClickListener {
                 currencyValue.setTextColor(Color.RED)
             }
 
-            if (it.numberOfUps!!.toDouble().div(it.numberOfDowns!! + it.numberOfUps!!).isNaN()) {
-                predictionValue.text = "%0.00 up"
-            } else {
-                predictionValue.text =
-                    "%${it.numberOfUps!!.toDouble().div(it.numberOfDowns!! + it.numberOfUps!!).times(
-                        100
-                    ).toBigDecimal().setScale(2, RoundingMode.HALF_EVEN)} up"
-            }
+                predictionValueUp.text=it.numberOfUps!!.toString()
+                predictionValueDown.text=it.numberOfDowns!!.toString()
+
             currencyValueAdapter.setData(it)
             anyChartView.setChart(tradingEquipmentViewModel.setChart(2))
             if (it.following!!) {
