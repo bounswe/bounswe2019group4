@@ -42,7 +42,7 @@ class SearchFragment: Fragment(){
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         viewPager = view.findViewById(R.id.search_viewPager)
         // Get the list of movies from the JSON file
-        val values = arrayOf("EVENTS", "TRADING EQ", "ARTICLE", "USER")
+        val values = arrayOf("USERS", "ARTICLES", "TRADING EQ", "EVENTS")
 
         pagerAdapter = fragmentManager?.let { SearchPagerAdapter(it, values) }!!
         viewPager.adapter = pagerAdapter
@@ -105,7 +105,7 @@ class SearchFragment: Fragment(){
 
     override fun onResume() {
         super.onResume()
-        val values = arrayOf("EVENTS","TRADING EQ","ARTICLE","USER")
+        val values = arrayOf("USERS","ARTICLES","TRADING EQ","EVENTS")
         pagerAdapter = fragmentManager?.let { SearchPagerAdapter(it, values) }!!
         viewPager.adapter = pagerAdapter
         viewPager.adapter?.notifyDataSetChanged()

@@ -130,6 +130,9 @@
         <action
             android:id="@+id/action_searchFragment_to_portfolioFragment"
             app:destination="@id/portfolioFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
 
     </fragment>
     <fragment
