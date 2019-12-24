@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Popup, Button, Grid, Input, List, Segment} from 'semantic-ui-react';
+import {Popup, Button, Grid, Input, List, Segment, Icon} from 'semantic-ui-react';
 import annotationFactory from '../../factories/annotationFactory';
 import {colorAccent, colorBG, colorLightBG, colorLightgrey} from "../../utils/constants/Colors";
 import history from "../../_core/history";
@@ -116,7 +116,10 @@ class Mark extends React.Component {
                    flowing hoverable>
                 {props.tag ?
                     (props.tag) :
-                    (<div>
+
+                    (
+
+                        <div>
                         <Segment id={"annGroup"} loading={this.state.loading} textAlign="left" style={{display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,borderColor:"lightgrey",color:"lightgrey",maxHeight:200,overflowY:"auto"}}>
                         <List divided relaxed>
                             {
@@ -136,8 +139,8 @@ class Mark extends React.Component {
                                                 {
                                                     authFactory.isUserLoggedIn()&&item.userid===loadState().user._id&&(
                                                         <div>
-                                                        <Button size={"mini"} color={"red"} onClick={()=>this.deleteAnno(item)}>X</Button>
-                                                        <Button size={"mini"} color={"yellow"} onClick={()=>this.editAnno(item)}>edit</Button>
+                                                        <Button size={"mini"} color={"red"} onClick={()=>this.deleteAnno(item)}><Icon name={"delete"}/></Button>
+                                                        <Button size={"mini"} color={"yellow"} onClick={()=>this.editAnno(item)}><Icon name={"pencil"}/></Button>
                                                         </div>
                                                     )
                                                 }
@@ -151,12 +154,19 @@ class Mark extends React.Component {
 
 
                     </Segment>
-                        <Input
-                    value={annotationText}
-                    onChange={this.onChange.bind(this)}
-                    placeholder="AnnotationText" action={<Button  disabled={!annotationText} onClick={this.submit.bind(this)} content="Annotate" />}/>
+                            {authFactory.isUserLoggedIn() ?
+                                <Input
+                                    value={annotationText}
+                                    onChange={this.onChange.bind(this)}
+                                    placeholder="AnnotationText"
+                                    action={<Button disabled={!annotationText} onClick={this.submit.bind(this)}
+                                                    content="Annotate"/>}/>     :
+
+                                <p style={{fontSize:13,color:"grey"}}>Sign in To Make Annotations</p>
+                            }
                     </div>
                     )
+
                 }
             </Popup>
         )
