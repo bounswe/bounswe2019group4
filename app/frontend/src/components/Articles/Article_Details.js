@@ -77,8 +77,10 @@ class Article_Details extends Component {
         await annotationRequest.getAnnotation(this.state.article._id).then(res=>{
 
             for(let i of res){
+
                 let {body}=i;
 
+                if(body.type==="Text") {
                     let anno = {
                         annotext: body.annotationText,
                         end: body.finishIndex,
@@ -86,16 +88,17 @@ class Article_Details extends Component {
                         text: "",
                         userid: body.userId,
                         author: body.username,
-                        date:normalizeDateToTR(i.created),
-                        id:i._id,
-                        etag:i.ETag,
-                        modifDate:i.modified
+                        date: normalizeDateToTR(i.created),
+                        id: i._id,
+                        etag: i.ETag,
+                        modifDate: i.modified
 
                     };
-                if(!annos.find(x=>(x.start===body.startIndex&&x.end===body.finishIndex))) {
-                    annos.push(anno);
+                    if (!annos.find(x => (x.start === body.startIndex && x.end === body.finishIndex))) {
+                        annos.push(anno);
+                    }
+                    all.push(anno);
                 }
-                all.push(anno);
             }
             this.setState({allAnnotations:all,annotations:annos})
 
