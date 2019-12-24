@@ -9,6 +9,7 @@ import {saveState} from "./_core/localStorage";
 
 
 store.subscribe(() => {
+
     saveState({
         user: store.getState().user
     });

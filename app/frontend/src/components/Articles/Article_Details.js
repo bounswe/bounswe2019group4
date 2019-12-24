@@ -21,7 +21,7 @@ import {
 import TextAnnotator from '../Annotation/TextAnnotator';
 import {connect} from 'react-redux';
 import * as userActions from '../../actions/userActions';
-import {normalizeDate} from "../Events/Events";
+import {normalizeDate, normalizeDateToTR} from "../Events/Events";
 import Loading from "../Loading";
 import article_photo from "../../assets/article_logo.png"
 import Comments from "../Comments";
@@ -42,7 +42,8 @@ class Article_Details extends Component {
             editloading:false,
             ratesubmitted:false,
             dimmer:false,
-            annotations: []
+            annotations: [],
+            allAnnotations:[]
         }
     }
 
@@ -52,6 +53,8 @@ class Article_Details extends Component {
         const localState = loadState();
         this.setState({user: localState.user});
         await this.getArticle();
+        this.getAnnotations()
+
         //await this.getRating();
     }
 
@@ -62,16 +65,51 @@ class Article_Details extends Component {
     }
 
 
+    deleteEmptyAnnos=()=>{
+
+        let annos=this.state.annotations.filter(x=>typeof x.annotext!=="undefined")
+        this.setState({annotations:annos})
+    };
+
+    getAnnotations=async()=>{
+        let annos=[];
+        let all=[];
+        await annotationRequest.getAnnotation(this.state.article._id).then(res=>{
+
+            for(let i of res){
+                let {body}=i;
+
+                    let anno = {
+                        annotext: body.annotationText,
+                        end: body.finishIndex,
+                        start: body.startIndex,
+                        text: "",
+                        userid: body.userId,
+                        author: body.username,
+                        date:normalizeDateToTR(i.created),
+                        id:i._id,
+                        etag:i.ETag,
+                        modifDate:i.modified
+
+                    };
+                if(!annos.find(x=>(x.start===body.startIndex&&x.end===body.finishIndex))) {
+                    annos.push(anno);
+                }
+                all.push(anno);
+            }
+            this.setState({allAnnotations:all,annotations:annos})
+
+        })
+    };
+
     getArticle=async()=>{
 
-        await Promise.all([this.props.article("/"+this.props.match.params.id),annotationRequest.getArticleAnnotation({id: this.props.match.params.id})]).then(async result=> {
-                let newarticle=result[0].value;
-                let annotations = result[1].value;
-                this.setState({article:newarticle,text:newarticle.text,titletext:newarticle.title, annotations})
+        await this.props.article("/"+this.props.match.params.id).then(async result=> {
+                let newarticle=result.value;
+                this.setState({article:newarticle,text:newarticle.text,titletext:newarticle.title})
             return newarticle.imageId;
             }
         ).then((a)=>{
-
             let src=require("../../assets/article_photos/article"+a+".jpg")
             this.setState({src});
 
@@ -129,7 +167,7 @@ class Article_Details extends Component {
         return (
 
             article?(
-                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}} >
                     <div style={{width:"100%"}}>
                         <Grid>
 
@@ -265,28 +303,35 @@ class Article_Details extends Component {
                                                 </Dimmer>
                                             </Dimmer.Dimmable>
                                             )
-                                            : ( user ? (
+                                            : (
+                                                <div style={{display:"flex",justifyContent:"center"}}>
                                                 <TextAnnotator
                                                     style={{
-                                                        maxWidth: 500,
+                                                        textAlign:"justify",
+                                                        maxWidth: 1000,
                                                         lineHeight: 1.5,
                                                     }}
+                                                    deleteEmpty={this.deleteEmptyAnnos}
                                                     content={article.text}
                                                     articleId={article._id}
-                                                    userId={user._id}
+                                                    allAnnos={this.state.allAnnotations}
+                                                    getAnnos={this.getAnnotations}
                                                     value={annotations}
                                                     onChange={this.annotate.bind(this)}
                                                     annotate={this.startAnnotate.bind(this)}
                                                     getSpan={span => ({
                                                         ...span,
+
                                                        // tag: "HELLO",
                                                     })}
-                                                /> ): (
-                                                    <p style={{textAlign:"justify"}}>
-                                                        {article.text}
-                                                    </p>
-                                                )
+                                                />
+                                                </div>
+                                                /*
+                                                <p style={{textAlign:"justify"}}>
+                                                    {article.text}
+                                                </p>
 
+                                                 */
                                             )
                                         }
                                     </div>

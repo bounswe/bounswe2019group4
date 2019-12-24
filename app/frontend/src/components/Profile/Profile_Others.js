@@ -211,13 +211,14 @@ class Profile extends Component {
                                 <Segment style={{margin: 20, width: "100%", background: colorBG,borderColor:colorPrimary,borderRadius:20,borderWidth:1.5}}>
                                     <Header style={{color: "#c9c9c9"}}>Portfolios</Header>
                                     <Divider style={{color: "#c9c9c9"}}/>
+                                    <div style={{display:"flex",justifyContent:"center",flexDirection:"column",}}>
                                     {newProfile.user && (newProfile.user.isPublic || currentlyFollowing) && newProfile.portfolios && newProfile.portfolios.length>0 ?
                                         newProfile.portfolios.map(portfolio => {
                                             return (
-                                                <Card style={{width: "100%"}} style={{color: "#c9c9c9"}}>
+                                                <Card style={{width: "100%",background: "rgba(255,255,255,0.15)",}}  onClick={()=>history.push("/portfolios/"+portfolio._id)}>
                                                     <Card.Content>
-                                                        <Card.Header style={{color: "#c9c9c9"}}>{portfolio.title}</Card.Header>
-                                                        <Card.Description style={{color: "#c9c9c9"}}>{portfolio.definition}</Card.Description>
+                                                        <Card.Header style={{color: "#c9c9c9"}} >{portfolio.title}</Card.Header>
+                                                        <Card.Description style={{color: "#c9c9c9"}} >{portfolio.definition}</Card.Description>
                                                     </Card.Content>
 
                                                 </Card>
@@ -225,6 +226,7 @@ class Profile extends Component {
                                         }) : (newProfile.user && !newProfile.user.isPublic && !currentlyFollowing) ? <span style={{color: "#c9c9c9"}}>Can't See User's Portfolios</span>
                                             : <span style={{color: "#c9c9c9"}}>No Portfolio Created!</span>
                                     }
+                                    </div>
                                 </Segment>
                             </Grid.Row>
                         </Grid.Column>
