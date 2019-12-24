@@ -231,7 +231,7 @@ export default class Simple extends Component {
                 </mark>
                 */
                 <Popup on='click' pinned trigger={
-                    <div style={{position: "absolute", zIndex:"999999" ,marginLeft: annotation.geometry.x+"%", marginTop: annotation.geometry.y+"%", width: annotation.geometry.width+"%", height: annotation.geometry.height+"%", border: "5px solid red"}}></div>
+                    <div style={{position: "absolute", zIndex:"2" ,marginLeft: annotation.geometry.x+"%", marginTop: annotation.geometry.y+"%", width: annotation.geometry.width+"%", height: annotation.geometry.height+"%", border: "5px solid red"}}></div>
                 }
                        flowing hoverable>
                         <div>
