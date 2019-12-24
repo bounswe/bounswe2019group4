@@ -27,6 +27,8 @@ import article_photo from "../../assets/article_logo.png"
 import Comments from "../Comments";
 import annotationRequest from "../../factories/annotationFactory";
 
+import ImageAnnotator from "../Annotation/ImageAnnotator";
+
 class Article_Details extends Component {
 
     constructor(props) {
@@ -62,12 +64,14 @@ class Article_Details extends Component {
 
     getArticle=async()=>{
 
-        await this.props.article("/"+this.props.match.params.id).then(async result=> {
-                let newarticle=result.value;
-                this.setState({article:newarticle,text:newarticle.text,titletext:newarticle.title})
+        await Promise.all([this.props.article("/"+this.props.match.params.id),annotationRequest.getArticleAnnotation({id: this.props.match.params.id})]).then(async result=> {
+                let newarticle=result[0].value;
+                let annotations = result[1].value;
+                this.setState({article:newarticle,text:newarticle.text,titletext:newarticle.title, annotations})
             return newarticle.imageId;
             }
         ).then((a)=>{
+
             let src=require("../../assets/article_photos/article"+a+".jpg")
             this.setState({src});
 
@@ -132,7 +136,7 @@ class Article_Details extends Component {
 
                             <Grid.Column width={4} >
                                 <Segment  textAlign="left" style={{marginRight:50,marginLeft:20,display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
-                                    {<Image size="medium" src={this.state.src} />}
+                                    {user ? <ImageAnnotator  img={this.state.src} articleId={article._id} userId={user._id} /> : <Image size={"medium"} src={this.state.src} /> }
 
                                     <List relaxed>
                                         <List.Item>
@@ -261,7 +265,7 @@ class Article_Details extends Component {
                                                 </Dimmer>
                                             </Dimmer.Dimmable>
                                             )
-                                            : (
+                                            : ( user ? (
                                                 <TextAnnotator
                                                     style={{
                                                         maxWidth: 500,
@@ -269,6 +273,7 @@ class Article_Details extends Component {
                                                     }}
                                                     content={article.text}
                                                     articleId={article._id}
+                                                    userId={user._id}
                                                     value={annotations}
                                                     onChange={this.annotate.bind(this)}
                                                     annotate={this.startAnnotate.bind(this)}
@@ -276,13 +281,12 @@ class Article_Details extends Component {
                                                         ...span,
                                                        // tag: "HELLO",
                                                     })}
-                                                />
-                                                /*
-                                                <p style={{textAlign:"justify"}}>
-                                                    {article.text}
-                                                </p>
+                                                /> ): (
+                                                    <p style={{textAlign:"justify"}}>
+                                                        {article.text}
+                                                    </p>
+                                                )
 
-                                                 */
                                             )
                                         }
                                     </div>
