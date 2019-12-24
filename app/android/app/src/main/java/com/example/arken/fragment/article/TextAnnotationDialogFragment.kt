@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.arken.R
@@ -27,13 +28,15 @@ class TextAnnotationDialogFragment(
     val article:Article,
     val start:Int?,
     val end:Int?,
-    val str:String?
+    val str:String?,
+    val username:String?
 ) : DialogFragment() {
 
     private lateinit var prefs: SharedPreferences
     private lateinit var edit_button: Button
     private lateinit var delete_button: Button
     private lateinit var add_button: Button
+    private lateinit var author:TextView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,9 +50,10 @@ class TextAnnotationDialogFragment(
         edit_button = rootView.findViewById<Button>(R.id.text_anno_edit_button)
         delete_button = rootView.findViewById<Button>(R.id.text_anno_delete_button)
         add_button = rootView.findViewById<Button>(R.id.text_anno_add_button)
+        author=rootView.findViewById((R.id.text_anno_username))
         if (!toCreate) {
             anno_editText.setText(str)
-
+author.text="Author: ${username}"
 
             edit_button.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
@@ -65,7 +69,7 @@ class TextAnnotationDialogFragment(
             delete_button.visibility=View.GONE
             add_button.visibility=View.GONE
         } else {
-
+author.visibility=View.GONE
 
             add_button.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
@@ -74,6 +78,7 @@ class TextAnnotationDialogFragment(
                     a.articleId=article._id
                     a.userId=prefs.getString("userId",null)
                     a.type="Text"
+                    a.username=prefs.getString("annotation_username",null)
                     a.startIndex=start
                     a.finishIndex=end
                     val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.createAnnotation(prefs.getString("user_cookie",null),

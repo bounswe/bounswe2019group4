@@ -172,10 +172,14 @@ public class StartFragment extends Fragment implements View.OnClickListener {
                 if (response.isSuccessful()) {
                     //google login fragment???
                     User pr = response.body();
+                    String username= response.body().getName()+" "+response.body().getSurname();
+
                     SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                     editor.putString("userId", pr.get_id());
                     String cookie = response.headers().get("Set-Cookie");
                     editor.putString("user_cookie", cookie.split(";")[0]);
+                    editor.putString("annotation_username",username);
+
                     editor.commit();
                     Log.i("basee ", response.raw().toString());
                     Navigation.findNavController(guestButton).navigate(R.id.action_startFragment_to_baseFragment);

@@ -172,7 +172,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
                                     true,
                                     article!!,
                                     selStart,
-                                    selEnd,null
+                                    selEnd,null,"a"
                                 )
 
                                 dialogFragment.show(fragmentManager!!, "deposit")
@@ -440,7 +440,8 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
                             article!!,
                             null,
                             null,
-                            it.body.annotationText
+                            it.body.annotationText,
+                            it.body.username
                             )
                         dialogFragment.show(fragmentManager!!, "deposit")
                     }
