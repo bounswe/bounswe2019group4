@@ -236,7 +236,7 @@ class Article_Details extends Component {
                             <Grid.Column width={10}>
                                 <Segment raised piled padded compact style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                                     <div style={{width:"30%"}}>
-                                        <ImageAnnotator  img={this.state.src} articleId={article._id} userId={user._id} />
+                                        <ImageAnnotator  img={this.state.src} articleId={article && article._id} userId={user && user._id} />
 
                                     </div>
 
