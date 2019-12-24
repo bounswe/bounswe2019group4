@@ -118,7 +118,7 @@ onAnnoClickListener.onAnnoClick()
                 add_button.visibility=View.VISIBLE
             }
         }else{
-            dismiss()
+           // dismiss()
         }
     }
 }
