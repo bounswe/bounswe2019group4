@@ -84,7 +84,10 @@ class Article_Details extends Component {
                         text: "",
                         userid: body.userId,
                         author: body.username,
-                        date:normalizeDateToTR(i.created)
+                        date:normalizeDateToTR(i.created),
+                        id:i._id,
+                        etag:i.ETag,
+                        modifDate:i.modified
 
                     };
                 if(!annos.find(x=>(x.start===body.startIndex&&x.end===body.finishIndex))) {

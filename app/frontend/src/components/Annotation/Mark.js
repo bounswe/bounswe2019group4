@@ -4,12 +4,13 @@ import annotationFactory from '../../factories/annotationFactory';
 import {colorAccent, colorBG, colorLightBG, colorLightgrey} from "../../utils/constants/Colors";
 import history from "../../_core/history";
 import {loadState} from "../../_core/localStorage";
+import authFactory from "../../factories/authFactory";
 
 
 class Mark extends React.Component {
     constructor(props) {
         super(props);
-        this.state= {annotationText: "",loading:false}
+        this.state= {annotationText: "",loading:false,edittext:""}
     }
 
     onChange(e, data) {
@@ -51,6 +52,42 @@ class Mark extends React.Component {
         this.cgroup=document.getElementById("annGroup");
         this.cgroup.scrollTop=this.cgroup.scrollHeight;
     };
+
+    deleteAnno=async (item)=>{
+        this.setState({loading:true})
+        await annotationFactory.delete({"E-Tag":item.etag}).then(()=>{
+            this.props.getAnnos();
+            this.setState({loading:false})
+        })
+    };
+    editAnno=async(item)=>{
+        this.setState({loading:true})
+        let a={
+            _id:item.id,
+            id:"https://anno.arkenstone.ml/annotations/"+item.id,
+            "body": {
+            annotationText:this.state.annotationText,
+                "articleId": this.props.articleId,
+                "finishIndex": this.props.end,
+                "h": 0,
+                "startIndex": this.props.start,
+                "type": "Text",
+                "userId": loadState().user._id,
+                "w": 0,
+                "x": 0,
+                "y": 0,
+                "username":loadState().user.name+" "+loadState().user.surname
+        },
+            created:item.date,
+            modified:item.modifDate,
+            "target": "http://www.example.com/index.htm",
+            "type": "Annotation"
+        }
+        await annotationFactory.modifyAnnotation(a).then(()=>{
+            this.props.getAnnos();
+            this.setState({annotationText:"",loading:false})
+        });
+    }
 
     render() {
         const props = this.props;
@@ -96,6 +133,14 @@ class Mark extends React.Component {
                                                 <List.Description style={{fontSize:12}}>
                                                     <span style={{cursor:"pointer",color:"blue"}} onClick={()=>history.push("/profile/"+item.userid)}>{item.author}</span> in {item.date}
                                                 </List.Description>
+                                                {
+                                                    authFactory.isUserLoggedIn()&&item.userid===loadState().user._id&&(
+                                                        <div>
+                                                        <Button size={"mini"} color={"red"} onClick={()=>this.deleteAnno(item)}>X</Button>
+                                                        <Button size={"mini"} color={"yellow"} onClick={()=>this.editAnno(item)}>edit</Button>
+                                                        </div>
+                                                    )
+                                                }
                                             </List.Content>
                                             </List.Item>)
                                     }
@@ -109,7 +154,7 @@ class Mark extends React.Component {
                         <Input
                     value={annotationText}
                     onChange={this.onChange.bind(this)}
-                    placeholder="AnnotationText" action={<Button disabled={!annotationText} onClick={this.submit.bind(this)} content="Annotate" />}/>
+                    placeholder="AnnotationText" action={<Button  disabled={!annotationText} onClick={this.submit.bind(this)} content="Annotate" />}/>
                     </div>
                     )
                 }

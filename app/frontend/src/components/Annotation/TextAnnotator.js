@@ -84,7 +84,7 @@ class TextAnnotator extends React.Component {
         return (
             <div style={style} ref={this.rootRef}>
                 {splits.map(split => (
-                    <Split key={`${split.start}-${split.end}`} getAnnos={getAnnos} annotations={allAnnos} {...split} articleId={this.props.articleId} annotate={this.props.annotate} onClick={this.handleSplitClick} />
+                    <Split key={`${split.start}-${split.end}`} getAnnos={getAnnos   } annotations={allAnnos} {...split} articleId={this.props.articleId} annotate={this.props.annotate} onClick={this.handleSplitClick} />
                 ))}
             </div>
         )
