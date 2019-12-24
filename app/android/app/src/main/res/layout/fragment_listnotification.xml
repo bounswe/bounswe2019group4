@@ -7,7 +7,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notification_recyclerView"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="350dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

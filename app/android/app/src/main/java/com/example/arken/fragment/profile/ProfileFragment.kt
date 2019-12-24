@@ -308,6 +308,10 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                         val act = ProfileFragmentDirections.actionProfileFragmentToMyinvestmentFragment(profile.user!!.iban!!)
                         findNavController().navigate(act)
                     }}
+                    if( realId != userId){
+                        article_button.setText("Articles")
+                        notification_button.visibility=View.GONE
+                    }
                     article_button.visibility = View.VISIBLE
                     name_textView.text = profile.user?.name
                     surname_textView.text = profile.user?.surname
