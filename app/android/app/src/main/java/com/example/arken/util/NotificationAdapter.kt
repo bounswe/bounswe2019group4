@@ -18,6 +18,7 @@ class NotificationAdapter(
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         private val notificationText: TextView = v.findViewById(R.id.notification_text)
+        private val notificationImage: ImageView = v.findViewById(R.id.notification_image)
 
         fun bind(
             notification: Notification,
@@ -25,6 +26,24 @@ class NotificationAdapter(
         ) {
 
             notificationText.text = notification.text
+
+            when {
+                notification.text!!.contains("true", ignoreCase = true) -> {
+                    notificationImage.setImageResource(R.drawable.ic_green_check)
+                }
+                notification.text!!.contains("false", ignoreCase = true) -> {
+                    notificationImage.setImageResource(R.drawable.ic_red_cross)
+                }
+                notification.text!!.contains("follow", ignoreCase = true) -> {
+                    notificationImage.setImageResource(R.drawable.ic_person_white)
+                }
+                notification.text!!.contains("more", ignoreCase = true) -> {
+                    notificationImage.setImageResource(R.drawable.ic_trending_up)
+                }
+                notification.text!!.contains("less", ignoreCase = true) -> {
+                    notificationImage.setImageResource(R.drawable.ic_trending_down)
+                }
+            }
 
         }
     }
