@@ -14,6 +14,7 @@ import com.example.arken.R
 import com.example.arken.fragment.event.ListEventFragmentDirections
 import com.example.arken.fragment.signup_login.LoginFragment.MY_PREFS_NAME
 import com.example.arken.fragment.tEq.ListCurrentFragmentDirections
+import com.example.arken.model.Article
 import com.example.arken.model.Comment
 import com.example.arken.model.Event
 import com.example.arken.model.EventWithComment
@@ -145,6 +146,31 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                     Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
+        }   else if (about == "ARTICLE") {
+            val call: Call<ResponseBody> =
+                RetroClient.getInstance().apiService.deleteArticleComment(userCookie, commentId)
+
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "Your comment is deleted", Toast.LENGTH_SHORT)
+                            .show()
+                        dataset.removeAt(position)
+                        commentAdapter.dataSet = dataset
+                        commentAdapter.notifyDataSetChanged()
+
+                    } else {
+                        Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 
@@ -175,16 +201,45 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                 }
             })
         } else if (about == "TRADING-EQUIPMENT") {
-            val call: Call<Currency> =
-                RetroClient.getInstance().apiService.getCurrency(userCookie, related)
+                val call: Call<Currency> =
+                    RetroClient.getInstance().apiService.getCurrency(userCookie, related)
 
-            call.enqueue(object : Callback<Currency> {
-                override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
+                call.enqueue(object : Callback<Currency> {
+                    override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
+                        if (response.isSuccessful) {
+                            val callCurrency: Currency? = response.body()
+                            if (callCurrency != null) {
+                                var comments = callCurrency.comments
+                                dataset = comments
+                                commentAdapter.dataSet = dataset
+                                commentAdapter.notifyDataSetChanged()
+                            }
+                        } else {
+                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Currency>, t: Throwable) {
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
+        } else if (about == "ARTICLE") {
+            val call: Call<Article> =
+                RetroClient.getInstance().apiService.getArticle(userCookie, related)
+
+            call.enqueue(object : Callback<Article> {
+                override fun onResponse(call: Call<Article>, response: Response<Article>) {
                     if (response.isSuccessful) {
-                        val callCurrency: Currency? = response.body()
-                        if (callCurrency != null) {
-                            var comments = callCurrency.comments
-                            dataset = comments
+                        val article: Article? = response.body()
+                        if (article != null) {
+                            var comments = article.comments
+                            if(comments!= null){
+                                dataset = comments
+                            }
+                            else{
+                                dataset = mutableListOf()
+                            }
                             commentAdapter.dataSet = dataset
                             commentAdapter.notifyDataSetChanged()
                         }
@@ -194,7 +249,7 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                     }
                 }
 
-                override fun onFailure(call: Call<Currency>, t: Throwable) {
+                override fun onFailure(call: Call<Article>, t: Throwable) {
                     Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })

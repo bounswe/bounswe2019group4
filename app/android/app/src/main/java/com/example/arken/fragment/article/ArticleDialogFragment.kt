@@ -78,9 +78,6 @@ private lateinit var profile:Profile
                         Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
-
-
-
             }
         })
 

@@ -1,47 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark">
 
-    <EditText
+        <EditText
 
-        android:id="@+id/article_detail_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="60dp"
-        android:gravity="center"
-        android:text="Article Title"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/article_detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="60dp"
+            android:gravity="center"
+            android:text="Article Title"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="0dp"
-        android:layout_height="0dp"
-
-        app:layout_constraintBottom_toTopOf="@id/rate_vote_line"
+        android:layout_height="wrap_content"
+        android:id="@+id/article_detail_scroll"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/article_detail_title">
 
-        <EditText
-
-            android:id="@+id/article_detail_text"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:layout_marginBottom="32dp"
-            android:lineSpacingMultiplier="1.5"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp" />
+            android:layout_height="match_parent">
+
+            <EditText
+
+                android:id="@+id/article_detail_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:layout_marginBottom="32dp"
+                android:lineSpacingMultiplier="1.5"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/article_detail_image"
+                app:layout_constraintTop_toBottomOf="@id/article_detail_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </ScrollView>
 
     <Button
@@ -54,7 +74,7 @@
         android:text="Edit Article"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rate_line"
         app:layout_constraintEnd_toStartOf="@id/delete_article_button"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -68,7 +88,7 @@
         android:text="Delete Article"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rate_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/edit_article_button" />
 
@@ -83,10 +103,9 @@
         android:textColor="@color/colorWhite"
         android:textAllCaps="false"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rate_line"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/articleRecyclerView" />
+        app:layout_constraintStart_toStartOf="parent" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rate_vote_line"
         android:layout_width="0dp"
@@ -95,7 +114,7 @@
         android:layout_marginEnd="3dp"
         android:background="@color/colorPrimaryDark"
         android:text="Edit Article"
-        app:layout_constraintBottom_toTopOf="@id/rate_line"
+        app:layout_constraintTop_toBottomOf="@id/article_detail_scroll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" >
         <Spinner
@@ -125,7 +144,7 @@
         android:layout_marginEnd="3dp"
         android:background="@color/colorPrimaryDark"
         android:text="Edit Article"
-        app:layout_constraintBottom_toTopOf="@id/edit_article_button"
+        app:layout_constraintTop_toBottomOf="@id/rate_vote_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" >
 
@@ -156,6 +175,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_comment_fragment_article"
+        app:layout_constraintTop_toBottomOf="@id/edit_article_button" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

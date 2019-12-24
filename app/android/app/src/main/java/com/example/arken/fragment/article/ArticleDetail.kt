@@ -4,14 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.method.KeyListener
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arken.R
+import com.example.arken.fragment.comment.ListCommentFragment
 import com.example.arken.model.Article
 import com.example.arken.model.ArticleCreateRequest
 import com.example.arken.model.ArticleRateRequest
@@ -20,8 +18,13 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.*
+import com.example.arken.fragment.profile.PendingUserDialog
 
 
+/*
+3) annotation layout oluştur
+ */
 class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
@@ -36,6 +39,10 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var totalVotes: TextView
     private val args: ArticleDetailArgs by navArgs()
     private lateinit var prefs: SharedPreferences
+    private lateinit var imageView: ImageView
+    private lateinit var imageIds:Array<Int>
+    var imageId = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,6 +64,10 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
         totalVotes= rootView.findViewById(R.id.rate_line_total_votes)
         vote.setOnClickListener { vote() }
         rateSpinner = rootView.findViewById(R.id.rate_line_vote_spinner)
+        imageView = rootView.findViewById(R.id.article_detail_image)
+        imageIds = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4,
+            R.drawable.image5, R.drawable.image6, R.drawable.image7, R.drawable.image8,
+            R.drawable.image9, R.drawable.image10)
 
         val imp = arrayOf(1, 2, 3, 4, 5)
 
@@ -93,6 +104,13 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                     myVote.text="${myVote.text}${article?.yourRate}"
                     currentRate.text="${currentRate.text}${article?.rateAverage}"
                     totalVotes.text="${totalVotes.text}${article?.numberOfRates}"
+                    val imageId2 = article?.imageId
+                    if(imageId2!= 0){
+                        if (imageId2 != null) {
+                            imageView.setImageResource(imageIds[imageId2 - 1])
+                            imageId = imageId2
+                        }
+                    }
                     setVisibility(article!!.userId!!)
                 } else {
                     Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
@@ -104,6 +122,38 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
+        fragmentManager?.beginTransaction()?.add(
+            R.id.list_comment_fragment_article,
+            ListCommentFragment.newInstance(
+                args.articleId,
+                "ARTICLE"
+            ),
+            "commentList"
+        )?.commit()
+
+        imageView.setOnLongClickListener {
+            val popup = PopupMenu(context, it)
+            val inflater: MenuInflater = popup.menuInflater
+            inflater.inflate(R.menu.image_anno, popup.menu)
+            popup.setOnMenuItemClickListener{
+                when (it.getItemId()) {
+                    R.id.add_annot ->{
+                        val dialog = ImageAnnotationDialogFragment(args.articleId, 0, imageId)
+                        dialog.show(fragmentManager!!, "annot")
+                        true
+                    }
+
+                    R.id.see_annot ->{
+                        val dialog = ImageAnnotationDialogFragment(args.articleId, 1, imageId)
+                        dialog.show(fragmentManager!!, "annot")
+                        true
+                    }
+                    else -> super.onContextItemSelected(it)
+                }
+            }
+            popup.show()
+            true
+        }
     }
 private fun refresh(){
     val call: Call<Article> =
