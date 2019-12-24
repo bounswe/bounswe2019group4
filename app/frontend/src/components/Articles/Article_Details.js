@@ -171,7 +171,8 @@ class Article_Details extends Component {
 
                             <Grid.Column width={4} >
                                 <Segment  textAlign="left" style={{marginRight:50,marginLeft:20,display:"flex",flexDirection:"column",alignItems:"center",borderWidth:2,borderRadius:10,backgroundColor:"#f9f9f9"}}>
-                                    {<Image size="medium" src={this.state.src} />}
+                                    {<Image size={"medium"} src={article_photo} />}
+
 
                                     <List relaxed>
                                         <List.Item>
@@ -230,6 +231,7 @@ class Article_Details extends Component {
                             </Grid.Column>
                             <Grid.Column width={10}>
                                 <Segment raised piled padded compact style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                                    {<Image size={"medium"} src={this.state.src} />}
                                     <div style={{margin:20,fontFamily:"timesnewroman",fontSize:15,width:"80%"}}>
 
                                         {user && user.loggedIn&&article.userId===user._id ? (
@@ -256,6 +258,7 @@ class Article_Details extends Component {
                                                             titletext: item.target.value
                                                         })}
                                                     />
+
                                                     <Form.TextArea
                                                                     label={"Text"}
                                                                    style={{borderWidth: 1, borderColor: "gray",height:500}}

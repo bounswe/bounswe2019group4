@@ -328,7 +328,7 @@ class Events extends Component {
                         <Grid.Column width={2}/>
                         <Grid.Column width={12}>
                 <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center"}}>
-                <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20}} >
+                <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20,width:"100%"}} >
 
                         <table className="ui table inverted" style={{background: "rgba(255,255,255,0)"}}>
 
