@@ -18,13 +18,14 @@ import {
     Label,
     Dimmer
 } from 'semantic-ui-react';
+import TextAnnotator from '../Annotation/TextAnnotator';
 import {connect} from 'react-redux';
 import * as userActions from '../../actions/userActions';
-import {normalizeDate} from "../Events/Events";
+import {normalizeDate, normalizeDateToTR} from "../Events/Events";
 import Loading from "../Loading";
 import article_photo from "../../assets/article_logo.png"
 import Comments from "../Comments";
-
+import annotationRequest from "../../factories/annotationFactory";
 
 class Article_Details extends Component {
 
@@ -39,7 +40,8 @@ class Article_Details extends Component {
             editloading:false,
             ratesubmitted:false,
             dimmer:false,
-
+            annotations: [],
+            allAnnotations:[]
         }
     }
 
@@ -49,6 +51,8 @@ class Article_Details extends Component {
         const localState = loadState();
         this.setState({user: localState.user});
         await this.getArticle();
+        this.getAnnotations()
+
         //await this.getRating();
     }
 
@@ -58,6 +62,43 @@ class Article_Details extends Component {
         }
     }
 
+
+    deleteEmptyAnnos=()=>{
+
+        let annos=this.state.annotations.filter(x=>typeof x.annotext!=="undefined")
+        this.setState({annotations:annos})
+    };
+
+    getAnnotations=async()=>{
+        let annos=[];
+        let all=[];
+        await annotationRequest.getAnnotation(this.state.article._id).then(res=>{
+
+            for(let i of res){
+                let {body}=i;
+
+                    let anno = {
+                        annotext: body.annotationText,
+                        end: body.finishIndex,
+                        start: body.startIndex,
+                        text: "",
+                        userid: body.userId,
+                        author: body.username,
+                        date:normalizeDateToTR(i.created),
+                        id:i._id,
+                        etag:i.ETag,
+                        modifDate:i.modified
+
+                    };
+                if(!annos.find(x=>(x.start===body.startIndex&&x.end===body.finishIndex))) {
+                    annos.push(anno);
+                }
+                all.push(anno);
+            }
+            this.setState({allAnnotations:all,annotations:annos})
+
+        })
+    };
 
     getArticle=async()=>{
 
@@ -104,7 +145,16 @@ class Article_Details extends Component {
 
     };
 
+    annotate(annotation) {
+        console.log(annotation);
+        this.setState({annotations: annotation});
+    }
+
+    startAnnotate(annotationText) {
+    }
+
     render() {
+        const {annotations} = this.state;
         const article  = this.state.article;
         const comments=article?article.comments:[];
         let rating=article?article.rateAverage:0;
@@ -114,7 +164,7 @@ class Article_Details extends Component {
         return (
 
             article?(
-                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}} >
                     <div style={{width:"100%"}}>
                         <Grid>
 
@@ -251,9 +301,34 @@ class Article_Details extends Component {
                                             </Dimmer.Dimmable>
                                             )
                                             : (
+                                                <div style={{display:"flex",justifyContent:"center"}}>
+                                                <TextAnnotator
+                                                    style={{
+                                                        textAlign:"justify",
+                                                        maxWidth: 1000,
+                                                        lineHeight: 1.5,
+                                                    }}
+                                                    deleteEmpty={this.deleteEmptyAnnos}
+                                                    content={article.text}
+                                                    articleId={article._id}
+                                                    allAnnos={this.state.allAnnotations}
+                                                    getAnnos={this.getAnnotations}
+                                                    value={annotations}
+                                                    onChange={this.annotate.bind(this)}
+                                                    annotate={this.startAnnotate.bind(this)}
+                                                    getSpan={span => ({
+                                                        ...span,
+
+                                                       // tag: "HELLO",
+                                                    })}
+                                                />
+                                                </div>
+                                                /*
                                                 <p style={{textAlign:"justify"}}>
                                                     {article.text}
                                                 </p>
+
+                                                 */
                                             )
                                         }
                                     </div>
