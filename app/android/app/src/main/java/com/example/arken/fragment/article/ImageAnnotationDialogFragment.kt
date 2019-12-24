@@ -74,7 +74,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                     val realId = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE)
                         .getString("userId", "defaultId")
                     // create anno
-                    annotation!!.type="image"
+                    annotation!!.type="Image"
                     annotation!!.articleId = articleId
                     annotation!!.annotationText = editText.text.toString()
                     annotation!!.userId = realId
@@ -227,7 +227,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
         }
         annotationIcons.clear()
         for(annotation in annotations){
-            if(annotation.type == "image"){
+            if(annotation.type == "Image"){
                 val lp = RelativeLayout.LayoutParams(50, 50)
                 val icon = ImageView(context) // initialize ImageView
                 icon.layoutParams = lp

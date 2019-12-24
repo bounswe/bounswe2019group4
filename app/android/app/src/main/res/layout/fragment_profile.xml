@@ -75,7 +75,7 @@
         app:layout_constraintEnd_toStartOf="@+id/surname_textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.41000003" />
+        app:layout_constraintVertical_bias="0.409" />
 
     <TextView
         android:id="@+id/user_follow"
@@ -100,11 +100,9 @@
         android:layout_height="wrap_content"
         android:elevation="8dp"
         android:src="@drawable/profile_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.050000012" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/surname_textView"
@@ -116,7 +114,6 @@
         android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/name_textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/name_textView" />
 
     <TextView
@@ -151,7 +148,7 @@
     <TextView
         android:id="@+id/user_type_textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/user_type_background"
         android:paddingLeft="12dp"
@@ -304,7 +301,8 @@
     <Button
         android:id="@+id/notification_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/user_type_background"
         android:paddingLeft="12dp"
         android:paddingTop="8dp"
@@ -313,10 +311,9 @@
         android:text="Notifications"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@+id/pred_label_textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/following_value_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/start_line_basemenu" />
 
   <Button
         android:id="@+id/portfolio_button"
