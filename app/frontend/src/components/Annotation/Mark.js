@@ -107,7 +107,7 @@ class Mark extends React.Component {
                 )}
             </mark>
             */
-            <Popup on='click' pinned trigger={<span style={{textDecoration: "underline",backgroundColor:colorAccent,color:"white"}}
+            <Popup on='click' pinned trigger={<span style={{textDecoration: "underline",backgroundColor:colorAccent,color:"white",cursor:"pointer"}}
 
                                                     data-start={props.start}
                                                     data-end={props.end}
