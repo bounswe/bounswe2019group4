@@ -80,7 +80,7 @@ class Create_Portfolio extends Component {
                 isPrivate : isPrivate,
                 tradingEqs : tradingEqs
             };
-            alert(JSON.stringify(param))
+
             this.setState({editloading: true});
             await this.props.createPortfolio(param).then(async() => {
                 this.setState({editloading: false, dimmer: true});

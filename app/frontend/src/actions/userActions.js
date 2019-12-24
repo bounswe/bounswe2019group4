@@ -181,6 +181,12 @@ export function createArticle(params) {
         payload: userService.createArticle(params)
     };
 }
+export function deleteArticle(params) {
+    return {
+        type:"ARTICLE_DELETE",
+        payload: userService.deleteArticle(params)
+    };
+}
 export function acceptFollow(path) {
     return {
         type:"ACCEPT_FOLLOW_REQUEST",
