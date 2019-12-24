@@ -49,6 +49,8 @@ class TextAnnotationDialogFragment(
         add_button = rootView.findViewById<Button>(R.id.text_anno_add_button)
         if (!toCreate) {
             anno_editText.setText(str)
+
+
             edit_button.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     dismiss()
@@ -59,6 +61,9 @@ class TextAnnotationDialogFragment(
                     dismiss()
                 }
             })
+            edit_button.visibility=View.GONE
+            delete_button.visibility=View.GONE
+            add_button.visibility=View.GONE
         } else {
 
 
@@ -84,7 +89,7 @@ class TextAnnotationDialogFragment(
                         override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                             if (response.isSuccessful) {
                                 System.out.println("Successfull")
-
+onAnnoClickListener.onAnnoClick()
                             } else {
                                 Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
                                     .show()

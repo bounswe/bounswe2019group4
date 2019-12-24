@@ -69,6 +69,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
         title.keyListener = null
         text.tag = text.keyListener
         text.keyListener = null
+        text.setTextIsSelectable(true)
         editButton = rootView.findViewById(R.id.edit_article_button)
         deleteButton = rootView.findViewById(R.id.delete_article_button)
         vote = rootView.findViewById(R.id.rate_line_vote_button)
@@ -89,6 +90,7 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
         enableAnnotate.setOnClickListener {
             changeSelectable()
         }
+        enableAnnotate.visibility=View.GONE
         ArrayAdapter(
             context!!,
             R.layout.custom_spinner, imp
