@@ -35,24 +35,24 @@
     </integer-array>
 
     <string-array name="TeList">
-        <item>EUR</item>
-        <item>TRY</item>
-        <item>USD</item>
-        <item>AUD</item>
-        <item>CNY</item>
-        <item>HKD</item>
-        <item>INR</item>
-        <item>JPY</item>
-        <item>AED</item>
-        <item>BTC</item>
-        <item>ETH</item>
-        <item>XRP</item>
-        <item>LTC</item>
-        <item>GOOG</item>
-        <item>MSFT</item>
-        <item>AAPL</item>
-        <item>AMZN</item>
-        <item>FB</item>
+        <item>EUR/USD</item>
+        <item>TRY/EUR</item>
+        <item>USD/EUR</item>
+        <item>AUD/EUR</item>
+        <item>CNY/EUR</item>
+        <item>HKD/EUR</item>
+        <item>INR/EUR</item>
+        <item>JPY/EUR</item>
+        <item>AED/EUR</item>
+        <item>BTC/EUR</item>
+        <item>ETH/EUR</item>
+        <item>XRP/EUR</item>
+        <item>LTC/EUR</item>
+        <item>GOOG/EUR</item>
+        <item>MSFT/EUR</item>
+        <item>AAPL/EUR</item>
+        <item>AMZN/EUR</item>
+        <item>FB/EUR</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

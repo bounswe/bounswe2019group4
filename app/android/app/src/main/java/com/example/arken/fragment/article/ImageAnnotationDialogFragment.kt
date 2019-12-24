@@ -1,26 +1,26 @@
 package com.example.arken.fragment.article
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.arken.R
 import com.example.arken.fragment.signup_login.LoginFragment
+import com.example.arken.model.AnnoCreateRequest
 import com.example.arken.model.Annotation
-import com.example.arken.util.*
+import com.example.arken.util.AnnotationRetroClient
+import kotlinx.android.synthetic.main.fragment_start.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.annotation.SuppressLint
-import android.text.InputType
-import android.view.MotionEvent
-import android.widget.RelativeLayout
-import androidx.appcompat.app.AlertDialog
-import com.example.arken.model.AnnoCreateRequest
-import okhttp3.ResponseBody
 
 //burada da menuyü kullanalım on long press olduğunda
 
@@ -37,6 +37,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
     var annotation: Annotation? = null
     var icon:ImageView? = null
     lateinit var deleteButton: ImageView
+    lateinit var usernameText: TextView
 
     @SuppressLint("RestrictedApi", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -50,6 +51,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
         checkBox = rootView.findViewById(R.id.annotation_add_check)
         editText  = rootView.findViewById(R.id.annotation_editText)
         deleteButton = rootView.findViewById(R.id.delete_annotation)
+        usernameText= rootView.findViewById(R.id.annotation_username)
         val imageIds = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4,
             R.drawable.image5, R.drawable.image6, R.drawable.image7, R.drawable.image8,
             R.drawable.image9, R.drawable.image10)
@@ -74,10 +76,15 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                     val realId = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE)
                         .getString("userId", "defaultId")
                     // create anno
+                    val prefs = activity!!.getSharedPreferences(
+                        LoginFragment.MY_PREFS_NAME,
+                        Context.MODE_PRIVATE
+                    )
                     annotation!!.type="Image"
                     annotation!!.articleId = articleId
                     annotation!!.annotationText = editText.text.toString()
                     annotation!!.userId = realId
+                    annotation!!.username=prefs.getString("annotation_username",null)
 
                     val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.createAnnotation(activity!!.getSharedPreferences(
                         LoginFragment.MY_PREFS_NAME,
@@ -128,6 +135,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                 relativeEdit.requestLayout()
                 relativeEdit.visibility = View.GONE
                 relativeLayout.removeView(icon)
+                usernameText.visibility = View.GONE
             }
         }
 
@@ -164,6 +172,9 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                         editText.text.clear()
                         relativeEdit.requestLayout()
                         relativeEdit.visibility = View.VISIBLE
+                    }
+                    if(mode == 1){
+                        relativeEdit.visibility = View.GONE
                     }
                     true
                 }
@@ -246,6 +257,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                     checkBox.visibility = View.GONE
                     deleteButton.visibility = View.GONE
                     relativeEdit.visibility = View.VISIBLE
+                    usernameText.text = "Author: " + annotation.username
+                    usernameText.visibility = View.VISIBLE
                 }
 
             }

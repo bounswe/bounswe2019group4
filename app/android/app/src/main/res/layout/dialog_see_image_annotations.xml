@@ -41,6 +41,16 @@
             android:layout_alignLeft="@id/annotation_add_check"
             android:layout_alignRight="@id/annotation_add_check"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/annotation_username"
+            android:layout_below="@id/annotation_editText"
+            android:background="#8000"
+            android:textColor="@color/colorWhite"
+            android:layout_alignEnd="@id/annotation_editText"
+            android:layout_alignStart="@id/annotation_editText" />
+
     </RelativeLayout>
 
 </RelativeLayout>

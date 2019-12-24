@@ -99,7 +99,16 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
             editTextDefinition.setText(portfolio.definition)
             switch.isChecked = portfolio.isPrivate
             if(portfolio.tradingEqs!= null){
-                selectedTEs = portfolio.tradingEqs as ArrayList<String>
+                val arr = portfolio.tradingEqs as ArrayList<String>
+                selectedTEs.clear()
+                for(te in arr){
+                    if(te == "EUR"){
+                        selectedTEs.add("EUR/USD")
+                    }
+                    else{
+                        selectedTEs.add(te+"/EUR")
+                    }
+                }
                 TEAdapter.nameSet = selectedTEs
                 TEAdapter.notifyDataSetChanged()
             }
@@ -139,8 +148,16 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
                 Toast.makeText(context2, "Please add a TE to your list", Toast.LENGTH_SHORT).show()
             }
             else if (portfolio == null){
-                val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
 
+                var arr = arrayListOf<String>()
+                for(te in selectedTEs){
+                    arr.add(te.substring(0, te.indexOf("/")))
+                }
+                selectedTEs = arr
+                TEAdapter.nameSet = selectedTEs
+                TEAdapter.notifyDataSetChanged()
+
+                val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
                 val portfolio = Portfolio(null, editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs, null, null, null)
 
                 val call: Call<ResponseBody> =
@@ -171,7 +188,6 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
             }
             else{
                 val prefs = activity!!.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-
                 val portfolio2 = Portfolio(null , editTextTitle.text.toString(), editTextDefinition.text.toString(), switch.isChecked, selectedTEs, null, null, null)
 
                 val call: Call<ResponseBody> =

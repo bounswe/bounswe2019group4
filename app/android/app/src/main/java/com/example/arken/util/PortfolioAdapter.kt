@@ -104,6 +104,18 @@ class PortfolioAdapter(
                 arr = mutableListOf()
 
             }
+            else{
+                var arr2 = mutableListOf<String>()
+                arr.forEach{
+                    if(it=="EUR"){
+                       arr2.add("EUR/USD")
+                    }
+                    else{
+                        arr2.add(it+"/EUR")
+                    }
+                }
+                arr = arr2
+            }
 
             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
