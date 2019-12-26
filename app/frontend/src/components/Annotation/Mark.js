@@ -107,7 +107,7 @@ class Mark extends React.Component {
                 )}
             </mark>
             */
-            <Popup on='click' pinned trigger={<span style={{textDecoration: "underline",backgroundColor:colorAccent,color:"white"}}
+            <Popup on='click' pinned trigger={<span style={{textDecoration: "underline",backgroundColor:colorAccent,color:"white",cursor:"pointer"}}
 
                                                     data-start={props.start}
                                                     data-end={props.end}
@@ -133,17 +133,18 @@ class Mark extends React.Component {
                                                     <List.Header style={{overflow:"hidden",color:"grey"}}>
                                                             {item.annotext}
                                                     </List.Header>
-                                                <List.Description style={{fontSize:12}}>
-                                                    <span style={{cursor:"pointer",color:"blue"}} onClick={()=>history.push("/profile/"+item.userid)}>{item.author}</span> in {item.date}
+                                                <List.Description style={{fontSize:12,display:"flex",flexDirection:"row"}}>
+                                                    <span style={{cursor:"pointer",color:"blue",marginRight:4}} onClick={()=>history.push("/profile/"+item.userid)}>{item.author}</span> in {item.date}
+                                                    {
+                                                        authFactory.isUserLoggedIn()&&item.userid===loadState().user._id&&(
+                                                            <div style={{marginLeft:30}}>
+                                                                <Button size={"mini"} color={"red"} onClick={()=>this.deleteAnno(item)}><Icon name={"delete"}/></Button>
+                                                                <Button size={"mini"} color={"yellow"} onClick={()=>this.editAnno(item)}><Icon name={"pencil"}/></Button>
+                                                            </div>
+                                                        )
+                                                    }
                                                 </List.Description>
-                                                {
-                                                    authFactory.isUserLoggedIn()&&item.userid===loadState().user._id&&(
-                                                        <div>
-                                                        <Button size={"mini"} color={"red"} onClick={()=>this.deleteAnno(item)}><Icon name={"delete"}/></Button>
-                                                        <Button size={"mini"} color={"yellow"} onClick={()=>this.editAnno(item)}><Icon name={"pencil"}/></Button>
-                                                        </div>
-                                                    )
-                                                }
+
                                             </List.Content>
                                             </List.Item>)
                                     }
