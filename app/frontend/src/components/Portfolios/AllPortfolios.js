@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
-import {loadState} from '../../_core/localStorage'
-import {Header, Icon, Pagination, Segment,Dropdown,Popup,Button} from 'semantic-ui-react';
+import react, {component} from 'react';
+import {loadstate} from '../../_core/localstorage'
+import {header, icon, pagination, segment,dropdown,popup,button} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-import OneStar from '../../assets/onestar.png'
-import TwoStar from '../../assets/twostar.png'
-import ThreeStar from '../../assets/threestar.png'
-import {Link} from 'react-router-dom'
-import * as userActions from '../../actions/userActions';
-import Loading from "../Loading";
-import DatePicker from "react-datepicker"
+import onestar from '../../assets/onestar.png'
+import twostar from '../../assets/twostar.png'
+import threestar from '../../assets/threestar.png'
+import {link} from 'react-router-dom'
+import * as useractions from '../../actions/useractions';
+import loading from "../loading";
+import datepicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 
-class AllPortfolios extends Component {
+class allportfolios extends component {
 
     constructor(props) {
         super(props);
@@ -20,54 +20,54 @@ class AllPortfolios extends Component {
             events: [],
             events2:[],
             shown:[],
-            shownPage:1,
-            totalNumOfEvents:0,
-            eventPerPage:8,
-            dateDir:false,
-            impDir:false,
-            dropdownItems:[],
-            dropdown2Items:[],
-            dropdown3Items:[
-                {key:1,value:1,text:"1",image:OneStar},
-                {key:2,value:2,text:"2",image:TwoStar},
-                {key:3,value:3,text:"3",image:ThreeStar}
+            shownpage:1,
+            totalnumofevents:0,
+            eventperpage:8,
+            datedir:false,
+            impdir:false,
+            dropdownitems:[],
+            dropdown2items:[],
+            dropdown3items:[
+                {key:1,value:1,text:"1",image:onestar},
+                {key:2,value:2,text:"2",image:twostar},
+                {key:3,value:3,text:"3",image:threestar}
             ],
-            drCo:[],
-            drEv:[],
-            drImp:[],
-            drSrc:[],
+            drco:[],
+            drev:[],
+            drimp:[],
+            drsrc:[],
             loading:false,
-            startDate:new Date(),
-            endDate:new Date()
+            startdate:new date(),
+            enddate:new date()
 
         }
 
 
     }
 
-    async componentDidMount() {
+    async componentdidmount() {
 
-        const localState = loadState();
-        this.setState({user: localState.user});
-        await this.getEvents();
-        this.setShownEvents();
-        this.sortEventsByDate();
-        await this.setInitialDates();
+        const localstate = loadstate();
+        this.setstate({user: localstate.user});
+        await this.getevents();
+        this.setshownevents();
+        this.sorteventsbydate();
+        await this.setinitialdates();
 
     }
-    setInitialDates=async ()=>{
+    setinitialdates=async ()=>{
         let {0 : a ,length : l, [l - 1] : b} = this.state.events2;
 
-        await this.setState({startDate:new Date(b.Date.toString()),endDate:new Date(a.Date.toString())});
+        await this.setstate({startdate:new date(b.date.tostring()),enddate:new date(a.date.tostring())});
     };
 
-    getCountriesForDropdown=()=>{
-        let dropdownItems=[];
+    getcountriesfordropdown=()=>{
+        let dropdownitems=[];
         let key=1;
         for(let i of this.state.events ){
             let check=false;
-            for(let j of dropdownItems){
-                if(j.value.trim()===i.Country.trim()){
+            for(let j of dropdownitems){
+                if(j.value.trim()===i.country.trim()){
                     check=true;
                     break;
                 }
@@ -75,26 +75,26 @@ class AllPortfolios extends Component {
             if(!check){
                 let newitem={
                     key:key,
-                    text:i.Country,
-                    value:i.Country
+                    text:i.country,
+                    value:i.country
 
                 };
-                dropdownItems.push(newitem);
+                dropdownitems.push(newitem);
                 key++;
             }
         }
-        dropdownItems.sort((a,b)=>{
-            return ('' + a.value).localeCompare(b.value);
+        dropdownitems.sort((a,b)=>{
+            return ('' + a.value).localecompare(b.value);
         });
-        this.setState({dropdownItems:dropdownItems});
+        this.setstate({dropdownitems:dropdownitems});
     };
-    getEventsForDropdown=()=>{
-        let dropdownItems=[];
+    geteventsfordropdown=()=>{
+        let dropdownitems=[];
         let key=1;
         for(let i of this.state.events ){
             let check=false;
-            for(let j of dropdownItems){
-                if(j.value.trim()===i.Event.trim()){
+            for(let j of dropdownitems){
+                if(j.value.trim()===i.event.trim()){
                     check=true;
                     break;
                 }
@@ -102,26 +102,26 @@ class AllPortfolios extends Component {
             if(!check){
                 let newitem={
                     key:key,
-                    text:i.Event,
-                    value:i.Event
+                    text:i.event,
+                    value:i.event
 
                 };
-                dropdownItems.push(newitem);
+                dropdownitems.push(newitem);
                 key++;
             }
         }
-        dropdownItems.sort((a,b)=>{
-            return ('' + a.value).localeCompare(b.value);
+        dropdownitems.sort((a,b)=>{
+            return ('' + a.value).localecompare(b.value);
         });
-        this.setState({dropdown2Items:dropdownItems});
+        this.setstate({dropdown2items:dropdownitems});
     };
-    getSourcesForDropdown=()=>{
-        let dropdownItems=[];
+    getsourcesfordropdown=()=>{
+        let dropdownitems=[];
         let key=1;
         for(let i of this.state.events ){
             let check=false;
-            for(let j of dropdownItems){
-                if(j.value.trim()===i.Source.trim()){
+            for(let j of dropdownitems){
+                if(j.value.trim()===i.source.trim()){
                     check=true;
                     break;
                 }
@@ -129,333 +129,259 @@ class AllPortfolios extends Component {
             if(!check){
                 let newitem={
                     key:key,
-                    text:i.Source,
-                    value:i.Source
+                    text:i.source,
+                    value:i.source
 
                 };
-                dropdownItems.push(newitem);
+                dropdownitems.push(newitem);
                 key++;
             }
         }
-        dropdownItems.sort((a,b)=>{
-            return ('' + a.value).localeCompare(b.value);
+        dropdownitems.sort((a,b)=>{
+            return ('' + a.value).localecompare(b.value);
         });
-        this.setState({dropdown4Items:dropdownItems});
+        this.setstate({dropdown4items:dropdownitems});
 
     };
 
-    setShownEvents(){
+    setshownevents(){
 
-        let arr=this.state.events2.slice((this.state.shownPage-1)*this.state.eventPerPage,(this.state.shownPage)*this.state.eventPerPage);
+        let arr=this.state.events2.slice((this.state.shownpage-1)*this.state.eventperpage,(this.state.shownpage)*this.state.eventperpage);
 
-        this.setState({shown:arr});
+        this.setstate({shown:arr});
 
     }
 
-    async getEvents(){  //alert(Object.keys(result.action.payload));
-        this.setState({loading:true});
+    async getevents(){  //alert(object.keys(result.action.payload));
+        this.setstate({loading:true});
         await this.props.events("?page=1&limit=1").then(result=>{
 
-            let a=result.value.totalNumberOfEvents;
-            this.setState({totalNumOfEvents:a});
-            this.setState({numPages:Math.floor((a-1)/this.state.eventPerPage)+1});
+            let a=result.value.totalnumberofevents;
+            this.setstate({totalnumofevents:a});
+            this.setstate({numpages:math.floor((a-1)/this.state.eventperpage)+1});
         }).then(async()=> {
 
 
-            await this.props.events("?page=1&limit=" + this.state.totalNumOfEvents).then(result => {
+            await this.props.events("?page=1&limit=" + this.state.totalnumofevents).then(result => {
 
-                this.setState({events: result.value.events}, this.updateDates);
+                this.setstate({events: result.value.events}, this.updatedates);
 
 
             }).then(()=>{
-                this.setState({events2:this.state.events});
-                this.getCountriesForDropdown();
-                this.getEventsForDropdown();
-                this.getSourcesForDropdown();
-                this.setState({loading:false});
+                this.setstate({events2:this.state.events});
+                this.getcountriesfordropdown();
+                this.geteventsfordropdown();
+                this.getsourcesfordropdown();
+                this.setstate({loading:false});
             })
         });
     }
 
     sortfunc=(f,g)=>{
-        let dateDir=this.state.dateDir;
-        let a=new Date(f.normalDate);
-        let b=new Date(g.normalDate);
-        let c=f.Importance;
-        let d=g.Importance;
-        if(a.getTime()===b.getTime()) {
+        let datedir=this.state.datedir;
+        let a=new date(f.normaldate);
+        let b=new date(g.normaldate);
+        let c=f.importance;
+        let d=g.importance;
+        if(a.gettime()===b.gettime()) {
             return d-c;
         }
-        return dateDir?a-b:b-a;
+        return datedir?a-b:b-a;
 
     };
 
-    /*
-    sortfunc2=(f,g)=>{
-        let impDir=this.state.impDir;
-        let c=f.Importance;
-        let d=g.Importance;
-        let a=new Date(f.normalDate);
-        let b=new Date(g.normalDate);
-        if(c===d){
-            return b-a;
-        }
-        return impDir?c-d:d-c;
+    sorteventsbydate=()=>{
 
-    };
-
-
-    sortEventsByImp=()=>{
-
-        let impDir=this.state.impDir;
-        let newevents=this.state.events2;
-        let newevents2=this.state.events;
-        if(!impDir) {
-            newevents.sort(this.sortfunc2);
-            newevents2.sort(this.sortfunc2);
-        }
-
-        this.setState({events:newevents2});
-        this.setState({events2:newevents});
-        this.setState({impDir: 1-impDir});
-        this.setState({dateDir:true});
-        this.setState({shownPage:1},this.setShownEvents)
-    };
-    */
-    sortEventsByDate=()=>{
-
-        let dateDir=this.state.dateDir;
+        let datedir=this.state.datedir;
         let newevents=this.state.events2;
         let newevents2=this.state.events;
         newevents.sort( this.sortfunc);
         newevents2.sort( this.sortfunc);
 
-        this.setState({events:newevents2});
-        this.setState({events2:newevents});
-        this.setState({dateDir: 1-dateDir});
-        this.setState({impDir:false});
-        this.setState({shownPage:1},this.setShownEvents);
+        this.setstate({events:newevents2});
+        this.setstate({events2:newevents});
+        this.setstate({datedir: 1-datedir});
+        this.setstate({impdir:false});
+        this.setstate({shownpage:1},this.setshownevents);
 
     };
 
-    updateDates(){
+    updatedates(){
 
         let newevents=this.state.events.slice();
-        //alert(this.state.events.length+"afasfaed")
         let i;
         for(i=0;i<newevents.length;i++) {
-            let d=newevents[i].Date;
-            newevents[i].normalDate=normalizeDate(d);
+            let d=newevents[i].date;
+            newevents[i].normaldate=normalizedate(d);
         }
-        this.setState({events:newevents});
+        this.setstate({events:newevents});
 
     }
 
-    updatePage= (e,data)=>{
-        this.setState({shownPage:data.activePage},this.setShownEvents);
+    updatepage= (e,data)=>{
+        this.setstate({shownpage:data.activepage},this.setshownevents);
     };
 
-    onDropdownsChange=async()=>{
+    ondropdownschange=async()=>{
         let list=[];
-        let value1=this.state.drCo;
-        let value2=this.state.drEv;
-        let value3=this.state.drImp;
-        let value4=this.state.drSrc;
+        let value1=this.state.drco;
+        let value2=this.state.drev;
+        let value3=this.state.drimp;
+        let value4=this.state.drsrc;
 
         let empty1 = value1.length === 0;
         let empty2 = value2.length === 0;
         let empty3 = value3.length === 0;
         let empty4 = value4.length===0;
         for (let i of this.state.events) {
-            let date=new Date(i.normalDate);
+            let date=new date(i.normaldate);
 
-            if ((value1.includes(i.Country) || empty1) && (value2.includes(i.Event) || empty2)&&(value3.includes(i.Importance)||empty3)&&
-                (compareDates(this.state.startDate,date)&&compareDates(date,this.state.endDate))&&
-                (value4.includes(i.Source)||empty4)
+            if ((value1.includes(i.country) || empty1) && (value2.includes(i.event) || empty2)&&(value3.includes(i.importance)||empty3)&&
+                (comparedates(this.state.startdate,date)&&comparedates(date,this.state.enddate))&&
+                (value4.includes(i.source)||empty4)
 
             ) {
                 list.push(i);
             }
         }
 
-        this.setState({events2:list},()=>{this.setState(
-            {shownPage:1},this.setShownEvents);
-            this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
+        this.setstate({events2:list},()=>{this.setstate(
+            {shownpage:1},this.setshownevents);
+            this.setstate({numpages:math.floor((this.state.events2.length-1)/this.state.eventperpage)+1})
         })
 
     };
 
 
-    onCountryChange=async(e,{value})=>{
-        this.setState({drCo:value},this.onDropdownsChange);
-
-        /*
-                let list=[];
-                if(value.length>0) {
-                    for (let i of this.state.events) {
-                        if (value.includes(i.Country)) {
-                            list.push(i);
-                        }
-                    }
-                }else{
-                    list=this.state.events;
-                }
-
-                //await this.changeEvents2();
-                //this.setState({shownPage:1},this.setShownEvents)
-                this.setState({events2:list},()=>{this.setState(
-                    {shownPage:1},this.setShownEvents);
-                    this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
-                })
-
-        */
+    oncountrychange=async(e,{value})=>{
+        this.setstate({drco:value},this.ondropdownschange);
 
     };
-    onEventChange=async(e,{value})=>{
-        this.setState({drEv:value},this.onDropdownsChange);
-        /*
-                let list=[];
-                if(value.length>0) {
-                    for (let i of this.state.events) {
-                        if (value.includes(i.Event)) {
-                            list.push(i);
-                        }
-                    }
-                }else{
-                    list=this.state.events;
-                }
-
-                //await this.changeEvents2();
-                //this.setState({shownPage:1},this.setShownEvents)
-                this.setState({events2:list},()=>{this.setState(
-                    {shownPage:1},this.setShownEvents);
-                    this.setState({numPages:Math.floor((this.state.events2.length-1)/this.state.eventPerPage)+1})
-                })
-        */
+    oneventchange=async(e,{value})=>{
+        this.setstate({drev:value},this.ondropdownschange);
 
 
     };
-    onImpChange=(e,{value})=>{
-        this.setState({drImp:value},this.onDropdownsChange)
+    onimpchange=(e,{value})=>{
+        this.setstate({drimp:value},this.ondropdownschange)
     };
-    onSourceChange=(e,{value})=>{
-        this.setState({drSrc:value},this.onDropdownsChange)
-    };
-
-    startDateChange=(date)=>{
-        this.setState({startDate:date},this.onDropdownsChange);
-
+    onsourcechange=(e,{value})=>{
+        this.setstate({drsrc:value},this.ondropdownschange)
     };
 
-    endDateChange=(date)=>{
-        this.setState({endDate:date},this.onDropdownsChange);
+    startdatechange=(date)=>{
+        this.setstate({startdate:date},this.ondropdownschange);
+
+    };
+
+    enddatechange=(date)=>{
+        this.setstate({enddate:date},this.ondropdownschange);
     };
 
     render() {
         const {shown}  = this.state;
-        //const len=shown.length;
         const loading=this.state.loading;
 
         return (
 
             !loading?(
 
-                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}} >
-                    <Segment  raised piled padded compact textAlign='left'>
-                        <Header textAlign='center'>
-                            Events
+                <div style={{display:"flex",justifycontent:"center",alignitems:"center"}} >
+                    <segment  raised piled padded compact textalign='left'>
+                        <header textalign='center'>
+                            events
 
-                        </Header>
-                        <table className="ui blue table">
+                        </header>
+                        <table classname="ui blue table">
                             <thead>
                             <tr>
                                 <th>
-                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+                                    <div style={{display:"flex",flexdirection:"row",alignitems:"center"}}>
 
-                                        Event
+                                        event
 
-                                        <Dropdown
-                                            style={{marginLeft:5}}
-                                            placeholder='All'
-
-                                            multiple
-                                            search
-                                            selection
-                                            options={this.state.dropdown2Items}
-                                            onChange={this.onEventChange}
-                                        />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-
-                                        Country
-
-                                        <Dropdown
-                                            style={{marginLeft:5}}
-                                            placeholder='All'
+                                        <dropdown
+                                            style={{marginleft:5}}
+                                            placeholder='all'
 
                                             multiple
                                             search
                                             selection
-                                            options={this.state.dropdownItems}
-                                            onChange={this.onCountryChange}
+                                            options={this.state.dropdown2items}
+                                            onchange={this.oneventchange}
+                                        />
+                                    </div>
+                                </th>
+                                <th>
+                                    <div style={{display:"flex",flexdirection:"row",alignitems:"center"}}>
+
+                                        country
+
+                                        <dropdown
+                                            style={{marginleft:5}}
+                                            placeholder='all'
+
+                                            multiple
+                                            search
+                                            selection
+                                            options={this.state.dropdownitems}
+                                            onchange={this.oncountrychange}
                                         />
 
                                     </div>
 
                                 </th>
                                 <th>
-                                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+                                    <div style={{display:"flex",flexdirection:"row",alignitems:"center"}}>
 
-                                        Date
-                                        <Button.Group style={{marginLeft:6,marginRight:20}}>
-                                            <Button onClick={this.sortEventsByDate}>
-                                                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                                        date
+                                        <button.group style={{marginleft:6,marginright:20}}>
+                                            <button onclick={this.sorteventsbydate}>
+                                                <div style={{display:"flex",flexdirection:"row",justifycontent:"center",alignitems:"center"}}>
 
-                                                    {this.state.dateDir?
-                                                        (<Icon name={"angle down"}/>):(<Icon name={"angle up"}/>)
+                                                    {this.state.datedir?
+                                                        (<icon name={"angle down"}/>):(<icon name={"angle up"}/>)
                                                     }
 
                                                 </div>
-                                            </Button>
+                                            </button>
 
 
-                                            <Popup trigger={
-                                                <Button>
-                                                    <Icon name={"filter"}/>
-                                                </Button>
+                                            <popup trigger={
+                                                <button>
+                                                    <icon name={"filter"}/>
+                                                </button>
                                             } flowing hoverable>
-                                                <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:5}}>
+                                                <div style={{display:"flex",flexdirection:"column",alignitems:"center",marginleft:5}}>
 
-                                                    <DatePicker
-                                                        selected={this.state.startDate}
-                                                        onChange={this.startDateChange}
+                                                    <datepicker
+                                                        selected={this.state.startdate}
+                                                        onchange={this.startdatechange}
                                                     />
                                                     to
-                                                    <DatePicker
-                                                        selected={this.state.endDate}
-                                                        onChange={this.endDateChange}
+                                                    <datepicker
+                                                        selected={this.state.enddate}
+                                                        onchange={this.enddatechange}
                                                     />
                                                 </div>
-                                            </Popup>
-                                        </Button.Group>
+                                            </popup>
+                                        </button.group>
                                     </div>
 
                                 </th>
 
                                 <th>
-                                    <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-                                        Source
+                                    <div style={{display:"flex",flexdirection:"row",justifycontent:"center",alignitems:"center"}}>
+                                        source
 
-                                        <Dropdown
-                                            style={{marginLeft:5}}
-                                            placeholder='All'
+                                        <dropdown
+                                            style={{marginleft:5}}
+                                            placeholder='all'
                                             multiple
                                             search
                                             selection
-                                            options={this.state.dropdown4Items}
-                                            onChange={this.onSourceChange}
+                                            options={this.state.dropdown4items}
+                                            onchange={this.onsourcechange}
                                         />
 
 
@@ -463,17 +389,17 @@ class AllPortfolios extends Component {
 
                                 </th>
                                 <th>
-                                    <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-                                        Importance
+                                    <div style={{display:"flex",flexdirection:"row",justifycontent:"center",alignitems:"center"}}>
+                                        importance
 
-                                        <Dropdown
-                                            style={{marginLeft:5}}
-                                            placeholder='All'
+                                        <dropdown
+                                            style={{marginleft:5}}
+                                            placeholder='all'
                                             multiple
                                             search
                                             selection
-                                            options={this.state.dropdown3Items}
-                                            onChange={this.onImpChange}
+                                            options={this.state.dropdown3items}
+                                            onchange={this.onimpchange}
                                         />
 
 
@@ -484,30 +410,30 @@ class AllPortfolios extends Component {
                             <tbody>
                             {shown.map(function(event) {
 
-                                const imp=event.Importance;
+                                const imp=event.importance;
                                 var src;
                                 if(imp===3){
-                                    src=ThreeStar;
+                                    src=threestar;
                                 }else if(imp===2){
-                                    src=TwoStar;
+                                    src=twostar;
                                 }else{
-                                    src=OneStar;
+                                    src=onestar;
                                 }
 
                                 return(
                                     <tr>
                                         <td>
-                                            <Link to={"/events/"+event.CalendarId}>{event.Event}</Link>
+                                            <link to={"/events/"+event.calendarid}>{event.event}</link>
                                         </td>
                                         <td>
-                                            {event.Country}
+                                            {event.country}
 
                                         </td>
                                         <td>
-                                            {event.normalDate}
+                                            {event.normaldate}
                                         </td>
                                         <td>
-                                            {event.Source}
+                                            {event.source}
                                         </td>
                                         <td>
                                             {<img style={{width:"50px"}} src={src} alt='stars'/>}
@@ -518,36 +444,36 @@ class AllPortfolios extends Component {
 
 
                         </table>
-                        <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-                            <Pagination  defaultActivePage={1}
-                                         siblingRange={5}
-                                         totalPages={this.state.numPages}
-                                         activePage={this.state.shownPage}
-                                         onPageChange={this.updatePage}
+                        <div style={{display:"flex",flexdirection:"column",alignitems:"center"}}>
+                            <pagination  defaultactivepage={1}
+                                         siblingrange={5}
+                                         totalpages={this.state.numpages}
+                                         activepage={this.state.shownpage}
+                                         onpagechange={this.updatepage}
                             />
                         </div>
 
-                    </Segment>
+                    </segment>
 
                 </div>
-            ):(<Loading/>)
+            ):(<loading/>)
 
 
         )
     }
 }
 
-const dispatchToProps = dispatch => {
+const dispatchtoprops = dispatch => {
     return {
-        events: params => dispatch(userActions.events(params)),
+        events: params => dispatch(useractions.events(params)),
 
     };
 };
 
-export function normalizeDate(date){
+export function normalizedate(date){
 
-    const dat = new Date(date);
-    const formatOptions = {
+    const dat = new date(date);
+    const formatoptions = {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
@@ -555,16 +481,16 @@ export function normalizeDate(date){
         minute: '2-digit',
         hour12: false
     };
-    return dat.toLocaleDateString('en-US', formatOptions);
+    return dat.tolocaledatestring('en-us', formatoptions);
 }
-export function compareDates(a,b) { //date a <= date b
-    let c=a.getFullYear();
-    let d=b.getFullYear();
+export function comparedates(a,b) { //date a <= date b
+    let c=a.getfullyear();
+    let d=b.getfullyear();
 
-    let m1=a.getMonth();
-    let m2=b.getMonth();
-    let d1=a.getDate();
-    let d2=b.getDate();
+    let m1=a.getmonth();
+    let m2=b.getmonth();
+    let d1=a.getdate();
+    let d2=b.getdate();
 
 
     if(c>d) {
@@ -584,5 +510,5 @@ export function compareDates(a,b) { //date a <= date b
 
 
 }
-export default connect(null, dispatchToProps)(Events);
+export default connect(null, dispatchtoprops)(events);
 
