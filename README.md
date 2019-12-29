@@ -38,6 +38,10 @@ Check out our wiki page, <a href="../..wiki">here</a>.
 Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <strong>ONLINE. Check it out!</strong>   
 </p>
 
+<p align="center"> 
+You can download our <strong>Android application</strong> from <a href="https://github.com/bounswe/bounswe2019group4/blob/master/app/android/Arken.apk" target="_blank">here</a>!
+</p>
+
 ---
 
 ## <div align="center"> Design </div>
