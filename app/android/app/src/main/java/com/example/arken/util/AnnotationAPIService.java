@@ -28,7 +28,7 @@ public interface AnnotationAPIService {
     @POST("annotations")
     Call<ResponseBody> createAnnotation(@Header("Cookie") String userCookie, @Body AnnoCreateRequest jsonObject);
 
-    @Headers({"If-Match \"16f-0fhSPP6bcqE1GQtRLHPAftcvPjI\""})
+    @Headers({"Content-Type: application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\""})
     @DELETE("annotations")
     Call<ResponseBody> deleteAnnotation(@Header("Cookie") String userCookie,@Header("If-Match") String match);
 

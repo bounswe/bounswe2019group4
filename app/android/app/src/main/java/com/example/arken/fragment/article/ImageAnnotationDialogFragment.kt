@@ -174,7 +174,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
             else if(updating){
                 val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.deleteAnnotation(activity!!.getSharedPreferences(
                     LoginFragment.MY_PREFS_NAME,
-                    Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), articleId)
+                    Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), annotation?.id)
 
 
                 call.enqueue(object : Callback<ResponseBody> {
@@ -318,6 +318,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                     else{
                         updating = true
                         this.annotation = annotation
+                        usernameText.visibility = View.GONE
+                        editText.inputType = InputType.TYPE_CLASS_TEXT
+                        checkBox.visibility = View.VISIBLE
+                        deleteButton.visibility = View.VISIBLE
                     }
 
                     relativeEdit.requestLayout()
