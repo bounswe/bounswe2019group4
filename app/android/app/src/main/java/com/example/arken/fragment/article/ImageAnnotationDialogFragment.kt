@@ -260,7 +260,6 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                     usernameText.text = "Author: " + annotation.username
                     usernameText.visibility = View.VISIBLE
                 }
-
             }
         }
         for(icon in annotationIcons){
