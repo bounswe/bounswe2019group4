@@ -35,7 +35,7 @@ public interface AnnotationAPIService {
     //pek anlamadım headerları
     @Headers({"Content-Type: application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\""})
     @PUT("annotations")
-    Call<ResponseBody> updateAnnotation(@Header("Cookie") String userCookie, @Body JSONObject jsonObject);
+    Call<ResponseBody> updateAnnotation(@Header("Cookie") String userCookie, @Body AnnoCreateRequest jsonObject);
 
     @Headers({"Content-Type: application/json"})
     @GET("annotations/{id}")
