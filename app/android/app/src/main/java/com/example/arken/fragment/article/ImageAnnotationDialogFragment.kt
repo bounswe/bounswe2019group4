@@ -40,6 +40,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
     lateinit var usernameText: TextView
     var realId = ""
     var updating = false
+    var annoCreateRequest:AnnoCreateRequest? = null
 
     @SuppressLint("RestrictedApi", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -97,7 +98,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                             "Annotation",
                             annotation!!,
                             "http://www.example.com/index.htm",
-                            articleId
+                            articleId,
+                            null
                         )
                     )
 
@@ -140,7 +142,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                             "Annotation",
                             annotation!!,
                             "http://www.example.com/index.htm",
-                            articleId
+                            articleId,
+                        null
                         ))
 
 
@@ -174,7 +177,7 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
             else if(updating){
                 val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.deleteAnnotation(activity!!.getSharedPreferences(
                     LoginFragment.MY_PREFS_NAME,
-                    Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), annotation?.id)
+                    Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), annoCreateRequest?.eTag)
 
 
                 call.enqueue(object : Callback<ResponseBody> {
@@ -316,12 +319,36 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                         updating = false
                     }
                     else{
-                        updating = true
-                        this.annotation = annotation
-                        usernameText.visibility = View.GONE
-                        editText.inputType = InputType.TYPE_CLASS_TEXT
-                        checkBox.visibility = View.VISIBLE
-                        deleteButton.visibility = View.VISIBLE
+                        var anno = annotation
+                        val call: Call<AnnoCreateRequest> = AnnotationRetroClient.getInstance().annotationAPIService.getAnnotation(activity!!.getSharedPreferences(
+                            LoginFragment.MY_PREFS_NAME,
+                            Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), annotation.id)
+
+
+                        call.enqueue(object : Callback<AnnoCreateRequest> {
+                            override fun onResponse(call: Call<AnnoCreateRequest>, response: Response<AnnoCreateRequest>) {
+                                if (response.isSuccessful) {
+                                    updating = true
+                                    anno = response.body()?.body!!
+                                    annoCreateRequest = response.body()
+                                    usernameText.visibility = View.GONE
+                                    editText.inputType = InputType.TYPE_CLASS_TEXT
+                                    checkBox.visibility = View.VISIBLE
+                                    deleteButton.visibility = View.VISIBLE
+
+
+                                } else {
+                                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<AnnoCreateRequest>, t: Throwable) {
+                                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
+                        this.annotation = anno
+
                     }
 
                     relativeEdit.requestLayout()
