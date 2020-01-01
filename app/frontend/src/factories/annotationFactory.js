@@ -5,7 +5,7 @@ import baseRequest from "../_core/baseRequest";
 
 const annotationRequest = {};
 
-const baseUrl = "https://anno.arkenstone.ml";
+const baseUrl = config.annoBaseUrl;
 annotationRequest.request = (method, path, params, header) => {
 
 
