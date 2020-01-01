@@ -10,5 +10,6 @@ config.getBasePublicUrl = () => {
     }
     return baseUrl;
 };
+config.annoBaseUrl="https://anno.arkenstone.ml";
 
 export default config;
