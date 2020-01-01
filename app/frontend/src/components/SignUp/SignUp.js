@@ -33,10 +33,16 @@ class SignUp extends Component {
     }
 
     handleLocationChange ({ position, address, places }) {
-        if(places.length === 1) {
+        if (places.length === 1) {
+
             this.setState({location: places[0]["formatted_address"]});
+
         } else {
-            this.setState({location: places[places.length-2]["formatted_address"].split(",")[0]});
+            if(places.length>1) {
+                this.setState({location: places[places.length - 2]["formatted_address"].split(",")[0]});
+            }else{
+                this.setState({location:""});
+            }
         }
     }
 
@@ -79,8 +85,15 @@ class SignUp extends Component {
                             onChange={this.handleChange.bind(this)}
                         />
                     </Form.Field>
-                    <Form.Field width={16}>
+                    <Form.Field  width={16}>
                         <label>Location:</label>
+                        <Form.Input
+
+                            placeholder='Location'
+                            name='location'
+                            value={this.state.location}
+
+                        />
                         <LocationPicker
                             containerElement={ <div style={ {height: '100%'} } /> }
                             mapElement={ <div style={ {height: '400px'} } /> }
@@ -128,7 +141,7 @@ class SignUp extends Component {
                 <Grid.Row>
                     <Grid.Column>
                 <Form.Group grouped>
-                    <Form.Field control={Checkbox} slider name="isTrader" checked={isTrader} onChange={this.handleChange.bind(this)} label="Want to be a trader and join the winning community?" />
+                    <Form.Field control={Checkbox}  name="isTrader" checked={isTrader} onChange={this.handleChange.bind(this)} label="Want to be a trader and join the winning community?" />
                     { isTrader && (
                     <Form.Field>
                         <label>IBAN:</label>

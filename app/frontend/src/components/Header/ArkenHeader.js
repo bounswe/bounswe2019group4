@@ -5,10 +5,12 @@ import {connect} from 'react-redux';
 
 import GuestHeaderComponent from './GuestHeaderComponent';
 import UserHeaderComponent from './UserHeaderComponent';
-
+import {colorBG} from "../../utils/constants/Colors";
 import authService from "../../factories/authFactory";
 
-import arkenLogo from "../../assets/arken_logo.png";
+import arkenLogo from "../../assets/cropped_logo_without_font.png";
+import SearchBar from "../Search/Search";
+import {loadState} from "../../_core/localStorage";
 
 
 class ArkenHeader extends Component {
@@ -29,13 +31,12 @@ class ArkenHeader extends Component {
         }
     }
 
-
     render() {
         return (
             <Menu
-                size="small"
-                inverted
-                style={{margin: "0px !important", height: "40px", background: "#396D7C"}}
+                size="huge"
+
+                style={{margin: "0px !important", height: "70px", background: "#101617"}}
             >
                 <Menu.Header
                     style={{display: "flex", alignItems: "center"}}
@@ -55,8 +56,30 @@ class ArkenHeader extends Component {
                     >
                         Events
                     </Menu.Item>
-                </Menu.Menu>
+                    <Menu.Item
+                        name="articles"
+                        onClick={this.navigate}
+                    >
+                        Articles
+                    </Menu.Item>
+                    <Menu.Item
+                        name="trading-equipment"
+                        onClick={this.navigate}
+                    >
+                        Trading Equipment
+                    </Menu.Item>
+                    {(authService.isUserLoggedIn()&&loadState().user!==null&&loadState().user.isTrader)&&
+                        <Menu.Item
+                            name="investments"
+                            onClick={this.navigate}
+                        >
+                            My Investments
+                        </Menu.Item>
+                    }
 
+                </Menu.Menu>
+                <Menu.Menu position="right">
+                </Menu.Menu>
                 {this.renderRightMenu()}
             </Menu>
         )
