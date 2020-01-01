@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
-import com.example.arken.fragment.LoginFragment
+import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.tradingEquipment.Currency
 import com.example.arken.model.tradingEquipment.Current
 import com.example.arken.util.CurrencyAdapter
@@ -49,23 +51,10 @@ class SearchTE : Fragment(), OnCurrentClickListener {
             Context.MODE_PRIVATE
         ).getString("user_cookie", "")
 
-        val call: Call<Currency> =
-            RetroClient.getInstance().apiService.getCurrency(userCookie, code)
 
-        call.enqueue(object : Callback<Currency> {
-            override fun onResponse(call: Call<Currency>, response: Response<Currency>) {
-                if (response.isSuccessful) {
+        val act = SearchFragmentDirections.actionSearchFragmentToCurrencyFragment(code!!)
+        findNavController().navigate(act)
 
-
-                } else {
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Currency>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     fun setDataset(list: MutableList<Current>) {
@@ -75,5 +64,9 @@ class SearchTE : Fragment(), OnCurrentClickListener {
         }
         currencyAdapter!!.dataSet = list
         currencyAdapter!!.notifyDataSetChanged()
+    }
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }

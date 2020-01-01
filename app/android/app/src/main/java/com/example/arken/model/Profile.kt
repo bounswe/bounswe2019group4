@@ -11,5 +11,7 @@ class Profile(
     val followStatus: String?,
     val followRequest: Int?,
     val followRequests: MutableList<FollowRequest>,
-    val articles: List<Article>
+    val articles: List<Article>,
+    val portfolios: MutableList<Portfolio>?,
+    val followingPortfolios: MutableList<FollowingPortfolio>?
 ) : Serializable

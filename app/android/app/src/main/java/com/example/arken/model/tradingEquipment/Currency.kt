@@ -17,7 +17,8 @@ data class Currency(
     @SerializedName("numberOfDowns")
     var numberOfDowns: Int?,
     @SerializedName("comments")
-    val comments: MutableList<Comment>
+    val comments: MutableList<Comment>,
+    val yourPrediction:String
 
 
 ) : Serializable, Observable()

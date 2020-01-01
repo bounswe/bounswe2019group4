@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.arken.fragment.LoginFragment"
+        android:name="com.example.arken.fragment.signup_login.LoginFragment"
         android:label="fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_signupFragment"
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.example.arken.fragment.SignupFragment"
+        android:name="com.example.arken.fragment.signup_login.SignupFragment"
         android:label="fragment_signup">
         <action
             android:id="@+id/action_signupFragment_to_baseFragment"
@@ -73,11 +73,11 @@
 
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.example.arken.fragment.ForgotPasswordFragment"
+        android:name="com.example.arken.fragment.signup_login.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment" />
     <fragment
         android:id="@+id/googleSignupFragment"
-        android:name="com.example.arken.fragment.GoogleSignupFragment"
+        android:name="com.example.arken.fragment.signup_login.GoogleSignupFragment"
         android:label="GoogleSignupFragment"
         tools:layout="@layout/fragment_signup_google" >
         <action

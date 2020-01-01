@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/eventListFragment"
-        android:name="com.example.arken.fragment.ListEventFragment"
+        android:name="com.example.arken.fragment.event.ListEventFragment"
         android:label="fragment_event_list"
         tools:layout="@layout/fragment_listevent">
         <action
@@ -26,10 +26,19 @@
             android:id="@+id/action_eventListFragment_to_searchFragment"
             app:destination="@id/searchFragment"
             app:popUpTo="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_portfolioFragment2"
+            app:destination="@id/portfolioFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
-        android:name="com.example.arken.fragment.EventFragment"
+        android:name="com.example.arken.fragment.event.EventFragment"
         android:label="EventFragment">
         <argument
             android:name="eventToShow"
@@ -39,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/listCurrentFragment"
-        android:name="com.example.arken.fragment.ListCurrentFragment"
+        android:name="com.example.arken.fragment.tEq.ListCurrentFragment"
         android:label="ListCurrentFragment" >
         <action
             android:id="@+id/action_listCurrentFragment_to_profileFragment"
@@ -54,10 +63,16 @@
             android:id="@+id/action_listCurrentFragment_to_currencyFragment"
             app:destination="@id/currencyFragment"
             app:popUpTo="@+id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_listCurrentFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
     </fragment>
     <fragment
         android:id="@+id/currencyFragment"
-        android:name="com.example.arken.fragment.CurrencyFragment"
+        android:name="com.example.arken.fragment.tEq.CurrencyFragment"
         android:label="CurrencyFragment">
         <argument
             android:name="codeOfCurrency"
@@ -65,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.arken.fragment.ProfileFragment"
+        android:name="com.example.arken.fragment.profile.ProfileFragment"
         android:label="ProfileFragment" >
         <argument
             android:name="userId"
@@ -82,6 +97,12 @@
         <action
             android:id="@+id/action_profileFragment_to_listArticleFragment"
             app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_myinvestmentFragment"
+            app:destination="@id/myinvestmentFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -93,10 +114,30 @@
         <action
             android:id="@+id/action_searchFragment_to_listCurrentFragment"
             app:destination="@id/listCurrentFragment" />
+        <action
+
+            android:id="@+id/action_searchFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+      <action
+            android:id="@+id/action_searchFragment_to_articleDetail"
+            app:destination="@id/articleDetail" />
+        <action
+            android:id="@+id/action_searchFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_currencyFragment"
+            app:destination="@id/currencyFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/listArticleFragment"
-        android:name="com.example.arken.fragment.ListArticleFragment"
+        android:name="com.example.arken.fragment.article.ListArticleFragment"
         android:label="ListArticleFragment">
         <argument
             android:name="profile"
@@ -105,21 +146,108 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_listArticleFragment_to_articleDialogFragment"
-            app:destination="@id/articleDialogFragment" />
+            app:destination="@id/articleDialogFragment"
+            app:popUpTo="@+id/listArticleFragment" />
         <action
             android:id="@+id/action_listArticleFragment_to_articleDetail"
             app:destination="@id/articleDetail" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_listArticleFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
     </fragment>
     <dialog
         android:id="@+id/articleDialogFragment"
-        android:name="com.example.arken.fragment.ArticleDialogFragment"
-        android:label="ArticleDialogFragment" />
+        android:name="com.example.arken.fragment.article.ArticleDialogFragment"
+        android:label="ArticleDialogFragment" >
+        <action
+            android:id="@+id/action_articleDialogFragment_to_articleDetail"
+            app:destination="@id/articleDetail"
+            app:popUpTo="@+id/listArticleFragment" />
+    </dialog>
     <fragment
         android:id="@+id/articleDetail"
-        android:name="com.example.arken.fragment.ArticleDetail"
+        android:name="com.example.arken.fragment.article.ArticleDetail"
         android:label="ArticleDetail">
         <argument
             android:name="articleId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_articleDetail_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_articleDetail_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_articleDetail_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_articleDetail_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_articleDetail_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/portfolioFragment"
+        android:name="com.example.arken.fragment.portfolio.PortfolioFragment"
+        android:label="fragment_portfolio"
+        tools:layout="@layout/fragment_portfolio">
+        <argument
+            android:name="userId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_portfolioFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myinvestmentFragment"
+        android:name="com.example.arken.fragment.investment.MyinvestmentFragment"
+        android:label="MyinvestmentFragment" >
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_profileFragment2"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_listArticleFragment"
+            app:destination="@id/listArticleFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_listCurrentFragment"
+            app:destination="@id/listCurrentFragment" />
+        <action
+            android:id="@+id/action_myinvestmentFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <argument
+            android:name="str"
             app:argType="string" />
     </fragment>
 </navigation>

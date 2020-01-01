@@ -21,7 +21,7 @@ class SearchPagerAdapter(fragmentManager: FragmentManager, private val values: A
     private var user = SearchUser()
 
 
-    var fragmentArr= arrayOf(event, te, article, user)
+    var fragmentArr= arrayOf(user, article, te, event)
 
     // 2
     override fun getItem(position: Int): Fragment {
@@ -47,7 +47,6 @@ class SearchPagerAdapter(fragmentManager: FragmentManager, private val values: A
         user.setDataset(mutableListUser)
         event.setDataset(mutableListEvent)
         te.setDataset(mutableListTE)
-        //TODO:
-        //article.setDataset(mutableListArticle) //Implement after Articles implemented!!!
+        article.setDataset(mutableListArticle)
     }
 }

@@ -8,14 +8,20 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
 import com.example.arken.model.Article
+import com.example.arken.model.ListArticle
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ArticleAdapter(
-    var dataSet: MutableList<Article>,
+
     val articleClickListener: OnArticleClickListener
 ) :
     RecyclerView.Adapter<ArticleAdapter.ArticleHolder>() {
-
-
+    var dataSet: MutableList<Article> = mutableListOf()
+var isAll:Boolean=false
+    var totalPages: Int = 1
+    var page: Int = 1
     class ArticleHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         private val title: TextView
@@ -46,10 +52,31 @@ class ArticleAdapter(
         Log.d(TAG, "Element $position set.")
         val event = dataSet[position]
         viewHolder.bind(event, articleClickListener)
+        if(isAll && position == dataSet.size - 1){
+            newPage()
+        }
     }
 
-    fun setData(articles: List<Article>) {
-        dataSet = articles as MutableList<Article>
+    fun newPage() {
+        page += 1
+        if (page <= totalPages) {
+            val call: Call<ListArticle> =
+                RetroClient.getInstance().apiService.getArticles(page, 10)
+            call.enqueue(object : Callback<ListArticle> {
+                override fun onResponse(call: Call<ListArticle>, response: Response<ListArticle>) {
+                    if (response.isSuccessful) {
+                        val listArticle: ListArticle? = response.body()
+                        if (listArticle != null) {
+                            dataSet.addAll(listArticle.articles)
+                            notifyDataSetChanged()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ListArticle>, t: Throwable) {
+                }
+            })
+        }
     }
 
     override fun getItemCount() = dataSet.size

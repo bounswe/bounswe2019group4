@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark">
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Amount : "
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBaseline_toBaselineOf="@id/amountEditText"
+        app:layout_constraintEnd_toStartOf="@id/amountEditText"
+        app:layout_constraintHorizontal_bias="0.568"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <EditText
+        android:id="@+id/amountEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="00.00"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.568"
+        app:layout_constraintStart_toStartOf="@id/amount"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/deposit_iban"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="IBAN : "
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBaseline_toBaselineOf="@id/deposit_iban_editText"
+        app:layout_constraintEnd_toStartOf="@id/deposit_iban_editText"
+        app:layout_constraintHorizontal_bias="0.568"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <EditText
+        android:id="@+id/deposit_iban_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="XY123456789111"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.568"
+        app:layout_constraintStart_toStartOf="@id/amount"
+        app:layout_constraintTop_toBottomOf="@id/amountEditText" />
+    <Button
+        android:id="@+id/submit_deposit_button"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/login_background"
+        android:text="Deposit"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/deposit_iban_editText"/>
+
+    <Button
+        android:id="@+id/cancel_deposit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_background"
+        android:text="Cancel"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/submit_deposit_button"
+        app:layout_constraintEnd_toStartOf="@+id/submit_deposit_button"
+        app:layout_constraintHorizontal_bias="0.568"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

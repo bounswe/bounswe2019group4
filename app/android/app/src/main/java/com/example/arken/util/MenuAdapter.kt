@@ -47,7 +47,7 @@ class MenuAdapter(
     override fun getItemCount(): Int {
         //profile
         return if (!isLogged)
-            imageSet.size - 2
+            imageSet.size - 3
         else imageSet.size
     }
 

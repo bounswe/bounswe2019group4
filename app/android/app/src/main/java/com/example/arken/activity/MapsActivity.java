@@ -126,8 +126,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     List<Address> listAdresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
 
                     if(listAdresses != null && listAdresses.size() > 0) {
-
-                        city = listAdresses.get(0).getLocality() + ", " + listAdresses.get(0).getAdminArea();
+                        if(listAdresses.get(0).getLocality()!= null){
+                            city = listAdresses.get(0).getLocality();
+                        }if(listAdresses.get(0).getAdminArea()!= null){
+                            city = " " + listAdresses.get(0).getAdminArea();
+                        }
                     }
 
                 } catch (IOException e) {
@@ -184,34 +187,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-            } else {
+            } else{
 
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-                mMap.clear();
+                if(lastKnownLocation!=null){
+                    LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                    mMap.clear();
 
-                mMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
+                    mMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
 
-                longitude = lastKnownLocation.getLongitude();
-                latitude = lastKnownLocation.getLatitude();
+                    longitude = lastKnownLocation.getLongitude();
+                    latitude = lastKnownLocation.getLatitude();
 
-                geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
 
-                try {
-                    List<Address> listAdresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
+                    try {
+                        List<Address> listAdresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
 
-                    if(listAdresses != null && listAdresses.size() > 0) {
+                        if(listAdresses != null && listAdresses.size() > 0) {
+                            if(listAdresses.get(0).getLocality()!= null){
+                                city = listAdresses.get(0).getLocality();
+                            }if(listAdresses.get(0).getAdminArea()!= null){
+                                city = " " + listAdresses.get(0).getAdminArea();
+                            }
+                        }
 
-                        city = listAdresses.get(0).getLocality() + ", " + listAdresses.get(0).getAdminArea();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+
+
 
             }
 
