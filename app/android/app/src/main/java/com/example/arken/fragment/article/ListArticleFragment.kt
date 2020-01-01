@@ -164,13 +164,10 @@ class ListArticleFragment : Fragment(), OnArticleClickListener{
                     dataset = profile.articles as MutableList<Article>
                     articleAdapter.dataSet = dataset!!
                     articleAdapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Profile>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -190,13 +187,10 @@ class ListArticleFragment : Fragment(), OnArticleClickListener{
                     articleAdapter.totalPages = listArticle.totalNumberOfPages
                     articleAdapter.page = 1
                     articleAdapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ListArticle>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }

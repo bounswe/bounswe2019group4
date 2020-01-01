@@ -52,9 +52,9 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
         imageView = rootView.findViewById(R.id.annotation_image)
         relativeEdit = rootView.findViewById(R.id.annotation_edit_layout)
         checkBox = rootView.findViewById(R.id.annotation_add_check)
-        editText  = rootView.findViewById(R.id.annotation_editText)
-        deleteButton = rootView.findViewById(R.id.delete_annotation)
-        usernameText= rootView.findViewById(R.id.annotation_username)
+        editText  = relativeEdit.findViewById(R.id.annotation_editText)
+        deleteButton = relativeEdit.findViewById(R.id.delete_annotation)
+        usernameText= relativeEdit.findViewById(R.id.annotation_username)
         val imageIds = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4,
             R.drawable.image5, R.drawable.image6, R.drawable.image7, R.drawable.image8,
             R.drawable.image9, R.drawable.image10)
@@ -110,13 +110,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                                 checkBox.isChecked = false
                                 dismiss()
 
-                            } else {
-                                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                             }
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                         }
                     })
 
@@ -152,13 +149,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                             if (response.isSuccessful) {
                                 showAnnotations()
 
-                            } else {
-                                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                             }
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                         }
                     })
                 }
@@ -185,13 +179,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                         if (response.isSuccessful) {
                             showAnnotations()
 
-                        } else {
-                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -279,13 +270,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                         showAnnotations()
                     }
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<List<AnnoCreateRequest>>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -334,16 +322,17 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                                     usernameText.visibility = View.GONE
                                     editText.inputType = InputType.TYPE_CLASS_TEXT
                                     checkBox.visibility = View.VISIBLE
-                                    deleteButton.visibility = View.VISIBLE
+                                    deleteButton.visibility = View.GONE
 
+                                }else{
+                                    usernameText.visibility = View.GONE
+                                    checkBox.visibility = View.GONE
+                                    deleteButton.visibility = View.GONE
 
-                                } else {
-                                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                                 }
                             }
 
                             override fun onFailure(call: Call<AnnoCreateRequest>, t: Throwable) {
-                                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                             }
                         })
 

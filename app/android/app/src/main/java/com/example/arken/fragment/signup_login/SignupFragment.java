@@ -237,7 +237,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else if (view.getId() == R.id.signup_guest_button) {

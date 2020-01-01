@@ -70,12 +70,10 @@ private lateinit var profile:Profile
                             getProfile()
 
                         } else {
-                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -106,12 +104,10 @@ private lateinit var profile:Profile
                     val acton = ArticleDialogFragmentDirections.actionArticleDialogFragmentToArticleDetail(profile.articles.last()._id!!)
                     findNavController().navigate(acton)
                 } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Profile>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 

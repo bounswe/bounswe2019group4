@@ -69,13 +69,10 @@ class AddAlertDialog(val addAlertListener: AddAlertListener, val currency: Strin
                                 Toast.makeText(context, "You have added your alert", Toast.LENGTH_SHORT).show()
                                 addAlertListener.onAddAlert()
                                 dialog?.dismiss()
-                            } else {
-                                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                             }
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                         }
                     })
                 }

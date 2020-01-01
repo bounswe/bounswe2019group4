@@ -99,18 +99,10 @@ private var isbuy=true
                                         onDepositClickListener.onDepositClick()
                                         dismiss()
 
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            response.raw().toString(),
-                                            Toast.LENGTH_SHORT
-                                        )
-                                            .show()
-                                    }
+                                    } 
                                 }
 
                                 override fun onFailure(call: Call<Account>, t: Throwable) {
-                                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                                 }
                             })
                         }else{
@@ -139,18 +131,10 @@ private var isbuy=true
                                         onDepositClickListener.onDepositClick()
                                         dismiss()
 
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            response.raw().toString(),
-                                            Toast.LENGTH_SHORT
-                                        )
-                                            .show()
                                     }
                                 }
 
                                 override fun onFailure(call: Call<Account>, t: Throwable) {
-                                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                                 }
                             })
                         }

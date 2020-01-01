@@ -163,7 +163,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(getContext(),t.getMessage(), Toast.LENGTH_SHORT ).show();
                 }
             });
         }

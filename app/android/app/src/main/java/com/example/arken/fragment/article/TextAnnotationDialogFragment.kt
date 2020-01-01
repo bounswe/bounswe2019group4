@@ -96,14 +96,10 @@ author.text="Author: ${username}"
                             if (response.isSuccessful) {
                                 System.out.println("Successfull")
                                 onAnnoClickListener.onAnnoClick()
-                            } else {
-                                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                                    .show()
                             }
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                         }
                     })
                     dismiss()

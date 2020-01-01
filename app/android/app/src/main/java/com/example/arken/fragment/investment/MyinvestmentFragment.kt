@@ -111,13 +111,10 @@ depositButton=rootView.findViewById(R.id.fragment_investment_deposit)
                     orderAdapter.dataSet = orderDataset
                     orderAdapter.notifyDataSetChanged()
 
-                } else {
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -137,13 +134,10 @@ depositButton=rootView.findViewById(R.id.fragment_investment_deposit)
                     transactionAdapter.dataSet = transactionDataset
                     transactionAdapter.notifyDataSetChanged()
                     initAccountValues(investment.account)
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Investment>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
         val call2: Call<ListOrder> = RetroClient.getInstance().apiService.getOrder(userCookie)
@@ -154,13 +148,10 @@ depositButton=rootView.findViewById(R.id.fragment_investment_deposit)
                     orderDataset=listOrder.orders as MutableList<Order>
                     orderAdapter.dataSet = orderDataset
                     orderAdapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ListOrder>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -61,13 +61,10 @@ class SearchArticle : Fragment(), OnArticleClickListener {
                     val act = SearchFragmentDirections.actionSearchFragmentToArticleDetail(articleId!!)
                     findNavController().navigate(act)
 
-                } else {
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Article>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }

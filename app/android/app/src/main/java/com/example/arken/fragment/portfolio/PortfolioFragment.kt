@@ -156,15 +156,11 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                     portfolioAdapter.followingPortfolioIds = followingList
                     portfolioAdapter.notifyDataSetChanged()
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
-                    Log.i("portErr" , response.raw().toString())
                 }
             }
 
             override fun onFailure(call: Call<Profile>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                Log.i("portErr2" , t.message)
+
 
             }
         })
@@ -182,13 +178,10 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
 
                    initDataset()
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -215,15 +208,11 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                         initDataset()
                         recyclerView.adapter?.notifyDataSetChanged()
 
-                    } else {
-                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
-                        Log.i("followerr", response.raw().toString())
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                    Log.i("followerr2", t.message)
+
                 }
             })
         }
@@ -239,13 +228,10 @@ class PortfolioFragment : Fragment(), PortfolioListener, PortfolioAddDialog.Port
                         initDataset()
                         recyclerView.adapter?.notifyDataSetChanged()
 
-                    } else {
-                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }

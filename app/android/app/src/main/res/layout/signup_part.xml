@@ -412,7 +412,7 @@
         android:layout_marginTop="10dp"
         android:visibility="gone"
         android:hint="IBAN"
-        android:inputType="number"
+        android:inputType="text"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/signup_tckn_editText" />

@@ -82,17 +82,10 @@ class SearchFragment: Fragment(){
                                 tEList = response.body()?.tradingEquipments!!
                                 pagerAdapter.setDataset(eventList, tEList, articleList, userList)
 
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    response.raw().toString(),
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             }
                         }
 
                         override fun onFailure(call: Call<SearchResult>, t: Throwable) {
-                            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                         }
                     })
                 }
@@ -126,13 +119,10 @@ class SearchFragment: Fragment(){
                     articleList = response.body()?.articles!!
                     pagerAdapter.setDataset(eventList, tEList, articleList, userList)
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Recommendation>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 

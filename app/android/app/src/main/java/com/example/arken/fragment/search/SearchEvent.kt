@@ -56,13 +56,10 @@ class SearchEvent : Fragment(), OnEventClickedListener {
                     act.eventToShow = evenResponse.event
                     Navigation.findNavController(recyclerView).navigate(act)
 
-                } else {
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<EventWithComment>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }

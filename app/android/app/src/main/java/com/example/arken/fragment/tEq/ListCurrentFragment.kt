@@ -117,13 +117,10 @@ class ListCurrentFragment : Fragment(), OnCurrentClickListener {
                     val listCurrency: ListCurrency? = response.body()
                     currentAdapter.dataSet = listCurrency!!.currencies!!
                     currentAdapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ListCurrency>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -146,13 +143,10 @@ class ListCurrentFragment : Fragment(), OnCurrentClickListener {
                     val listCurrency: ListCurrency? = response.body()
                     currentAdapter.dataSet = listCurrency!!.currencies!!
                     currentAdapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ListCurrency>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
