@@ -18,6 +18,7 @@
     "react-datepicker": "^2.10.1",
     "react-dom": "^16.10.2",
     "react-google-login": "^5.0.5",
+    "react-image-annotation": "^0.9.10",
     "react-location-picker": "^1.5.0",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
