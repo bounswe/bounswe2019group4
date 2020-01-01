@@ -11,7 +11,7 @@ class Header extends Component {
         return (
             <div className="arken-header" style={{display: "flex", justifyContent: "space-between", height: 50, backgroundColor: "#eaceb4"}} >
                 <div className="arken-header-logo" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    <img src="../../assets/arken_logo.png" style={{maxHeight: "80%", marginLeft: 10}} />
+                    <img src="../../assets/cropped_arken_logo.png" style={{maxHeight: "80%", marginLeft: 10}} />
                 </div>
                 <div className="arken-header-menu-group" style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                     <div className="menu-item" id="menu-item-events" style={{margin: 20, color: "#8f6c3f", fontWeight: "900"}}>

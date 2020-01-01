@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Menu, Form} from 'semantic-ui-react';
+import {Menu, Form, Icon} from 'semantic-ui-react';
 import history from '../../_core/history';
 
 import SignInModal from '../SignIn/SignIn';
+import SearchBar from "../Search/Search";
 
 class GuestHeaderComponent extends Component {
     constructor(props) {
@@ -26,6 +27,9 @@ class GuestHeaderComponent extends Component {
         return (
             <Menu.Menu position="right">
                 <SignInModal openModal={this.state.openSignInModal} handleClose={this.closeSignInModal.bind(this)} />
+                <Menu.Item position="right">
+                    <SearchBar/>
+                </Menu.Item>
                 <Menu.Item
                     name="sign_in"
                     onClick={this.openSignInModal.bind(this)}
@@ -37,6 +41,16 @@ class GuestHeaderComponent extends Component {
                     onClick={this.navigate}
                 >
                     Sign Up
+                </Menu.Item>
+                <Menu.Item
+                    style={{display: "flex", alignItems: "center"}}
+                    name="settings"
+
+                >
+                    <a style={{color:"white"}} href={"https://github.com/bounswe/bounswe2019group4"}>
+                        <Icon name={"github"}/>
+                    </a>
+
                 </Menu.Item>
             </Menu.Menu>
         )
