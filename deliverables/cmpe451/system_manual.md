@@ -1,126 +1,92 @@
+## Backend
 
-<p align="center">
-<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/ic_log_dark_gray.png" width="300" />
-</p>
+* Run `npm install` in that directory to install dependencies.
 
-</br>
+* Development server can be started with `npm start`. It runs on [localhost, port 8080](http://localhost:8080).
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![commit activity badge](https://img.shields.io/github/contributors/bounswe/bounswe2019group4?color=0b397a&style=for-the-badge)&nbsp;
-![opened issues](https://img.shields.io/github/issues-raw/bounswe/bounswe2019group4?color=24302d&style=for-the-badge)&nbsp;
-![closed issues](https://img.shields.io/github/issues-closed-raw/bounswe/bounswe2019group4?color=03fcb1&style=for-the-badge)
-![open pr](https://img.shields.io/github/issues-pr/bounswe/bounswe2019group4?color=blue&style=for-the-badge)
+* The API should be provided with a `secrets.js` file for it to run properly.
 
----
-<p align="center">
-Check out our wiki page, <a href="../..wiki">here</a>.
-</p>
+* API documentation can be found [here](https://documenter.getpostman.com/view/3191118/SVtTz9Pn?version=latest).
 
----
+## Mobile
 
-## <div align="center"> ARKENSTONE - A Social Trading Platform </div>
+ #### Dependencies
+      - Android Studio 3.x
+* Arkenstone mobile application uses the Gradle build system.
+* To build this project, use the gradle build command in app/android directory or use "Import Project" in Android Studio
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp;  Welcome to an interactive trading platform full of people who are interested in trading and investing in financial markets worldwide.
+## Frontend
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp; Connect with other finance enthusiasts like you. Follow their portfolios, articles and interact with them to stay up to date with financial markets.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp; Invest in trading indices and currencies by becoming a Trader User. Not ready to invest? Stay as a Basic User and learn all about trading by using our platform.
+## Available Scripts
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp; Find out what is happening in financial markets all around the world. Search and read about economic events to invest wisely.
+In the project directory, first run:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :large_blue_diamond:&nbsp; <strong>Arkenstone</strong> has a native web and native mobile (Android) application to make things easier for you. Earn wherever you go and whenever you want!
+### `npm install`
 
----
-<p align="center">
- You can reach the full description from <a href="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/project-description-Spring20182019_TradersPlatform.pdf">here</a>.
-</p>
+Installs all the packages in package.json.
+Then, you can run:
 
-<p align="center"> 
-Our <a href="https://arkenstone.ml/" target="_blank">project website</a> is <strong>ONLINE. Check it out!</strong>   
-</p>
+### `npm start`
 
-<p align="center"> 
-You can download our <strong>Android application</strong> from <a href="https://github.com/bounswe/bounswe2019group4/blob/master/app/android/Arken.apk" target="_blank">here</a>!
-</p>
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+npm
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
 
----
+### `npm test`
 
-## <div align="center"> Design </div>
+Launches the test runner in the interactive watch mode.<br />
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## <div align="center"> Mobile Application </div>
+### `npm run build`
 
-<p float="left">
-<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_welcoming_screen.png"  /><img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_login_screen.png" />
-<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/mobile_trading_screen.png" />
-</p>
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
----
+The build is minified and the filenames include the hashes.<br />
+Your app is ready to be deployed!
 
-## <div align="center"> Web Application </div>
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/laptop_screen_2.png" />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/bounswe/bounswe2019group4/blob/master/wiki-assets/laptop_screen_1.png" />
+### `npm run eject`
 
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-## <div align="center"> Deployment </div>
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-### <div align="center"> Backend </div>
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Run `npm install` in /app/backend directory to install dependencies.
+## Learn More
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Development server can be started with `npm start`. It runs on [localhost, port 8080](http://localhost:8080).
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The API should be provided with a `secrets.js` file for it to run properly.
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; API documentation can be found [here](https://documenter.getpostman.com/view/3191118/SW7Xa9Vu?version=latest).
+### Code Splitting
 
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-### <div align="center"> Frontend </div>
+### Analyzing the Bundle Size
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Frontend is bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In the /app/frontend directory, run `npm install` then `npm start`
+### Making a Progressive Web App
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Application is run in the development mode.<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The page will reload if you make edits.<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You will also see any lint errors in the console.
+### Advanced Configuration
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If you run `npm run build` in app/frontend directory, this builds the app for production to the `build` folder.<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It correctly bundles React in production mode and optimizes the build for the best performance.
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The build is minified and the filenames include the hashes.<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Application is ready to be deployed!
+### Deployment
 
-### <div align="center"> Mobile </div>
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dependencies
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Android Studio 3.x
+### `npm run build` fails to minify
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Arkenstone mobile application uses the Gradle build system.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To build this project, use the `gradle build` command in app/android directory <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or use "Import Project" in Android Studio.
-
-
-## Team  Members
-[<img src="https://avatars1.githubusercontent.com/u/11016390?s=400&v=4" width="180" height="180">][Bahadır Hocamoğlu][Bahadır Hocamoğlu]|[<img src="https://avatars1.githubusercontent.com/u/32465575?s=400&v=4" width="200" height="180">][Baturalp Yörük][Baturalp Yörük]|[<img src="https://avatars0.githubusercontent.com/u/32355806?s=400&v=4" width="180" height="180">][Cemal Aytekin][Cemal Aytekin]|[<img src="https://avatars3.githubusercontent.com/u/32391743?s=460&v=4" width="200" height="175">][Ege Başural][Ege Başural]|[<img src="https://avatars0.githubusercontent.com/u/42263185?s=400&v=4" width="200" height="180">][Elif Çalışkan][Elif Çalışkan]
--- | - | - | - | -
-
-[<img src="https://avatars2.githubusercontent.com/u/44063570?s=400&v=4" width="180" height="180">][Emre Demircioğlu][Emre Demircioğlu]|
-[<img src="https://avatars1.githubusercontent.com/u/36932896?s=400&v=4" width="180" height="180">][Gürkan Demir][Gürkan Demir]|[<img src="https://avatars1.githubusercontent.com/u/17166724?s=460&v=4" width="180" height="180">][İsmail Levent Baş][İsmail Levent Baş]|[<img src="https://avatars0.githubusercontent.com/u/32485096?s=400&v=4" width="180" height="180">][Muhammed Bera Kaya][Muhammed Bera Kaya]|[<img src="https://avatars1.githubusercontent.com/u/33196763?s=400&v=4" width="180" height="180">][Taha Eyup Korkmaz][Taha Eyup Korkmaz]
--- | - | - | - | -
-
-
-[Bahadır Hocamoğlu]: ../../wiki/Bahadır-Hocamoğlu
-[Baturalp Yörük]: ../../wiki/Baturalp-Yörük
-[Elif Çalışkan]: ../../wiki/Elif-Çalışkan
-[Ege Başural]: ../../wiki/Ege-Başural
-[Emre Demircioğlu]: ../../wiki/Emre-Demircioğlu
-[Gürkan Demir]: ../../wiki/Gürkan-Demir
-[Cemal Aytekin]: ../../wiki/Cemal-Aytekin
-[İbrahim Özgürcan Öztaş]: ../../wiki/İbrahim-Özgürcan-Öztaş
-[İsmail Levent Baş]: ../../wiki/İsmail-Levent-Baş
-[Muhammed Bera Kaya]: ../../wiki/Muhammed-Bera-Kaya
-[Taha Eyup Korkmaz]: ../../wiki/Taha-Korkmaz
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
