@@ -60,13 +60,10 @@ class NotificationListDialog : DialogFragment() {
 
                     notificationAdapter.notifyDataSetChanged()
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ListNotification>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }

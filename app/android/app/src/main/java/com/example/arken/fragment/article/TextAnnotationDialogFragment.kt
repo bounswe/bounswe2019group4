@@ -69,7 +69,7 @@ author.text="Author: ${username}"
             delete_button.visibility=View.GONE
             add_button.visibility=View.GONE
         } else {
-author.visibility=View.GONE
+            author.visibility=View.GONE
 
             add_button.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
@@ -87,22 +87,19 @@ author.visibility=View.GONE
                             "Annotation",
                             a,
                             "http://www.example.com/index.htm",
-                            article._id!!
+                            article._id!!,
+                            null
                         )
                     )
                     call.enqueue(object : Callback<ResponseBody> {
                         override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                             if (response.isSuccessful) {
                                 System.out.println("Successfull")
-onAnnoClickListener.onAnnoClick()
-                            } else {
-                                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                                    .show()
+                                onAnnoClickListener.onAnnoClick()
                             }
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                         }
                     })
                     dismiss()

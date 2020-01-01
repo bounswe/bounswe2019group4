@@ -80,14 +80,10 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                     Toast.makeText(context, "Your comment is sent", Toast.LENGTH_SHORT).show()
                     initDataset()
                     recyclerView.adapter?.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
-
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -112,13 +108,10 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                         commentAdapter.dataSet = dataset
                         commentAdapter.notifyDataSetChanged()
 
-                    } else {
-                        Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         } else if (about == "TRADING-EQUIPMENT") {
@@ -137,13 +130,10 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                         commentAdapter.dataSet = dataset
                         commentAdapter.notifyDataSetChanged()
 
-                    } else {
-                        Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }   else if (about == "ARTICLE") {
@@ -162,13 +152,10 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                         commentAdapter.dataSet = dataset
                         commentAdapter.notifyDataSetChanged()
 
-                    } else {
-                        Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }
@@ -190,14 +177,10 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                             commentAdapter.dataSet = dataset
                             commentAdapter.notifyDataSetChanged()
                         }
-                    } else {
-                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                            .show()
                     }
                 }
 
                 override fun onFailure(call: Call<EventWithComment>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         } else if (about == "TRADING-EQUIPMENT") {
@@ -214,14 +197,10 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                                 commentAdapter.dataSet = dataset
                                 commentAdapter.notifyDataSetChanged()
                             }
-                        } else {
-                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                                .show()
                         }
                     }
 
                     override fun onFailure(call: Call<Currency>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
         } else if (about == "ARTICLE") {
@@ -243,14 +222,10 @@ class ListCommentFragment : Fragment(), CommentFragment.OnCommentSubmitted,
                             commentAdapter.dataSet = dataset
                             commentAdapter.notifyDataSetChanged()
                         }
-                    } else {
-                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                            .show()
                     }
                 }
 
                 override fun onFailure(call: Call<Article>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }

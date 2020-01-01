@@ -73,14 +73,10 @@ class DepositDialog(val onDepositClickListener: DepositClickListener,val ibanDef
                             onDepositClickListener.onDepositClick()
                             dismiss()
 
-                        } else {
-                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                                .show()
                         }
                     }
 
                     override fun onFailure(call: Call<Account>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })}catch (e:Exception){
 

@@ -174,14 +174,10 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
                                 .show()
                             dialog?.dismiss()
 
-                        } else {
-                            Toast.makeText(context2, response.raw().toString(), Toast.LENGTH_SHORT)
-                                .show()
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context2, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
                 listener.onDialogPositiveClick()
@@ -204,16 +200,11 @@ class PortfolioAddDialog(val listener: PortfolioAddListener, val context2: Conte
                                 .show()
                             dialog?.dismiss()
 
-                        } else {
-                            Toast.makeText(context2, response.raw().toString(), Toast.LENGTH_SHORT)
-                                .show()
-                            Log.i("portError ", response.raw().toString())
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context2, t.message, Toast.LENGTH_SHORT).show()
-                        Log.i("portError2 ", t.message)
+
                     }
                 })
                 listener.onDialogPositiveClick()

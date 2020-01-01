@@ -38,6 +38,9 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
     var icon:ImageView? = null
     lateinit var deleteButton: ImageView
     lateinit var usernameText: TextView
+    var realId = ""
+    var updating = false
+    var annoCreateRequest:AnnoCreateRequest? = null
 
     @SuppressLint("RestrictedApi", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -49,9 +52,9 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
         imageView = rootView.findViewById(R.id.annotation_image)
         relativeEdit = rootView.findViewById(R.id.annotation_edit_layout)
         checkBox = rootView.findViewById(R.id.annotation_add_check)
-        editText  = rootView.findViewById(R.id.annotation_editText)
-        deleteButton = rootView.findViewById(R.id.delete_annotation)
-        usernameText= rootView.findViewById(R.id.annotation_username)
+        editText  = relativeEdit.findViewById(R.id.annotation_editText)
+        deleteButton = relativeEdit.findViewById(R.id.delete_annotation)
+        usernameText= relativeEdit.findViewById(R.id.annotation_username)
         val imageIds = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4,
             R.drawable.image5, R.drawable.image6, R.drawable.image7, R.drawable.image8,
             R.drawable.image9, R.drawable.image10)
@@ -60,6 +63,9 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
             getAnnotations()
             relativeEdit.visibility = View.GONE
         }
+
+        realId = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE)
+            .getString("userId", "defaultId")!!
         checkBox.setOnClickListener{
             if(annotation!= null){
                 //create anntoation
@@ -73,8 +79,6 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
 
                 // Set a positive button and its click listener on alert dialog
                 builder.setPositiveButton("YES"){dialog, which ->
-                    val realId = activity!!.getSharedPreferences(LoginFragment.MY_PREFS_NAME, Context.MODE_PRIVATE)
-                        .getString("userId", "defaultId")
                     // create anno
                     val prefs = activity!!.getSharedPreferences(
                         LoginFragment.MY_PREFS_NAME,
@@ -94,7 +98,8 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                             "Annotation",
                             annotation!!,
                             "http://www.example.com/index.htm",
-                            articleId
+                            articleId,
+                            null
                         )
                     )
 
@@ -105,13 +110,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                                 checkBox.isChecked = false
                                 dismiss()
 
-                            } else {
-                                Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                             }
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                         }
                     })
 
@@ -126,9 +128,38 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                 dialog.show()
 
             }
+            else{
+                if(editText.text.toString() != annotation?.annotationText){
+                    annotation?.annotationText = editText.text.toString()
+                    val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.updateAnnotation(activity!!.getSharedPreferences(
+                        LoginFragment.MY_PREFS_NAME,
+                        Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"),
+                        AnnoCreateRequest(
+                            "http://www.w3.org/ns/anno.jsonld",
+                            "Annotation",
+                            annotation!!,
+                            "http://www.example.com/index.htm",
+                            articleId,
+                        null
+                        ))
+
+
+                    call.enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            if (response.isSuccessful) {
+                                showAnnotations()
+
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        }
+                    })
+                }
+            }
         }
         deleteButton.setOnClickListener{
-            if(mode == 0){
+            if(mode == 0 && !updating){
                 editText.text.clear()
                 editText.layoutParams.width = 300
                 editText.layoutParams.height = 200
@@ -136,6 +167,24 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                 relativeEdit.visibility = View.GONE
                 relativeLayout.removeView(icon)
                 usernameText.visibility = View.GONE
+            }
+            else if(updating){
+                val call: Call<ResponseBody> = AnnotationRetroClient.getInstance().annotationAPIService.deleteAnnotation(activity!!.getSharedPreferences(
+                    LoginFragment.MY_PREFS_NAME,
+                    Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), annoCreateRequest?.eTag)
+
+
+                call.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            showAnnotations()
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    }
+                })
             }
         }
 
@@ -221,13 +270,10 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                         showAnnotations()
                     }
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<List<AnnoCreateRequest>>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -252,15 +298,51 @@ class ImageAnnotationDialogFragment(val articleId: String, val mode: Int, val ph
                     editText.layoutParams.width = (annotation.w * imageView.width).toInt()
                     editText.layoutParams.height = (annotation.h * imageView.height).toInt()
                     editText.setText(annotation.annotationText)
-                    editText.inputType = InputType.TYPE_NULL
-                    relativeEdit.requestLayout()
-                    checkBox.visibility = View.GONE
-                    deleteButton.visibility = View.GONE
-                    relativeEdit.visibility = View.VISIBLE
-                    usernameText.text = "Author: " + annotation.username
-                    usernameText.visibility = View.VISIBLE
-                }
+                    if(realId != annotation.userId) {
+                        usernameText.text = "Author: " + annotation.username
+                        usernameText.visibility = View.VISIBLE
+                        editText.inputType = InputType.TYPE_NULL
+                        checkBox.visibility = View.GONE
+                        deleteButton.visibility = View.GONE
+                        updating = false
+                    }
+                    else{
+                        var anno = annotation
+                        val call: Call<AnnoCreateRequest> = AnnotationRetroClient.getInstance().annotationAPIService.getAnnotation(activity!!.getSharedPreferences(
+                            LoginFragment.MY_PREFS_NAME,
+                            Context.MODE_PRIVATE).getString("user_cookie", "defaultCookie"), annotation.id)
 
+
+                        call.enqueue(object : Callback<AnnoCreateRequest> {
+                            override fun onResponse(call: Call<AnnoCreateRequest>, response: Response<AnnoCreateRequest>) {
+                                if (response.isSuccessful) {
+                                    updating = true
+                                    anno = response.body()?.body!!
+                                    annoCreateRequest = response.body()
+                                    usernameText.visibility = View.GONE
+                                    editText.inputType = InputType.TYPE_CLASS_TEXT
+                                    checkBox.visibility = View.VISIBLE
+                                    deleteButton.visibility = View.GONE
+
+                                }else{
+                                    usernameText.visibility = View.GONE
+                                    checkBox.visibility = View.GONE
+                                    deleteButton.visibility = View.GONE
+
+                                }
+                            }
+
+                            override fun onFailure(call: Call<AnnoCreateRequest>, t: Throwable) {
+                            }
+                        })
+
+                        this.annotation = anno
+
+                    }
+
+                    relativeEdit.requestLayout()
+                    relativeEdit.visibility = View.VISIBLE
+                }
             }
         }
         for(icon in annotationIcons){

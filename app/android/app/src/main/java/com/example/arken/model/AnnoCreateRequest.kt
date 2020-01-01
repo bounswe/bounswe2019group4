@@ -13,5 +13,7 @@ class AnnoCreateRequest (
     @SerializedName("target")
     var target:String,
     @SerializedName("articleId")
-    var articleId:String
+    var articleId:String,
+    @SerializedName("eTag")
+    var eTag:String?
 )

@@ -57,12 +57,10 @@ class CommentFragment : Fragment() {
                     userNameText.setText(profile.user?.name + " " + profile.user?.surname)
 
                 } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Profile>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 

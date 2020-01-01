@@ -132,14 +132,11 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                                     .show()
                             }
 
-                        } else {
-                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                                .show()
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+
                     }
                 })
             } else if (followButton.text == "PENDING") {
@@ -161,20 +158,11 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
 
                             getProfile()
 
-                        } else {
-                            Toast.makeText(
-                                context,
-                                response.raw().toString(),
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                            Log.i("cancelErr", response.raw().toString())
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                        Log.i("cancelErr2", t.message)
+
                     }
                 })
             }
@@ -189,13 +177,10 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
 
                             getProfile()
 
-                        } else {
-                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -251,15 +236,10 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                     getProfile()
                     dialog.removeAt(position)
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                        .show()
-                    Log.i("erroronprof ", response.raw().toString())
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -277,14 +257,10 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                     Toast.makeText(context, "Rejected", Toast.LENGTH_SHORT).show()
                     dialog.removeAt(position)
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                        .show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -361,12 +337,10 @@ class ProfileFragment(var userId: String?) : Fragment(), OnRequestClickedListene
                         }
 
                 } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Profile>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 

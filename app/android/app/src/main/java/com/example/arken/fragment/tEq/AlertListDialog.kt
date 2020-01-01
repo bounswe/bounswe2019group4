@@ -77,13 +77,10 @@ class AlertListDialog(val currency: String, val currentVal: Double) : DialogFrag
                     initDataset()
 
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -119,13 +116,10 @@ class AlertListDialog(val currency: String, val currentVal: Double) : DialogFrag
 
                     alertAdapter.notifyDataSetChanged()
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ListAlert>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }

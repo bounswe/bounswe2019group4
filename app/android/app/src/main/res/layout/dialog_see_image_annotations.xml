@@ -31,13 +31,12 @@
             android:layout_toRightOf="@id/annotation_editText"/>
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_delete"
             android:id="@+id/delete_annotation"
             android:layout_toRightOf="@id/annotation_editText"
             android:layout_below="@id/annotation_add_check"
-            android:layout_alignBottom="@id/annotation_editText"
             android:layout_alignLeft="@id/annotation_add_check"
             android:layout_alignRight="@id/annotation_add_check"/>
 

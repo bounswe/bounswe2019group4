@@ -69,14 +69,11 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "Email sent!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getContext(),t.getMessage(), Toast.LENGTH_SHORT ).show();
                 }
             });
         }

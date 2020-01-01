@@ -195,13 +195,11 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
                     }
                     setVisibility(article!!.userId!!)
                 } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                        .show()
+
                 }
             }
 
             override fun onFailure(call: Call<Article>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
         fragmentManager?.beginTransaction()?.add(
@@ -257,13 +255,11 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
                     setVisibility(article!!.userId!!)
                     init()
                 } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                        .show()
+
                 }
             }
 
             override fun onFailure(call: Call<Article>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -287,13 +283,11 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
                         refresh()
 
                     } else {
-                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                            .show()
+
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }
@@ -319,14 +313,10 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
                         if (response.isSuccessful) {
                             findNavController().popBackStack()
 
-                        } else {
-                            Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                                .show()
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -357,14 +347,10 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
                         saveButton.visibility = View.GONE
                         title.keyListener = null
                         text.keyListener = null
-                    } else {
-                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                            .show()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }
@@ -415,14 +401,10 @@ class ArticleDetail : Fragment(), AdapterView.OnItemSelectedListener, AnnoClickL
                         fillAnno()
                     }
 
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                        .show()
                 }
             }
 
             override fun onFailure(call: Call<List<AnnoCreateRequest>>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }

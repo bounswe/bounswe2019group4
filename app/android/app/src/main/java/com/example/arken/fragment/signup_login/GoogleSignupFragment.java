@@ -144,14 +144,11 @@ public class GoogleSignupFragment extends Fragment implements View.OnClickListen
                         editor.putString("user_cookie", cookie.split(";")[0]);
                         editor.commit();
                         Navigation.findNavController(submitButton).navigate(R.id.action_googleSignupFragment_to_baseFragment);
-                    } else {
-                        Toast.makeText(getContext(), response.raw().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

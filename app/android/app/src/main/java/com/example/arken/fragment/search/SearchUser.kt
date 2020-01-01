@@ -59,13 +59,10 @@ class SearchUser: Fragment(), OnUserClickedListener {
                         val act = SearchFragmentDirections.actionSearchFragmentToProfileFragment(userId!!)
                         findNavController().navigate(act)
 
-                } else {
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Profile>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }

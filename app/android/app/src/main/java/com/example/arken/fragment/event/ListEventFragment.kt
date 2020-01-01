@@ -150,13 +150,10 @@ class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListen
                     eventAdapter.totalPages = listEvent.totalNumberOfPages!!
                     eventAdapter.page = 1
                     eventAdapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ListEvent>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -204,14 +201,10 @@ class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListen
                         eventAdapter.country = country
                         eventAdapter.importance = importance
                         eventAdapter.notifyDataSetChanged()
-                    } else {
-                        Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT)
-                            .show()
                     }
                 }
 
                 override fun onFailure(call: Call<ListEvent>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }
@@ -238,12 +231,10 @@ class ListEventFragment : Fragment(), OnEventClickedListener, View.OnClickListen
                     eventAdapter.page = 1
                     eventAdapter.notifyDataSetChanged()
                 } else {
-                    Toast.makeText(context, response.raw().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ListEvent>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
