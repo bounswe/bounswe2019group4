@@ -324,9 +324,9 @@ class Events extends Component {
 
             !loading?(
                 <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={2}/>
-                        <Grid.Column width={12}>
+                    <Grid.Row style={{overflow:"auto"}}>
+
+                        <Grid.Column style={{marginLeft:50}} width={14}>
                 <div style={{display:"flex", flexDirection: "column",justifyContent:"center",alignItems:"center"}}>
                 <div style={{fontWeight: "bold", fontSize: 16,marginLeft:20,marginRight:20,width:"100%",transform:"scaleX"}} >
 
