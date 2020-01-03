@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:padding="12dp"
+    android:id="@+id/annotation_background">
+
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:id="@+id/annotation_image"
+        android:src="@drawable/image1"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/annotation_edit_layout">
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:textColor="@color/whiteTextColor"
+            android:id="@+id/annotation_editText"
+            android:background="#8000"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/annotation_add_check"
+            android:layout_toRightOf="@id/annotation_editText"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete"
+            android:id="@+id/delete_annotation"
+            android:layout_toRightOf="@id/annotation_editText"
+            android:layout_below="@id/annotation_add_check"
+            android:layout_alignLeft="@id/annotation_add_check"
+            android:layout_alignRight="@id/annotation_add_check"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/annotation_username"
+            android:layout_below="@id/annotation_editText"
+            android:background="#8000"
+            android:textColor="@color/colorWhite"
+            android:layout_alignEnd="@id/annotation_editText"
+            android:layout_alignStart="@id/annotation_editText" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

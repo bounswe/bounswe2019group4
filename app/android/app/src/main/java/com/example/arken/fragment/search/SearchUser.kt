@@ -7,14 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arken.R
-import com.example.arken.fragment.LoginFragment
-import com.example.arken.fragment.ProfileFragment
+import com.example.arken.fragment.signup_login.LoginFragment
 import com.example.arken.model.Profile
 import com.example.arken.model.User
 import com.example.arken.util.OnUserClickedListener
@@ -62,13 +59,10 @@ class SearchUser: Fragment(), OnUserClickedListener {
                         val act = SearchFragmentDirections.actionSearchFragmentToProfileFragment(userId!!)
                         findNavController().navigate(act)
 
-                } else {
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Profile>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
